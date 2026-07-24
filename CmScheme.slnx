@@ -1,0 +1,47 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/CmScheme.Administration.Application/CmScheme.Administration.Application.csproj" />
+    <Project Path="src/CmScheme.Administration.Core/CmScheme.Administration.Core.csproj" />
+    <Project Path="src/CmScheme.Administration.Endpoints/CmScheme.Administration.Endpoints.csproj" />
+    <Project Path="src/CmScheme.Administration.Infrastructure/CmScheme.Administration.Infrastructure.csproj" />
+    <Project Path="src/CmScheme.Api/CmScheme.Api.csproj" />
+    <Project Path="src/CmScheme.AttendanceLeave.Application/CmScheme.AttendanceLeave.Application.csproj" />
+    <Project Path="src/CmScheme.AttendanceLeave.Core/CmScheme.AttendanceLeave.Core.csproj" />
+    <Project Path="src/CmScheme.AttendanceLeave.Endpoints/CmScheme.AttendanceLeave.Endpoints.csproj" />
+    <Project Path="src/CmScheme.AttendanceLeave.Infrastructure/CmScheme.AttendanceLeave.Infrastructure.csproj" />
+    <Project Path="src/CmScheme.Certificate.Application/CmScheme.Certificate.Application.csproj" />
+    <Project Path="src/CmScheme.Certificate.Core/CmScheme.Certificate.Core.csproj" />
+    <Project Path="src/CmScheme.Certificate.Endpoints/CmScheme.Certificate.Endpoints.csproj" />
+    <Project Path="src/CmScheme.Certificate.Infrastructure/CmScheme.Certificate.Infrastructure.csproj" />
+    <Project Path="src/CmScheme.Common.Core/CmScheme.Common.Core.csproj" />
+    <Project Path="src/CmScheme.Dashboard.Application/CmScheme.Dashboard.Application.csproj" />
+    <Project Path="src/CmScheme.Dashboard.Core/CmScheme.Dashboard.Core.csproj" />
+    <Project Path="src/CmScheme.Dashboard.Endpoints/CmScheme.Dashboard.Endpoints.csproj" />
+    <Project Path="src/CmScheme.Dashboard.Infrastructure/CmScheme.Dashboard.Infrastructure.csproj" />
+    <Project Path="src/CmScheme.Endpoints.Abstractions/CmScheme.Endpoints.Abstractions.csproj" />
+    <Project Path="src/CmScheme.HelpDesk.Application/CmScheme.HelpDesk.Application.csproj" />
+    <Project Path="src/CmScheme.HelpDesk.Core/CmScheme.HelpDesk.Core.csproj" />
+    <Project Path="src/CmScheme.HelpDesk.Endpoints/CmScheme.HelpDesk.Endpoints.csproj" />
+    <Project Path="src/CmScheme.HelpDesk.Infrastructure/CmScheme.HelpDesk.Infrastructure.csproj" />
+    <Project Path="src/CmScheme.Masters.Application/CmScheme.Masters.Application.csproj" />
+    <Project Path="src/CmScheme.Masters.Core/CmScheme.Masters.Core.csproj" />
+    <Project Path="src/CmScheme.Masters.Endpoints/CmScheme.Masters.Endpoints.csproj" />
+    <Project Path="src/CmScheme.Masters.Infrastructure/CmScheme.Masters.Infrastructure.csproj" />
+    <Project Path="src/CmScheme.Performance.Application/CmScheme.Performance.Application.csproj" />
+    <Project Path="src/CmScheme.Performance.Core/CmScheme.Performance.Core.csproj" />
+    <Project Path="src/CmScheme.Performance.Endpoints/CmScheme.Performance.Endpoints.csproj" />
+    <Project Path="src/CmScheme.Performance.Infrastructure/CmScheme.Performance.Infrastructure.csproj" />
+    <Project Path="src/CmScheme.Registration.Application/CmScheme.Registration.Application.csproj" />
+    <Project Path="src/CmScheme.Registration.Core/CmScheme.Registration.Core.csproj" />
+    <Project Path="src/CmScheme.Registration.Endpoints/CmScheme.Registration.Endpoints.csproj" />
+    <Project Path="src/CmScheme.Registration.Infrastructure/CmScheme.Registration.Infrastructure.csproj" />
+    <Project Path="src/CmScheme.Training.Application/CmScheme.Training.Application.csproj" />
+    <Project Path="src/CmScheme.Training.Core/CmScheme.Training.Core.csproj" />
+    <Project Path="src/CmScheme.Training.Endpoints/CmScheme.Training.Endpoints.csproj" />
+    <Project Path="src/CmScheme.Training.Infrastructure/CmScheme.Training.Infrastructure.csproj" />
+    <Project Path="src/CmScheme.WorkAllocation.Application/CmScheme.WorkAllocation.Application.csproj" />
+    <Project Path="src/CmScheme.WorkAllocation.Core/CmScheme.WorkAllocation.Core.csproj" />
+    <Project Path="src/CmScheme.WorkAllocation.Endpoints/CmScheme.WorkAllocation.Endpoints.csproj" />
+    <Project Path="src/CmScheme.WorkAllocation.Infrastructure/CmScheme.WorkAllocation.Infrastructure.csproj" />
+  </Folder>
+</Solution>

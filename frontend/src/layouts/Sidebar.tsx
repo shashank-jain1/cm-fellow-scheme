@@ -1,0 +1,86 @@
+import { useState } from 'react';
+import { NavLink, useLocation } from 'react-router-dom';
+
+const navItems = [
+  { path: '/dashboard', label: 'Dashboard', icon: 'pi pi-home' },
+  { path: '/registration', label: 'Registration', icon: 'pi pi-user-plus' },
+  { path: '/training', label: 'Training', icon: 'pi pi-calendar' },
+  { path: '/work-allocation', label: 'Work Allocation', icon: 'pi pi-briefcase' },
+  { path: '/attendance', label: 'Attendance', icon: 'pi pi-clock' },
+  { path: '/performance', label: 'Performance', icon: 'pi pi-chart-bar' },
+  { path: '/certificate', label: 'Certificate', icon: 'pi pi-verified' },
+  { path: '/help-desk', label: 'Help Desk', icon: 'pi pi-question-circle' },
+];
+
+export default function Sidebar() {
+  const [collapsed, setCollapsed] = useState(false);
+  const location = useLocation();
+
+  return (
+    <aside
+      className="sidebar glass"
+      style={{
+        width: collapsed ? 'var(--sidebar-collapsed-width)' : 'var(--sidebar-width)',
+        transition: 'width var(--transition-slow)',
+      }}
+    >
+      <div className="sidebar-brand">
+        <div className="sidebar-logo">
+          <i className="pi pi-shield" style={{ fontSize: 24, color: 'var(--emerald-400)' }} />
+        </div>
+        {!collapsed && (
+          <div className="sidebar-brand-text">
+            <span className="sidebar-brand-title">CM Fellow</span>
+            <span className="sidebar-brand-subtitle">Management System</span>
+          </div>
+        )}
+      </div>
+
+      <button
+        className="sidebar-toggle"
+        onClick={() => setCollapsed(!collapsed)}
+        aria-label="Toggle sidebar"
+      >
+        <i className={`pi ${collapsed ? 'pi-angle-right' : 'pi-angle-left'}`} />
+      </button>
+
+      <nav className="sidebar-nav">
+        {navItems.map((item) => {
+          const isActive = location.pathname.startsWith(item.path);
+          return (
+            <NavLink
+              key={item.path}
+              to={item.path}
+              className={`sidebar-link ${isActive ? 'active' : ''}`}
+              title={collapsed ? item.label : undefined}
+            >
+              <div className="sidebar-link-icon">
+                <i className={item.icon} />
+                {isActive && <div className="sidebar-active-dot" />}
+              </div>
+              {!collapsed && <span className="sidebar-link-label">{item.label}</span>}
+              {isActive && <div className="sidebar-active-indicator" />}
+            </NavLink>
+          );
+        })}
+      </nav>
+
+      <div className="sidebar-footer">
+        <div className="sidebar-user">
+          <div className="sidebar-avatar">
+            <i className="pi pi-user" />
+          </div>
+          {!collapsed && (
+            <div className="sidebar-user-info">
+              <span className="sidebar-user-name">Admin User</span>
+              <span className="sidebar-user-role">Administrator</span>
+            </div>
+          )}
+        </div>
+        <button className="sidebar-logout" title="Logout">
+          <i className="pi pi-sign-out" />
+        </button>
+      </div>
+    </aside>
+  );
+}

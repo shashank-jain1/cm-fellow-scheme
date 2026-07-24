@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CmScheme.WorkAllocation.Core\CmScheme.WorkAllocation.Core.csproj" />
+    <ProjectReference Include="..\CmScheme.Common.Core\CmScheme.Common.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Mediator.Abstractions" Version="3.0.2" />
+    <PackageReference Include="Scrutor" Version="4.2.2" />
+    <PackageReference Include="FluentValidation" Version="12.1.1" />
+    <PackageReference Include="Ardalis.Result" Version="10.1.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.9" />
+  </ItemGroup>
+</Project>
