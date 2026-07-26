@@ -17,24 +17,26 @@ export const ThemeSwitcher: React.FC = () => {
   }, []);
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+    <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
       {/* Quick Sun/Moon Toggle Button */}
       <button
-        className="header-icon-btn"
+        type="button"
         onClick={toggleTheme}
         title={`Switch to ${currentThemeOption.isDark ? 'Light' : 'Dark'} Mode`}
         style={{
-          width: '38px',
-          height: '38px',
+          width: '40px',
+          height: '40px',
           borderRadius: 'var(--radius-md)',
           border: '1px solid var(--border-color)',
           background: 'var(--bg-card)',
           color: 'var(--text-primary)',
           cursor: 'pointer',
-          display: 'flex',
+          display: 'inline-flex',
           alignItems: 'center',
           justifyContent: 'center',
           transition: 'all var(--transition-fast)',
+          flexShrink: 0,
+          boxShadow: 'var(--shadow-sm)',
         }}
       >
         <i
@@ -43,17 +45,15 @@ export const ThemeSwitcher: React.FC = () => {
         />
       </button>
 
-      {/* Detailed Theme Palette Select Dropdown */}
-      <div className="theme-switcher-container" ref={dropdownRef} style={{ position: 'relative' }}>
+      {/* Theme Select Dropdown Button */}
+      <div ref={dropdownRef} style={{ position: 'relative', display: 'inline-block' }}>
         <button
-          className="header-icon-btn theme-toggle-btn"
+          type="button"
           onClick={() => setIsOpen(!isOpen)}
           title={`Active Theme: ${currentThemeOption.name}`}
           style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            padding: '6px 12px',
+            height: '40px',
+            padding: '0 14px',
             borderRadius: 'var(--radius-md)',
             border: '1px solid var(--border-color)',
             background: 'var(--bg-card)',
@@ -63,6 +63,11 @@ export const ThemeSwitcher: React.FC = () => {
             fontWeight: 600,
             transition: 'all var(--transition-fast)',
             boxShadow: 'var(--shadow-sm)',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '8px',
+            whiteSpace: 'nowrap',
+            width: 'auto',
           }}
         >
           <span
@@ -72,22 +77,22 @@ export const ThemeSwitcher: React.FC = () => {
               borderRadius: '50%',
               backgroundColor: currentThemeOption.primaryColor,
               boxShadow: `0 0 6px ${currentThemeOption.primaryColor}`,
-              display: 'inline-block',
+              flexShrink: 0,
             }}
           />
-          <span className="theme-name-label">{currentThemeOption.name}</span>
-          <i className="pi pi-chevron-down" style={{ fontSize: '10px', color: 'var(--text-muted)' }} />
+          <span style={{ whiteSpace: 'nowrap' }}>{currentThemeOption.name}</span>
+          <i className="pi pi-chevron-down" style={{ fontSize: '10px', color: 'var(--text-muted)', marginLeft: '2px' }} />
         </button>
 
         {isOpen && (
           <div
-            className="theme-dropdown-menu fade-in"
+            className="fade-in"
             style={{
               position: 'absolute',
-              top: 'calc(100% + 8px)',
+              top: 'calc(100% + 6px)',
               right: 0,
               width: '210px',
-              padding: '8px',
+              padding: '6px',
               borderRadius: 'var(--radius-md)',
               background: 'var(--bg-secondary)',
               border: '1px solid var(--border-color)',
@@ -102,8 +107,8 @@ export const ThemeSwitcher: React.FC = () => {
                 textTransform: 'uppercase',
                 letterSpacing: '0.8px',
                 color: 'var(--text-muted)',
-                marginBottom: '8px',
-                padding: '4px 6px',
+                marginBottom: '6px',
+                padding: '4px 8px',
               }}
             >
               Theme Preset
@@ -114,6 +119,7 @@ export const ThemeSwitcher: React.FC = () => {
                 return (
                   <button
                     key={opt.id}
+                    type="button"
                     onClick={() => {
                       setTheme(opt.id as ThemeMode);
                       setIsOpen(false);
@@ -142,6 +148,7 @@ export const ThemeSwitcher: React.FC = () => {
                           borderRadius: '50%',
                           background: opt.primaryColor,
                           border: '1px solid rgba(0, 0, 0, 0.1)',
+                          flexShrink: 0,
                         }}
                       />
                       {opt.name}

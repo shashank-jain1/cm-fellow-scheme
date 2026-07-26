@@ -1,19 +1,23 @@
 -- ===============================================================================
--- CM FELLOW MANAGEMENT SYSTEM - COMPLETE SQL DATABASE CREATION SCRIPT
+-- CM FELLOW MANAGEMENT SYSTEM - FAILSAFE SQL DATABASE & TABLE CREATION SCRIPT
 -- Target Database: SQL Server (Transact-SQL) / CmSchemeDb
--- Based on CM Fellow Module Pages Filled Validation Specifications & EF Core Models
 -- ===============================================================================
 
 IF NOT EXISTS (SELECT * FROM sys.databases WHERE name = N'CmSchemeDb')
 BEGIN
-    CREATE DATABASE [CmSchemeDb];
+    EXEC('CREATE DATABASE [CmSchemeDb];');
 END
 GO
 
-USE [CmSchemeDb];
+IF EXISTS (SELECT * FROM sys.databases WHERE name = N'CmSchemeDb')
+BEGIN
+    USE [CmSchemeDb];
+END
 GO
 
+-- ===============================================================================
 -- 1. MASTERS MODULE TABLES
+-- ===============================================================================
 IF OBJECT_ID(N'dbo.States', N'U') IS NULL
 CREATE TABLE dbo.States (
     StateId INT IDENTITY(1,1) PRIMARY KEY,
@@ -75,7 +79,9 @@ CREATE TABLE dbo.Works (
 );
 GO
 
+-- ===============================================================================
 -- 2. USER REGISTRATION & AUTHENTICATION (URM&A)
+-- ===============================================================================
 IF OBJECT_ID(N'dbo.UserAccounts', N'U') IS NULL
 CREATE TABLE dbo.UserAccounts (
     UserId INT IDENTITY(1,1) PRIMARY KEY,
@@ -113,7 +119,9 @@ CREATE TABLE dbo.Applicants (
 );
 GO
 
+-- ===============================================================================
 -- 3. WORK ALLOCATION & TASK MANAGEMENT
+-- ===============================================================================
 IF OBJECT_ID(N'dbo.WorkAllocations', N'U') IS NULL
 CREATE TABLE dbo.WorkAllocations (
     WorkAllocationId INT IDENTITY(1,1) PRIMARY KEY,
@@ -158,7 +166,9 @@ CREATE TABLE dbo.SurveyRecords (
 );
 GO
 
+-- ===============================================================================
 -- 4. ATTENDANCE & LEAVE MANAGEMENT
+-- ===============================================================================
 IF OBJECT_ID(N'dbo.Attendances', N'U') IS NULL
 CREATE TABLE dbo.Attendances (
     AttendanceId INT IDENTITY(1,1) PRIMARY KEY,
@@ -204,7 +214,9 @@ CREATE TABLE dbo.LeaveBalances (
 );
 GO
 
+-- ===============================================================================
 -- 5. TRAINING MANAGEMENT SYSTEM (TMS)
+-- ===============================================================================
 IF OBJECT_ID(N'dbo.TrainingSchedules', N'U') IS NULL
 CREATE TABLE dbo.TrainingSchedules (
     TrainingId INT IDENTITY(1,1) PRIMARY KEY,
@@ -223,7 +235,9 @@ CREATE TABLE dbo.TrainingSchedules (
 );
 GO
 
+-- ===============================================================================
 -- 6. PERFORMANCE TRACKING (MONITORING)
+-- ===============================================================================
 IF OBJECT_ID(N'dbo.PerformanceEvaluations', N'U') IS NULL
 CREATE TABLE dbo.PerformanceEvaluations (
     PerformanceEvaluationId INT IDENTITY(1,1) PRIMARY KEY,
@@ -240,7 +254,9 @@ CREATE TABLE dbo.PerformanceEvaluations (
 );
 GO
 
+-- ===============================================================================
 -- 7. CERTIFICATE GENERATION & EXIT MANAGEMENT
+-- ===============================================================================
 IF OBJECT_ID(N'dbo.CertificateApplications', N'U') IS NULL
 CREATE TABLE dbo.CertificateApplications (
     CertificateApplicationId INT IDENTITY(1,1) PRIMARY KEY,
@@ -264,7 +280,9 @@ CREATE TABLE dbo.ExitRecords (
 );
 GO
 
--- 8. HELP DESK & SUPPORT TICKETS
+-- ===============================================================================
+-- 8. HELP DESK & SYSTEM ACTION LOGS
+-- ===============================================================================
 IF OBJECT_ID(N'dbo.Tickets', N'U') IS NULL
 CREATE TABLE dbo.Tickets (
     TicketId INT IDENTITY(1,1) PRIMARY KEY,
@@ -277,6 +295,27 @@ CREATE TABLE dbo.Tickets (
     ResolutionRemarks NVARCHAR(2000) NULL,
     CreatedOn DATETIME2 NOT NULL DEFAULT SYSDATETIME(),
     ResolvedOn DATETIME2 NULL
+);
+
+IF OBJECT_ID(N'dbo.TicketActionLogs', N'U') IS NULL
+CREATE TABLE dbo.TicketActionLogs (
+    TicketActionLogId INT IDENTITY(1,1) PRIMARY KEY,
+    TicketId INT NOT NULL FOREIGN KEY REFERENCES dbo.Tickets(TicketId),
+    ActionBy NVARCHAR(200) NOT NULL,
+    ActionType NVARCHAR(50) NOT NULL,
+    Remarks NVARCHAR(2000) NULL,
+    ActionTimestamp DATETIME2 NOT NULL DEFAULT SYSDATETIME()
+);
+
+IF OBJECT_ID(N'dbo.SystemAuditLogs', N'U') IS NULL
+CREATE TABLE dbo.SystemAuditLogs (
+    AuditLogId INT IDENTITY(1,1) PRIMARY KEY,
+    EntityName NVARCHAR(100) NOT NULL,
+    EntityId NVARCHAR(50) NOT NULL,
+    Action NVARCHAR(50) NOT NULL,
+    PerformedBy NVARCHAR(200) NOT NULL,
+    Timestamp DATETIME2 NOT NULL DEFAULT SYSDATETIME(),
+    Details NVARCHAR(MAX) NULL
 );
 GO
 
@@ -312,5 +351,5 @@ VALUES
 (1, 101, 'Aspirational District Baseline Survey & Monitoring', 'High', '2026-06-01', '2026-08-31', 50, 1, 1, 1, 85, 'active'),
 (2, 102, 'Rural Infrastructure Verification & Geo-tagging', 'Medium', '2026-07-01', '2026-09-30', 35, 2, 4, 3, 45, 'pending');
 
-PRINT 'Database CmSchemeDb schema and seed data initialized successfully!';
+PRINT 'Database schema with audit & action logs initialized successfully!';
 GO
