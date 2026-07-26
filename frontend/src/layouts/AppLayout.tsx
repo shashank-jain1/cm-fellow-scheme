@@ -1,5 +1,6 @@
 import { Outlet, useLocation } from 'react-router-dom';
 import Sidebar from './Sidebar';
+import { ThemeSwitcher } from '../theme/ThemeSwitcher';
 
 const breadcrumbMap: Record<string, string> = {
   dashboard: 'Dashboard',
@@ -21,11 +22,11 @@ export default function AppLayout() {
     <div className="app-layout">
       <Sidebar />
       <div className="app-main">
-        <header className="app-header glass-light">
+        <header className="app-header">
           <div className="app-breadcrumb">
             <i className="pi pi-home" style={{ fontSize: 14, color: 'var(--text-muted)' }} />
             {crumbs.map((crumb, i) => (
-              <span key={i} className="breadcrumb-item">
+              <span key={i} className="breadcrumb-item" style={{ display: 'inline-flex', alignItems: 'center' }}>
                 <span className="breadcrumb-sep">/</span>
                 <span className={i === crumbs.length - 1 ? 'breadcrumb-current' : ''}>
                   {crumb}
@@ -33,7 +34,9 @@ export default function AppLayout() {
               </span>
             ))}
           </div>
+
           <div className="app-header-actions">
+            <ThemeSwitcher />
             <button className="header-icon-btn" title="Notifications">
               <i className="pi pi-bell" />
               <span className="notification-dot" />

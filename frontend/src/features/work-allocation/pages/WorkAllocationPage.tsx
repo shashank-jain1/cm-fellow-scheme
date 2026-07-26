@@ -102,9 +102,7 @@ export default function WorkAllocationPage() {
       <div className="page-header">
         <div>
           <h1>Work Allocation</h1>
-          <p style={{ color: 'var(--text-secondary)', marginTop: 4 }}>
-            Manage work allocations for CM Fellows
-          </p>
+          <p>Manage work allocations for CM Fellows</p>
         </div>
         <Button
           label="New Allocation"
@@ -116,13 +114,14 @@ export default function WorkAllocationPage() {
 
       {showForm && (
         <div style={{
-          background: 'white',
-          borderRadius: 8,
+          background: 'var(--bg-card)',
+          borderRadius: 'var(--radius-lg)',
           padding: 24,
           marginBottom: 24,
-          boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+          border: '1px solid var(--border-color)',
+          boxShadow: 'var(--shadow-sm)',
         }}>
-          <h2 style={{ marginTop: 0, marginBottom: 20, fontSize: 18, fontWeight: 600 }}>
+          <h2 style={{ marginTop: 0, marginBottom: 20, fontSize: 18, fontWeight: 700 }}>
             {editingAllocation ? 'Edit Work Allocation' : 'Create New Work Allocation'}
           </h2>
           <WorkAllocationForm
@@ -140,14 +139,14 @@ export default function WorkAllocationPage() {
         </div>
       )}
 
-      <div style={{ display: 'flex', gap: 12, marginBottom: 24 }}>
-        <div style={{ position: 'relative', flex: '0 0 320px' }}>
-          <i className="pi pi-search" style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
+      <div style={{ display: 'flex', gap: 12, marginBottom: 24, alignItems: 'center' }}>
+        <div className="search-input-wrapper" style={{ flex: '0 0 320px' }}>
+          <i className="pi pi-search" />
           <InputText
             value={search}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value)}
             placeholder="Search by description..."
-            style={{ width: '100%', paddingLeft: 36 }}
+            style={{ width: '100%' }}
           />
         </div>
         <FormSelect
@@ -176,7 +175,7 @@ export default function WorkAllocationPage() {
         ) : filtered.length > 0 ? (
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
-              <tr style={{ background: 'var(--navy-50)' }}>
+              <tr style={{ background: 'var(--bg-primary)' }}>
                 {['Description', 'Priority', 'Duration', 'Surveys', 'Completion', 'Status', 'Actions'].map((h) => (
                   <th
                     key={h}
@@ -184,7 +183,7 @@ export default function WorkAllocationPage() {
                       padding: '12px 16px',
                       textAlign: 'left',
                       fontSize: 12,
-                      fontWeight: 600,
+                      fontWeight: 700,
                       color: 'var(--text-secondary)',
                       textTransform: 'uppercase',
                       letterSpacing: '0.5px',
@@ -199,7 +198,7 @@ export default function WorkAllocationPage() {
             <tbody>
               {filtered.map((a) => (
                 <tr key={a.workAllocationId} style={{ borderBottom: '1px solid var(--border-light)' }}>
-                  <td style={{ padding: '14px 16px', fontWeight: 500, fontSize: 14 }}>
+                  <td style={{ padding: '14px 16px', fontWeight: 600, fontSize: 14, color: 'var(--text-primary)' }}>
                     {a.workDescription}
                   </td>
                   <td style={{ padding: '14px 16px' }}>
@@ -213,13 +212,13 @@ export default function WorkAllocationPage() {
                   </td>
                   <td style={{ padding: '14px 16px' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                      <div style={{ width: 60, height: 4, borderRadius: 2, background: 'var(--navy-100)' }}>
+                      <div style={{ width: 60, height: 4, borderRadius: 2, background: 'var(--border-color)' }}>
                         <div
                           style={{
                             width: `${a.completionPercentage}%`,
                             height: '100%',
                             borderRadius: 2,
-                            background: a.completionPercentage >= 80 ? 'var(--emerald-500)' : a.completionPercentage >= 50 ? 'var(--amber-500)' : 'var(--navy-400)',
+                            background: a.completionPercentage >= 80 ? 'var(--accent-primary)' : 'var(--badge-amber-text)',
                           }}
                         />
                       </div>

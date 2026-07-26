@@ -1,4 +1,4 @@
-import { useId, useState, useRef, useEffect, useCallback } from 'react';
+import React, { useId, useState, useRef, useEffect, useCallback } from 'react';
 
 interface SelectOption {
   label: string;
@@ -49,7 +49,7 @@ export default function FormSelect({
     <div
       ref={ref}
       className={`p-select ${className ?? ''}`}
-      style={{ position: 'relative', ...style }}
+      style={{ position: 'relative', display: 'inline-block', ...style }}
       id={id}
     >
       <button
@@ -62,23 +62,25 @@ export default function FormSelect({
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          padding: '10px 14px',
+          padding: showClear && selected ? '9px 36px 9px 13px' : '9px 13px',
           border: '1px solid var(--border-color)',
           borderRadius: 'var(--radius-md)',
-          background: disabled ? 'var(--navy-50)' : 'var(--white)',
-          fontFamily: "'Inter', sans-serif",
+          background: disabled ? 'var(--bg-card)' : 'var(--bg-input)',
+          fontFamily: "'Plus Jakarta Sans', sans-serif",
           fontSize: 14,
+          height: 40,
           color: selected ? 'var(--text-primary)' : 'var(--text-muted)',
           cursor: disabled ? 'not-allowed' : 'pointer',
           outline: 'none',
-          transition: 'border-color 150ms, box-shadow 150ms',
+          transition: 'all var(--transition-fast)',
           textAlign: 'left',
+          boxShadow: 'var(--shadow-sm)',
         }}
       >
-        <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+        <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1 }}>
           {loading ? 'Loading...' : (selected?.label ?? placeholder)}
         </span>
-        <span style={{ marginLeft: 8, fontSize: 12, color: 'var(--text-muted)', flexShrink: 0 }}>
+        <span style={{ marginLeft: 8, fontSize: 11, color: 'var(--text-muted)', flexShrink: 0, display: 'flex', alignItems: 'center' }}>
           <i className={`pi ${open ? 'pi-chevron-up' : 'pi-chevron-down'}`} />
         </span>
       </button>
@@ -90,17 +92,22 @@ export default function FormSelect({
             e.stopPropagation();
             onChange('');
           }}
+          title="Clear selection"
           style={{
             position: 'absolute',
-            right: 32,
+            right: 28,
             top: '50%',
             transform: 'translateY(-50%)',
             background: 'none',
             border: 'none',
             cursor: 'pointer',
             color: 'var(--text-muted)',
-            fontSize: 12,
-            padding: 4,
+            fontSize: 11,
+            padding: '2px 4px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            borderRadius: '50%',
           }}
         >
           <i className="pi pi-times" />
@@ -111,53 +118,60 @@ export default function FormSelect({
         <ul
           style={{
             position: 'absolute',
-            top: '100%',
+            top: 'calc(100% + 4px)',
             left: 0,
             right: 0,
-            marginTop: 4,
-            background: 'var(--white)',
+            background: 'var(--bg-secondary)',
             border: '1px solid var(--border-color)',
             borderRadius: 'var(--radius-md)',
             boxShadow: 'var(--shadow-lg)',
             listStyle: 'none',
-            padding: '4px 0',
-            margin: '4px 0 0 0',
+            padding: '4px',
+            margin: 0,
             zIndex: 1000,
             maxHeight: 240,
-            overflow: 'auto',
+            overflowY: 'auto',
           }}
         >
           {options.length === 0 ? (
-            <li style={{ padding: '12px 14px', color: 'var(--text-muted)', fontSize: 13, textAlign: 'center' }}>
+            <li style={{ padding: '10px 12px', color: 'var(--text-muted)', fontSize: 13, textAlign: 'center' }}>
               No options available
             </li>
           ) : (
-            options.map((opt) => (
-              <li
-                key={opt.value}
-                onClick={() => {
-                  onChange(opt.value);
-                  setOpen(false);
-                }}
-                style={{
-                  padding: '10px 14px',
-                  fontSize: 14,
-                  cursor: 'pointer',
-                  background: opt.value === value ? 'var(--emerald-50)' : 'transparent',
-                  color: opt.value === value ? 'var(--emerald-600)' : 'var(--text-primary)',
-                  fontWeight: opt.value === value ? 500 : 400,
-                  transition: 'background 100ms',
-                }}
-                onMouseEnter={(e) => {
-                  if (opt.value !== value) e.currentTarget.style.background = 'var(--navy-50)';
-                }}
-                onMouseLeave={(e) => {
-                  if (opt.value !== value) e.currentTarget.style.background = 'transparent';
-                }}
-              >
-                {opt.label}
-              </li>
-            ))
+            options.map((opt) => {
+              const isSelected = opt.value === value;
+              return (
+                <li
+                  key={opt.value}
+                  onClick={() => {
+                    onChange(opt.value);
+                    setOpen(false);
+                  }}
+                  style={{
+                    padding: '8px 12px',
+                    borderRadius: 'var(--radius-sm)',
+                    fontSize: 13,
+                    cursor: 'pointer',
+                    background: isSelected ? 'var(--accent-light)' : 'transparent',
+                    color: isSelected ? 'var(--accent-primary-hover)' : 'var(--text-primary)',
+                    fontWeight: isSelected ? 600 : 400,
+                    transition: 'all var(--transition-fast)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!isSelected) e.currentTarget.style.background = 'var(--bg-card-hover)';
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!isSelected) e.currentTarget.style.background = 'transparent';
+                  }}
+                >
+                  <span>{opt.label}</span>
+                  {isSelected && <i className="pi pi-check" style={{ fontSize: 11, color: 'var(--accent-primary)' }} />}
+                </li>
+              );
+            })
           )}
         </ul>
       )}

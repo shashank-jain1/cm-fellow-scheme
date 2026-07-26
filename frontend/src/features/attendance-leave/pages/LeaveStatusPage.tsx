@@ -9,9 +9,7 @@ export default function LeaveStatusPage() {
       <div className="page-header">
         <div>
           <h1>Leave Status</h1>
-          <p style={{ color: 'var(--text-secondary)', marginTop: 4 }}>
-            Track your leave application status
-          </p>
+          <p>Track your leave application status</p>
         </div>
       </div>
 
@@ -30,7 +28,7 @@ export default function LeaveStatusPage() {
         ) : leaveRecords && leaveRecords.length > 0 ? (
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
-              <tr style={{ background: 'var(--navy-50)' }}>
+              <tr style={{ background: 'var(--bg-primary)' }}>
                 {['Application No', 'Leave Type', 'Period', 'Days', 'Status', 'Approved By', 'Date'].map((h) => (
                   <th
                     key={h}
@@ -38,7 +36,7 @@ export default function LeaveStatusPage() {
                       padding: '12px 16px',
                       textAlign: 'left',
                       fontSize: 12,
-                      fontWeight: 600,
+                      fontWeight: 700,
                       color: 'var(--text-secondary)',
                       textTransform: 'uppercase',
                       letterSpacing: '0.5px',
@@ -53,14 +51,14 @@ export default function LeaveStatusPage() {
             <tbody>
               {leaveRecords.map((record) => (
                 <tr key={record.leaveApplicationNo} style={{ borderBottom: '1px solid var(--border-light)' }}>
-                  <td style={{ padding: '14px 16px', fontSize: 13, fontWeight: 500 }}>
+                  <td style={{ padding: '14px 16px', fontSize: 13, fontWeight: 600, color: 'var(--text-primary)' }}>
                     {record.leaveApplicationNo}
                   </td>
-                  <td style={{ padding: '14px 16px', fontSize: 13 }}>{record.leaveType}</td>
+                  <td style={{ padding: '14px 16px', fontSize: 13, color: 'var(--text-primary)' }}>{record.leaveType}</td>
                   <td style={{ padding: '14px 16px', fontSize: 13, color: 'var(--text-muted)' }}>
                     {record.leavePeriod}
                   </td>
-                  <td style={{ padding: '14px 16px', fontSize: 13 }}>{record.numberOfDays}</td>
+                  <td style={{ padding: '14px 16px', fontSize: 13, fontWeight: 600 }}>{record.numberOfDays}</td>
                   <td style={{ padding: '14px 16px' }}>
                     <AttendanceStatusBadge status={record.approvalStatus} />
                   </td>

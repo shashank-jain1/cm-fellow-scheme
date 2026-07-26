@@ -6,7 +6,7 @@ import { formatDateTime } from '../../../shared/utils/format';
 import FormSelect from '../../../shared/components/FormSelect';
 
 const statusOptions = [
-  { label: 'All', value: '' },
+  { label: 'All Status', value: '' },
   { label: 'Open', value: 'open' },
   { label: 'In Progress', value: 'in_progress' },
   { label: 'Resolved', value: 'resolved' },
@@ -14,7 +14,7 @@ const statusOptions = [
 ];
 
 const priorityOptions = [
-  { label: 'All', value: '' },
+  { label: 'All Priorities', value: '' },
   { label: 'High', value: 'High' },
   { label: 'Medium', value: 'Medium' },
   { label: 'Low', value: 'Low' },
@@ -40,38 +40,36 @@ export default function TicketQueuePage() {
       <div className="page-header">
         <div>
           <h1>Ticket Queue</h1>
-          <p style={{ color: 'var(--text-secondary)', marginTop: 4 }}>
-            View and manage support tickets
-          </p>
+          <p>View and manage support tickets</p>
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16, marginBottom: 24 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 16, marginBottom: 24 }}>
         {[
-          { label: 'Total Tickets', value: tickets?.length ?? 0, color: 'var(--navy-600)' },
-          { label: 'Open', value: (tickets ?? []).filter((t) => t.status === 'open').length, color: 'var(--amber-500)' },
-          { label: 'In Progress', value: (tickets ?? []).filter((t) => t.status === 'in_progress').length, color: 'var(--emerald-500)' },
-          { label: 'Resolved', value: (tickets ?? []).filter((t) => t.status === 'resolved' || t.status === 'closed').length, color: 'var(--emerald-600)' },
+          { label: 'Total Tickets', value: tickets?.length ?? 0, color: 'var(--accent-primary)' },
+          { label: 'Open', value: (tickets ?? []).filter((t) => t.status === 'open').length, color: 'var(--badge-amber-text)' },
+          { label: 'In Progress', value: (tickets ?? []).filter((t) => t.status === 'in_progress').length, color: 'var(--badge-emerald-text)' },
+          { label: 'Resolved', value: (tickets ?? []).filter((t) => t.status === 'resolved' || t.status === 'closed').length, color: 'var(--accent-secondary)' },
         ].map((stat, i) => (
           <div key={i} className="kpi-card" style={{ textAlign: 'center', padding: 20 }}>
-            <div style={{ fontSize: 28, fontWeight: 700, color: stat.color }}>{stat.value}</div>
-            <div style={{ fontSize: 13, color: 'var(--text-secondary)', marginTop: 4 }}>{stat.label}</div>
+            <div style={{ fontSize: 28, fontWeight: 800, color: stat.color }}>{stat.value}</div>
+            <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-secondary)', marginTop: 4 }}>{stat.label}</div>
           </div>
         ))}
       </div>
 
-      <div style={{ display: 'flex', gap: 12, marginBottom: 20 }}>
-        <div style={{ position: 'relative', flex: '0 0 320px' }}>
-          <i className="pi pi-search" style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
+      <div style={{ display: 'flex', gap: 12, marginBottom: 20, alignItems: 'center' }}>
+        <div className="search-input-wrapper" style={{ flex: '0 0 320px' }}>
+          <i className="pi pi-search" />
           <InputText
             value={search}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value)}
             placeholder="Search tickets..."
-            style={{ width: '100%', paddingLeft: 36 }}
+            style={{ width: '100%' }}
           />
         </div>
-        <FormSelect value={statusFilter} onChange={setStatusFilter} options={statusOptions} showClear style={{ width: 150 }} />
-        <FormSelect value={priorityFilter} onChange={setPriorityFilter} options={priorityOptions} showClear style={{ width: 150 }} />
+        <FormSelect value={statusFilter} onChange={setStatusFilter} options={statusOptions} showClear style={{ width: 160 }} />
+        <FormSelect value={priorityFilter} onChange={setPriorityFilter} options={priorityOptions} showClear style={{ width: 160 }} />
       </div>
 
       <div className="table-wrapper">
@@ -90,7 +88,7 @@ export default function TicketQueuePage() {
         ) : filtered.length > 0 ? (
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
-              <tr style={{ background: 'var(--navy-50)' }}>
+              <tr style={{ background: 'var(--bg-primary)' }}>
                 {['Ticket ID', 'Category', 'Email', 'Priority', 'Status', 'Created'].map((h) => (
                   <th
                     key={h}
@@ -98,7 +96,7 @@ export default function TicketQueuePage() {
                       padding: '12px 16px',
                       textAlign: 'left',
                       fontSize: 12,
-                      fontWeight: 600,
+                      fontWeight: 700,
                       color: 'var(--text-secondary)',
                       textTransform: 'uppercase',
                       letterSpacing: '0.5px',
@@ -113,16 +111,17 @@ export default function TicketQueuePage() {
             <tbody>
               {filtered.map((t) => (
                 <tr key={t.ticketId} style={{ borderBottom: '1px solid var(--border-light)' }}>
-                  <td style={{ padding: '14px 16px', fontSize: 13, fontFamily: 'monospace', color: 'var(--emerald-600)', fontWeight: 500 }}>
+                  <td style={{ padding: '14px 16px', fontSize: 13, fontFamily: 'monospace', color: 'var(--accent-primary)', fontWeight: 600 }}>
                     #{t.ticketId}
                   </td>
-                  <td style={{ padding: '14px 16px', fontWeight: 500, fontSize: 14 }}>{t.issueCategory}</td>
+                  <td style={{ padding: '14px 16px', fontWeight: 600, fontSize: 14, color: 'var(--text-primary)' }}>{t.issueCategory}</td>
                   <td style={{ padding: '14px 16px', fontSize: 13, color: 'var(--text-secondary)' }}>{t.email}</td>
                   <td style={{ padding: '14px 16px' }}>
                     <span
-                      className="tag"
+                      className="badge"
                       style={{
-                        color: t.priority === 'High' ? 'var(--red-500)' : t.priority === 'Low' ? 'var(--emerald-500)' : 'var(--amber-500)',
+                        background: t.priority === 'High' ? 'var(--badge-red-bg)' : t.priority === 'Low' ? 'var(--badge-emerald-bg)' : 'var(--badge-amber-bg)',
+                        color: t.priority === 'High' ? 'var(--badge-red-text)' : t.priority === 'Low' ? 'var(--badge-emerald-text)' : 'var(--badge-amber-text)',
                       }}
                     >
                       {t.priority}

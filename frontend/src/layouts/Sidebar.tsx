@@ -18,7 +18,7 @@ export default function Sidebar() {
 
   return (
     <aside
-      className="sidebar glass"
+      className="sidebar"
       style={{
         width: collapsed ? 'var(--sidebar-collapsed-width)' : 'var(--sidebar-width)',
         transition: 'width var(--transition-slow)',
@@ -26,7 +26,7 @@ export default function Sidebar() {
     >
       <div className="sidebar-brand">
         <div className="sidebar-logo">
-          <i className="pi pi-shield" style={{ fontSize: 24, color: 'var(--emerald-400)' }} />
+          <i className="pi pi-shield" style={{ fontSize: 22, color: 'var(--accent-primary)' }} />
         </div>
         {!collapsed && (
           <div className="sidebar-brand-text">

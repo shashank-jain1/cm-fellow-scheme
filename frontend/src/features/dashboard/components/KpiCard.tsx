@@ -8,10 +8,10 @@ interface KpiCardProps {
 }
 
 const accentMap = {
-  emerald: { bg: 'var(--emerald-100)', color: 'var(--emerald-500)' },
-  amber: { bg: 'var(--amber-100)', color: 'var(--amber-500)' },
-  red: { bg: 'var(--red-100)', color: 'var(--red-500)' },
-  navy: { bg: 'var(--navy-100)', color: 'var(--navy-600)' },
+  emerald: { bg: 'var(--badge-emerald-bg)', color: 'var(--badge-emerald-text)' },
+  amber: { bg: 'var(--badge-amber-bg)', color: 'var(--badge-amber-text)' },
+  red: { bg: 'var(--badge-red-bg)', color: 'var(--badge-red-text)' },
+  navy: { bg: 'var(--accent-light)', color: 'var(--accent-primary)' },
 };
 
 export default function KpiCard({ label, value, icon, accent = 'emerald', trend, isLoading }: KpiCardProps) {
@@ -32,22 +32,24 @@ export default function KpiCard({ label, value, icon, accent = 'emerald', trend,
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
         <div
           style={{
-            width: 42,
-            height: 42,
-            borderRadius: 10,
+            width: 44,
+            height: 44,
+            borderRadius: 'var(--radius-md)',
             background: colors.bg,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
+            border: '1px solid var(--border-color)',
+            boxShadow: 'var(--shadow-sm)',
           }}
         >
-          <i className={icon} style={{ fontSize: 18, color: colors.color }} />
+          <i className={icon} style={{ fontSize: 20, color: colors.color }} />
         </div>
       </div>
-      <div style={{ fontSize: 28, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 4 }}>
+      <div style={{ fontSize: 30, fontWeight: 800, color: 'var(--text-primary)', marginBottom: 4, letterSpacing: '-0.5px' }}>
         {value}
       </div>
-      <div style={{ fontSize: 13, color: 'var(--text-secondary)', marginBottom: 4 }}>{label}</div>
+      <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-secondary)', marginBottom: 4 }}>{label}</div>
       {trend && <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>{trend}</div>}
     </div>
   );

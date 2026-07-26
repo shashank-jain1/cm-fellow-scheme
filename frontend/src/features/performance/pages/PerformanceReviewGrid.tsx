@@ -5,9 +5,9 @@ import { usePerformanceSummary } from '../queries';
 import PerformanceSummaryCard from '../components/PerformanceSummaryCard';
 
 const scoreColor = (score: number) => {
-  if (score >= 80) return 'var(--emerald-500)';
-  if (score >= 60) return 'var(--amber-500)';
-  return 'var(--red-500)';
+  if (score >= 80) return 'var(--badge-emerald-text)';
+  if (score >= 60) return 'var(--badge-amber-text)';
+  return 'var(--badge-red-text)';
 };
 
 const scoreTag = (score: number): 'success' | 'warning' | 'danger' => {
@@ -29,9 +29,7 @@ export default function PerformanceReviewGrid() {
       <div className="page-header">
         <div>
           <h1>Performance Tracking</h1>
-          <p style={{ color: 'var(--text-secondary)', marginTop: 4 }}>
-            Monitor and evaluate CM Fellow performance metrics
-          </p>
+          <p>Monitor and evaluate CM Fellow performance metrics</p>
         </div>
       </div>
 
@@ -48,13 +46,13 @@ export default function PerformanceReviewGrid() {
             ))}
       </div>
 
-      <div style={{ position: 'relative', maxWidth: 400, marginBottom: 24 }}>
-        <i className="pi pi-search" style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
+      <div className="search-input-wrapper" style={{ width: '100%', maxWidth: 360, marginBottom: 24 }}>
+        <i className="pi pi-search" />
         <InputText
           value={search}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value)}
           placeholder="Search by fellow name..."
-          style={{ width: '100%', paddingLeft: 36 }}
+          style={{ width: '100%' }}
         />
       </div>
 
@@ -74,7 +72,7 @@ export default function PerformanceReviewGrid() {
         ) : filtered.length > 0 ? (
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
-              <tr style={{ background: 'var(--navy-50)' }}>
+              <tr style={{ background: 'var(--bg-primary)' }}>
                 {['Fellow', 'Project', 'Completion', 'Score', 'Grade', 'Status'].map((h) => (
                   <th
                     key={h}
@@ -82,7 +80,7 @@ export default function PerformanceReviewGrid() {
                       padding: '12px 16px',
                       textAlign: 'left',
                       fontSize: 12,
-                      fontWeight: 600,
+                      fontWeight: 700,
                       color: 'var(--text-secondary)',
                       textTransform: 'uppercase',
                       letterSpacing: '0.5px',
@@ -97,17 +95,17 @@ export default function PerformanceReviewGrid() {
             <tbody>
               {filtered.map((r) => (
                 <tr key={r.performanceEvaluationId} style={{ borderBottom: '1px solid var(--border-light)' }}>
-                  <td style={{ padding: '14px 16px', fontWeight: 500, fontSize: 14 }}>{r.applicantName}</td>
+                  <td style={{ padding: '14px 16px', fontWeight: 600, fontSize: 14, color: 'var(--text-primary)' }}>{r.applicantName}</td>
                   <td style={{ padding: '14px 16px', fontSize: 13, color: 'var(--text-secondary)' }}>{r.projectName}</td>
                   <td style={{ padding: '14px 16px' }}>
                     <Tag value={`${r.completionPercentage}%`} severity={scoreTag(r.completionPercentage)} />
                   </td>
                   <td style={{ padding: '14px 16px' }}>
-                    <span style={{ fontWeight: 700, fontSize: 15, color: scoreColor(r.performanceScore) }}>
+                    <span style={{ fontWeight: 800, fontSize: 15, color: scoreColor(r.performanceScore) }}>
                       {r.performanceScore}
                     </span>
                   </td>
-                  <td style={{ padding: '14px 16px', fontSize: 13, fontWeight: 600 }}>{r.performanceGrade}</td>
+                  <td style={{ padding: '14px 16px', fontSize: 13, fontWeight: 700, color: 'var(--text-primary)' }}>{r.performanceGrade}</td>
                   <td style={{ padding: '14px 16px' }}>
                     <Tag
                       value={r.performanceStatus}
