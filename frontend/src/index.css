@@ -367,6 +367,48 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: 0 0 0 3px var(--accent-light) !important;
 }
 
+/* PrimeReact Dropdown Panel Styling */
+.p-dropdown {
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  border-radius: var(--radius-md) !important;
+  border-color: var(--border-color) !important;
+  background-color: var(--bg-input) !important;
+  height: 40px !important;
+  display: flex !important;
+  align-items: center !important;
+  box-shadow: var(--shadow-sm) !important;
+}
+
+.p-dropdown-panel {
+  background: var(--bg-secondary) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: var(--radius-md) !important;
+  box-shadow: var(--shadow-lg) !important;
+  padding: 4px !important;
+  z-index: 1000 !important;
+}
+
+.p-dropdown-items {
+  padding: 0 !important;
+  margin: 0 !important;
+  list-style: none !important;
+}
+
+.p-dropdown-item {
+  padding: 8px 12px !important;
+  border-radius: var(--radius-sm) !important;
+  font-size: 13px !important;
+  color: var(--text-primary) !important;
+  transition: all var(--transition-fast) !important;
+  cursor: pointer !important;
+}
+
+.p-dropdown-item:hover,
+.p-dropdown-item.p-highlight {
+  background: var(--accent-light) !important;
+  color: var(--accent-primary-hover) !important;
+}
+
 .p-datatable {
   border: none !important;
   background: transparent !important;

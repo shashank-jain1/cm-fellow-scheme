@@ -1,7 +1,7 @@
 import { InputText } from 'primereact/inputtext';
-import { Dropdown } from 'primereact/dropdown';
 import { Calendar } from 'primereact/calendar';
 import { InputTextarea } from 'primereact/inputtextarea';
+import FormSelect from '../../../shared/components/FormSelect';
 
 interface Props {
   date: string;
@@ -64,10 +64,10 @@ export default function CommonActivityFields({
       </div>
       <div className="form-field">
         <label>Mode</label>
-        <Dropdown
+        <FormSelect
           value={mode}
           options={modeOptions}
-          onChange={(e) => onModeChange(e.value)}
+          onChange={(val) => onModeChange(val)}
           placeholder="Select Mode"
           style={{ width: '100%' }}
         />

@@ -1,8 +1,8 @@
 import { InputText } from 'primereact/inputtext';
 import { InputNumber } from 'primereact/inputnumber';
 import { Calendar } from 'primereact/calendar';
-import { Dropdown } from 'primereact/dropdown';
 import { Button } from 'primereact/button';
+import FormSelect from '../../../shared/components/FormSelect';
 import type { WorkAllocationFormData } from '../types';
 
 interface WorkAllocationFormProps {
@@ -34,10 +34,10 @@ export default function WorkAllocationForm({
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 16 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 16 }}>
         <div className="form-group">
-          <label style={{ display: 'block', marginBottom: 6, fontWeight: 500, fontSize: 14 }}>
-            Project <span style={{ color: 'var(--red-500)' }}>*</span>
+          <label style={{ display: 'block', marginBottom: 6, fontWeight: 600, fontSize: 13, color: 'var(--text-secondary)' }}>
+            Project <span style={{ color: 'var(--badge-red-text)' }}>*</span>
           </label>
           <InputNumber
             value={formData.projectId || undefined}
@@ -45,12 +45,12 @@ export default function WorkAllocationForm({
             style={inputStyle}
             className={errors.projectId ? 'p-invalid' : ''}
           />
-          {errors.projectId && <small style={{ color: 'var(--red-500)' }}>{errors.projectId}</small>}
+          {errors.projectId && <small style={{ color: 'var(--badge-red-text)', marginTop: 4, display: 'block' }}>{errors.projectId}</small>}
         </div>
 
         <div className="form-group">
-          <label style={{ display: 'block', marginBottom: 6, fontWeight: 500, fontSize: 14 }}>
-            Work Project <span style={{ color: 'var(--red-500)' }}>*</span>
+          <label style={{ display: 'block', marginBottom: 6, fontWeight: 600, fontSize: 13, color: 'var(--text-secondary)' }}>
+            Work Project <span style={{ color: 'var(--badge-red-text)' }}>*</span>
           </label>
           <InputNumber
             value={formData.workProjectId || undefined}
@@ -58,24 +58,24 @@ export default function WorkAllocationForm({
             style={inputStyle}
             className={errors.workProjectId ? 'p-invalid' : ''}
           />
-          {errors.workProjectId && <small style={{ color: 'var(--red-500)' }}>{errors.workProjectId}</small>}
+          {errors.workProjectId && <small style={{ color: 'var(--badge-red-text)', marginTop: 4, display: 'block' }}>{errors.workProjectId}</small>}
         </div>
 
         <div className="form-group">
-          <label style={{ display: 'block', marginBottom: 6, fontWeight: 500, fontSize: 14 }}>
-            Priority <span style={{ color: 'var(--red-500)' }}>*</span>
+          <label style={{ display: 'block', marginBottom: 6, fontWeight: 600, fontSize: 13, color: 'var(--text-secondary)' }}>
+            Priority <span style={{ color: 'var(--badge-red-text)' }}>*</span>
           </label>
-          <Dropdown
+          <FormSelect
             value={formData.priority}
             options={priorityOptions}
-            onChange={(e) => onChange('priority', e.value)}
+            onChange={(val) => onChange('priority', val)}
             style={inputStyle}
           />
         </div>
 
         <div className="form-group">
-          <label style={{ display: 'block', marginBottom: 6, fontWeight: 500, fontSize: 14 }}>
-            Surveys Per Intern <span style={{ color: 'var(--red-500)' }}>*</span>
+          <label style={{ display: 'block', marginBottom: 6, fontWeight: 600, fontSize: 13, color: 'var(--text-secondary)' }}>
+            Surveys Per Intern <span style={{ color: 'var(--badge-red-text)' }}>*</span>
           </label>
           <InputNumber
             value={formData.surveysPerIntern || undefined}
@@ -83,13 +83,13 @@ export default function WorkAllocationForm({
             style={inputStyle}
             className={errors.surveysPerIntern ? 'p-invalid' : ''}
           />
-          {errors.surveysPerIntern && <small style={{ color: 'var(--red-500)' }}>{errors.surveysPerIntern}</small>}
+          {errors.surveysPerIntern && <small style={{ color: 'var(--badge-red-text)', marginTop: 4, display: 'block' }}>{errors.surveysPerIntern}</small>}
         </div>
       </div>
 
       <div className="form-group">
-        <label style={{ display: 'block', marginBottom: 6, fontWeight: 500, fontSize: 14 }}>
-          Work Description <span style={{ color: 'var(--red-500)' }}>*</span>
+        <label style={{ display: 'block', marginBottom: 6, fontWeight: 600, fontSize: 13, color: 'var(--text-secondary)' }}>
+          Work Description <span style={{ color: 'var(--badge-red-text)' }}>*</span>
         </label>
         <InputText
           value={formData.workDescription}
@@ -97,13 +97,13 @@ export default function WorkAllocationForm({
           style={inputStyle}
           className={errors.workDescription ? 'p-invalid' : ''}
         />
-        {errors.workDescription && <small style={{ color: 'var(--red-500)' }}>{errors.workDescription}</small>}
+        {errors.workDescription && <small style={{ color: 'var(--badge-red-text)', marginTop: 4, display: 'block' }}>{errors.workDescription}</small>}
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 16 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 16 }}>
         <div className="form-group">
-          <label style={{ display: 'block', marginBottom: 6, fontWeight: 500, fontSize: 14 }}>
-            Start Date <span style={{ color: 'var(--red-500)' }}>*</span>
+          <label style={{ display: 'block', marginBottom: 6, fontWeight: 600, fontSize: 13, color: 'var(--text-secondary)' }}>
+            Start Date <span style={{ color: 'var(--badge-red-text)' }}>*</span>
           </label>
           <Calendar
             value={formData.startDate ? new Date(formData.startDate) : null}
@@ -111,12 +111,12 @@ export default function WorkAllocationForm({
             style={inputStyle}
             className={errors.startDate ? 'p-invalid' : ''}
           />
-          {errors.startDate && <small style={{ color: 'var(--red-500)' }}>{errors.startDate}</small>}
+          {errors.startDate && <small style={{ color: 'var(--badge-red-text)', marginTop: 4, display: 'block' }}>{errors.startDate}</small>}
         </div>
 
         <div className="form-group">
-          <label style={{ display: 'block', marginBottom: 6, fontWeight: 500, fontSize: 14 }}>
-            End Date <span style={{ color: 'var(--red-500)' }}>*</span>
+          <label style={{ display: 'block', marginBottom: 6, fontWeight: 600, fontSize: 13, color: 'var(--text-secondary)' }}>
+            End Date <span style={{ color: 'var(--badge-red-text)' }}>*</span>
           </label>
           <Calendar
             value={formData.endDate ? new Date(formData.endDate) : null}
@@ -124,14 +124,14 @@ export default function WorkAllocationForm({
             style={inputStyle}
             className={errors.endDate ? 'p-invalid' : ''}
           />
-          {errors.endDate && <small style={{ color: 'var(--red-500)' }}>{errors.endDate}</small>}
+          {errors.endDate && <small style={{ color: 'var(--badge-red-text)', marginTop: 4, display: 'block' }}>{errors.endDate}</small>}
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 16 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 16 }}>
         <div className="form-group">
-          <label style={{ display: 'block', marginBottom: 6, fontWeight: 500, fontSize: 14 }}>
-            Division <span style={{ color: 'var(--red-500)' }}>*</span>
+          <label style={{ display: 'block', marginBottom: 6, fontWeight: 600, fontSize: 13, color: 'var(--text-secondary)' }}>
+            Division <span style={{ color: 'var(--badge-red-text)' }}>*</span>
           </label>
           <InputNumber
             value={formData.divisionId || undefined}
@@ -139,12 +139,12 @@ export default function WorkAllocationForm({
             style={inputStyle}
             className={errors.divisionId ? 'p-invalid' : ''}
           />
-          {errors.divisionId && <small style={{ color: 'var(--red-500)' }}>{errors.divisionId}</small>}
+          {errors.divisionId && <small style={{ color: 'var(--badge-red-text)', marginTop: 4, display: 'block' }}>{errors.divisionId}</small>}
         </div>
 
         <div className="form-group">
-          <label style={{ display: 'block', marginBottom: 6, fontWeight: 500, fontSize: 14 }}>
-            District <span style={{ color: 'var(--red-500)' }}>*</span>
+          <label style={{ display: 'block', marginBottom: 6, fontWeight: 600, fontSize: 13, color: 'var(--text-secondary)' }}>
+            District <span style={{ color: 'var(--badge-red-text)' }}>*</span>
           </label>
           <InputNumber
             value={formData.districtId || undefined}
@@ -152,12 +152,12 @@ export default function WorkAllocationForm({
             style={inputStyle}
             className={errors.districtId ? 'p-invalid' : ''}
           />
-          {errors.districtId && <small style={{ color: 'var(--red-500)' }}>{errors.districtId}</small>}
+          {errors.districtId && <small style={{ color: 'var(--badge-red-text)', marginTop: 4, display: 'block' }}>{errors.districtId}</small>}
         </div>
 
         <div className="form-group">
-          <label style={{ display: 'block', marginBottom: 6, fontWeight: 500, fontSize: 14 }}>
-            Block <span style={{ color: 'var(--red-500)' }}>*</span>
+          <label style={{ display: 'block', marginBottom: 6, fontWeight: 600, fontSize: 13, color: 'var(--text-secondary)' }}>
+            Block <span style={{ color: 'var(--badge-red-text)' }}>*</span>
           </label>
           <InputNumber
             value={formData.blockId || undefined}
@@ -165,7 +165,7 @@ export default function WorkAllocationForm({
             style={inputStyle}
             className={errors.blockId ? 'p-invalid' : ''}
           />
-          {errors.blockId && <small style={{ color: 'var(--red-500)' }}>{errors.blockId}</small>}
+          {errors.blockId && <small style={{ color: 'var(--badge-red-text)', marginTop: 4, display: 'block' }}>{errors.blockId}</small>}
         </div>
       </div>
 

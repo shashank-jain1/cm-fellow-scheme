@@ -1,7 +1,7 @@
 import { InputText } from 'primereact/inputtext';
 import { InputTextarea } from 'primereact/inputtextarea';
-import { Dropdown } from 'primereact/dropdown';
 import { InputSwitch } from 'primereact/inputswitch';
+import FormSelect from '../../../shared/components/FormSelect';
 
 interface Props {
   trainingTitle: string;
@@ -41,8 +41,8 @@ export default function TrainingFieldsCard({
   onAttendanceRequiredChange,
 }: Props) {
   return (
-    <div className="card" style={{ padding: 20, marginTop: 16 }}>
-      <h3 style={{ fontSize: 16, fontWeight: 600, marginBottom: 16 }}>Training Details</h3>
+    <div className="glass-card" style={{ padding: 20, marginTop: 16 }}>
+      <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 16 }}>Training Details</h3>
       <div className="form-grid">
         <div className="form-field">
           <label>Training Title</label>
@@ -55,10 +55,10 @@ export default function TrainingFieldsCard({
         </div>
         <div className="form-field">
           <label>Category</label>
-          <Dropdown
+          <FormSelect
             value={trainingCategory}
             options={categoryOptions}
-            onChange={(e) => onTrainingCategoryChange(e.value)}
+            onChange={(val) => onTrainingCategoryChange(val)}
             placeholder="Select Category"
             style={{ width: '100%' }}
           />
@@ -94,7 +94,7 @@ export default function TrainingFieldsCard({
           <label>Attendance Required</label>
           <InputSwitch
             checked={attendanceRequired}
-            onChange={(e) => onAttendanceRequiredChange(e.value)}
+            onChange={(e) => onAttendanceRequiredChange(e.value ?? false)}
           />
         </div>
       </div>

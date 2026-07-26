@@ -1,7 +1,7 @@
 import { InputText } from 'primereact/inputtext';
 import { InputTextarea } from 'primereact/inputtextarea';
-import { Dropdown } from 'primereact/dropdown';
 import { InputSwitch } from 'primereact/inputswitch';
+import FormSelect from '../../../shared/components/FormSelect';
 
 interface Props {
   meetingTitle: string;
@@ -33,8 +33,8 @@ export default function MeetingFieldsCard({
   onMomRequiredChange,
 }: Props) {
   return (
-    <div className="card" style={{ padding: 20, marginTop: 16 }}>
-      <h3 style={{ fontSize: 16, fontWeight: 600, marginBottom: 16 }}>Meeting Details</h3>
+    <div className="glass-card" style={{ padding: 20, marginTop: 16 }}>
+      <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 16 }}>Meeting Details</h3>
       <div className="form-grid">
         <div className="form-field">
           <label>Meeting Title</label>
@@ -47,10 +47,10 @@ export default function MeetingFieldsCard({
         </div>
         <div className="form-field">
           <label>Agenda</label>
-          <Dropdown
+          <FormSelect
             value={meetingAgenda}
             options={agendaOptions}
-            onChange={(e) => onMeetingAgendaChange(e.value)}
+            onChange={(val) => onMeetingAgendaChange(val)}
             placeholder="Select Agenda"
             style={{ width: '100%' }}
           />
@@ -68,7 +68,7 @@ export default function MeetingFieldsCard({
           <label>MoM Required</label>
           <InputSwitch
             checked={momRequired}
-            onChange={(e) => onMomRequiredChange(e.value)}
+            onChange={(e) => onMomRequiredChange(e.value ?? false)}
           />
         </div>
       </div>
