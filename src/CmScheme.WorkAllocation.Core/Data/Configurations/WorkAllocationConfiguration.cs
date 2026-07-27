@@ -9,6 +9,7 @@ public sealed class WorkAllocationConfiguration : IEntityTypeConfiguration<WorkA
 {
     public void Configure(EntityTypeBuilder<WorkAllocationEntity> builder)
     {
+        builder.ToTable("WorkAllocations");
         builder.HasKey(e => e.WorkAllocationId);
         builder.Property(e => e.WorkProjectId).HasMaxLength(50);
         builder.Property(e => e.WorkDescription).HasMaxLength(2000);

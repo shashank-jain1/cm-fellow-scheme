@@ -11,8 +11,14 @@ public sealed class GetLeaveBalanceQueryHandler(IAttendanceLeaveQueryDbContext d
 {
     public async ValueTask<Result<IReadOnlyList<LeaveBalanceDto>>> Handle(GetLeaveBalanceQuery request, CancellationToken cancellationToken)
     {
-        IReadOnlyList<LeaveBalanceDto> balances = await dbContext.LeaveBalances
-            .Where(lb => lb.ApplicantId == request.ApplicantId)
+        IQueryable<Core.Entities.LeaveBalance> query = dbContext.LeaveBalances;
+
+        if (request.ApplicantId.HasValue)
+        {
+            query = query.Where(lb => lb.ApplicantId == request.ApplicantId.Value);
+        }
+
+        IReadOnlyList<LeaveBalanceDto> balances = await query
             .Select(lb => new LeaveBalanceDto
             {
                 LeaveBalanceId = lb.LeaveBalanceId,

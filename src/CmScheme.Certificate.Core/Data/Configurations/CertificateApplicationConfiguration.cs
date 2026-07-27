@@ -8,6 +8,7 @@ public class CertificateApplicationConfiguration : IEntityTypeConfiguration<Cert
 {
     public void Configure(EntityTypeBuilder<CertificateApplication> builder)
     {
+        builder.ToTable("CertificateApplications");
         builder.HasKey(e => e.CertificateId);
         builder.Property(e => e.ApplicantName).HasMaxLength(200);
         builder.Property(e => e.ProgramName).HasMaxLength(200);

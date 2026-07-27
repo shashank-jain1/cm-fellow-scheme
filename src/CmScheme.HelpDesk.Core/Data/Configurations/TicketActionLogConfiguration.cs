@@ -8,6 +8,7 @@ public class TicketActionLogConfiguration : IEntityTypeConfiguration<TicketActio
 {
     public void Configure(EntityTypeBuilder<TicketActionLog> builder)
     {
+        builder.ToTable("TicketActionLogs");
         builder.HasKey(e => e.TicketActionLogId);
         builder.Property(e => e.ActionBy).HasMaxLength(200);
         builder.Property(e => e.ActionType).HasMaxLength(50);

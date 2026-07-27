@@ -11,8 +11,14 @@ public sealed class GetLeaveStatusQueryHandler(IAttendanceLeaveQueryDbContext db
 {
     public async ValueTask<Result<IReadOnlyList<LeaveStatusDto>>> Handle(GetLeaveStatusQuery request, CancellationToken cancellationToken)
     {
-        IReadOnlyList<LeaveStatusDto> leaves = await dbContext.LeaveApplications
-            .Where(l => l.ApplicantId == request.ApplicantId)
+        IQueryable<Core.Entities.LeaveApplication> query = dbContext.LeaveApplications;
+
+        if (request.ApplicantId.HasValue)
+        {
+            query = query.Where(l => l.ApplicantId == request.ApplicantId.Value);
+        }
+
+        IReadOnlyList<LeaveStatusDto> leaves = await query
             .Select(l => new LeaveStatusDto
             {
                 LeaveApplicationId = l.LeaveApplicationId,

@@ -8,6 +8,7 @@ public class TicketConfiguration : IEntityTypeConfiguration<Ticket>
 {
     public void Configure(EntityTypeBuilder<Ticket> builder)
     {
+        builder.ToTable("Tickets");
         builder.HasKey(e => e.TicketId);
         builder.Property(e => e.Email).HasMaxLength(200);
         builder.Property(e => e.Mobile).HasMaxLength(20);

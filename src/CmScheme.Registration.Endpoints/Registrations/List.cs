@@ -14,19 +14,19 @@ public static class List
     public static IEndpointRouteBuilder MapListEndpoint(this IEndpointRouteBuilder builder)
     {
         builder.MapGet("/", async (
-            [AsParameters] string? searchTerm,
-            [AsParameters] string? status,
-            [AsParameters] int? pageNumber,
-            [AsParameters] int? pageSize,
+            string? searchTerm,
+            string? status,
+            int? pageNumber,
+            int? pageSize,
             ISender sender,
             CancellationToken cancellationToken) =>
         {
             ListRegistrationsQuery query = new ListRegistrationsQuery
             {
-                SearchTerm = searchTerm,
-                Status = status,
-                PageNumber = pageNumber ?? 1,
-                PageSize = pageSize ?? 10
+                SearchTerm = searchTerm ?? string.Empty,
+                Status = status ?? string.Empty,
+                PageNumber = pageNumber is null or 0 ? 1 : pageNumber.Value,
+                PageSize = pageSize is null or 0 ? 10 : pageSize.Value
             };
             ValueTask<Result<List<RegistrationListItem>>> result = sender.Send(query, cancellationToken);
             return await result.ToApiResultAsync();

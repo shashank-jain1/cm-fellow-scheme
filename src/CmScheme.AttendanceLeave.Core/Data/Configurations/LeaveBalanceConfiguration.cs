@@ -8,6 +8,7 @@ public class LeaveBalanceConfiguration : IEntityTypeConfiguration<LeaveBalance>
 {
     public void Configure(EntityTypeBuilder<LeaveBalance> builder)
     {
+        builder.ToTable("LeaveBalances");
         builder.HasKey(e => e.LeaveBalanceId);
         builder.Property(e => e.LeaveType).HasMaxLength(100);
     }

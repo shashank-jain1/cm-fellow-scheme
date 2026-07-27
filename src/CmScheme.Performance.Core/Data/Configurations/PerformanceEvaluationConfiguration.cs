@@ -8,6 +8,7 @@ public class PerformanceEvaluationConfiguration : IEntityTypeConfiguration<Perfo
 {
     public void Configure(EntityTypeBuilder<PerformanceEvaluation> builder)
     {
+        builder.ToTable("PerformanceEvaluations");
         builder.HasKey(e => e.PerformanceEvaluationId);
         builder.Property(e => e.ProjectName).HasMaxLength(200);
         builder.Property(e => e.WorkProject).HasMaxLength(200);

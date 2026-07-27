@@ -8,6 +8,7 @@ public class ExitRecordConfiguration : IEntityTypeConfiguration<ExitRecord>
 {
     public void Configure(EntityTypeBuilder<ExitRecord> builder)
     {
+        builder.ToTable("ExitRecords");
         builder.HasKey(e => e.ExitRecordId);
         builder.Property(e => e.CompletionStatus).HasMaxLength(50);
         builder.Property(e => e.VerificationFlags).HasMaxLength(500);

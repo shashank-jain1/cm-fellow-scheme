@@ -12,7 +12,7 @@ public sealed class GetPerformanceSummaryQueryHandler(IPerformanceQueryDbContext
     public async ValueTask<Result<PerformanceSummaryDto?>> Handle(GetPerformanceSummaryQuery request, CancellationToken cancellationToken)
     {
         PerformanceSummaryDto? summary = await dbContext.PerformanceEvaluations
-            .Where(p => p.PerformanceEvaluationId == request.ApplicantId)
+            .Where(p => !request.ApplicantId.HasValue || p.PerformanceEvaluationId == request.ApplicantId.Value)
             .Select(p => new PerformanceSummaryDto
             {
                 PerformanceEvaluationId = p.PerformanceEvaluationId,

@@ -8,6 +8,7 @@ public sealed class BlockConfiguration : IEntityTypeConfiguration<Block>
 {
     public void Configure(EntityTypeBuilder<Block> builder)
     {
+        builder.ToTable("Block");
         builder.HasKey(b => b.BlockId);
 
         builder.Property(b => b.BlockName)

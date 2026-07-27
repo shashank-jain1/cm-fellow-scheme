@@ -5,5 +5,5 @@ namespace CmScheme.Performance.Application.Features.Performance.GetPerformanceSu
 
 public sealed record GetPerformanceSummaryQuery : IQuery<Result<Core.Dtos.PerformanceSummaryDto?>>
 {
-    public int ApplicantId { get; init; }
+    public int? ApplicantId { get; init; }
 }

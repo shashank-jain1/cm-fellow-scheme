@@ -8,6 +8,7 @@ public sealed class GramPanchayatConfiguration : IEntityTypeConfiguration<GramPa
 {
     public void Configure(EntityTypeBuilder<GramPanchayat> builder)
     {
+        builder.ToTable("GramPanchayat");
         builder.HasKey(g => g.GramPanchayatId);
 
         builder.Property(g => g.GramPanchayatName)

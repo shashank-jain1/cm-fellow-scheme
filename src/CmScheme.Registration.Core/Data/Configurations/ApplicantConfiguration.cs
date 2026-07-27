@@ -8,6 +8,7 @@ public sealed class ApplicantConfiguration : IEntityTypeConfiguration<Applicant>
 {
     public void Configure(EntityTypeBuilder<Applicant> builder)
     {
+        builder.ToTable("Applicant");
         builder.HasKey(a => a.ApplicantId);
 
         builder.Property(a => a.FirstName)

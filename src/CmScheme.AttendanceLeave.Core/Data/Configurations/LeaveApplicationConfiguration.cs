@@ -8,6 +8,7 @@ public class LeaveApplicationConfiguration : IEntityTypeConfiguration<LeaveAppli
 {
     public void Configure(EntityTypeBuilder<LeaveApplication> builder)
     {
+        builder.ToTable("LeaveApplications");
         builder.HasKey(e => e.LeaveApplicationId);
         builder.Property(e => e.LeaveType).HasMaxLength(100);
         builder.Property(e => e.HalfDayFullDay).HasMaxLength(20);

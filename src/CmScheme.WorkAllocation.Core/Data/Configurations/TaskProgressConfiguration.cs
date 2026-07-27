@@ -8,6 +8,7 @@ public sealed class TaskProgressConfiguration : IEntityTypeConfiguration<TaskPro
 {
     public void Configure(EntityTypeBuilder<TaskProgress> builder)
     {
+        builder.ToTable("TaskProgresses");
         builder.HasKey(e => e.TaskProgressId);
         builder.Property(e => e.ProjectName).HasMaxLength(200);
         builder.Property(e => e.WorkProject).HasMaxLength(200);

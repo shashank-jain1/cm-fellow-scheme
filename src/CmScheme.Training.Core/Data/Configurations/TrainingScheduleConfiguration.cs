@@ -8,6 +8,7 @@ public sealed class TrainingScheduleConfiguration : IEntityTypeConfiguration<Tra
 {
     public void Configure(EntityTypeBuilder<TrainingSchedule> builder)
     {
+        builder.ToTable("TrainingSchedules");
         builder.HasKey(x => x.TrainingScheduleId);
         builder.Property(x => x.ActivityType).HasMaxLength(20);
         builder.Property(x => x.ActivityTitle).HasMaxLength(250);

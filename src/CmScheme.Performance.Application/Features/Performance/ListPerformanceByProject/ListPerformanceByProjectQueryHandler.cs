@@ -11,8 +11,14 @@ public sealed class ListPerformanceByProjectQueryHandler(IPerformanceQueryDbCont
 {
     public async ValueTask<Result<List<PerformanceListItemDto>>> Handle(ListPerformanceByProjectQuery request, CancellationToken cancellationToken)
     {
-        List<PerformanceListItemDto> items = await dbContext.PerformanceEvaluations
-            .Where(p => p.ProjectName == request.ProjectName)
+        IQueryable<Core.Entities.PerformanceEvaluation> query = dbContext.PerformanceEvaluations;
+
+        if (!string.IsNullOrEmpty(request.ProjectName))
+        {
+            query = query.Where(p => p.ProjectName == request.ProjectName);
+        }
+
+        List<PerformanceListItemDto> items = await query
             .Select(p => new PerformanceListItemDto
             {
                 PerformanceEvaluationId = p.PerformanceEvaluationId,

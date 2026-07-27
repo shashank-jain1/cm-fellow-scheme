@@ -8,6 +8,7 @@ public sealed class DivisionConfiguration : IEntityTypeConfiguration<Division>
 {
     public void Configure(EntityTypeBuilder<Division> builder)
     {
+        builder.ToTable("Division");
         builder.HasKey(d => d.DivisionId);
 
         builder.Property(d => d.DivisionName)

@@ -10,7 +10,7 @@ namespace CmScheme.Masters.Endpoints.Works;
 
 public sealed class ListWorks
 {
-    public static async Task<IResult> List(int projectId, ISender sender, CancellationToken ct)
+    public static async Task<IResult> List(int? projectId, ISender sender, CancellationToken ct)
     {
         ValueTask<Result<List<WorkDto>>> result = sender.Send(new ListWorksByProjectQuery { ProjectId = projectId }, ct);
         return await result.ToApiResultAsync();

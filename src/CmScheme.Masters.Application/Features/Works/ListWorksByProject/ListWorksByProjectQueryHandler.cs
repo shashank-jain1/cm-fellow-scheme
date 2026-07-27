@@ -13,8 +13,14 @@ public sealed class ListWorksByProjectQueryHandler(IMastersQueryDbContext dbCont
         ListWorksByProjectQuery request,
         CancellationToken cancellationToken)
     {
-        List<WorkDto> works = await dbContext.Works
-            .Where(w => w.ProjectId == request.ProjectId)
+        IQueryable<Core.Entities.Work> query = dbContext.Works;
+
+        if (request.ProjectId.HasValue)
+        {
+            query = query.Where(w => w.ProjectId == request.ProjectId.Value);
+        }
+
+        List<WorkDto> works = await query
             .OrderByDescending(w => w.CreatedOn)
             .Select(w => new WorkDto(
                 w.WorkId,

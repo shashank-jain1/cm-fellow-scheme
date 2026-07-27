@@ -9,6 +9,7 @@ public static class CertificateGroupExtensions
     {
         RouteGroupBuilder group = builder.MapGroup("certificates");
 
+        group.MapGet("/", List.Handle);
         group.MapPost("/", Apply.Handle);
         group.MapPut("/review", Review.Handle);
         group.MapGet("/status", GetStatus.Handle);

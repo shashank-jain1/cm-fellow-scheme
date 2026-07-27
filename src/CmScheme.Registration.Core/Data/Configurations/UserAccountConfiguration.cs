@@ -8,6 +8,7 @@ public sealed class UserAccountConfiguration : IEntityTypeConfiguration<UserAcco
 {
     public void Configure(EntityTypeBuilder<UserAccount> builder)
     {
+        builder.ToTable("UserAccount");
         builder.HasKey(ua => ua.UserAccountId);
 
         builder.Property(ua => ua.Username)

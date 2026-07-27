@@ -7,8 +7,8 @@ export async function fetchCertificates(): Promise<CertificateApplicationDto[]> 
   return res.data ?? [];
 }
 
-export async function fetchCertificateDetail(_id: number): Promise<CertificateApplicationDto> {
-  const res = await ApiService.get<CertificateApplicationDto>(certificateUrls.detail());
+export async function fetchCertificateDetail(id: number): Promise<CertificateApplicationDto> {
+  const res = await ApiService.get<CertificateApplicationDto>(certificateUrls.detail(id));
   return res.data!;
 }
 
@@ -25,7 +25,7 @@ export async function rejectCertificate(id: number): Promise<void> {
   await ApiService.put(certificateUrls.review(), { certificateId: id, ReviewStatus: 'rejected' });
 }
 
-export async function downloadCertificate(_id: number): Promise<void> {
+export async function downloadCertificate(id: number): Promise<void> {
   const API_BASE = import.meta.env.VITE_API_URL || '/api/v1';
-  window.open(`${API_BASE}/${certificateUrls.download()}`, '_blank');
+  window.open(`${API_BASE}/${certificateUrls.download(id)}`, '_blank');
 }

@@ -1,10 +1,10 @@
 const certificateUrls = {
   base: 'certificates',
-  list: () => 'certificates/status',
-  detail: () => `certificates/status`,
+  list: () => 'certificates',
+  detail: (id: number) => `certificates/status?CertificateId=${id}`,
   apply: () => 'certificates',
   review: () => 'certificates/review',
-  download: () => `certificates/status`,
+  download: (id: number) => `certificates/status?CertificateId=${id}`,
 };
 
 export default certificateUrls;

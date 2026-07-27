@@ -8,6 +8,7 @@ public sealed class DistrictConfiguration : IEntityTypeConfiguration<District>
 {
     public void Configure(EntityTypeBuilder<District> builder)
     {
+        builder.ToTable("District");
         builder.HasKey(d => d.DistrictId);
 
         builder.Property(d => d.DistrictName)

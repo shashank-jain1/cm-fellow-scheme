@@ -8,6 +8,7 @@ public sealed class WorkConfiguration : IEntityTypeConfiguration<Work>
 {
     public void Configure(EntityTypeBuilder<Work> builder)
     {
+        builder.ToTable("Work");
         builder.HasKey(w => w.WorkId);
 
         builder.Property(w => w.WorkName)

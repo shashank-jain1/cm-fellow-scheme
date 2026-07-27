@@ -5,7 +5,7 @@ namespace CmScheme.AttendanceLeave.Application.Features.Attendance.GetAttendance
 
 public sealed record GetAttendanceHistoryQuery : IQuery<Result<IReadOnlyList<Core.Dtos.AttendanceDto>>>
 {
-    public int ApplicantId { get; init; }
-    public DateTime FromDate { get; init; }
-    public DateTime ToDate { get; init; }
+    public int? ApplicantId { get; init; }
+    public DateTime? FromDate { get; init; }
+    public DateTime? ToDate { get; init; }
 }

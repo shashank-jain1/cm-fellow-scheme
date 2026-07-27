@@ -8,6 +8,7 @@ public sealed class StateConfiguration : IEntityTypeConfiguration<State>
 {
     public void Configure(EntityTypeBuilder<State> builder)
     {
+        builder.ToTable("State");
         builder.HasKey(s => s.StateId);
 
         builder.Property(s => s.StateName)

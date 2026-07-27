@@ -8,6 +8,7 @@ public sealed class SurveyRecordConfiguration : IEntityTypeConfiguration<SurveyR
 {
     public void Configure(EntityTypeBuilder<SurveyRecord> builder)
     {
+        builder.ToTable("SurveyRecords");
         builder.HasKey(e => e.SurveyRecordId);
         builder.Property(e => e.InternName).HasMaxLength(200);
         builder.Property(e => e.SurveyPersonName).HasMaxLength(200);

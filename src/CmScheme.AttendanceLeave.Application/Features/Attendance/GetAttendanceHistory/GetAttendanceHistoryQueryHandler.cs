@@ -11,8 +11,24 @@ public sealed class GetAttendanceHistoryQueryHandler(IAttendanceLeaveQueryDbCont
 {
     public async ValueTask<Result<IReadOnlyList<AttendanceDto>>> Handle(GetAttendanceHistoryQuery request, CancellationToken cancellationToken)
     {
-        IReadOnlyList<AttendanceDto> records = await dbContext.Attendances
-            .Where(a => a.ApplicantId == request.ApplicantId && a.AttendanceDate >= request.FromDate && a.AttendanceDate <= request.ToDate)
+        IQueryable<Core.Entities.Attendance> query = dbContext.Attendances;
+
+        if (request.ApplicantId.HasValue)
+        {
+            query = query.Where(a => a.ApplicantId == request.ApplicantId.Value);
+        }
+
+        if (request.FromDate.HasValue)
+        {
+            query = query.Where(a => a.AttendanceDate >= request.FromDate.Value);
+        }
+
+        if (request.ToDate.HasValue)
+        {
+            query = query.Where(a => a.AttendanceDate <= request.ToDate.Value);
+        }
+
+        IReadOnlyList<AttendanceDto> records = await query
             .Select(a => new AttendanceDto
             {
                 AttendanceId = a.AttendanceId,

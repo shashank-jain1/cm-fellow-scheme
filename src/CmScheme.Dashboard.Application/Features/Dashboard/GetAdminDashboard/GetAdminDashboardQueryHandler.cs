@@ -23,7 +23,8 @@ public sealed class GetAdminDashboardQueryHandler(
         int totalTicketsOpen = await helpDeskDbContext.Tickets.CountAsync(t => t.Status == "Open", cancellationToken);
 
         decimal totalCompletionPercentage = await workAllocationDbContext.TaskProgresses
-            .AverageAsync(t => t.CompletionPercentage, cancellationToken);
+            .Select(t => (decimal?)t.CompletionPercentage)
+            .AverageAsync(cancellationToken) ?? 0m;
 
         AdminDashboardDto dashboard = new AdminDashboardDto(
             TotalRegisteredUsers: totalRegisteredUsers,
