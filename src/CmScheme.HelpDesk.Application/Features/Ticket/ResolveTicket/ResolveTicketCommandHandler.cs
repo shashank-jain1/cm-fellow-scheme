@@ -1,4 +1,5 @@
 using Ardalis.Result;
+using CmScheme.Common.Core;
 using CmScheme.HelpDesk.Core.Data;
 using CmScheme.HelpDesk.Core.Entities;
 using Mediator;
@@ -20,14 +21,14 @@ public sealed class ResolveTicketCommandHandler(IHelpDeskCommandDbContext dbCont
             return Result.NotFound("Ticket not found.");
         }
 
-        ticket.Status = "Resolved";
+        ticket.Status = Statuses.Ticket.Resolved;
         ticket.ResolutionRemarks = request.ResolutionRemarks;
 
         TicketActionLog actionLog = new TicketActionLog
         {
             TicketId = request.TicketId,
             ActionBy = request.ActionBy,
-            ActionType = "Resolved",
+            ActionType = Statuses.TicketAction.Resolved,
             Remarks = request.ResolutionRemarks,
             CreatedOn = DateTime.UtcNow
         };

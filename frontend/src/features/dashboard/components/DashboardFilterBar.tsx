@@ -1,5 +1,7 @@
 import { InputText } from 'primereact/inputtext';
+import { useQuery } from '@tanstack/react-query';
 import FormSelect from '../../../shared/components/FormSelect';
+import ApiService from '../../../services/ApiService';
 import type { DashboardFilters } from '../types';
 
 interface DashboardFilterBarProps {
@@ -7,14 +9,25 @@ interface DashboardFilterBarProps {
   onChange: (filters: DashboardFilters) => void;
 }
 
-const projectOptions = [
-  { label: 'All Projects', value: '' },
-  { label: 'Project Alpha', value: '1' },
-  { label: 'Project Beta', value: '2' },
-  { label: 'Project Gamma', value: '3' },
-];
+interface ProjectOption {
+  projectId: number;
+  projectName: string;
+}
 
 export default function DashboardFilterBar({ filters, onChange }: DashboardFilterBarProps) {
+  const { data: projects } = useQuery<ProjectOption[]>({
+    queryKey: ['dashboard-projects'],
+    queryFn: async () => {
+      const res = await ApiService.get<ProjectOption[]>('masters/projects');
+      return res.data ?? [];
+    },
+  });
+
+  const projectOptions = [
+    { label: 'All Projects', value: '' },
+    ...(projects ?? []).map((p) => ({ label: p.projectName, value: String(p.projectId) })),
+  ];
+
   return (
     <div style={{ display: 'flex', gap: 12, marginBottom: 24, flexWrap: 'wrap' }}>
       <div className="form-group" style={{ marginBottom: 0 }}>

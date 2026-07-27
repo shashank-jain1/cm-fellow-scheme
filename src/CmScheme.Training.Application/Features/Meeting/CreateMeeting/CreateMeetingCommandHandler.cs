@@ -1,5 +1,6 @@
 using Ardalis.Result;
 using Mediator;
+using CmScheme.Common.Core;
 using CmScheme.Training.Core.Data;
 using CmScheme.Training.Core.Entities;
 
@@ -15,7 +16,7 @@ public sealed class CreateMeetingCommandHandler(
     {
         TrainingSchedule schedule = new()
         {
-            ActivityType = "Meeting",
+            ActivityType = Statuses.Training.Meeting,
             MeetingTitle = command.MeetingTitle,
             MeetingAgenda = command.MeetingAgenda,
             MeetingDescription = command.MeetingDescription,
@@ -26,7 +27,7 @@ public sealed class CreateMeetingCommandHandler(
             EndTime = command.EndTime,
             MOMRequired = command.MOMRequired,
             Remarks = command.Remarks,
-            Status = "Scheduled"
+            Status = Statuses.Training.Scheduled
         };
 
         dbContext.TrainingSchedules.Add(schedule);

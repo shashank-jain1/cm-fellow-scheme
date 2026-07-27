@@ -29,7 +29,7 @@ public sealed class ApplicantConfiguration : IEntityTypeConfiguration<Applicant>
         builder.Property(a => a.AadhaarNumber)
             .HasMaxLength(12);
 
-        builder.Property(a => a.PANNumber)
+        builder.Property(a => a.PanNumber)
             .HasMaxLength(10);
 
         builder.Property(a => a.DrivingLicenseNumber)

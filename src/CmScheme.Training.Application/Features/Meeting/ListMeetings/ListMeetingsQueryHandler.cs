@@ -1,6 +1,7 @@
 using Ardalis.Result;
 using Mediator;
 using Microsoft.EntityFrameworkCore;
+using CmScheme.Common.Core;
 using CmScheme.Training.Core.Data;
 using CmScheme.Training.Core.Dtos;
 
@@ -16,7 +17,7 @@ public sealed class ListMeetingsQueryHandler(
     {
         List<TrainingScheduleDto> meetings = await queryDbContext.TrainingSchedules
             .AsNoTracking()
-            .Where(x => x.ActivityType == "Meeting")
+            .Where(x => x.ActivityType == Statuses.Training.Meeting)
             .Select(x => new TrainingScheduleDto(
                 x.TrainingScheduleId,
                 x.ActivityType,

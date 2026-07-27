@@ -72,8 +72,8 @@ export default function Sidebar() {
           </div>
           {!collapsed && (
             <div className="sidebar-user-info">
-              <span className="sidebar-user-name">Admin User</span>
-              <span className="sidebar-user-role">Administrator</span>
+              <span className="sidebar-user-name">{localStorage.getItem('userName') ?? 'User'}</span>
+              <span className="sidebar-user-role">{localStorage.getItem('userRole') ?? 'Role'}</span>
             </div>
           )}
         </div>

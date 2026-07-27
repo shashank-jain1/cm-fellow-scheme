@@ -7,10 +7,10 @@ import FormSelect from '../../../shared/components/FormSelect';
 
 const statusOptions = [
   { label: 'All Status', value: '' },
-  { label: 'Open', value: 'open' },
-  { label: 'In Progress', value: 'in_progress' },
-  { label: 'Resolved', value: 'resolved' },
-  { label: 'Closed', value: 'closed' },
+  { label: 'Open', value: 'Open' },
+  { label: 'In Progress', value: 'In Progress' },
+  { label: 'Resolved', value: 'Resolved' },
+  { label: 'Closed', value: 'Closed' },
 ];
 
 const priorityOptions = [
@@ -47,9 +47,9 @@ export default function TicketQueuePage() {
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 16, marginBottom: 24 }}>
         {[
           { label: 'Total Tickets', value: tickets?.length ?? 0, color: 'var(--accent-primary)' },
-          { label: 'Open', value: (tickets ?? []).filter((t) => t.status === 'open').length, color: 'var(--badge-amber-text)' },
-          { label: 'In Progress', value: (tickets ?? []).filter((t) => t.status === 'in_progress').length, color: 'var(--badge-emerald-text)' },
-          { label: 'Resolved', value: (tickets ?? []).filter((t) => t.status === 'resolved' || t.status === 'closed').length, color: 'var(--accent-secondary)' },
+          { label: 'Open', value: (tickets ?? []).filter((t) => t.status === 'Open').length, color: 'var(--badge-amber-text)' },
+          { label: 'In Progress', value: (tickets ?? []).filter((t) => t.status === 'In Progress').length, color: 'var(--badge-emerald-text)' },
+          { label: 'Resolved', value: (tickets ?? []).filter((t) => t.status === 'Resolved' || t.status === 'Closed').length, color: 'var(--accent-secondary)' },
         ].map((stat, i) => (
           <div key={i} className="kpi-card" style={{ textAlign: 'center', padding: 20 }}>
             <div style={{ fontSize: 28, fontWeight: 800, color: stat.color }}>{stat.value}</div>

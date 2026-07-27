@@ -43,6 +43,7 @@ public sealed class ListRegistrationsQueryHandler(IRegistrationQueryDbContext db
                 a.LastName,
                 a.MobileNumber,
                 a.EmailId,
+                a.DateOfBirth,
                 a.Status,
                 a.CreatedOn))
             .ToListAsync(cancellationToken);

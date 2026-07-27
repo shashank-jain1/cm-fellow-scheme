@@ -1,6 +1,7 @@
 using Ardalis.Result;
 using CmScheme.AttendanceLeave.Core.Data;
 using CmScheme.AttendanceLeave.Core.Entities;
+using CmScheme.Common.Core;
 using Mediator;
 
 namespace CmScheme.AttendanceLeave.Application.Features.Leave.ApplyLeave;
@@ -21,7 +22,7 @@ public sealed class ApplyLeaveCommandHandler(IAttendanceLeaveCommandDbContext db
             LeaveReason = request.LeaveReason,
             AttachmentPath = request.AttachmentPath,
             ReportingManagerName = request.ReportingManagerName,
-            Status = "Pending",
+            Status = Statuses.Leave.Pending,
             CreatedOn = DateTime.UtcNow,
             CreatedBy = request.CreatedBy
         };

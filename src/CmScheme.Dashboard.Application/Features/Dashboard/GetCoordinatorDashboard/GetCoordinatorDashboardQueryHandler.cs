@@ -1,4 +1,5 @@
 using Ardalis.Result;
+using CmScheme.Common.Core;
 using CmScheme.Dashboard.Core.Dtos;
 using CmScheme.Registration.Core.Data;
 using CmScheme.WorkAllocation.Core.Data;
@@ -18,11 +19,11 @@ public sealed class GetCoordinatorDashboardQueryHandler(
         int activeProjects = await workAllocationDbContext.WorkAllocations
             .CountAsync(w => w.ActiveStatus, cancellationToken);
         int pendingTasks = await workAllocationDbContext.TaskProgresses
-            .CountAsync(t => t.WorkStatus != "Completed", cancellationToken);
+            .CountAsync(t => t.WorkStatus != Statuses.WorkStatus.Completed, cancellationToken);
         int completedSurveys = await workAllocationDbContext.SurveyRecords
-            .CountAsync(s => s.SurveyStatus == "Completed", cancellationToken);
+            .CountAsync(s => s.SurveyStatus == Statuses.Survey.Completed, cancellationToken);
         int pendingSurveys = await workAllocationDbContext.SurveyRecords
-            .CountAsync(s => s.SurveyStatus != "Completed", cancellationToken);
+            .CountAsync(s => s.SurveyStatus != Statuses.Survey.Completed, cancellationToken);
 
         decimal teamAttendancePercentage = 0m;
 

@@ -1,6 +1,7 @@
 using Ardalis.Result;
 using Mediator;
 using Microsoft.EntityFrameworkCore;
+using CmScheme.Common.Core;
 using CmScheme.Registration.Core.Data;
 using CmScheme.Registration.Core.Entities;
 
@@ -21,12 +22,12 @@ public sealed class ApproveRegistrationCommandHandler(IRegistrationCommandDbCont
             return Result.NotFound("Applicant not found.");
         }
 
-        if (applicant.Status == "Approved")
+        if (applicant.Status == Statuses.Registration.Approved)
         {
             return Result.Conflict("Registration is already approved.");
         }
 
-        applicant.Status = "Approved";
+        applicant.Status = Statuses.Registration.Approved;
         applicant.ModifiedOn = DateTime.UtcNow;
         applicant.ModifiedBy = request.ApprovedBy;
 

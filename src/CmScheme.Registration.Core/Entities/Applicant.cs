@@ -26,7 +26,7 @@ public class Applicant
     public string? AadhaarNumber { get; set; }
 
     [MaxLength(10)]
-    public string? PANNumber { get; set; }
+    public string? PanNumber { get; set; }
 
     [MaxLength(20)]
     public string? DrivingLicenseNumber { get; set; }

@@ -18,5 +18,6 @@ public sealed record RegistrationListItem(
     string LastName,
     string MobileNumber,
     string EmailId,
+    DateTime DateOfBirth,
     string Status,
     DateTime CreatedOn);

@@ -5,11 +5,11 @@ interface TicketStatusBadgeProps {
 }
 
 const statusConfig: Record<string, { label: string; severity: 'success' | 'info' | 'warning' | 'danger' | 'secondary' }> = {
-  open: { label: 'Open', severity: 'warning' },
-  in_progress: { label: 'In Progress', severity: 'info' },
-  resolved: { label: 'Resolved', severity: 'success' },
-  closed: { label: 'Closed', severity: 'secondary' },
-  escalated: { label: 'Escalated', severity: 'danger' },
+  'Open': { label: 'Open', severity: 'warning' },
+  'In Progress': { label: 'In Progress', severity: 'info' },
+  'Resolved': { label: 'Resolved', severity: 'success' },
+  'Closed': { label: 'Closed', severity: 'secondary' },
+  'Escalated': { label: 'Escalated', severity: 'danger' },
 };
 
 export default function TicketStatusBadge({ status }: TicketStatusBadgeProps) {

@@ -1,4 +1,5 @@
 using Ardalis.Result;
+using CmScheme.Common.Core;
 using CmScheme.Dashboard.Core.Dtos;
 using CmScheme.HelpDesk.Core.Data;
 using CmScheme.Registration.Core.Data;
@@ -18,9 +19,9 @@ public sealed class GetAdminDashboardQueryHandler(
     {
         int totalRegisteredUsers = await registrationDbContext.Applicants.CountAsync(cancellationToken);
         int totalProjects = await workAllocationDbContext.WorkAllocations.Select(w => w.ProjectId).Distinct().CountAsync(cancellationToken);
-        int totalSurveysCompleted = await workAllocationDbContext.SurveyRecords.CountAsync(s => s.SurveyStatus == "Completed", cancellationToken);
-        int totalSurveysPending = await workAllocationDbContext.SurveyRecords.CountAsync(s => s.SurveyStatus != "Completed", cancellationToken);
-        int totalTicketsOpen = await helpDeskDbContext.Tickets.CountAsync(t => t.Status == "Open", cancellationToken);
+        int totalSurveysCompleted = await workAllocationDbContext.SurveyRecords.CountAsync(s => s.SurveyStatus == Statuses.Survey.Completed, cancellationToken);
+        int totalSurveysPending = await workAllocationDbContext.SurveyRecords.CountAsync(s => s.SurveyStatus != Statuses.Survey.Completed, cancellationToken);
+        int totalTicketsOpen = await helpDeskDbContext.Tickets.CountAsync(t => t.Status == Statuses.Ticket.Open, cancellationToken);
 
         decimal totalCompletionPercentage = await workAllocationDbContext.TaskProgresses
             .Select(t => (decimal?)t.CompletionPercentage)

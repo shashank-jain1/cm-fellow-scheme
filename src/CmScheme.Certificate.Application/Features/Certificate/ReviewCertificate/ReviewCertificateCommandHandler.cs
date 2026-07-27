@@ -1,6 +1,7 @@
 using Ardalis.Result;
 using CmScheme.Certificate.Core.Data;
 using CmScheme.Certificate.Core.Entities;
+using CmScheme.Common.Core;
 using Mediator;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,7 +23,7 @@ public sealed class ReviewCertificateCommandHandler(ICertificateCommandDbContext
         certificate.Status = request.Status;
         certificate.VerifiedBy = request.VerifiedBy;
 
-        if (string.Equals(request.Status, "Approved", StringComparison.OrdinalIgnoreCase))
+        if (string.Equals(request.Status, Statuses.Certificate.Approved, StringComparison.OrdinalIgnoreCase))
         {
             certificate.CertificateIssueDate = DateTime.UtcNow;
         }

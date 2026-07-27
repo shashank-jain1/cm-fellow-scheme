@@ -1,4 +1,5 @@
 using Ardalis.Result;
+using CmScheme.Common.Core;
 using CmScheme.HelpDesk.Core.Data;
 using CmScheme.HelpDesk.Core.Entities;
 using Mediator;
@@ -19,7 +20,7 @@ public sealed class CreateTicketCommandHandler(IHelpDeskCommandDbContext dbConte
             IssueCategory = request.IssueCategory,
             IssueDescription = request.IssueDescription,
             Priority = request.Priority,
-            Status = "Open",
+            Status = Statuses.Ticket.Open,
             CreatedOn = DateTime.UtcNow
         };
 
@@ -30,7 +31,7 @@ public sealed class CreateTicketCommandHandler(IHelpDeskCommandDbContext dbConte
         {
             TicketId = ticket.TicketId,
             ActionBy = request.Email,
-            ActionType = "Created",
+            ActionType = Statuses.TicketAction.Created,
             Remarks = "Ticket created",
             CreatedOn = DateTime.UtcNow
         };

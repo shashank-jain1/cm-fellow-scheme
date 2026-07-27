@@ -1,5 +1,6 @@
 using Ardalis.Result;
 using Mediator;
+using CmScheme.Common.Core;
 using CmScheme.Registration.Core.Data;
 using CmScheme.Registration.Core.Entities;
 
@@ -19,7 +20,7 @@ public sealed class SubmitRegistrationCommandHandler(IRegistrationCommandDbConte
             LastName = request.LastName,
             FatherName = request.FatherName,
             AadhaarNumber = request.AadhaarNumber,
-            PANNumber = request.PANNumber,
+            PanNumber = request.PanNumber,
             DrivingLicenseNumber = request.DrivingLicenseNumber,
             SamagraId = request.SamagraId,
             MobileNumber = request.MobileNumber,
@@ -42,7 +43,7 @@ public sealed class SubmitRegistrationCommandHandler(IRegistrationCommandDbConte
             IdentityProofPath = request.IdentityProofPath,
             EducationalCertificatePath = request.EducationalCertificatePath,
             DeclarationAccepted = request.DeclarationAccepted,
-            Status = "Pending",
+            Status = Statuses.Registration.Pending,
             CreatedOn = DateTime.UtcNow,
             ModifiedOn = DateTime.UtcNow
         };

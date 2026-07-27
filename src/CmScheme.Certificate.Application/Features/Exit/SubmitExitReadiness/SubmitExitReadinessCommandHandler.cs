@@ -1,6 +1,7 @@
 using Ardalis.Result;
 using CmScheme.Certificate.Core.Data;
 using CmScheme.Certificate.Core.Entities;
+using CmScheme.Common.Core;
 using Mediator;
 
 namespace CmScheme.Certificate.Application.Features.Exit.SubmitExitReadiness;
@@ -17,7 +18,7 @@ public sealed class SubmitExitReadinessCommandHandler(ICertificateCommandDbConte
             VerificationFlags = request.VerificationFlags,
             ExitReportPath = request.ExitReportPath,
             IsArchived = false,
-            Status = "Pending",
+            Status = Statuses.Certificate.Applied,
             CreatedOn = DateTime.UtcNow,
             CreatedBy = request.CreatedBy
         };

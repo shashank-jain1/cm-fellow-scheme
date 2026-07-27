@@ -1,6 +1,7 @@
 using Ardalis.Result;
 using Mediator;
 using Microsoft.EntityFrameworkCore;
+using CmScheme.Common.Core;
 using CmScheme.Registration.Core.Data;
 using CmScheme.Registration.Core.Entities;
 
@@ -21,12 +22,12 @@ public sealed class RejectRegistrationCommandHandler(IRegistrationCommandDbConte
             return Result.NotFound("Applicant not found.");
         }
 
-        if (applicant.Status == "Rejected")
+        if (applicant.Status == Statuses.Registration.Rejected)
         {
             return Result.Conflict("Registration is already rejected.");
         }
 
-        applicant.Status = "Rejected";
+        applicant.Status = Statuses.Registration.Rejected;
         applicant.ModifiedOn = DateTime.UtcNow;
         applicant.ModifiedBy = request.RejectedBy;
 

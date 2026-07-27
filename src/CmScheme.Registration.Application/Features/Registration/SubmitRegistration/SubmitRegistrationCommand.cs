@@ -10,7 +10,7 @@ public sealed record SubmitRegistrationCommand : ICommand<Result<int>>
     public string LastName { get; init; } = null!;
     public string FatherName { get; init; } = null!;
     public string? AadhaarNumber { get; init; }
-    public string? PANNumber { get; init; }
+    public string? PanNumber { get; init; }
     public string? DrivingLicenseNumber { get; init; }
     public string? SamagraId { get; init; }
     public string MobileNumber { get; init; } = null!;

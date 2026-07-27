@@ -52,8 +52,8 @@ public sealed class SubmitRegistrationCommandValidator : AbstractValidator<Submi
             .Matches(@"^\d{12}$").When(x => !string.IsNullOrEmpty(x.AadhaarNumber))
             .WithMessage("Aadhaar number must be exactly 12 digits.");
 
-        RuleFor(x => x.PANNumber)
-            .Matches(@"^[A-Z]{5}\d{4}[A-Z]$").When(x => !string.IsNullOrEmpty(x.PANNumber))
+        RuleFor(x => x.PanNumber)
+            .Matches(@"^[A-Z]{5}\d{4}[A-Z]$").When(x => !string.IsNullOrEmpty(x.PanNumber))
             .WithMessage("Invalid PAN number format.");
 
         RuleFor(x => x.DeclarationAccepted)

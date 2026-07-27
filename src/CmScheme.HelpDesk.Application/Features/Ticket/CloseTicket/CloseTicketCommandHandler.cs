@@ -1,4 +1,5 @@
 using Ardalis.Result;
+using CmScheme.Common.Core;
 using CmScheme.HelpDesk.Core.Data;
 using CmScheme.HelpDesk.Core.Entities;
 using Mediator;
@@ -20,14 +21,14 @@ public sealed class CloseTicketCommandHandler(IHelpDeskCommandDbContext dbContex
             return Result.NotFound("Ticket not found.");
         }
 
-        ticket.Status = "Closed";
+        ticket.Status = Statuses.Ticket.Closed;
         ticket.ClosedOn = DateTime.UtcNow;
 
         TicketActionLog actionLog = new TicketActionLog
         {
             TicketId = request.TicketId,
             ActionBy = request.ActionBy,
-            ActionType = "Closed",
+            ActionType = Statuses.TicketAction.Closed,
             Remarks = request.Remarks,
             CreatedOn = DateTime.UtcNow
         };

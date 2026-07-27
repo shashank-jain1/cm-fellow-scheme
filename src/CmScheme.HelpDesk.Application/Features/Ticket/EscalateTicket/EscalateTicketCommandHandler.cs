@@ -1,4 +1,5 @@
 using Ardalis.Result;
+using CmScheme.Common.Core;
 using CmScheme.HelpDesk.Core.Data;
 using CmScheme.HelpDesk.Core.Entities;
 using Mediator;
@@ -20,13 +21,13 @@ public sealed class EscalateTicketCommandHandler(IHelpDeskCommandDbContext dbCon
             return Result.NotFound("Ticket not found.");
         }
 
-        ticket.Status = "Escalated";
+        ticket.Status = Statuses.Ticket.Escalated;
 
         TicketActionLog actionLog = new TicketActionLog
         {
             TicketId = request.TicketId,
             ActionBy = request.ActionBy,
-            ActionType = "Escalated",
+            ActionType = Statuses.TicketAction.Escalated,
             Remarks = request.Remarks,
             CreatedOn = DateTime.UtcNow
         };
