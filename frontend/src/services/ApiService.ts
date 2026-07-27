@@ -18,6 +18,12 @@ class ApiService {
     });
 
     if (!response.ok) {
+      if (response.status === 401) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('auth_user');
+        window.location.href = '/login';
+        throw new Error('Session expired. Please login again.');
+      }
       const errorText = await response.text().catch(() => response.statusText);
       throw new Error(`API ${method} ${url} failed (${response.status}): ${errorText}`);
     }

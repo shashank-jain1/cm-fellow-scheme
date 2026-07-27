@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { useAuth } from '../features/auth';
 
 const navItems = [
   { path: '/dashboard', label: 'Dashboard', icon: 'pi pi-home' },
@@ -15,6 +16,13 @@ const navItems = [
 export default function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, logout } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
 
   return (
     <aside
@@ -72,12 +80,12 @@ export default function Sidebar() {
           </div>
           {!collapsed && (
             <div className="sidebar-user-info">
-              <span className="sidebar-user-name">{localStorage.getItem('userName') ?? 'User'}</span>
-              <span className="sidebar-user-role">{localStorage.getItem('userRole') ?? 'Role'}</span>
+              <span className="sidebar-user-name">{user?.username ?? 'User'}</span>
+              <span className="sidebar-user-role">{user?.role ?? 'Role'}</span>
             </div>
           )}
         </div>
-        <button className="sidebar-logout" title="Logout">
+        <button className="sidebar-logout" title="Logout" onClick={handleLogout}>
           <i className="pi pi-sign-out" />
         </button>
       </div>

@@ -1,22 +1,29 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../auth';
 import './LoginPage.css';
 
 export default function LoginPage() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState('');
+  const { login } = useAuth();
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    // Simulated login
-    setTimeout(() => {
-      localStorage.setItem('token', 'demo-token');
-      setLoading(false);
+    setError('');
+
+    try {
+      await login(username, password);
       navigate('/dashboard');
-    }, 800);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Login failed');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -62,15 +69,21 @@ export default function LoginPage() {
           </div>
 
           <form onSubmit={handleSubmit} className="login-form">
+            {error && (
+              <div style={{ padding: '10px 14px', borderRadius: 'var(--radius-md)', background: 'rgba(239, 68, 68, 0.1)', color: '#ef4444', fontSize: 13, marginBottom: 8 }}>
+                {error}
+              </div>
+            )}
+
             <div className="login-field">
-              <label className="login-label">Email address</label>
+              <label className="login-label">Username</label>
               <div className="login-input-wrapper">
-                <i className="pi pi-envelope" />
+                <i className="pi pi-user" />
                 <input
-                  type="email"
-                  placeholder="admin@cmfellow.gov.in"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  type="text"
+                  placeholder="Enter your username"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
                   className="login-input"
                   required
                 />
@@ -97,7 +110,6 @@ export default function LoginPage() {
                 <input type="checkbox" />
                 <span>Remember me</span>
               </label>
-              <a href="#" className="login-forgot">Forgot password?</a>
             </div>
 
             <button type="submit" className="login-btn" disabled={loading}>

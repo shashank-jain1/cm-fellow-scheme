@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using CmScheme.Endpoints.Abstractions;
+using CmScheme.Registration.Endpoints.Auth;
 using CmScheme.Registration.Endpoints.Registrations;
 using CmScheme.Registration.Endpoints.UserAccounts;
 
@@ -10,6 +11,7 @@ public sealed class RegistrationEndpoints : IApiEndpoint
 {
     public void Configure(IEndpointRouteBuilder builder)
     {
+        builder.MapAuthEndpoints();
         builder.MapRegistrationEndpoints();
         builder.MapUserAccountEndpoints();
     }

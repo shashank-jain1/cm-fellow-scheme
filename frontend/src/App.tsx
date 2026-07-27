@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { ThemeProvider } from './theme/ThemeContext';
+import { AuthProvider, ProtectedRoute } from './features/auth';
 import AppLayout from './layouts/AppLayout';
 import LoginPage from './features/registration/pages/LoginPage';
 import { AdminDashboardPage } from './features/dashboard';
@@ -35,31 +36,33 @@ export default function App() {
     <ThemeProvider>
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
-          <Routes>
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/" element={<AppLayout />}>
-              <Route index element={<Navigate to="/dashboard" replace />} />
-              <Route path="dashboard" element={<AdminDashboardPage />} />
-              <Route path="registration" element={<RegistrationWizard />} />
-              <Route path="training" element={<ActivityCalendar />} />
-              <Route path="training/new" element={<CreateActivityForm />} />
-              <Route path="work-allocation" element={<WorkAllocationPage />} />
-              <Route path="attendance" element={<MarkAttendancePage />} />
-              <Route path="attendance/apply-leave" element={<ApplyLeavePage />} />
-              <Route path="attendance/leave-approval" element={<LeaveApprovalPage />} />
-              <Route path="attendance/leave-status" element={<LeaveStatusPage />} />
-              <Route path="attendance/leave-balance" element={<LeaveBalancePage />} />
-              <Route path="performance" element={<PerformanceReviewGrid />} />
-              <Route path="performance/:id" element={<PerformanceDetailPage />} />
-              <Route path="certificate/apply" element={<ApplyCertificatePage />} />
-              <Route path="certificate/approvals" element={<CertificateApprovalPage />} />
-              <Route path="certificate/exit" element={<ExitManagementPage />} />
-              <Route path="certificate" element={<CertificateApprovalPage />} />
-              <Route path="help-desk" element={<TicketQueuePage />} />
-              <Route path="help-desk/new" element={<RaiseTicketPage />} />
-              <Route path="help-desk/:id" element={<TicketDetailPage />} />
-            </Route>
-          </Routes>
+          <AuthProvider>
+            <Routes>
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/" element={<ProtectedRoute><AppLayout /></ProtectedRoute>}>
+                <Route index element={<Navigate to="/dashboard" replace />} />
+                <Route path="dashboard" element={<AdminDashboardPage />} />
+                <Route path="registration" element={<RegistrationWizard />} />
+                <Route path="training" element={<ActivityCalendar />} />
+                <Route path="training/new" element={<CreateActivityForm />} />
+                <Route path="work-allocation" element={<WorkAllocationPage />} />
+                <Route path="attendance" element={<MarkAttendancePage />} />
+                <Route path="attendance/apply-leave" element={<ApplyLeavePage />} />
+                <Route path="attendance/leave-approval" element={<LeaveApprovalPage />} />
+                <Route path="attendance/leave-status" element={<LeaveStatusPage />} />
+                <Route path="attendance/leave-balance" element={<LeaveBalancePage />} />
+                <Route path="performance" element={<PerformanceReviewGrid />} />
+                <Route path="performance/:id" element={<PerformanceDetailPage />} />
+                <Route path="certificate/apply" element={<ApplyCertificatePage />} />
+                <Route path="certificate/approvals" element={<CertificateApprovalPage />} />
+                <Route path="certificate/exit" element={<ExitManagementPage />} />
+                <Route path="certificate" element={<CertificateApprovalPage />} />
+                <Route path="help-desk" element={<TicketQueuePage />} />
+                <Route path="help-desk/new" element={<RaiseTicketPage />} />
+                <Route path="help-desk/:id" element={<TicketDetailPage />} />
+              </Route>
+            </Routes>
+          </AuthProvider>
         </BrowserRouter>
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
