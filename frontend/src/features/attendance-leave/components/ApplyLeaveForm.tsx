@@ -1,5 +1,6 @@
 import { Button } from 'primereact/button';
 import { InputTextarea } from 'primereact/inputtextarea';
+import { Calendar } from 'primereact/calendar';
 import FormSelect from '../../../shared/components/FormSelect';
 import { useApplyLeaveForm } from './form.hook';
 
@@ -21,75 +22,69 @@ export default function ApplyLeaveForm({ onSuccess }: ApplyLeaveFormProps) {
 
   return (
     <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-      <div>
-        <label style={{ display: 'block', marginBottom: 6, fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)' }}>
-          Leave Type
-        </label>
-        <FormSelect
-          value={formData.leaveType}
-          onChange={(val: string) => handleChange('leaveType', val)}
-          options={leaveTypeOptions}
-          placeholder="Select leave type"
-        />
-        {errors.leaveType && <span style={{ color: 'var(--red-600)', fontSize: 12 }}>{errors.leaveType}</span>}
-      </div>
-
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
-        <div>
-          <label style={{ display: 'block', marginBottom: 6, fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)' }}>
-            From Date
-          </label>
-          <input
-            type="date"
-            value={formData.fromDate}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange('fromDate', e.target.value)}
-            className="form-input"
+      <div className="form-grid">
+        <div className="form-field">
+          <label>Leave Type</label>
+          <FormSelect
+            value={formData.leaveType}
+            onChange={(val: string) => handleChange('leaveType', val)}
+            options={leaveTypeOptions}
+            placeholder="Select leave type"
           />
-          {errors.fromDate && <span style={{ color: 'var(--red-600)', fontSize: 12 }}>{errors.fromDate}</span>}
+          {errors.leaveType && <small style={{ color: 'var(--red-600)', fontSize: 12 }}>{errors.leaveType}</small>}
         </div>
-        <div>
-          <label style={{ display: 'block', marginBottom: 6, fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)' }}>
-            To Date
-          </label>
-          <input
-            type="date"
-            value={formData.toDate}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange('toDate', e.target.value)}
-            className="form-input"
+
+        <div className="form-field">
+          <label>From Date</label>
+          <Calendar
+            value={formData.fromDate ? new Date(formData.fromDate) : null}
+            onChange={(e) => handleChange('fromDate', e.value ? e.value.toISOString().split('T')[0] : '')}
+            showOnFocus={false}
+            dateFormat="dd/mm/yy"
           />
-          {errors.toDate && <span style={{ color: 'var(--red-600)', fontSize: 12 }}>{errors.toDate}</span>}
+          {errors.fromDate && <small style={{ color: 'var(--red-600)', fontSize: 12 }}>{errors.fromDate}</small>}
+        </div>
+
+        <div className="form-field">
+          <label>To Date</label>
+          <Calendar
+            value={formData.toDate ? new Date(formData.toDate) : null}
+            onChange={(e) => handleChange('toDate', e.value ? e.value.toISOString().split('T')[0] : '')}
+            showOnFocus={false}
+            dateFormat="dd/mm/yy"
+          />
+          {errors.toDate && <small style={{ color: 'var(--red-600)', fontSize: 12 }}>{errors.toDate}</small>}
         </div>
       </div>
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-        <input
-          type="checkbox"
-          id="halfDayFullDay"
-          checked={formData.halfDayFullDay}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange('halfDayFullDay', e.target.checked)}
-        />
-        <label htmlFor="halfDayFullDay" style={{ fontSize: 13, color: 'var(--text-secondary)' }}>
-          Half Day
-        </label>
+      <div className="form-field" style={{ maxWidth: 200 }}>
+        <label>Half Day</label>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, height: 40 }}>
+          <input
+            type="checkbox"
+            id="halfDayFullDay"
+            checked={formData.halfDayFullDay}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange('halfDayFullDay', e.target.checked)}
+          />
+          <label htmlFor="halfDayFullDay" style={{ fontSize: 13, color: 'var(--text-secondary)' }}>
+            Half Day
+          </label>
+        </div>
       </div>
 
-      <div>
-        <label style={{ display: 'block', marginBottom: 6, fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)' }}>
-          Reason for Leave
-        </label>
+      <div className="form-field full-width">
+        <label>Reason for Leave</label>
         <InputTextarea
           value={formData.leaveReason}
           onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => handleChange('leaveReason', e.target.value)}
           rows={4}
           placeholder="Provide a reason for your leave request"
         />
-        {errors.leaveReason && <span style={{ color: 'var(--red-600)', fontSize: 12 }}>{errors.leaveReason}</span>}
+        {errors.leaveReason && <small style={{ color: 'var(--red-600)', fontSize: 12 }}>{errors.leaveReason}</small>}
       </div>
 
-      <div>
-        <label style={{ display: 'block', marginBottom: 6, fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)' }}>
-          Attachment (optional)
-        </label>
+      <div className="form-field">
+        <label>Attachment (optional)</label>
         <input
           type="file"
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange('attachmentFile', e.target.files?.[0])}

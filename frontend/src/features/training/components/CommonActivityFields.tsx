@@ -57,6 +57,8 @@ export default function CommonActivityFields({
           onChange={(e) => onDateChange(e.value ? e.value.toISOString().split('T')[0] : '')}
           dateFormat="dd/mm/yy"
           showIcon
+          showOnFocus={true}
+          appendTo="self"
         />
       </div>
       <div className="form-field">
@@ -76,6 +78,8 @@ export default function CommonActivityFields({
           timeOnly
           hourFormat="24"
           placeholder="Select start time"
+          showOnFocus={true}
+          appendTo="self"
         />
       </div>
       <div className="form-field">
@@ -86,6 +90,8 @@ export default function CommonActivityFields({
           timeOnly
           hourFormat="24"
           placeholder="Select end time"
+          showOnFocus={true}
+          appendTo="self"
         />
       </div>
       <div className="form-field full-width">

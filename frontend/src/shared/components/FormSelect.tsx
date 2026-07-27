@@ -49,7 +49,7 @@ export default function FormSelect({
     <div
       ref={ref}
       className={`p-select ${className ?? ''}`}
-      style={{ position: 'relative', display: 'inline-block', ...style }}
+      style={{ position: 'relative', display: 'block', width: '100%', ...style }}
       id={id}
     >
       <button

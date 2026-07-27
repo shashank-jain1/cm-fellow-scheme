@@ -4,7 +4,7 @@ import type { StepProps } from './form.hook';
 export default function DeclarationStep({ formData, update }: StepProps) {
   return (
     <div className="fade-in">
-      <h3 style={{ marginBottom: 24, fontSize: 18 }}>Declaration</h3>
+      <h3 className="form-section-header">Declaration</h3>
       <div
         style={{
           padding: 24,

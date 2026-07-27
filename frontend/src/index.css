@@ -1,3 +1,5 @@
+@import "primereact/resources/themes/lara-light-indigo/theme.css";
+@import "primereact/resources/primereact.min.css";
 @import "primeicons/primeicons.css";
 @import "./theme/theme.css";
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
@@ -53,6 +55,8 @@ h1, h2, h3, h4, h5, h6 {
   border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm);
+  overflow: visible;
+  position: relative;
   transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base);
 }
 
@@ -238,10 +242,19 @@ h1, h2, h3, h4, h5, h6 {
   gap: 20px 24px;
 }
 
+@media (max-width: 768px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .form-field {
   display: flex;
   flex-direction: column;
   position: relative;
+  overflow: visible;
+  z-index: auto;
+  width: 100%;
 }
 
 .form-field label {
@@ -256,48 +269,297 @@ h1, h2, h3, h4, h5, h6 {
   grid-column: 1 / -1;
 }
 
-.form-field .p-calendar,
-.form-field .p-inputtext,
-.form-field .p-dropdown,
+/* Common Form Inputs */
 .form-field input[type="text"],
 .form-field input[type="time"],
-.form-field textarea {
+.form-field input[type="number"],
+.form-field textarea,
+.p-inputtext {
   width: 100%;
   height: 40px;
   padding: 0 14px;
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 14px;
-  color: var(--text-primary);
-  background: var(--bg-input);
-  transition: all var(--transition-fast);
-  outline: none;
-  box-sizing: border-box;
+  border: 1px solid var(--border-color) !important;
+  border-radius: var(--radius-md) !important;
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  font-size: 14px !important;
+  color: var(--text-primary) !important;
+  background-color: var(--bg-input) !important;
+  transition: all var(--transition-fast) !important;
+  outline: none !important;
+  box-sizing: border-box !important;
+  box-shadow: var(--shadow-sm) !important;
 }
 
-.form-field .p-calendar {
+.p-inputtext:focus,
+.form-field input:focus,
+.form-field textarea:focus {
+  border-color: var(--accent-primary) !important;
+  box-shadow: 0 0 0 3px var(--accent-light) !important;
+}
+
+/* Calendar Container */
+.form-field .p-calendar,
+.p-calendar {
+  width: 100% !important;
+  display: inline-flex !important;
+  position: relative !important;
+  height: 40px !important;
+  border: none !important;
+  padding: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  gap: 8px !important;
+}
+
+.p-calendar .p-inputtext {
+  flex: 1 1 auto;
   width: 100%;
+  border-radius: var(--radius-md) !important;
 }
 
-.form-field .p-calendar .p-inputtext {
-  width: 100%;
-  height: 40px;
+.p-calendar.p-calendar-w-btn .p-inputtext {
+  border-radius: var(--radius-md) !important;
 }
 
-.form-field .p-calendar .p-datepicker {
-  z-index: 1100 !important;
+.p-calendar .p-datepicker-trigger {
+  height: 40px !important;
+  width: 40px !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: var(--radius-md) !important;
+  background: var(--bg-card-hover) !important;
+  color: var(--text-secondary) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  flex-shrink: 0 !important;
+  transition: all var(--transition-fast) !important;
 }
 
-.form-field textarea {
-  height: auto;
-  min-height: 80px;
-  padding: 10px 14px;
-  resize: vertical;
+.p-calendar .p-datepicker-trigger:hover {
+  background: var(--accent-light) !important;
+  color: var(--accent-primary) !important;
 }
 
-.form-field .p-inputswitch {
+/* Floating Datepicker Overlay */
+.p-datepicker {
+  background: var(--bg-secondary) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: var(--radius-lg) !important;
+  box-shadow: var(--shadow-lg) !important;
+  padding: 14px !important;
+  color: var(--text-primary) !important;
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  z-index: 99999 !important;
+  position: absolute !important;
   margin-top: 4px;
+  min-width: 290px !important;
+  width: auto !important;
+}
+
+.p-datepicker .p-datepicker-header {
+  background: transparent !important;
+  border-bottom: 1px solid var(--border-color) !important;
+  padding: 0 0 10px 0 !important;
+  margin-bottom: 8px !important;
+  color: var(--text-primary) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 8px !important;
+}
+
+.p-datepicker .p-datepicker-header .p-datepicker-title {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 10px !important;
+  font-weight: 700 !important;
+  font-size: 14px !important;
+  color: var(--text-primary) !important;
+  line-height: 1.2 !important;
+  margin: 0 auto !important;
+  position: relative !important;
+  width: auto !important;
+  flex: 1 1 auto !important;
+}
+
+.p-datepicker .p-datepicker-header .p-datepicker-title .p-datepicker-month,
+.p-datepicker .p-datepicker-header .p-datepicker-title .p-datepicker-year,
+.p-datepicker .p-datepicker-header .p-datepicker-title button,
+.p-datepicker .p-datepicker-header .p-datepicker-title span {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  float: none !important;
+  font-weight: 700 !important;
+  font-size: 14px !important;
+  color: var(--text-primary) !important;
+  padding: 2px 6px !important;
+  margin: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  cursor: pointer !important;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+  min-width: max-content !important;
+  width: auto !important;
+}
+
+.p-datepicker .p-datepicker-header .p-datepicker-title button:hover {
+  color: var(--accent-primary) !important;
+  background: var(--accent-light) !important;
+  border-radius: var(--radius-xs) !important;
+}
+
+.p-datepicker .p-datepicker-header button {
+  color: var(--text-secondary) !important;
+  width: 28px !important;
+  height: 28px !important;
+  border-radius: var(--radius-sm) !important;
+}
+
+.p-datepicker .p-datepicker-header button:hover {
+  background: var(--accent-light) !important;
+  color: var(--accent-primary) !important;
+}
+
+.p-datepicker table th {
+  color: var(--text-secondary) !important;
+  font-weight: 600 !important;
+  font-size: 12px !important;
+  padding: 6px !important;
+}
+
+.p-datepicker table td {
+  padding: 3px !important;
+}
+
+.p-datepicker table td > span {
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: var(--radius-md) !important;
+  color: var(--text-primary) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all var(--transition-fast) !important;
+  font-size: 13px !important;
+}
+
+.p-datepicker table td > span:hover {
+  background: var(--bg-card-hover) !important;
+}
+
+.p-datepicker table td.p-datepicker-today > span {
+  background: var(--accent-light) !important;
+  color: var(--accent-primary) !important;
+  font-weight: 700 !important;
+}
+
+.p-datepicker table td > span.p-highlight {
+  background: var(--accent-primary) !important;
+  color: var(--text-inverse) !important;
+}
+
+/* Timepicker in Calendar */
+.p-datepicker .p-timepicker {
+  border-top: 1px solid var(--border-color) !important;
+  padding-top: 10px !important;
+  margin-top: 10px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 12px !important;
+}
+
+.p-datepicker .p-timepicker span {
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  color: var(--text-primary) !important;
+}
+
+.p-datepicker .p-timepicker button {
+  width: 30px !important;
+  height: 30px !important;
+  border-radius: var(--radius-sm) !important;
+  color: var(--text-secondary) !important;
+  background: transparent !important;
+  border: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.p-datepicker .p-timepicker button:hover {
+  background: var(--accent-light) !important;
+  color: var(--accent-primary) !important;
+}
+
+/* Textarea Sizing */
+.form-field textarea,
+textarea.p-inputtextarea {
+  height: auto !important;
+  min-height: 80px !important;
+  padding: 10px 14px !important;
+  resize: vertical !important;
+}
+
+/* Radio Button Styling */
+.p-radiobutton {
+  width: 20px !important;
+  height: 20px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+}
+
+.p-radiobutton .p-radiobutton-box {
+  width: 20px !important;
+  height: 20px !important;
+  border-radius: 50% !important;
+  border: 2px solid var(--border-highlight) !important;
+  background: var(--bg-input) !important;
+  transition: all var(--transition-fast) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.p-radiobutton .p-radiobutton-box.p-highlight {
+  border-color: var(--accent-primary) !important;
+  background: var(--bg-input) !important;
+}
+
+.p-radiobutton .p-radiobutton-box .p-radiobutton-icon {
+  width: 10px !important;
+  height: 10px !important;
+  border-radius: 50% !important;
+  background-color: var(--accent-primary) !important;
+  transition: transform var(--transition-fast) !important;
+}
+
+/* InputSwitch Styling */
+.p-inputswitch {
+  width: 44px !important;
+  height: 24px !important;
+}
+
+.p-inputswitch .p-inputswitch-slider {
+  border-radius: 12px !important;
+  background: var(--border-color) !important;
+  transition: all var(--transition-fast) !important;
+}
+
+.p-inputswitch.p-inputswitch-checked .p-inputswitch-slider {
+  background: var(--accent-primary) !important;
 }
 
 /* Section headers in forms */
@@ -444,6 +706,14 @@ h1, h2, h3, h4, h5, h6 {
 .p-inputtext:focus {
   border-color: var(--accent-primary) !important;
   box-shadow: 0 0 0 3px var(--accent-light) !important;
+}
+
+/* Ensure all PrimeReact popups render above backdrop-filter stacking contexts */
+.p-datepicker,
+.p-dropdown-panel,
+.p-dialog,
+.p-overlay-visible {
+  z-index: 99999 !important;
 }
 
 /* PrimeReact Dropdown Panel Styling */

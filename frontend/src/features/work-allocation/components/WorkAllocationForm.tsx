@@ -30,139 +30,109 @@ export default function WorkAllocationForm({
   isLoading = false,
   isEditing = false,
 }: WorkAllocationFormProps) {
-  const inputStyle = { width: '100%' };
-
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 16 }}>
-        <div className="form-group">
-          <label style={{ display: 'block', marginBottom: 6, fontWeight: 600, fontSize: 13, color: 'var(--text-secondary)' }}>
-            Project <span style={{ color: 'var(--badge-red-text)' }}>*</span>
-          </label>
+      <div className="form-grid">
+        <div className="form-field">
+          <label>Project <span style={{ color: 'var(--badge-red-text)' }}>*</span></label>
           <InputNumber
             value={formData.projectId || undefined}
             onValueChange={(e) => onChange('projectId', e.value ?? 0)}
-            style={inputStyle}
             className={errors.projectId ? 'p-invalid' : ''}
           />
           {errors.projectId && <small style={{ color: 'var(--badge-red-text)', marginTop: 4, display: 'block' }}>{errors.projectId}</small>}
         </div>
 
-        <div className="form-group">
-          <label style={{ display: 'block', marginBottom: 6, fontWeight: 600, fontSize: 13, color: 'var(--text-secondary)' }}>
-            Work Project <span style={{ color: 'var(--badge-red-text)' }}>*</span>
-          </label>
+        <div className="form-field">
+          <label>Work Project <span style={{ color: 'var(--badge-red-text)' }}>*</span></label>
           <InputNumber
             value={formData.workProjectId || undefined}
             onValueChange={(e) => onChange('workProjectId', e.value ?? 0)}
-            style={inputStyle}
             className={errors.workProjectId ? 'p-invalid' : ''}
           />
           {errors.workProjectId && <small style={{ color: 'var(--badge-red-text)', marginTop: 4, display: 'block' }}>{errors.workProjectId}</small>}
         </div>
 
-        <div className="form-group">
-          <label style={{ display: 'block', marginBottom: 6, fontWeight: 600, fontSize: 13, color: 'var(--text-secondary)' }}>
-            Priority <span style={{ color: 'var(--badge-red-text)' }}>*</span>
-          </label>
+        <div className="form-field">
+          <label>Priority <span style={{ color: 'var(--badge-red-text)' }}>*</span></label>
           <FormSelect
             value={formData.priority}
             options={priorityOptions}
             onChange={(val) => onChange('priority', val)}
-            style={inputStyle}
           />
         </div>
 
-        <div className="form-group">
-          <label style={{ display: 'block', marginBottom: 6, fontWeight: 600, fontSize: 13, color: 'var(--text-secondary)' }}>
-            Surveys Per Intern <span style={{ color: 'var(--badge-red-text)' }}>*</span>
-          </label>
+        <div className="form-field">
+          <label>Surveys Per Intern <span style={{ color: 'var(--badge-red-text)' }}>*</span></label>
           <InputNumber
             value={formData.surveysPerIntern || undefined}
             onValueChange={(e) => onChange('surveysPerIntern', e.value ?? 0)}
-            style={inputStyle}
             className={errors.surveysPerIntern ? 'p-invalid' : ''}
           />
           {errors.surveysPerIntern && <small style={{ color: 'var(--badge-red-text)', marginTop: 4, display: 'block' }}>{errors.surveysPerIntern}</small>}
         </div>
       </div>
 
-      <div className="form-group">
-        <label style={{ display: 'block', marginBottom: 6, fontWeight: 600, fontSize: 13, color: 'var(--text-secondary)' }}>
-          Work Description <span style={{ color: 'var(--badge-red-text)' }}>*</span>
-        </label>
+      <div className="form-field full-width">
+        <label>Work Description <span style={{ color: 'var(--badge-red-text)' }}>*</span></label>
         <InputText
           value={formData.workDescription}
           onChange={(e) => onChange('workDescription', e.target.value)}
-          style={inputStyle}
           className={errors.workDescription ? 'p-invalid' : ''}
         />
         {errors.workDescription && <small style={{ color: 'var(--badge-red-text)', marginTop: 4, display: 'block' }}>{errors.workDescription}</small>}
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 16 }}>
-        <div className="form-group">
-          <label style={{ display: 'block', marginBottom: 6, fontWeight: 600, fontSize: 13, color: 'var(--text-secondary)' }}>
-            Start Date <span style={{ color: 'var(--badge-red-text)' }}>*</span>
-          </label>
+      <div className="form-grid">
+        <div className="form-field">
+          <label>Start Date <span style={{ color: 'var(--badge-red-text)' }}>*</span></label>
           <Calendar
             value={formData.startDate ? new Date(formData.startDate) : null}
             onChange={(e) => onChange('startDate', e.value?.toISOString().split('T')[0] ?? '')}
-            style={inputStyle}
+            showOnFocus={false}
             className={errors.startDate ? 'p-invalid' : ''}
           />
           {errors.startDate && <small style={{ color: 'var(--badge-red-text)', marginTop: 4, display: 'block' }}>{errors.startDate}</small>}
         </div>
 
-        <div className="form-group">
-          <label style={{ display: 'block', marginBottom: 6, fontWeight: 600, fontSize: 13, color: 'var(--text-secondary)' }}>
-            End Date <span style={{ color: 'var(--badge-red-text)' }}>*</span>
-          </label>
+        <div className="form-field">
+          <label>End Date <span style={{ color: 'var(--badge-red-text)' }}>*</span></label>
           <Calendar
             value={formData.endDate ? new Date(formData.endDate) : null}
             onChange={(e) => onChange('endDate', e.value?.toISOString().split('T')[0] ?? '')}
-            style={inputStyle}
+            showOnFocus={false}
             className={errors.endDate ? 'p-invalid' : ''}
           />
           {errors.endDate && <small style={{ color: 'var(--badge-red-text)', marginTop: 4, display: 'block' }}>{errors.endDate}</small>}
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 16 }}>
-        <div className="form-group">
-          <label style={{ display: 'block', marginBottom: 6, fontWeight: 600, fontSize: 13, color: 'var(--text-secondary)' }}>
-            Division <span style={{ color: 'var(--badge-red-text)' }}>*</span>
-          </label>
+      <div className="form-grid">
+        <div className="form-field">
+          <label>Division ID <span style={{ color: 'var(--badge-red-text)' }}>*</span></label>
           <InputNumber
             value={formData.divisionId || undefined}
             onValueChange={(e) => onChange('divisionId', e.value ?? 0)}
-            style={inputStyle}
             className={errors.divisionId ? 'p-invalid' : ''}
           />
           {errors.divisionId && <small style={{ color: 'var(--badge-red-text)', marginTop: 4, display: 'block' }}>{errors.divisionId}</small>}
         </div>
 
-        <div className="form-group">
-          <label style={{ display: 'block', marginBottom: 6, fontWeight: 600, fontSize: 13, color: 'var(--text-secondary)' }}>
-            District <span style={{ color: 'var(--badge-red-text)' }}>*</span>
-          </label>
+        <div className="form-field">
+          <label>District ID <span style={{ color: 'var(--badge-red-text)' }}>*</span></label>
           <InputNumber
             value={formData.districtId || undefined}
             onValueChange={(e) => onChange('districtId', e.value ?? 0)}
-            style={inputStyle}
             className={errors.districtId ? 'p-invalid' : ''}
           />
           {errors.districtId && <small style={{ color: 'var(--badge-red-text)', marginTop: 4, display: 'block' }}>{errors.districtId}</small>}
         </div>
 
-        <div className="form-group">
-          <label style={{ display: 'block', marginBottom: 6, fontWeight: 600, fontSize: 13, color: 'var(--text-secondary)' }}>
-            Block <span style={{ color: 'var(--badge-red-text)' }}>*</span>
-          </label>
+        <div className="form-field">
+          <label>Block ID <span style={{ color: 'var(--badge-red-text)' }}>*</span></label>
           <InputNumber
             value={formData.blockId || undefined}
             onValueChange={(e) => onChange('blockId', e.value ?? 0)}
-            style={inputStyle}
             className={errors.blockId ? 'p-invalid' : ''}
           />
           {errors.blockId && <small style={{ color: 'var(--badge-red-text)', marginTop: 4, display: 'block' }}>{errors.blockId}</small>}
