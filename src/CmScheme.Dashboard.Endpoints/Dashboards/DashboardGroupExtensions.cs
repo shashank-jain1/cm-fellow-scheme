@@ -11,6 +11,7 @@ public static class DashboardGroupExtensions
 
         group.MapGet("/admin", GetAdmin.Handle);
         group.MapGet("/coordinator/{coordinatorId:int}", GetCoordinator.Handle);
+        group.MapGet("/project-progress", GetProjectProgress.Handle);
 
         return builder;
     }

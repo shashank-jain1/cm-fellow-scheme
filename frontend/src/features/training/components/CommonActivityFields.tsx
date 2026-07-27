@@ -1,4 +1,3 @@
-import { InputText } from 'primereact/inputtext';
 import { Calendar } from 'primereact/calendar';
 import { InputTextarea } from 'primereact/inputtextarea';
 import FormSelect from '../../../shared/components/FormSelect';
@@ -22,6 +21,21 @@ const modeOptions = [
   { label: 'Hybrid', value: 'Hybrid' },
 ];
 
+function timeStringToDate(time: string): Date | null {
+  if (!time) return null;
+  const [h, m] = time.split(':').map(Number);
+  const d = new Date();
+  d.setHours(h, m, 0, 0);
+  return d;
+}
+
+function dateToTimeString(date: Date | null): string {
+  if (!date) return '';
+  const h = String(date.getHours()).padStart(2, '0');
+  const m = String(date.getMinutes()).padStart(2, '0');
+  return `${h}:${m}`;
+}
+
 export default function CommonActivityFields({
   date,
   startTime,
@@ -43,23 +57,6 @@ export default function CommonActivityFields({
           onChange={(e) => onDateChange(e.value ? e.value.toISOString().split('T')[0] : '')}
           dateFormat="dd/mm/yy"
           showIcon
-          style={{ width: '100%' }}
-        />
-      </div>
-      <div className="form-field">
-        <label>Start Time</label>
-        <InputText
-          value={startTime}
-          onChange={(e) => onStartTimeChange(e.target.value)}
-          placeholder="HH:MM"
-        />
-      </div>
-      <div className="form-field">
-        <label>End Time</label>
-        <InputText
-          value={endTime}
-          onChange={(e) => onEndTimeChange(e.target.value)}
-          placeholder="HH:MM"
         />
       </div>
       <div className="form-field">
@@ -69,16 +66,34 @@ export default function CommonActivityFields({
           options={modeOptions}
           onChange={(val) => onModeChange(val)}
           placeholder="Select Mode"
-          style={{ width: '100%' }}
+        />
+      </div>
+      <div className="form-field">
+        <label>Start Time</label>
+        <Calendar
+          value={timeStringToDate(startTime)}
+          onChange={(e) => onStartTimeChange(dateToTimeString(e.value as Date | null))}
+          timeOnly
+          hourFormat="24"
+          placeholder="Select start time"
+        />
+      </div>
+      <div className="form-field">
+        <label>End Time</label>
+        <Calendar
+          value={timeStringToDate(endTime)}
+          onChange={(e) => onEndTimeChange(dateToTimeString(e.value as Date | null))}
+          timeOnly
+          hourFormat="24"
+          placeholder="Select end time"
         />
       </div>
       <div className="form-field full-width">
         <label>Remarks</label>
         <InputTextarea
           value={remarks}
-          onChange={(e) => onRemarksChange(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => onRemarksChange(e.target.value)}
           rows={3}
-          style={{ width: '100%' }}
         />
       </div>
     </div>

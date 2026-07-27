@@ -41,8 +41,8 @@ export default function TrainingFieldsCard({
   onAttendanceRequiredChange,
 }: Props) {
   return (
-    <div className="glass-card" style={{ padding: 20, marginTop: 16 }}>
-      <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 16 }}>Training Details</h3>
+    <div className="glass-card" style={{ padding: 24, marginTop: 20 }}>
+      <h3 className="form-section-header">Training Details</h3>
       <div className="form-grid">
         <div className="form-field">
           <label>Training Title</label>
@@ -50,7 +50,6 @@ export default function TrainingFieldsCard({
             value={trainingTitle}
             onChange={(e) => onTrainingTitleChange(e.target.value)}
             placeholder="Enter training title"
-            style={{ width: '100%' }}
           />
         </div>
         <div className="form-field">
@@ -60,16 +59,14 @@ export default function TrainingFieldsCard({
             options={categoryOptions}
             onChange={(val) => onTrainingCategoryChange(val)}
             placeholder="Select Category"
-            style={{ width: '100%' }}
           />
         </div>
         <div className="form-field full-width">
           <label>Description</label>
           <InputTextarea
             value={trainingDescription}
-            onChange={(e) => onTrainingDescriptionChange(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => onTrainingDescriptionChange(e.target.value)}
             rows={3}
-            style={{ width: '100%' }}
           />
         </div>
         <div className="form-field">
@@ -78,7 +75,6 @@ export default function TrainingFieldsCard({
             value={trainerName}
             onChange={(e) => onTrainerNameChange(e.target.value)}
             placeholder="Enter trainer name"
-            style={{ width: '100%' }}
           />
         </div>
         <div className="form-field">
@@ -87,15 +83,19 @@ export default function TrainingFieldsCard({
             value={trainerMobile}
             onChange={(e) => onTrainerMobileChange(e.target.value)}
             placeholder="Enter mobile number"
-            style={{ width: '100%' }}
           />
         </div>
         <div className="form-field">
           <label>Attendance Required</label>
-          <InputSwitch
-            checked={attendanceRequired}
-            onChange={(e) => onAttendanceRequiredChange(e.value ?? false)}
-          />
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, height: 40 }}>
+            <InputSwitch
+              checked={attendanceRequired}
+              onChange={(e) => onAttendanceRequiredChange(e.value ?? false)}
+            />
+            <span style={{ fontSize: 13, color: 'var(--text-secondary)' }}>
+              {attendanceRequired ? 'Yes' : 'No'}
+            </span>
+          </div>
         </div>
       </div>
     </div>

@@ -38,10 +38,7 @@ export default function AdminDashboardPage() {
           attendancePercentage={stats?.overallAttendancePercentage ?? 0}
           isLoading={isLoading}
         />
-        <ProjectProgressChart
-          totalProjects={stats?.totalProjects ?? 0}
-          isLoading={isLoading}
-        />
+        <ProjectProgressChart />
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>

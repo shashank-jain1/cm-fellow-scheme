@@ -231,6 +231,85 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--text-muted);
 }
 
+/* Form Grid Layout */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px 24px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.form-field label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+}
+
+.form-field.full-width {
+  grid-column: 1 / -1;
+}
+
+.form-field .p-calendar,
+.form-field .p-inputtext,
+.form-field .p-dropdown,
+.form-field input[type="text"],
+.form-field input[type="time"],
+.form-field textarea {
+  width: 100%;
+  height: 40px;
+  padding: 0 14px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 14px;
+  color: var(--text-primary);
+  background: var(--bg-input);
+  transition: all var(--transition-fast);
+  outline: none;
+  box-sizing: border-box;
+}
+
+.form-field .p-calendar {
+  width: 100%;
+}
+
+.form-field .p-calendar .p-inputtext {
+  width: 100%;
+  height: 40px;
+}
+
+.form-field .p-calendar .p-datepicker {
+  z-index: 1100 !important;
+}
+
+.form-field textarea {
+  height: auto;
+  min-height: 80px;
+  padding: 10px 14px;
+  resize: vertical;
+}
+
+.form-field .p-inputswitch {
+  margin-top: 4px;
+}
+
+/* Section headers in forms */
+.form-section-header {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border-color);
+}
+
 /* Search Input Container */
 .search-input-wrapper {
   position: relative;

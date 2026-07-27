@@ -33,8 +33,8 @@ export default function MeetingFieldsCard({
   onMomRequiredChange,
 }: Props) {
   return (
-    <div className="glass-card" style={{ padding: 20, marginTop: 16 }}>
-      <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 16 }}>Meeting Details</h3>
+    <div className="glass-card" style={{ padding: 24, marginTop: 20 }}>
+      <h3 className="form-section-header">Meeting Details</h3>
       <div className="form-grid">
         <div className="form-field">
           <label>Meeting Title</label>
@@ -42,7 +42,6 @@ export default function MeetingFieldsCard({
             value={meetingTitle}
             onChange={(e) => onMeetingTitleChange(e.target.value)}
             placeholder="Enter meeting title"
-            style={{ width: '100%' }}
           />
         </div>
         <div className="form-field">
@@ -52,24 +51,27 @@ export default function MeetingFieldsCard({
             options={agendaOptions}
             onChange={(val) => onMeetingAgendaChange(val)}
             placeholder="Select Agenda"
-            style={{ width: '100%' }}
           />
         </div>
         <div className="form-field full-width">
           <label>Description</label>
           <InputTextarea
             value={meetingDescription}
-            onChange={(e) => onMeetingDescriptionChange(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => onMeetingDescriptionChange(e.target.value)}
             rows={3}
-            style={{ width: '100%' }}
           />
         </div>
         <div className="form-field">
-          <label>MoM Required</label>
-          <InputSwitch
-            checked={momRequired}
-            onChange={(e) => onMomRequiredChange(e.value ?? false)}
-          />
+          <label>MOM Required</label>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, height: 40 }}>
+            <InputSwitch
+              checked={momRequired}
+              onChange={(e) => onMomRequiredChange(e.value ?? false)}
+            />
+            <span style={{ fontSize: 13, color: 'var(--text-secondary)' }}>
+              {momRequired ? 'Yes' : 'No'}
+            </span>
+          </div>
         </div>
       </div>
     </div>

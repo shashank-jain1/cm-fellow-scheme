@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router-dom';
 import { Button } from 'primereact/button';
-import { Card } from 'primereact/card';
 import { useActivityForm } from '../components/form.hook';
 import ActivityTypeSelector from '../components/ActivityTypeSelector';
 import CommonActivityFields from '../components/CommonActivityFields';
@@ -42,55 +41,53 @@ export default function CreateActivityForm() {
         </div>
       </div>
 
-      <Card style={{ padding: 0 }}>
-        <div style={{ padding: 24 }}>
-          <ActivityTypeSelector
-            value={formData.activityType}
-            onChange={(v) => updateField('activityType', v)}
-          />
+      <div className="glass-card" style={{ padding: 28 }}>
+        <ActivityTypeSelector
+          value={formData.activityType}
+          onChange={(v) => updateField('activityType', v)}
+        />
 
-          <CommonActivityFields
-            date={formData.date}
-            startTime={formData.startTime}
-            endTime={formData.endTime}
-            mode={formData.mode}
-            remarks={formData.remarks ?? ''}
-            onDateChange={(v) => updateField('date', v)}
-            onStartTimeChange={(v) => updateField('startTime', v)}
-            onEndTimeChange={(v) => updateField('endTime', v)}
-            onModeChange={(v) => updateField('mode', v)}
-            onRemarksChange={(v) => updateField('remarks', v)}
-          />
+        <CommonActivityFields
+          date={formData.date}
+          startTime={formData.startTime}
+          endTime={formData.endTime}
+          mode={formData.mode}
+          remarks={formData.remarks ?? ''}
+          onDateChange={(v) => updateField('date', v)}
+          onStartTimeChange={(v) => updateField('startTime', v)}
+          onEndTimeChange={(v) => updateField('endTime', v)}
+          onModeChange={(v) => updateField('mode', v)}
+          onRemarksChange={(v) => updateField('remarks', v)}
+        />
 
-          {formData.activityType === 'Training' ? (
-            <TrainingFieldsCard
-              trainingTitle={formData.trainingTitle ?? ''}
-              trainingCategory={formData.trainingCategory ?? ''}
-              trainingDescription={formData.trainingDescription ?? ''}
-              trainerName={formData.trainerName ?? ''}
-              trainerMobile={formData.trainerMobile ?? ''}
-              attendanceRequired={formData.attendanceRequired ?? false}
-              onTrainingTitleChange={(v) => updateField('trainingTitle', v)}
-              onTrainingCategoryChange={(v) => updateField('trainingCategory', v)}
-              onTrainingDescriptionChange={(v) => updateField('trainingDescription', v)}
-              onTrainerNameChange={(v) => updateField('trainerName', v)}
-              onTrainerMobileChange={(v) => updateField('trainerMobile', v)}
-              onAttendanceRequiredChange={(v) => updateField('attendanceRequired', v)}
-            />
-          ) : (
-            <MeetingFieldsCard
-              meetingTitle={formData.meetingTitle ?? ''}
-              meetingAgenda={formData.meetingAgenda ?? ''}
-              meetingDescription={formData.meetingDescription ?? ''}
-              momRequired={formData.momRequired ?? false}
-              onMeetingTitleChange={(v) => updateField('meetingTitle', v)}
-              onMeetingAgendaChange={(v) => updateField('meetingAgenda', v)}
-              onMeetingDescriptionChange={(v) => updateField('meetingDescription', v)}
-              onMomRequiredChange={(v) => updateField('momRequired', v)}
-            />
-          )}
-        </div>
-      </Card>
+        {formData.activityType === 'Training' ? (
+          <TrainingFieldsCard
+            trainingTitle={formData.trainingTitle ?? ''}
+            trainingCategory={formData.trainingCategory ?? ''}
+            trainingDescription={formData.trainingDescription ?? ''}
+            trainerName={formData.trainerName ?? ''}
+            trainerMobile={formData.trainerMobile ?? ''}
+            attendanceRequired={formData.attendanceRequired ?? false}
+            onTrainingTitleChange={(v) => updateField('trainingTitle', v)}
+            onTrainingCategoryChange={(v) => updateField('trainingCategory', v)}
+            onTrainingDescriptionChange={(v) => updateField('trainingDescription', v)}
+            onTrainerNameChange={(v) => updateField('trainerName', v)}
+            onTrainerMobileChange={(v) => updateField('trainerMobile', v)}
+            onAttendanceRequiredChange={(v) => updateField('attendanceRequired', v)}
+          />
+        ) : (
+          <MeetingFieldsCard
+            meetingTitle={formData.meetingTitle ?? ''}
+            meetingAgenda={formData.meetingAgenda ?? ''}
+            meetingDescription={formData.meetingDescription ?? ''}
+            momRequired={formData.momRequired ?? false}
+            onMeetingTitleChange={(v) => updateField('meetingTitle', v)}
+            onMeetingAgendaChange={(v) => updateField('meetingAgenda', v)}
+            onMeetingDescriptionChange={(v) => updateField('meetingDescription', v)}
+            onMomRequiredChange={(v) => updateField('momRequired', v)}
+          />
+        )}
+      </div>
     </div>
   );
 }

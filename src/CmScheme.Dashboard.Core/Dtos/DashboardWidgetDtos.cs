@@ -16,3 +16,9 @@ public sealed record CoordinatorDashboardDto(
     int CompletedSurveys,
     int PendingSurveys,
     decimal TeamAttendancePercentage);
+
+public sealed record ProjectProgressDto(
+    string ProjectName,
+    decimal CompletionPercentage,
+    int TotalSurveys,
+    int CompletedSurveys);
