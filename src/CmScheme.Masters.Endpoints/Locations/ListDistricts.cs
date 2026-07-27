@@ -10,9 +10,10 @@ namespace CmScheme.Masters.Endpoints.Locations;
 
 public sealed class ListDistricts
 {
-    public static async Task<IResult> List(int divisionId, ISender sender, CancellationToken ct)
+    public static async Task<IResult> List(int? divisionId, ISender sender, CancellationToken ct)
     {
-        ValueTask<Result<List<DistrictDto>>> result = sender.Send(new ListDistrictsByDivisionQuery { DivisionId = divisionId }, ct);
+        ValueTask<Result<List<DistrictDto>>> result = sender.Send(
+            new ListDistrictsByDivisionQuery { DivisionId = divisionId }, ct);
         return await result.ToApiResultAsync();
     }
 }

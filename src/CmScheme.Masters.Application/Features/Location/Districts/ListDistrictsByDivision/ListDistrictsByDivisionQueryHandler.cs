@@ -13,8 +13,15 @@ public sealed class ListDistrictsByDivisionQueryHandler(IMastersQueryDbContext d
         ListDistrictsByDivisionQuery request,
         CancellationToken cancellationToken)
     {
-        List<DistrictDto> districts = await dbContext.Districts
-            .Where(d => d.DivisionId == request.DivisionId)
+        IQueryable<Core.Entities.District> query = dbContext.Districts
+            .AsNoTracking();
+
+        if (request.DivisionId.HasValue)
+        {
+            query = query.Where(d => d.DivisionId == request.DivisionId.Value);
+        }
+
+        List<DistrictDto> districts = await query
             .OrderBy(d => d.DistrictName)
             .Select(d => new DistrictDto(
                 d.DistrictId,

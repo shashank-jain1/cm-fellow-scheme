@@ -13,8 +13,15 @@ public sealed class ListGramPanchayatsByBlockQueryHandler(IMastersQueryDbContext
         ListGramPanchayatsByBlockQuery request,
         CancellationToken cancellationToken)
     {
-        List<GramPanchayatDto> gramPanchayats = await dbContext.GramPanchayats
-            .Where(g => g.BlockId == request.BlockId)
+        IQueryable<Core.Entities.GramPanchayat> query = dbContext.GramPanchayats
+            .AsNoTracking();
+
+        if (request.BlockId.HasValue)
+        {
+            query = query.Where(g => g.BlockId == request.BlockId.Value);
+        }
+
+        List<GramPanchayatDto> gramPanchayats = await query
             .OrderBy(g => g.GramPanchayatName)
             .Select(g => new GramPanchayatDto(
                 g.GramPanchayatId,

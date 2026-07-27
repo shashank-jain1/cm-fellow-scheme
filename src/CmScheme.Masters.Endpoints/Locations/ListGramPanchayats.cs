@@ -10,9 +10,10 @@ namespace CmScheme.Masters.Endpoints.Locations;
 
 public sealed class ListGramPanchayats
 {
-    public static async Task<IResult> List(int blockId, ISender sender, CancellationToken ct)
+    public static async Task<IResult> List(int? blockId, ISender sender, CancellationToken ct)
     {
-        ValueTask<Result<List<GramPanchayatDto>>> result = sender.Send(new ListGramPanchayatsByBlockQuery { BlockId = blockId }, ct);
+        ValueTask<Result<List<GramPanchayatDto>>> result = sender.Send(
+            new ListGramPanchayatsByBlockQuery { BlockId = blockId }, ct);
         return await result.ToApiResultAsync();
     }
 }

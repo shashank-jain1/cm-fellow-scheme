@@ -5,5 +5,5 @@ namespace CmScheme.Masters.Application.Features.Location.Districts.ListDistricts
 
 public sealed record ListDistrictsByDivisionQuery : IQuery<Result<List<Core.Dtos.DistrictDto>>>
 {
-    public int DivisionId { get; init; }
+    public int? DivisionId { get; init; }
 }

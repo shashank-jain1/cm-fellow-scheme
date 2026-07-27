@@ -5,5 +5,5 @@ namespace CmScheme.Masters.Application.Features.Location.GramPanchayats.ListGram
 
 public sealed record ListGramPanchayatsByBlockQuery : IQuery<Result<List<Core.Dtos.GramPanchayatDto>>>
 {
-    public int BlockId { get; init; }
+    public int? BlockId { get; init; }
 }

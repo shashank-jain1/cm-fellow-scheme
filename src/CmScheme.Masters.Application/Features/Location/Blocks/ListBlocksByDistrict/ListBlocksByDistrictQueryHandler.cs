@@ -13,8 +13,15 @@ public sealed class ListBlocksByDistrictQueryHandler(IMastersQueryDbContext dbCo
         ListBlocksByDistrictQuery request,
         CancellationToken cancellationToken)
     {
-        List<BlockDto> blocks = await dbContext.Blocks
-            .Where(b => b.DistrictId == request.DistrictId)
+        IQueryable<Core.Entities.Block> query = dbContext.Blocks
+            .AsNoTracking();
+
+        if (request.DistrictId.HasValue)
+        {
+            query = query.Where(b => b.DistrictId == request.DistrictId.Value);
+        }
+
+        List<BlockDto> blocks = await query
             .OrderBy(b => b.BlockName)
             .Select(b => new BlockDto(
                 b.BlockId,

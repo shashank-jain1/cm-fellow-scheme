@@ -21,6 +21,7 @@ import LeaveBalancePage from './features/attendance-leave/pages/LeaveBalancePage
 import { PerformanceReviewGrid, PerformanceDetailPage } from './features/performance';
 import { ApplyCertificatePage, CertificateApprovalPage, ExitManagementPage } from './features/certificate';
 import { RaiseTicketPage, TicketQueuePage, TicketDetailPage } from './features/help-desk';
+import { LocationsPage, ProjectsPage, WorksPage } from './features/masters';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -62,6 +63,9 @@ export default function App() {
                 <Route path="help-desk" element={<TicketQueuePage />} />
                 <Route path="help-desk/new" element={<RaiseTicketPage />} />
                 <Route path="help-desk/:id" element={<TicketDetailPage />} />
+                <Route path="masters/locations" element={<LocationsPage />} />
+                <Route path="masters/projects" element={<ProjectsPage />} />
+                <Route path="masters/works" element={<WorksPage />} />
               </Route>
             </Routes>
           </AuthProvider>

@@ -17,11 +17,20 @@ const adminNavItems = [
   { path: '/admin/users', label: 'User Management', icon: 'pi pi-users' },
 ];
 
+const masterSubItems = [
+  { path: '/masters/locations', label: 'Locations', icon: 'pi pi-map' },
+  { path: '/masters/projects', label: 'Projects', icon: 'pi pi-briefcase' },
+  { path: '/masters/works', label: 'Works', icon: 'pi pi-file-edit' },
+];
+
 export default function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
+  const [mastersExpanded, setMastersExpanded] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const { user, logout } = useAuth();
+
+  const isMastersActive = location.pathname.startsWith('/masters');
 
   const handleLogout = () => {
     logout();
@@ -96,6 +105,48 @@ export default function Sidebar() {
                 </NavLink>
               );
             })}
+            <button
+              className={`sidebar-link ${isMastersActive && !mastersExpanded ? 'active' : ''}`}
+              onClick={() => setMastersExpanded(!mastersExpanded)}
+              title={collapsed ? 'Masters' : undefined}
+              style={{ width: '100%', border: 'none', background: 'none', cursor: 'pointer', textAlign: 'left' }}
+            >
+              <div className="sidebar-link-icon">
+                <i className="pi pi-database" />
+              </div>
+              {!collapsed && (
+                <>
+                  <span className="sidebar-link-label" style={{ flex: 1 }}>Masters</span>
+                  <i
+                    className={`pi ${mastersExpanded ? 'pi-chevron-down' : 'pi-chevron-right'}`}
+                    style={{ fontSize: 10, color: 'var(--text-muted)', transition: 'transform 0.15s' }}
+                  />
+                </>
+              )}
+              {isMastersActive && <div className="sidebar-active-indicator" />}
+            </button>
+            {!collapsed && mastersExpanded && (
+              <div style={{ paddingLeft: 20 }}>
+                {masterSubItems.map((item) => {
+                  const isActive = location.pathname === item.path;
+                  return (
+                    <NavLink
+                      key={item.path}
+                      to={item.path}
+                      className={`sidebar-link ${isActive ? 'active' : ''}`}
+                      style={{ paddingLeft: 12, fontSize: 13 }}
+                    >
+                      <div className="sidebar-link-icon" style={{ width: 20, height: 20 }}>
+                        <i className={item.icon} style={{ fontSize: 12 }} />
+                        {isActive && <div className="sidebar-active-dot" />}
+                      </div>
+                      <span className="sidebar-link-label">{item.label}</span>
+                      {isActive && <div className="sidebar-active-indicator" />}
+                    </NavLink>
+                  );
+                })}
+              </div>
+            )}
           </>
         )}
       </nav>

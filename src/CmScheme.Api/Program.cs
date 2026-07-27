@@ -11,6 +11,7 @@ using CmScheme.Masters.Core.Data;
 using CmScheme.Masters.Core.Entities;
 using CmScheme.Masters.Endpoints;
 using CmScheme.Masters.Infrastructure;
+using CmScheme.Api.SeedData;
 using CmScheme.Registration.Core.Data;
 using CmScheme.Registration.Core.Entities;
 using CmScheme.Registration.Endpoints;
@@ -105,6 +106,7 @@ app.MapApiEndpoints("/api/v1");
 
 await SeedAdminUser(app);
 await SeedLookupMasters(app);
+await LocationSeedData.SeedAsync(app.Services.CreateScope().ServiceProvider.GetRequiredService<IMastersCommandDbContext>());
 
 app.Run();
 

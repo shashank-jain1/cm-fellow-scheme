@@ -51,23 +51,27 @@ export function useDivisions(stateId: number | null) {
 
 export function useDistricts(divisionId: number | null) {
   return useQuery<DistrictDto[]>({
-    queryKey: ['masters', 'districts', divisionId],
+    queryKey: ['masters', 'districts', divisionId ?? 'all'],
     queryFn: async () => {
-      const res = await ApiService.get<DistrictDto[]>(`masters/locations/districts?divisionId=${divisionId}`);
+      const url = divisionId
+        ? `masters/locations/districts?divisionId=${divisionId}`
+        : 'masters/locations/districts';
+      const res = await ApiService.get<DistrictDto[]>(url);
       return res.data ?? [];
     },
-    enabled: !!divisionId,
   });
 }
 
 export function useBlocks(districtId: number | null) {
   return useQuery<BlockDto[]>({
-    queryKey: ['masters', 'blocks', districtId],
+    queryKey: ['masters', 'blocks', districtId ?? 'all'],
     queryFn: async () => {
-      const res = await ApiService.get<BlockDto[]>(`masters/locations/blocks?districtId=${districtId}`);
+      const url = districtId
+        ? `masters/locations/blocks?districtId=${districtId}`
+        : 'masters/locations/blocks';
+      const res = await ApiService.get<BlockDto[]>(url);
       return res.data ?? [];
     },
-    enabled: !!districtId,
   });
 }
 
@@ -92,6 +96,26 @@ export function useProjects() {
     queryKey: ['masters', 'projects'],
     queryFn: async () => {
       const res = await ApiService.get<ProjectDto[]>('masters/projects');
+      return res.data ?? [];
+    },
+  });
+}
+
+interface GramPanchayatDto {
+  gramPanchayatId: number;
+  blockId: number;
+  gramPanchayatName: string;
+  gpCode: string | null;
+}
+
+export function useGramPanchayats(blockId: number | null) {
+  return useQuery<GramPanchayatDto[]>({
+    queryKey: ['masters', 'gramPanchayats', blockId ?? 'all'],
+    queryFn: async () => {
+      const url = blockId
+        ? `masters/locations/gram-panchayats?blockId=${blockId}`
+        : 'masters/locations/gram-panchayats';
+      const res = await ApiService.get<GramPanchayatDto[]>(url);
       return res.data ?? [];
     },
   });
