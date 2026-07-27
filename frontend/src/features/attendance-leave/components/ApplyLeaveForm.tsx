@@ -2,16 +2,8 @@ import { Button } from 'primereact/button';
 import { InputTextarea } from 'primereact/inputtextarea';
 import { Calendar } from 'primereact/calendar';
 import FormSelect from '../../../shared/components/FormSelect';
+import { useLookupOptions } from '../../../shared/hooks/useMasters';
 import { useApplyLeaveForm } from './form.hook';
-
-const leaveTypeOptions = [
-  { label: 'Casual Leave', value: 'casual' },
-  { label: 'Sick Leave', value: 'sick' },
-  { label: 'Earned Leave', value: 'earned' },
-  { label: 'Maternity Leave', value: 'maternity' },
-  { label: 'Paternity Leave', value: 'paternity' },
-  { label: 'Unpaid Leave', value: 'unpaid' },
-];
 
 interface ApplyLeaveFormProps {
   onSuccess?: () => void;
@@ -19,6 +11,7 @@ interface ApplyLeaveFormProps {
 
 export default function ApplyLeaveForm({ onSuccess }: ApplyLeaveFormProps) {
   const { formData, errors, handleChange, handleSubmit, isSubmitting } = useApplyLeaveForm(onSuccess);
+  const leaveTypeOptions = useLookupOptions('LeaveType');
 
   return (
     <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>

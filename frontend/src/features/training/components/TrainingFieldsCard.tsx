@@ -2,6 +2,7 @@ import { InputText } from 'primereact/inputtext';
 import { InputTextarea } from 'primereact/inputtextarea';
 import { InputSwitch } from 'primereact/inputswitch';
 import FormSelect from '../../../shared/components/FormSelect';
+import { useLookupOptions } from '../../../shared/hooks/useMasters';
 
 interface Props {
   trainingTitle: string;
@@ -18,14 +19,6 @@ interface Props {
   onAttendanceRequiredChange: (v: boolean) => void;
 }
 
-const categoryOptions = [
-  { label: 'Technical', value: 'Technical' },
-  { label: 'Soft Skills', value: 'Soft Skills' },
-  { label: 'Domain', value: 'Domain' },
-  { label: 'Leadership', value: 'Leadership' },
-  { label: 'Other', value: 'Other' },
-];
-
 export default function TrainingFieldsCard({
   trainingTitle,
   trainingCategory,
@@ -40,6 +33,7 @@ export default function TrainingFieldsCard({
   onTrainerMobileChange,
   onAttendanceRequiredChange,
 }: Props) {
+  const categoryOptions = useLookupOptions('TrainingCategory');
   return (
     <div className="glass-card" style={{ padding: 24, marginTop: 20 }}>
       <h3 className="form-section-header">Training Details</h3>

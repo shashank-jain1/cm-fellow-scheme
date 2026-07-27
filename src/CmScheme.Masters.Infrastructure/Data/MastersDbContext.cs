@@ -17,6 +17,7 @@ public abstract class MastersDbContext : DbContext
     public DbSet<GramPanchayat> GramPanchayats => Set<GramPanchayat>();
     public DbSet<Project> Projects => Set<Project>();
     public DbSet<Work> Works => Set<Work>();
+    public DbSet<LookupMaster> LookupMasters => Set<LookupMaster>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

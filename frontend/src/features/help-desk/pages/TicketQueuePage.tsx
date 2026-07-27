@@ -4,6 +4,7 @@ import { useTickets } from '../queries';
 import TicketStatusBadge from '../components/TicketStatusBadge';
 import { formatDateTime } from '../../../shared/utils/format';
 import FormSelect from '../../../shared/components/FormSelect';
+import { useLookupOptions } from '../../../shared/hooks/useMasters';
 
 const statusOptions = [
   { label: 'All Status', value: '' },
@@ -13,18 +14,13 @@ const statusOptions = [
   { label: 'Closed', value: 'Closed' },
 ];
 
-const priorityOptions = [
-  { label: 'All Priorities', value: '' },
-  { label: 'High', value: 'High' },
-  { label: 'Medium', value: 'Medium' },
-  { label: 'Low', value: 'Low' },
-];
-
 export default function TicketQueuePage() {
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
   const [priorityFilter, setPriorityFilter] = useState('');
   const { data: tickets, isLoading } = useTickets();
+  const priorityLookupOptions = useLookupOptions('Priority');
+  const priorityOptions = [{ label: 'All Priorities', value: '' }, ...priorityLookupOptions];
 
   const filtered = (tickets ?? []).filter((t) => {
     const matchSearch =

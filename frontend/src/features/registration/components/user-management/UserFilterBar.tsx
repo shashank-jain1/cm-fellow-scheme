@@ -1,5 +1,6 @@
 import FormSelect from '../../../../shared/components/FormSelect';
-import { filterRoleOptions, statusFilterOptions } from './constants';
+import { useLookupOptions } from '../../../../shared/hooks/useMasters';
+import { statusFilterOptions } from './constants';
 
 interface UserFilterBarProps {
   roleFilter: string;
@@ -9,6 +10,9 @@ interface UserFilterBarProps {
 }
 
 export default function UserFilterBar({ roleFilter, statusFilter, onRoleChange, onStatusChange }: UserFilterBarProps) {
+  const roleLookupOptions = useLookupOptions('Role');
+  const filterRoleOptions = [{ label: 'All Roles', value: '' }, ...roleLookupOptions];
+
   return (
     <div style={{ display: 'flex', gap: 12, marginBottom: 24, flexWrap: 'wrap' }}>
       <div className="form-group" style={{ marginBottom: 0 }}>

@@ -3,6 +3,7 @@ import { InputNumber } from 'primereact/inputnumber';
 import { Calendar } from 'primereact/calendar';
 import { Button } from 'primereact/button';
 import FormSelect from '../../../shared/components/FormSelect';
+import { useLookupOptions } from '../../../shared/hooks/useMasters';
 import type { WorkAllocationFormData } from '../types';
 
 interface WorkAllocationFormProps {
@@ -15,12 +16,6 @@ interface WorkAllocationFormProps {
   isEditing?: boolean;
 }
 
-const priorityOptions = [
-  { label: 'High', value: 'High' },
-  { label: 'Medium', value: 'Medium' },
-  { label: 'Low', value: 'Low' },
-];
-
 export default function WorkAllocationForm({
   formData,
   errors,
@@ -30,6 +25,7 @@ export default function WorkAllocationForm({
   isLoading = false,
   isEditing = false,
 }: WorkAllocationFormProps) {
+  const priorityOptions = useLookupOptions('Priority');
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
       <div className="form-grid">

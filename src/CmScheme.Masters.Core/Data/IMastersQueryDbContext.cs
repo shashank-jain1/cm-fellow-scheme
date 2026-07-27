@@ -14,4 +14,5 @@ public interface IMastersQueryDbContext
     DbSet<GramPanchayat> GramPanchayats { get; }
     DbSet<Project> Projects { get; }
     DbSet<Work> Works { get; }
+    DbSet<LookupMaster> LookupMasters { get; }
 }

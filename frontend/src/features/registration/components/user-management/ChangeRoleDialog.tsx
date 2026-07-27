@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Button } from 'primereact/button';
 import { Dialog } from 'primereact/dialog';
 import FormSelect from '../../../../shared/components/FormSelect';
-import { roleOptions } from './constants';
+import { useLookupOptions } from '../../../../shared/hooks/useMasters';
 import { useAssignRole } from '../../queries/user-management';
 import { useAuth } from '../../../auth';
 import type { UserAccountListItem } from '../../types/user-management';
@@ -16,6 +16,7 @@ interface ChangeRoleDialogProps {
 export default function ChangeRoleDialog({ visible, user, onHide }: ChangeRoleDialogProps) {
   const { user: currentUser } = useAuth();
   const assignRoleMutation = useAssignRole();
+  const roleOptions = useLookupOptions('Role');
   const [newRole, setNewRole] = useState('');
 
   useEffect(() => {

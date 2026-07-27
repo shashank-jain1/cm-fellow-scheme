@@ -1,21 +1,8 @@
 import { Button } from 'primereact/button';
 import { InputTextarea } from 'primereact/inputtextarea';
 import FormSelect from '../../../shared/components/FormSelect';
+import { useLookupOptions } from '../../../shared/hooks/useMasters';
 import { useTicketForm } from './form.hook';
-
-const categoryOptions = [
-  { label: 'Technical Issue', value: 'Technical Issue' },
-  { label: 'Account Access', value: 'Account Access' },
-  { label: 'Survey Problem', value: 'Survey Problem' },
-  { label: 'Attendance Issue', value: 'Attendance Issue' },
-  { label: 'Other', value: 'Other' },
-];
-
-const priorityOptions = [
-  { label: 'High', value: 'High' },
-  { label: 'Medium', value: 'Medium' },
-  { label: 'Low', value: 'Low' },
-];
 
 interface RaiseTicketFormProps {
   onSubmit?: () => void;
@@ -23,6 +10,8 @@ interface RaiseTicketFormProps {
 
 export default function RaiseTicketForm({ onSubmit }: RaiseTicketFormProps) {
   const { formData, updateField, submit, isSubmitting, reset } = useTicketForm();
+  const categoryOptions = useLookupOptions('TicketCategory');
+  const priorityOptions = useLookupOptions('Priority');
 
   const handleSubmit = async () => {
     await submit();

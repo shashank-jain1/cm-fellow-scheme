@@ -3,7 +3,7 @@ import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
 import { Dialog } from 'primereact/dialog';
 import FormSelect from '../../../../shared/components/FormSelect';
-import { roleOptions } from './constants';
+import { useLookupOptions } from '../../../../shared/hooks/useMasters';
 import { useCreateUserAccount } from '../../queries/user-management';
 import { useAuth } from '../../../auth';
 
@@ -15,6 +15,7 @@ interface CreateUserDialogProps {
 export default function CreateUserDialog({ visible, onHide }: CreateUserDialogProps) {
   const { user: currentUser } = useAuth();
   const createMutation = useCreateUserAccount();
+  const roleOptions = useLookupOptions('Role');
   const [form, setForm] = useState({ applicantId: 0, username: '', password: '', role: 'Intern' });
 
   const handleCreate = async () => {

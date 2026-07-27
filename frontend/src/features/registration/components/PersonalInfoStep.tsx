@@ -1,15 +1,11 @@
 import type { ChangeEvent } from 'react';
 import { InputText } from 'primereact/inputtext';
 import FormSelect from '../../../shared/components/FormSelect';
+import { useLookupOptions } from '../../../shared/hooks/useMasters';
 import type { StepProps } from './form.hook';
 
-const genderOptions = [
-  { label: 'Male', value: 'male' },
-  { label: 'Female', value: 'female' },
-  { label: 'Other', value: 'other' },
-];
-
 export default function PersonalInfoStep({ formData, update }: StepProps) {
+  const genderOptions = useLookupOptions('Gender');
   return (
     <div className="fade-in">
       <h3 className="form-section-header">Personal Information</h3>

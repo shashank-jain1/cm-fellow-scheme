@@ -18,4 +18,5 @@ public sealed class MastersQueryDbContext : MastersDbContext, IMastersQueryDbCon
     DbSet<GramPanchayat> IMastersQueryDbContext.GramPanchayats => GramPanchayats;
     DbSet<Project> IMastersQueryDbContext.Projects => Projects;
     DbSet<Work> IMastersQueryDbContext.Works => Works;
+    DbSet<LookupMaster> IMastersQueryDbContext.LookupMasters => LookupMasters;
 }

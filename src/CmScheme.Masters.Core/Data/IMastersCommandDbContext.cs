@@ -14,6 +14,7 @@ public interface IMastersCommandDbContext
     DbSet<GramPanchayat> GramPanchayats { get; }
     DbSet<Project> Projects { get; }
     DbSet<Work> Works { get; }
+    DbSet<LookupMaster> LookupMasters { get; }
     int SaveChanges();
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

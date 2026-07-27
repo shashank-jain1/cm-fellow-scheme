@@ -142,6 +142,43 @@ namespace CmScheme.Masters.Infrastructure.Migrations.Command
                     b.ToTable("GramPanchayat");
                 });
 
+            modelBuilder.Entity("CmScheme.Masters.Core.Entities.LookupMaster", b =>
+                {
+                    b.Property<int>("LookupMasterId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LookupMasterId"));
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Label")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("MasterType")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("SortOrder")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("LookupMasterId");
+
+                    b.ToTable("LookupMaster");
+                });
+
             modelBuilder.Entity("CmScheme.Masters.Core.Entities.Project", b =>
                 {
                     b.Property<int>("ProjectId")

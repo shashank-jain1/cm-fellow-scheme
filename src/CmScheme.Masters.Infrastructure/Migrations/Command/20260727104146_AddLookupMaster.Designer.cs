@@ -4,16 +4,19 @@ using CmScheme.Masters.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace CmScheme.Masters.Infrastructure.Migrations.Query
+namespace CmScheme.Masters.Infrastructure.Migrations.Command
 {
-    [DbContext(typeof(MastersQueryDbContext))]
-    partial class MastersQueryDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(MastersCommandDbContext))]
+    [Migration("20260727104146_AddLookupMaster")]
+    partial class AddLookupMaster
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

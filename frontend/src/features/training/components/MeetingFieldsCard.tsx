@@ -2,6 +2,7 @@ import { InputText } from 'primereact/inputtext';
 import { InputTextarea } from 'primereact/inputtextarea';
 import { InputSwitch } from 'primereact/inputswitch';
 import FormSelect from '../../../shared/components/FormSelect';
+import { useLookupOptions } from '../../../shared/hooks/useMasters';
 
 interface Props {
   meetingTitle: string;
@@ -14,14 +15,6 @@ interface Props {
   onMomRequiredChange: (v: boolean) => void;
 }
 
-const agendaOptions = [
-  { label: 'Review', value: 'Review' },
-  { label: 'Planning', value: 'Planning' },
-  { label: 'Discussion', value: 'Discussion' },
-  { label: 'Decision', value: 'Decision' },
-  { label: 'Other', value: 'Other' },
-];
-
 export default function MeetingFieldsCard({
   meetingTitle,
   meetingAgenda,
@@ -32,6 +25,7 @@ export default function MeetingFieldsCard({
   onMeetingDescriptionChange,
   onMomRequiredChange,
 }: Props) {
+  const agendaOptions = useLookupOptions('MeetingAgenda');
   return (
     <div className="glass-card" style={{ padding: 24, marginTop: 20 }}>
       <h3 className="form-section-header">Meeting Details</h3>

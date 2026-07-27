@@ -7,6 +7,8 @@ using Microsoft.IdentityModel.Tokens;
 using CmScheme.Common.Core.Behaviours;
 using CmScheme.Common.Core.Data;
 using CmScheme.Endpoints.Abstractions;
+using CmScheme.Masters.Core.Data;
+using CmScheme.Masters.Core.Entities;
 using CmScheme.Masters.Endpoints;
 using CmScheme.Masters.Infrastructure;
 using CmScheme.Registration.Core.Data;
@@ -102,6 +104,7 @@ app.UseAuthorization();
 app.MapApiEndpoints("/api/v1");
 
 await SeedAdminUser(app);
+await SeedLookupMasters(app);
 
 app.Run();
 
@@ -157,5 +160,80 @@ static async Task SeedAdminUser(WebApplication app)
     };
 
     dbContext.UserAccounts.Add(adminAccount);
+    await dbContext.SaveChangesAsync();
+}
+
+static async Task SeedLookupMasters(WebApplication app)
+{
+    using IServiceScope scope = app.Services.CreateScope();
+    IMastersCommandDbContext dbContext = scope.ServiceProvider
+        .GetRequiredService<IMastersCommandDbContext>();
+
+    bool anyExists = await dbContext.LookupMasters.AnyAsync();
+    if (anyExists)
+    {
+        return;
+    }
+
+    List<LookupMaster> masters =
+    [
+        // Leave Types
+        new() { MasterType = "LeaveType", Label = "Casual Leave", Value = "casual", SortOrder = 1, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { MasterType = "LeaveType", Label = "Sick Leave", Value = "sick", SortOrder = 2, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { MasterType = "LeaveType", Label = "Earned Leave", Value = "earned", SortOrder = 3, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { MasterType = "LeaveType", Label = "Maternity Leave", Value = "maternity", SortOrder = 4, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { MasterType = "LeaveType", Label = "Paternity Leave", Value = "paternity", SortOrder = 5, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { MasterType = "LeaveType", Label = "Unpaid Leave", Value = "unpaid", SortOrder = 6, IsActive = true, CreatedOn = DateTime.UtcNow },
+
+        // Training Categories
+        new() { MasterType = "TrainingCategory", Label = "Technical", Value = "Technical", SortOrder = 1, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { MasterType = "TrainingCategory", Label = "Soft Skills", Value = "Soft Skills", SortOrder = 2, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { MasterType = "TrainingCategory", Label = "Domain", Value = "Domain", SortOrder = 3, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { MasterType = "TrainingCategory", Label = "Leadership", Value = "Leadership", SortOrder = 4, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { MasterType = "TrainingCategory", Label = "Other", Value = "Other", SortOrder = 5, IsActive = true, CreatedOn = DateTime.UtcNow },
+
+        // Ticket Categories
+        new() { MasterType = "TicketCategory", Label = "Technical Issue", Value = "Technical Issue", SortOrder = 1, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { MasterType = "TicketCategory", Label = "Account Access", Value = "Account Access", SortOrder = 2, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { MasterType = "TicketCategory", Label = "Survey Problem", Value = "Survey Problem", SortOrder = 3, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { MasterType = "TicketCategory", Label = "Attendance Issue", Value = "Attendance Issue", SortOrder = 4, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { MasterType = "TicketCategory", Label = "Other", Value = "Other", SortOrder = 5, IsActive = true, CreatedOn = DateTime.UtcNow },
+
+        // Priorities
+        new() { MasterType = "Priority", Label = "High", Value = "High", SortOrder = 1, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { MasterType = "Priority", Label = "Medium", Value = "Medium", SortOrder = 2, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { MasterType = "Priority", Label = "Low", Value = "Low", SortOrder = 3, IsActive = true, CreatedOn = DateTime.UtcNow },
+
+        // Genders
+        new() { MasterType = "Gender", Label = "Male", Value = "male", SortOrder = 1, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { MasterType = "Gender", Label = "Female", Value = "female", SortOrder = 2, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { MasterType = "Gender", Label = "Other", Value = "other", SortOrder = 3, IsActive = true, CreatedOn = DateTime.UtcNow },
+
+        // Qualifications
+        new() { MasterType = "Qualification", Label = "Bachelor's Degree", Value = "bachelors", SortOrder = 1, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { MasterType = "Qualification", Label = "Master's Degree", Value = "masters", SortOrder = 2, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { MasterType = "Qualification", Label = "PhD", Value = "phd", SortOrder = 3, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { MasterType = "Qualification", Label = "Diploma", Value = "diploma", SortOrder = 4, IsActive = true, CreatedOn = DateTime.UtcNow },
+
+        // Activity Modes
+        new() { MasterType = "ActivityMode", Label = "Online", Value = "Online", SortOrder = 1, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { MasterType = "ActivityMode", Label = "Offline", Value = "Offline", SortOrder = 2, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { MasterType = "ActivityMode", Label = "Hybrid", Value = "Hybrid", SortOrder = 3, IsActive = true, CreatedOn = DateTime.UtcNow },
+
+        // Meeting Agendas
+        new() { MasterType = "MeetingAgenda", Label = "Review", Value = "Review", SortOrder = 1, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { MasterType = "MeetingAgenda", Label = "Planning", Value = "Planning", SortOrder = 2, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { MasterType = "MeetingAgenda", Label = "Discussion", Value = "Discussion", SortOrder = 3, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { MasterType = "MeetingAgenda", Label = "Decision", Value = "Decision", SortOrder = 4, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { MasterType = "MeetingAgenda", Label = "Other", Value = "Other", SortOrder = 5, IsActive = true, CreatedOn = DateTime.UtcNow },
+
+        // Roles
+        new() { MasterType = "Role", Label = "Admin", Value = "Admin", SortOrder = 1, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { MasterType = "Role", Label = "Fellow", Value = "Fellow", SortOrder = 2, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { MasterType = "Role", Label = "Intern", Value = "Intern", SortOrder = 3, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { MasterType = "Role", Label = "Guide", Value = "Guide", SortOrder = 4, IsActive = true, CreatedOn = DateTime.UtcNow },
+    ];
+
+    dbContext.LookupMasters.AddRange(masters);
     await dbContext.SaveChangesAsync();
 }

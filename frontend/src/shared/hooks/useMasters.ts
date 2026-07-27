@@ -79,3 +79,32 @@ export function useWorks(projectId: number | null) {
     enabled: !!projectId,
   });
 }
+
+interface LookupMasterDto {
+  lookupMasterId: number;
+  masterType: string;
+  label: string;
+  value: string;
+  sortOrder: number;
+}
+
+export function useLookupMasters(masterType: string) {
+  return useQuery<LookupMasterDto[]>({
+    queryKey: ['masters', 'lookups', masterType],
+    queryFn: async () => {
+      const res = await ApiService.get<LookupMasterDto[]>(`masters/lookup?masterType=${masterType}`);
+      return res.data ?? [];
+    },
+    enabled: !!masterType,
+  });
+}
+
+export interface SelectOption {
+  label: string;
+  value: string;
+}
+
+export function useLookupOptions(masterType: string): SelectOption[] {
+  const { data } = useLookupMasters(masterType);
+  return (data ?? []).map((m) => ({ label: m.label, value: m.value }));
+}

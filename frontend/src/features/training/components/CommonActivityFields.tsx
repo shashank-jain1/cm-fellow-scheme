@@ -1,6 +1,7 @@
 import { Calendar } from 'primereact/calendar';
 import { InputTextarea } from 'primereact/inputtextarea';
 import FormSelect from '../../../shared/components/FormSelect';
+import { useLookupOptions } from '../../../shared/hooks/useMasters';
 
 interface Props {
   date: string;
@@ -14,12 +15,6 @@ interface Props {
   onModeChange: (v: string) => void;
   onRemarksChange: (v: string) => void;
 }
-
-const modeOptions = [
-  { label: 'Online', value: 'Online' },
-  { label: 'Offline', value: 'Offline' },
-  { label: 'Hybrid', value: 'Hybrid' },
-];
 
 function timeStringToDate(time: string): Date | null {
   if (!time) return null;
@@ -48,6 +43,7 @@ export default function CommonActivityFields({
   onModeChange,
   onRemarksChange,
 }: Props) {
+  const modeOptions = useLookupOptions('ActivityMode');
   return (
     <div className="form-grid">
       <div className="form-field">

@@ -18,6 +18,7 @@ public sealed class MastersCommandDbContext : MastersDbContext, IMastersCommandD
     DbSet<GramPanchayat> IMastersCommandDbContext.GramPanchayats => GramPanchayats;
     DbSet<Project> IMastersCommandDbContext.Projects => Projects;
     DbSet<Work> IMastersCommandDbContext.Works => Works;
+    DbSet<LookupMaster> IMastersCommandDbContext.LookupMasters => LookupMasters;
 
     int IMastersCommandDbContext.SaveChanges()
     {
