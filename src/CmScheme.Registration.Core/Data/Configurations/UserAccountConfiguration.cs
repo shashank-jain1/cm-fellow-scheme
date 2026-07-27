@@ -23,7 +23,7 @@ public sealed class UserAccountConfiguration : IEntityTypeConfiguration<UserAcco
             .HasMaxLength(50)
             .IsRequired();
 
-        builder.HasOne<Applicant>()
+        builder.HasOne(ua => ua.Applicant)
             .WithMany()
             .HasForeignKey(ua => ua.ApplicantId)
             .OnDelete(DeleteBehavior.Cascade);

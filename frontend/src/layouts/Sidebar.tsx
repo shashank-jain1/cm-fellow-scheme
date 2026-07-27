@@ -13,6 +13,10 @@ const navItems = [
   { path: '/help-desk', label: 'Help Desk', icon: 'pi pi-question-circle' },
 ];
 
+const adminNavItems = [
+  { path: '/admin/users', label: 'User Management', icon: 'pi pi-users' },
+];
+
 export default function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
   const location = useLocation();
@@ -71,6 +75,29 @@ export default function Sidebar() {
             </NavLink>
           );
         })}
+        {user?.role === 'Admin' && (
+          <>
+            <div style={{ height: 1, background: 'var(--border-color)', margin: '8px 14px' }} />
+            {adminNavItems.map((item) => {
+              const isActive = location.pathname.startsWith(item.path);
+              return (
+                <NavLink
+                  key={item.path}
+                  to={item.path}
+                  className={`sidebar-link ${isActive ? 'active' : ''}`}
+                  title={collapsed ? item.label : undefined}
+                >
+                  <div className="sidebar-link-icon">
+                    <i className={item.icon} />
+                    {isActive && <div className="sidebar-active-dot" />}
+                  </div>
+                  {!collapsed && <span className="sidebar-link-label">{item.label}</span>}
+                  {isActive && <div className="sidebar-active-indicator" />}
+                </NavLink>
+              );
+            })}
+          </>
+        )}
       </nav>
 
       <div className="sidebar-footer">

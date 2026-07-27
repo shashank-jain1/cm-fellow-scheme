@@ -10,6 +10,7 @@ import AppLayout from './layouts/AppLayout';
 import LoginPage from './features/registration/pages/LoginPage';
 import { AdminDashboardPage } from './features/dashboard';
 import RegistrationWizard from './features/registration/pages/RegistrationWizard';
+import UserManagementPage from './features/registration/pages/UserManagementPage';
 import { ActivityCalendar, CreateActivityForm } from './features/training';
 import WorkAllocationPage from './features/work-allocation/pages/WorkAllocationPage';
 import MarkAttendancePage from './features/attendance-leave/pages/MarkAttendancePage';
@@ -43,6 +44,7 @@ export default function App() {
                 <Route index element={<Navigate to="/dashboard" replace />} />
                 <Route path="dashboard" element={<AdminDashboardPage />} />
                 <Route path="registration" element={<RegistrationWizard />} />
+                <Route path="admin/users" element={<UserManagementPage />} />
                 <Route path="training" element={<ActivityCalendar />} />
                 <Route path="training/new" element={<CreateActivityForm />} />
                 <Route path="work-allocation" element={<WorkAllocationPage />} />

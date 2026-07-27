@@ -128,7 +128,7 @@ export default function FormSelect({
             listStyle: 'none',
             padding: '4px',
             margin: 0,
-            zIndex: 1000,
+            zIndex: 100000,
             maxHeight: 240,
             overflowY: 'auto',
           }}

@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CmScheme.Registration.Core.Entities;
 
@@ -26,4 +27,7 @@ public class UserAccount
     public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
 
     public int? CreatedBy { get; set; }
+
+    [ForeignKey(nameof(ApplicantId))]
+    public Applicant? Applicant { get; set; }
 }

@@ -11,6 +11,10 @@ public static class UserAccountGroupExtensions
         RouteGroupBuilder group = builder.MapGroup("/user-accounts")
             .WithTags("User Accounts");
 
+        group.MapGet("/", List.Handle)
+            .WithName("ListUserAccounts")
+            .WithDisplayName("List all user accounts");
+
         group.MapCreateEndpoint();
         group.MapAssignRoleEndpoint();
         group.MapDeactivateEndpoint();

@@ -572,6 +572,36 @@ textarea.p-inputtextarea {
   border-bottom: 1px solid var(--border-color);
 }
 
+/* Dialog form fields */
+.p-dialog .form-field {
+  position: relative;
+}
+
+.p-dialog .form-field label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+}
+
+.p-dialog .form-field .p-inputtext,
+.p-dialog .form-field .p-select,
+.p-dialog .form-field input {
+  width: 100%;
+  height: 40px;
+  box-sizing: border-box;
+}
+
+.p-dialog-content {
+  padding: 0 24px 24px !important;
+  overflow: visible !important;
+}
+
+.p-dialog .p-dialog-header {
+  padding: 20px 24px 16px !important;
+}
+
 /* Search Input Container */
 .search-input-wrapper {
   position: relative;
@@ -716,6 +746,10 @@ textarea.p-inputtextarea {
   z-index: 99999 !important;
 }
 
+.p-dialog-mask {
+  overflow: visible !important;
+}
+
 /* PrimeReact Dropdown Panel Styling */
 .p-dropdown {
   font-family: 'Plus Jakarta Sans', sans-serif !important;
@@ -842,6 +876,48 @@ textarea.p-inputtextarea {
 
 .toast-error {
   background: linear-gradient(135deg, #ef4444, #dc2626);
+}
+
+/* PrimeReact Tag Overrides */
+.p-tag {
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  padding: 4px 12px !important;
+  border-radius: 20px !important;
+  letter-spacing: 0.2px !important;
+  border: none !important;
+  line-height: 1.5 !important;
+}
+
+.p-tag.p-tag-success {
+  background: rgba(16, 185, 129, 0.12) !important;
+  color: #059669 !important;
+}
+
+.p-tag.p-tag-danger {
+  background: rgba(239, 68, 68, 0.12) !important;
+  color: #dc2626 !important;
+}
+
+.p-tag.p-tag-warning {
+  background: rgba(245, 158, 11, 0.12) !important;
+  color: #d97706 !important;
+}
+
+.p-tag.p-tag-info {
+  background: rgba(59, 130, 246, 0.12) !important;
+  color: #2563eb !important;
+}
+
+.p-tag.p-tag-secondary {
+  background: rgba(107, 114, 128, 0.12) !important;
+  color: #4b5563 !important;
+}
+
+.p-tag.p-tag-contrast {
+  background: rgba(0, 0, 0, 0.08) !important;
+  color: #1f2937 !important;
 }
 
 /* Scrollbar */
