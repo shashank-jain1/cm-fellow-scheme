@@ -7,8 +7,8 @@ export async function fetchPerformanceSummary(): Promise<PerformanceSummaryDto[]
   return res.data ?? [];
 }
 
-export async function fetchPerformanceDetail(_id: number): Promise<PerformanceSummaryDto> {
-  const res = await ApiService.get<PerformanceSummaryDto>(performanceUrls.detail());
+export async function fetchPerformanceDetail(id: number): Promise<PerformanceSummaryDto> {
+  const res = await ApiService.get<PerformanceSummaryDto>(performanceUrls.detail(id));
   return res.data!;
 }
 

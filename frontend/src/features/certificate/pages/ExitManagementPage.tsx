@@ -1,9 +1,22 @@
 import { useState } from 'react';
 import { InputText } from 'primereact/inputtext';
+import { ToastService } from '../../../shared/utils/toast';
+import { useSubmitExitReadiness } from '../queries';
 import ExitReadinessChecklist from '../components/ExitReadinessChecklist';
 
 export default function ExitManagementPage() {
   const [applicantId, setApplicantId] = useState<number | null>(null);
+  const submitExit = useSubmitExitReadiness();
+
+  const handleSubmit = async (items: string[]) => {
+    if (!applicantId) return;
+    try {
+      await submitExit.mutateAsync({ applicantId, checklistItems: items });
+      ToastService.success('Exit readiness submitted successfully!');
+    } catch {
+      ToastService.error('Failed to submit exit readiness');
+    }
+  };
 
   return (
     <div>
@@ -35,7 +48,8 @@ export default function ExitManagementPage() {
       {applicantId && (
         <ExitReadinessChecklist
           applicantId={applicantId}
-          onSubmit={(items) => console.log('Exit checklist completed:', items)}
+          onSubmit={handleSubmit}
+          isSubmitting={submitExit.isPending}
         />
       )}
     </div>

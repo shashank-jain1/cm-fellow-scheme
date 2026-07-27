@@ -1,4 +1,5 @@
 using Ardalis.Result;
+using CmScheme.AttendanceLeave.Core.Data;
 using CmScheme.Common.Core;
 using CmScheme.Dashboard.Core.Dtos;
 using CmScheme.HelpDesk.Core.Data;
@@ -12,7 +13,8 @@ namespace CmScheme.Dashboard.Application.Features.Dashboard.GetAdminDashboard;
 public sealed class GetAdminDashboardQueryHandler(
     IRegistrationQueryDbContext registrationDbContext,
     IWorkAllocationQueryDbContext workAllocationDbContext,
-    IHelpDeskQueryDbContext helpDeskDbContext)
+    IHelpDeskQueryDbContext helpDeskDbContext,
+    IAttendanceLeaveQueryDbContext attendanceDbContext)
     : IQueryHandler<GetAdminDashboardQuery, Result<AdminDashboardDto>>
 {
     public async ValueTask<Result<AdminDashboardDto>> Handle(GetAdminDashboardQuery request, CancellationToken cancellationToken)
@@ -27,13 +29,26 @@ public sealed class GetAdminDashboardQueryHandler(
             .Select(t => (decimal?)t.CompletionPercentage)
             .AverageAsync(cancellationToken) ?? 0m;
 
+        int totalPresentDays = await attendanceDbContext.Attendances
+            .CountAsync(a => a.AttendanceStatus == Statuses.Attendance.Present, cancellationToken);
+
+        int totalDaysWithRecords = await attendanceDbContext.Attendances
+            .Select(a => a.AttendanceDate.Date)
+            .Distinct()
+            .CountAsync(cancellationToken);
+
+        int totalExpectedAttendance = totalRegisteredUsers * Math.Max(totalDaysWithRecords, 1);
+        decimal overallAttendancePercentage = totalExpectedAttendance > 0
+            ? Math.Round((decimal)totalPresentDays / totalExpectedAttendance * 100, 1)
+            : 0m;
+
         AdminDashboardDto dashboard = new AdminDashboardDto(
             TotalRegisteredUsers: totalRegisteredUsers,
             TotalProjects: totalProjects,
             TotalSurveysCompleted: totalSurveysCompleted,
             TotalSurveysPending: totalSurveysPending,
             TotalTicketsOpen: totalTicketsOpen,
-            OverallAttendancePercentage: 0m,
+            OverallAttendancePercentage: overallAttendancePercentage,
             OverallSurveyCompletionPercentage: totalCompletionPercentage);
 
         return Result<AdminDashboardDto>.Success(dashboard);

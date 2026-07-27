@@ -11,7 +11,14 @@ public sealed class ListTicketsByRoleQueryHandler(IHelpDeskQueryDbContext dbCont
 {
     public async ValueTask<Result<List<TicketDto>>> Handle(ListTicketsByRoleQuery request, CancellationToken cancellationToken)
     {
-        List<TicketDto> tickets = await dbContext.Tickets
+        IQueryable<Core.Entities.Ticket> query = dbContext.Tickets;
+
+        if (request.Role != "Admin" && request.ApplicantId.HasValue)
+        {
+            query = query.Where(t => t.ApplicantId == request.ApplicantId.Value);
+        }
+
+        List<TicketDto> tickets = await query
             .Select(t => new TicketDto
             {
                 TicketId = t.TicketId,

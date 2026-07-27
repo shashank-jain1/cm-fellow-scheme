@@ -2,8 +2,13 @@ import ApiService from '../../services/ApiService';
 import helpDeskUrls from './urls';
 import type { TicketDto, TicketFormData } from './types';
 
-export async function fetchTickets(): Promise<TicketDto[]> {
-  const res = await ApiService.get<TicketDto[]>(helpDeskUrls.tickets());
+export async function fetchTickets(role?: string, applicantId?: number): Promise<TicketDto[]> {
+  let url = helpDeskUrls.tickets();
+  const params: string[] = [];
+  if (role) params.push(`role=${encodeURIComponent(role)}`);
+  if (applicantId) params.push(`applicantId=${applicantId}`);
+  if (params.length > 0) url += `?${params.join('&')}`;
+  const res = await ApiService.get<TicketDto[]>(url);
   return res.data ?? [];
 }
 

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Button } from 'primereact/button';
+import { ProgressSpinner } from 'primereact/progressspinner';
 
 interface ChecklistItem {
   id: string;
@@ -10,6 +11,7 @@ interface ChecklistItem {
 interface ExitReadinessChecklistProps {
   applicantId: number;
   onSubmit?: (checkedItems: string[]) => void;
+  isSubmitting?: boolean;
 }
 
 const defaultItems: ChecklistItem[] = [
@@ -21,7 +23,7 @@ const defaultItems: ChecklistItem[] = [
   { id: 'exit-interview', label: 'Exit interview completed', checked: false },
 ];
 
-export default function ExitReadinessChecklist({ onSubmit }: ExitReadinessChecklistProps) {
+export default function ExitReadinessChecklist({ onSubmit, isSubmitting }: ExitReadinessChecklistProps) {
   const [items, setItems] = useState<ChecklistItem[]>(defaultItems);
 
   const toggleItem = (id: string) => {
@@ -74,11 +76,14 @@ export default function ExitReadinessChecklist({ onSubmit }: ExitReadinessCheckl
 
       <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 20 }}>
         <Button
-          label="Mark Ready"
+          label={isSubmitting ? 'Submitting...' : 'Mark Ready'}
+          icon={isSubmitting ? undefined : 'pi pi-check'}
           className="btn btn-primary"
-          disabled={!allChecked}
+          disabled={!allChecked || isSubmitting}
           onClick={() => onSubmit?.(items.filter((i) => i.checked).map((i) => i.id))}
-        />
+        >
+          {isSubmitting && <ProgressSpinner style={{ width: 14, height: 14, marginRight: 8 }} />}
+        </Button>
       </div>
     </div>
   );

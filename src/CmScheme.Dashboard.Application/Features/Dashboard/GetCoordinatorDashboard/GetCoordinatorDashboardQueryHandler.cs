@@ -1,4 +1,5 @@
 using Ardalis.Result;
+using CmScheme.AttendanceLeave.Core.Data;
 using CmScheme.Common.Core;
 using CmScheme.Dashboard.Core.Dtos;
 using CmScheme.Registration.Core.Data;
@@ -10,7 +11,8 @@ namespace CmScheme.Dashboard.Application.Features.Dashboard.GetCoordinatorDashbo
 
 public sealed class GetCoordinatorDashboardQueryHandler(
     IRegistrationQueryDbContext registrationDbContext,
-    IWorkAllocationQueryDbContext workAllocationDbContext)
+    IWorkAllocationQueryDbContext workAllocationDbContext,
+    IAttendanceLeaveQueryDbContext attendanceDbContext)
     : IQueryHandler<GetCoordinatorDashboardQuery, Result<CoordinatorDashboardDto>>
 {
     public async ValueTask<Result<CoordinatorDashboardDto>> Handle(GetCoordinatorDashboardQuery request, CancellationToken cancellationToken)
@@ -25,7 +27,18 @@ public sealed class GetCoordinatorDashboardQueryHandler(
         int pendingSurveys = await workAllocationDbContext.SurveyRecords
             .CountAsync(s => s.SurveyStatus != Statuses.Survey.Completed, cancellationToken);
 
-        decimal teamAttendancePercentage = 0m;
+        int totalPresentDays = await attendanceDbContext.Attendances
+            .CountAsync(a => a.AttendanceStatus == Statuses.Attendance.Present, cancellationToken);
+
+        int totalDaysWithRecords = await attendanceDbContext.Attendances
+            .Select(a => a.AttendanceDate.Date)
+            .Distinct()
+            .CountAsync(cancellationToken);
+
+        int totalExpectedAttendance = teamSize * Math.Max(totalDaysWithRecords, 1);
+        decimal teamAttendancePercentage = totalExpectedAttendance > 0
+            ? Math.Round((decimal)totalPresentDays / totalExpectedAttendance * 100, 1)
+            : 0m;
 
         CoordinatorDashboardDto dashboard = new CoordinatorDashboardDto(
             TeamSize: teamSize,

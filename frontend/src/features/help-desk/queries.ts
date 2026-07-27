@@ -2,10 +2,10 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { fetchTickets, fetchTicketDetail, raiseTicket, resolveTicket, escalateTicket } from './api';
 import type { TicketFormData } from './types';
 
-export function useTickets() {
+export function useTickets(role?: string, applicantId?: number) {
   return useQuery({
-    queryKey: ['helpdesk-tickets'],
-    queryFn: fetchTickets,
+    queryKey: ['helpdesk-tickets', role, applicantId],
+    queryFn: () => fetchTickets(role, applicantId),
   });
 }
 

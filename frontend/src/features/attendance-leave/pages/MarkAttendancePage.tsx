@@ -1,14 +1,16 @@
+import { useAuth } from '../../auth/useAuth';
 import FaceCaptureWidget from '../components/FaceCaptureWidget';
 import AttendanceStatusBadge from '../components/AttendanceStatusBadge';
 import { useMarkAttendance, useAttendanceHistory } from '../queries';
 
 export default function MarkAttendancePage() {
+  const { user } = useAuth();
   const markAttendance = useMarkAttendance();
   const { data: todayRecords } = useAttendanceHistory();
 
   const handleCapture = (imageBase64: string, latitude: number, longitude: number) => {
     markAttendance.mutate({
-      applicantId: 1,
+      applicantId: user?.userAccountId ?? 0,
       latitude,
       longitude,
       faceImageBase64: imageBase64,

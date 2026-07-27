@@ -29,3 +29,12 @@ export async function downloadCertificate(id: number): Promise<void> {
   const API_BASE = import.meta.env.VITE_API_URL || '/api/v1';
   window.open(`${API_BASE}/${certificateUrls.download(id)}`, '_blank');
 }
+
+export interface ExitReadinessPayload {
+  applicantId: number;
+  checklistItems: string[];
+}
+
+export async function submitExitReadiness(payload: ExitReadinessPayload): Promise<void> {
+  await ApiService.post('certificates/exit/readiness', payload);
+}

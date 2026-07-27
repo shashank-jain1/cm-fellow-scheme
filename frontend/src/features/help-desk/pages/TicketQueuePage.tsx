@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { InputText } from 'primereact/inputtext';
+import { useAuth } from '../../auth/useAuth';
 import { useTickets } from '../queries';
 import TicketStatusBadge from '../components/TicketStatusBadge';
 import { formatDateTime } from '../../../shared/utils/format';
@@ -15,10 +16,11 @@ const statusOptions = [
 ];
 
 export default function TicketQueuePage() {
+  const { user } = useAuth();
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
   const [priorityFilter, setPriorityFilter] = useState('');
-  const { data: tickets, isLoading } = useTickets();
+  const { data: tickets, isLoading } = useTickets(user?.role, user?.userAccountId);
   const priorityLookupOptions = useLookupOptions('Priority');
   const priorityOptions = [{ label: 'All Priorities', value: '' }, ...priorityLookupOptions];
 
