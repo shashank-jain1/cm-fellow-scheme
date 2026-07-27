@@ -1,39 +1,19 @@
-import { Button } from 'primereact/button';
+import DocumentItem from './fields/DocumentItem';
 
-const documents = ['Photograph', 'ID Proof (Aadhaar/PAN)', 'Educational Certificates', 'Experience Letter'];
+const documents = [
+  { name: 'Photograph', description: 'JPG or PNG (Max 2MB)' },
+  { name: 'ID Proof (Aadhaar/PAN)', description: 'PDF, JPG or PNG (Max 5MB)' },
+  { name: 'Educational Certificates', description: 'PDF, JPG or PNG (Max 5MB)' },
+  { name: 'Experience Letter', description: 'PDF (Max 5MB)' },
+];
 
 export default function DocumentUploadStep() {
   return (
     <div className="fade-in">
       <h3 style={{ marginBottom: 24, fontSize: 18 }}>Upload Documents</h3>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-        {documents.map((doc, i) => (
-          <div
-            key={i}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              padding: '16px 20px',
-              border: '1px dashed var(--border-color)',
-              borderRadius: 'var(--radius-md)',
-              background: 'var(--navy-50)',
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-              <i className="pi pi-file" style={{ color: 'var(--emerald-500)', fontSize: 20 }} />
-              <div>
-                <div style={{ fontWeight: 500, fontSize: 14 }}>{doc}</div>
-                <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>PDF, JPG or PNG (Max 5MB)</div>
-              </div>
-            </div>
-            <Button
-              label="Upload"
-              icon="pi pi-upload"
-              className="btn btn-secondary btn-sm"
-              size="small"
-            />
-          </div>
+        {documents.map((doc) => (
+          <DocumentItem key={doc.name} name={doc.name} description={doc.description} />
         ))}
       </div>
     </div>

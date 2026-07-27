@@ -1,4 +1,5 @@
 import { Button } from 'primereact/button';
+import { ProgressSpinner } from 'primereact/progressspinner';
 import { useRegistrationForm } from '../components/form.hook';
 import PersonalInfoStep from '../components/PersonalInfoStep';
 import AddressInfoStep from '../components/AddressInfoStep';
@@ -17,7 +18,7 @@ const steps = [
 ];
 
 export default function RegistrationWizard() {
-  const { formData, update, currentStep, next, prev, goToStep, handleSubmit } = useRegistrationForm();
+  const { formData, update, currentStep, next, prev, goToStep, handleSubmit, isSubmitting } = useRegistrationForm();
 
   return (
     <div>
@@ -92,12 +93,14 @@ export default function RegistrationWizard() {
             />
           ) : (
             <Button
-              label="Submit Registration"
-              icon="pi pi-check"
+              label={isSubmitting ? 'Submitting...' : 'Submit Registration'}
+              icon={isSubmitting ? undefined : 'pi pi-check'}
               className="btn btn-primary"
               onClick={handleSubmit}
-              disabled={!formData.declaration}
-            />
+              disabled={!formData.declarationAccepted || isSubmitting}
+            >
+              {isSubmitting && <ProgressSpinner style={{ width: 16, height: 16, marginRight: 8 }} />}
+            </Button>
           )}
         </div>
       </div>

@@ -29,8 +29,8 @@ export default function DeclarationStep({ formData, update }: StepProps) {
       <label className="login-checkbox" style={{ fontSize: 14, cursor: 'pointer' }}>
         <input
           type="checkbox"
-          checked={formData.declaration}
-          onChange={(e: ChangeEvent<HTMLInputElement>) => update('declaration', e.target.checked)}
+          checked={formData.declarationAccepted}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => update('declarationAccepted', e.target.checked)}
         />
         <span>I have read and agree to the above declaration</span>
       </label>
