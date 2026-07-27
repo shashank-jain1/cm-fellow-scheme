@@ -40,10 +40,12 @@ export function useDivisions(stateId: number | null) {
   return useQuery<DivisionDto[]>({
     queryKey: ['masters', 'divisions', stateId],
     queryFn: async () => {
-      const res = await ApiService.get<DivisionDto[]>(`masters/locations/divisions?stateId=${stateId}`);
+      const url = stateId
+        ? `masters/locations/divisions?stateId=${stateId}`
+        : 'masters/locations/divisions';
+      const res = await ApiService.get<DivisionDto[]>(url);
       return res.data ?? [];
     },
-    enabled: !!stateId,
   });
 }
 
@@ -77,6 +79,21 @@ export function useWorks(projectId: number | null) {
       return res.data ?? [];
     },
     enabled: !!projectId,
+  });
+}
+
+interface ProjectDto {
+  projectId: number;
+  projectName: string;
+}
+
+export function useProjects() {
+  return useQuery<ProjectDto[]>({
+    queryKey: ['masters', 'projects'],
+    queryFn: async () => {
+      const res = await ApiService.get<ProjectDto[]>('masters/projects');
+      return res.data ?? [];
+    },
   });
 }
 

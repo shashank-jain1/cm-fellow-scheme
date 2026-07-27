@@ -2,7 +2,7 @@ export interface WorkAllocationFormData {
   projectId: number;
   workProjectId: number;
   workDescription: string;
-  priority: 'High' | 'Medium' | 'Low';
+  priority: string;
   startDate: string;
   endDate: string;
   surveysPerIntern: number;

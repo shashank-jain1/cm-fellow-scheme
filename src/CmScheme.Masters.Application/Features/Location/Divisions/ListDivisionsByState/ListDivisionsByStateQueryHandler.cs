@@ -13,8 +13,15 @@ public sealed class ListDivisionsByStateQueryHandler(IMastersQueryDbContext dbCo
         ListDivisionsByStateQuery request,
         CancellationToken cancellationToken)
     {
-        List<DivisionDto> divisions = await dbContext.Divisions
-            .Where(d => d.StateId == request.StateId)
+        IQueryable<Core.Entities.Division> query = dbContext.Divisions
+            .AsNoTracking();
+
+        if (request.StateId.HasValue)
+        {
+            query = query.Where(d => d.StateId == request.StateId.Value);
+        }
+
+        List<DivisionDto> divisions = await query
             .OrderBy(d => d.DivisionName)
             .Select(d => new DivisionDto(
                 d.DivisionId,

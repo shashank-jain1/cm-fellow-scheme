@@ -5,5 +5,5 @@ namespace CmScheme.Masters.Application.Features.Location.Divisions.ListDivisions
 
 public sealed record ListDivisionsByStateQuery : IQuery<Result<List<Core.Dtos.DivisionDto>>>
 {
-    public int StateId { get; init; }
+    public int? StateId { get; init; }
 }

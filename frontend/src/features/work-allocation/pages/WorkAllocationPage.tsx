@@ -60,7 +60,7 @@ export default function WorkAllocationPage() {
       projectId: allocation.projectId,
       workProjectId: allocation.workProjectId,
       workDescription: allocation.workDescription,
-      priority: allocation.priority as 'High' | 'Medium' | 'Low',
+      priority: allocation.priority,
       startDate: allocation.startDate,
       endDate: allocation.endDate,
       surveysPerIntern: allocation.surveysPerIntern,
