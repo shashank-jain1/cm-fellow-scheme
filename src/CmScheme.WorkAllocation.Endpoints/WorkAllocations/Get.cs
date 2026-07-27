@@ -10,7 +10,7 @@ public static class Get
 {
     public static async Task<IResult> Handle(int workAllocationId, ISender sender)
     {
-        GetWorkAllocationByIdQuery query = new GetWorkAllocationByIdQuery(workAllocationId);
+        GetWorkAllocationByIdQuery query = new GetWorkAllocationByIdQuery { WorkAllocationId = workAllocationId };
         Result<Core.Dtos.WorkAllocationDto?> result = await sender.Send(query);
         return result.ToApiResult();
     }

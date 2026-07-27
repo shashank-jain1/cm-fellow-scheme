@@ -3,4 +3,7 @@ using Mediator;
 
 namespace CmScheme.Certificate.Application.Features.Certificate.GetCertificateStatus;
 
-public sealed record GetCertificateStatusQuery(int CertificateId) : IQuery<Result<Core.Dtos.CertificateApplicationDto?>>;
+public sealed record GetCertificateStatusQuery : IQuery<Result<Core.Dtos.CertificateApplicationDto?>>
+{
+    public int CertificateId { get; init; }
+}

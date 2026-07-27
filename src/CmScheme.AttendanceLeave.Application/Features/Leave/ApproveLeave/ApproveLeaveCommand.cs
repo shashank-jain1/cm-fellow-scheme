@@ -3,4 +3,9 @@ using Mediator;
 
 namespace CmScheme.AttendanceLeave.Application.Features.Leave.ApproveLeave;
 
-public sealed record ApproveLeaveCommand(int LeaveApplicationId, string Status, string Remarks) : ICommand<Result<bool>>;
+public sealed record ApproveLeaveCommand : ICommand<Result<bool>>
+{
+    public int LeaveApplicationId { get; init; }
+    public string Status { get; init; } = string.Empty;
+    public string Remarks { get; init; } = string.Empty;
+}

@@ -17,7 +17,7 @@ public static class Deactivate
             ISender sender,
             CancellationToken cancellationToken) =>
         {
-            DeactivateUserAccountCommand command = new DeactivateUserAccountCommand(userAccountId);
+            DeactivateUserAccountCommand command = new DeactivateUserAccountCommand { UserAccountId = userAccountId };
             ValueTask<Result> result = sender.Send(command, cancellationToken);
             return await result.ToApiResultAsync();
         })

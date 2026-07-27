@@ -18,7 +18,7 @@ public static class AssignRole
             ISender sender,
             CancellationToken cancellationToken) =>
         {
-            AssignRoleCommand command = new AssignRoleCommand(userAccountId, request.Role, request.ModifiedBy);
+            AssignRoleCommand command = new AssignRoleCommand { UserAccountId = userAccountId, Role = request.Role, ModifiedBy = request.ModifiedBy };
             ValueTask<Result> result = sender.Send(command, cancellationToken);
             return await result.ToApiResultAsync();
         })

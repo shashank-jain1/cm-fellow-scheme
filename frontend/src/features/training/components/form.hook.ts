@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { useCreateTrainingSchedule } from '../queries';
+import { useCreateTrainingSession, useCreateTrainingMeeting } from '../queries';
 import type { ActivityFormData } from '../types';
 
 const defaultFormData: ActivityFormData = {
@@ -28,22 +28,27 @@ const defaultFormData: ActivityFormData = {
 export function useActivityForm() {
   const [formData, setFormData] = useState<ActivityFormData>({ ...defaultFormData });
 
-  const createMutation = useCreateTrainingSchedule();
+  const createSessionMutation = useCreateTrainingSession();
+  const createMeetingMutation = useCreateTrainingMeeting();
 
   const updateField = useCallback(<K extends keyof ActivityFormData>(field: K, value: ActivityFormData[K]) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   }, []);
 
   const submit = useCallback(async () => {
-    await createMutation.mutateAsync(formData);
+    if (formData.activityType === 'Training') {
+      await createSessionMutation.mutateAsync(formData);
+    } else {
+      await createMeetingMutation.mutateAsync(formData);
+    }
     setFormData({ ...defaultFormData });
-  }, [formData, createMutation]);
+  }, [formData, createSessionMutation, createMeetingMutation]);
 
   return {
     formData,
     updateField,
     submit,
-    isSubmitting: createMutation.isPending,
+    isSubmitting: createSessionMutation.isPending || createMeetingMutation.isPending,
     reset: () => setFormData({ ...defaultFormData }),
   };
 }

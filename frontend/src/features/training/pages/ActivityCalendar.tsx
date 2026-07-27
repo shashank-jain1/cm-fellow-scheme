@@ -3,13 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
 import { Tag } from 'primereact/tag';
-import { useTrainingSchedules } from '../queries';
+import { useTrainingSessions } from '../queries';
 import { formatDate } from '../../../shared/utils/format';
 
 export default function ActivityCalendar() {
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
-  const { data: schedules, isLoading } = useTrainingSchedules();
+  const { data: schedules, isLoading } = useTrainingSessions();
 
   const filteredSchedules = (schedules ?? []).filter(
     (s) =>

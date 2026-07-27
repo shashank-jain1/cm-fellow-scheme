@@ -3,4 +3,7 @@ using Mediator;
 
 namespace CmScheme.Performance.Application.Features.Performance.ListPerformanceByProject;
 
-public sealed record ListPerformanceByProjectQuery(string ProjectName) : IQuery<Result<List<Core.Dtos.PerformanceListItemDto>>>;
+public sealed record ListPerformanceByProjectQuery : IQuery<Result<List<Core.Dtos.PerformanceListItemDto>>>
+{
+    public string ProjectName { get; init; } = null!;
+}

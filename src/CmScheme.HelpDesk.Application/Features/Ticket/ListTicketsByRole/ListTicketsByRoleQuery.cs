@@ -3,4 +3,7 @@ using Mediator;
 
 namespace CmScheme.HelpDesk.Application.Features.Ticket.ListTicketsByRole;
 
-public sealed record ListTicketsByRoleQuery(string Role) : IQuery<Result<List<Core.Dtos.TicketDto>>>;
+public sealed record ListTicketsByRoleQuery : IQuery<Result<List<Core.Dtos.TicketDto>>>
+{
+    public string Role { get; init; } = null!;
+}

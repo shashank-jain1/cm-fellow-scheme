@@ -1,7 +1,6 @@
 const dashboardUrls = {
-  admin: () => 'dashboard/admin',
-  coordinator: () => 'dashboard/coordinator',
-  filters: () => 'dashboard/filters',
+  admin: () => 'dashboards/admin',
+  coordinator: (id: number) => `dashboards/coordinator/${id}`,
 };
 
 export default dashboardUrls;

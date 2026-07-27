@@ -9,9 +9,10 @@ export function useAdminDashboard(filters?: DashboardFilters) {
   });
 }
 
-export function useCoordinatorDashboard(filters?: DashboardFilters) {
+export function useCoordinatorDashboard(coordinatorId: number, filters?: DashboardFilters) {
   return useQuery({
-    queryKey: ['dashboard', 'coordinator', filters],
-    queryFn: () => fetchCoordinatorDashboard(filters),
+    queryKey: ['dashboard', 'coordinator', coordinatorId, filters],
+    queryFn: () => fetchCoordinatorDashboard(coordinatorId, filters),
+    enabled: !!coordinatorId,
   });
 }

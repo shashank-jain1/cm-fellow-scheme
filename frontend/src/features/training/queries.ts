@@ -1,49 +1,37 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { fetchTrainingSchedules, fetchTrainingScheduleDetail, createTrainingSchedule, updateTrainingSchedule, deleteTrainingSchedule } from './api';
+import { fetchTrainingSessions, fetchTrainingMeetings, createTrainingSession, createTrainingMeeting } from './api';
 import type { ActivityFormData } from './types';
 
-export function useTrainingSchedules() {
+export function useTrainingSessions() {
   return useQuery({
-    queryKey: ['training-schedules'],
-    queryFn: fetchTrainingSchedules,
+    queryKey: ['training-sessions'],
+    queryFn: fetchTrainingSessions,
   });
 }
 
-export function useTrainingScheduleDetail(id: number) {
+export function useTrainingMeetings() {
   return useQuery({
-    queryKey: ['training-schedule', id],
-    queryFn: () => fetchTrainingScheduleDetail(id),
-    enabled: !!id,
+    queryKey: ['training-meetings'],
+    queryFn: fetchTrainingMeetings,
   });
 }
 
-export function useCreateTrainingSchedule() {
+export function useCreateTrainingSession() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (command: ActivityFormData) => createTrainingSchedule(command),
+    mutationFn: (command: ActivityFormData) => createTrainingSession(command),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['training-schedules'] });
+      queryClient.invalidateQueries({ queryKey: ['training-sessions'] });
     },
   });
 }
 
-export function useUpdateTrainingSchedule() {
+export function useCreateTrainingMeeting() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, command }: { id: number; command: ActivityFormData }) =>
-      updateTrainingSchedule(id, command),
+    mutationFn: (command: ActivityFormData) => createTrainingMeeting(command),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['training-schedules'] });
-    },
-  });
-}
-
-export function useDeleteTrainingSchedule() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: (id: number) => deleteTrainingSchedule(id),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['training-schedules'] });
+      queryClient.invalidateQueries({ queryKey: ['training-meetings'] });
     },
   });
 }

@@ -12,7 +12,7 @@ public sealed class ListDivisions
 {
     public static async Task<IResult> List(int stateId, ISender sender, CancellationToken ct)
     {
-        ValueTask<Result<List<DivisionDto>>> result = sender.Send(new ListDivisionsByStateQuery(stateId), ct);
+        ValueTask<Result<List<DivisionDto>>> result = sender.Send(new ListDivisionsByStateQuery { StateId = stateId }, ct);
         return await result.ToApiResultAsync();
     }
 }

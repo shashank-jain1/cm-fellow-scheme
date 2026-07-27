@@ -13,13 +13,11 @@ export { useApplyLeaveForm } from './components/form.hook';
 
 export {
   useMarkAttendance,
-  useAttendanceByDate,
+  useAttendanceHistory,
   useApplyLeave,
   useLeaveStatus,
   useLeaveBalance,
-  useLeaveApprovalQueue,
   useApproveLeave,
-  useRejectLeave,
 } from './queries';
 
 export type {

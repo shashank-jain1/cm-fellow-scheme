@@ -10,14 +10,13 @@ export function useMarkAttendance() {
   });
 }
 
-export function useAttendanceByDate(date: string) {
+export function useAttendanceHistory() {
   return useQuery({
-    queryKey: ['attendance', date],
+    queryKey: ['attendance'],
     queryFn: async () => {
-      const res = await attendanceLeaveApi.getAttendanceByDate(date);
+      const res = await attendanceLeaveApi.getAttendanceHistory();
       return res.data ?? [];
     },
-    enabled: !!date,
   });
 }
 
@@ -49,30 +48,11 @@ export function useLeaveBalance() {
   });
 }
 
-export function useLeaveApprovalQueue() {
-  return useQuery({
-    queryKey: ['leaveApprovalQueue'],
-    queryFn: async () => {
-      const res = await attendanceLeaveApi.getLeaveApprovalQueue();
-      return res.data ?? [];
-    },
-  });
-}
-
 export function useApproveLeave() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: ({ applicationNo, remarks }: { applicationNo: string; remarks?: string }) =>
-      attendanceLeaveApi.approveLeave(applicationNo, remarks),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ['leaveApprovalQueue'] }),
-  });
-}
-
-export function useRejectLeave() {
-  const qc = useQueryClient();
-  return useMutation({
-    mutationFn: ({ applicationNo, remarks }: { applicationNo: string; remarks?: string }) =>
-      attendanceLeaveApi.rejectLeave(applicationNo, remarks),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ['leaveApprovalQueue'] }),
+    mutationFn: (command: { LeaveApplicationNo: string; ApprovalStatus: string; Remarks?: string }) =>
+      attendanceLeaveApi.approveLeave(command),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['leaveStatus'] }),
   });
 }

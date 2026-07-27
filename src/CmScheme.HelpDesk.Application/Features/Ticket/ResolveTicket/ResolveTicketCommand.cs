@@ -3,4 +3,9 @@ using Mediator;
 
 namespace CmScheme.HelpDesk.Application.Features.Ticket.ResolveTicket;
 
-public sealed record ResolveTicketCommand(int TicketId, string ActionBy, string ResolutionRemarks) : ICommand<Result>;
+public sealed record ResolveTicketCommand : ICommand<Result>
+{
+    public int TicketId { get; init; }
+    public string ActionBy { get; init; } = null!;
+    public string ResolutionRemarks { get; init; } = null!;
+}

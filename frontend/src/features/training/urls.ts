@@ -1,10 +1,9 @@
 const trainingUrls = {
   base: 'training',
-  schedules: () => 'training/schedules',
-  scheduleDetail: (id: number) => `training/schedules/${id}`,
-  createSchedule: () => 'training/schedules',
-  updateSchedule: (id: number) => `training/schedules/${id}`,
-  deleteSchedule: (id: number) => `training/schedules/${id}`,
+  sessions: () => 'training/sessions',
+  meetings: () => 'training/meetings',
+  createSession: () => 'training/sessions',
+  createMeeting: () => 'training/meetings',
 };
 
 export default trainingUrls;

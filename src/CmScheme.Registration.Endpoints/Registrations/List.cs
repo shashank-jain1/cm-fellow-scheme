@@ -21,11 +21,13 @@ public static class List
             ISender sender,
             CancellationToken cancellationToken) =>
         {
-            ListRegistrationsQuery query = new ListRegistrationsQuery(
-                searchTerm,
-                status,
-                pageNumber ?? 1,
-                pageSize ?? 10);
+            ListRegistrationsQuery query = new ListRegistrationsQuery
+            {
+                SearchTerm = searchTerm,
+                Status = status,
+                PageNumber = pageNumber ?? 1,
+                PageSize = pageSize ?? 10
+            };
             ValueTask<Result<List<RegistrationListItem>>> result = sender.Send(query, cancellationToken);
             return await result.ToApiResultAsync();
         })

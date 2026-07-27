@@ -18,7 +18,7 @@ public static class Reject
             ISender sender,
             CancellationToken cancellationToken) =>
         {
-            RejectRegistrationCommand command = new RejectRegistrationCommand(applicantId, request.Reason, request.RejectedBy);
+            RejectRegistrationCommand command = new RejectRegistrationCommand { ApplicantId = applicantId, Reason = request.Reason, RejectedBy = request.RejectedBy };
             ValueTask<Result> result = sender.Send(command, cancellationToken);
             return await result.ToApiResultAsync();
         })

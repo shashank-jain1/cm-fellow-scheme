@@ -64,24 +64,24 @@ export const useTaskProgress = () => {
   });
 };
 
-export const useTaskProgressByProject = (projectId: number) => {
+export const useTaskProgressByWorkAllocation = (workAllocationId: number) => {
   return useQuery({
-    queryKey: ['task-progress', 'project', projectId],
+    queryKey: ['task-progress', 'work-allocation', workAllocationId],
     queryFn: async () => {
-      const res = await taskProgressApi.getByProjectId(projectId);
+      const res = await taskProgressApi.getByWorkAllocationId(workAllocationId);
       return res.data ?? [];
     },
-    enabled: !!projectId,
+    enabled: !!workAllocationId,
   });
 };
 
-export const useSurveyDetails = (workProjectId: number) => {
+export const useSurveyDetails = (taskProgressId: number) => {
   return useQuery({
-    queryKey: ['survey-details', workProjectId],
+    queryKey: ['survey-details', taskProgressId],
     queryFn: async () => {
-      const res = await surveyDetailApi.getByWorkProjectId(workProjectId);
+      const res = await surveyDetailApi.getByTaskProgressId(taskProgressId);
       return res.data ?? [];
     },
-    enabled: !!workProjectId,
+    enabled: !!taskProgressId,
   });
 };

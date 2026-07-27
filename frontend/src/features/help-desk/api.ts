@@ -18,9 +18,9 @@ export async function raiseTicket(command: TicketFormData): Promise<TicketDto> {
 }
 
 export async function resolveTicket(id: number, resolutionRemarks: string): Promise<void> {
-  await ApiService.post(helpDeskUrls.resolve(id), { resolutionRemarks });
+  await ApiService.put(helpDeskUrls.resolve(), { ticketId: id, resolutionRemarks });
 }
 
 export async function escalateTicket(id: number): Promise<void> {
-  await ApiService.post(helpDeskUrls.escalate(id), {});
+  await ApiService.put(helpDeskUrls.escalate(), { ticketId: id });
 }

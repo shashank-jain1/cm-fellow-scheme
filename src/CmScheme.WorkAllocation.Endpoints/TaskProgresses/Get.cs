@@ -10,7 +10,7 @@ public static class Get
 {
     public static async Task<IResult> Handle(int taskProgressId, ISender sender)
     {
-        GetTaskProgressByIdQuery query = new GetTaskProgressByIdQuery(taskProgressId);
+        GetTaskProgressByIdQuery query = new GetTaskProgressByIdQuery { TaskProgressId = taskProgressId };
         Result<Core.Dtos.TaskProgressDto?> result = await sender.Send(query);
         return result.ToApiResult();
     }

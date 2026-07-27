@@ -10,7 +10,7 @@ public static class GetCoordinator
 {
     public static async Task<IResult> Handle(int coordinatorId, ISender sender)
     {
-        GetCoordinatorDashboardQuery query = new GetCoordinatorDashboardQuery(coordinatorId);
+        GetCoordinatorDashboardQuery query = new GetCoordinatorDashboardQuery { CoordinatorId = coordinatorId };
         Result<Core.Dtos.CoordinatorDashboardDto> result = await sender.Send(query);
         return result.ToApiResult();
     }

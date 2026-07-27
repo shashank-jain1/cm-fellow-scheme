@@ -1,21 +1,32 @@
 import { useState } from 'react';
 import { Button } from 'primereact/button';
 import { InputTextarea } from 'primereact/inputtextarea';
-import { useLeaveApprovalQueue, useApproveLeave, useRejectLeave } from '../queries';
+import { useLeaveStatus, useApproveLeave } from '../queries';
 import AttendanceStatusBadge from './AttendanceStatusBadge';
 
 export default function LeaveApprovalQueue() {
-  const { data: queue, isLoading } = useLeaveApprovalQueue();
+  const { data: leaveStatuses, isLoading } = useLeaveStatus();
   const approveMutation = useApproveLeave();
-  const rejectMutation = useRejectLeave();
   const [remarksMap, setRemarksMap] = useState<Record<string, string>>({});
 
+  const pendingLeaves = (leaveStatuses ?? []).filter(
+    (l) => l.approvalStatus === 'pending' || l.approvalStatus === 'Pending'
+  );
+
   const handleApprove = (applicationNo: string) => {
-    approveMutation.mutate({ applicationNo, remarks: remarksMap[applicationNo] });
+    approveMutation.mutate({
+      LeaveApplicationNo: applicationNo,
+      ApprovalStatus: 'Approved',
+      Remarks: remarksMap[applicationNo],
+    });
   };
 
   const handleReject = (applicationNo: string) => {
-    rejectMutation.mutate({ applicationNo, remarks: remarksMap[applicationNo] });
+    approveMutation.mutate({
+      LeaveApplicationNo: applicationNo,
+      ApprovalStatus: 'Rejected',
+      Remarks: remarksMap[applicationNo],
+    });
   };
 
   if (isLoading) {
@@ -32,7 +43,7 @@ export default function LeaveApprovalQueue() {
     );
   }
 
-  if (!queue || queue.length === 0) {
+  if (pendingLeaves.length === 0) {
     return (
       <div className="empty-state">
         <i className="pi pi-inbox" />
@@ -44,7 +55,7 @@ export default function LeaveApprovalQueue() {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-      {queue.map((request) => (
+      {pendingLeaves.map((request) => (
         <div
           key={request.leaveApplicationNo}
           style={{
@@ -88,7 +99,7 @@ export default function LeaveApprovalQueue() {
               label="Reject"
               icon="pi pi-times"
               className="btn btn-danger"
-              loading={rejectMutation.isPending}
+              loading={approveMutation.isPending}
               onClick={() => handleReject(request.leaveApplicationNo)}
             />
           </div>

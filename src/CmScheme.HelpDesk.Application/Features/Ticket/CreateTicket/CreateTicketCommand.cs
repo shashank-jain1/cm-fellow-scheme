@@ -3,11 +3,12 @@ using Mediator;
 
 namespace CmScheme.HelpDesk.Application.Features.Ticket.CreateTicket;
 
-public sealed record CreateTicketCommand(
-    int ApplicantId,
-    string Email,
-    string Mobile,
-    string IssueCategory,
-    string IssueDescription,
-    string Priority
-) : ICommand<Result<int>>;
+public sealed record CreateTicketCommand : ICommand<Result<int>>
+{
+    public int ApplicantId { get; init; }
+    public string Email { get; init; } = null!;
+    public string Mobile { get; init; } = null!;
+    public string IssueCategory { get; init; } = null!;
+    public string IssueDescription { get; init; } = null!;
+    public string Priority { get; init; } = null!;
+}

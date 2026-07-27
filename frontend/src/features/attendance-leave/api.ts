@@ -6,21 +6,11 @@ export const attendanceLeaveApi = {
   markAttendance: (data: MarkAttendanceCommand) =>
     ApiService.post<AttendanceDto>(ATTENDANCE_LEAVE_URLS.MARK_ATTENDANCE, data),
 
-  getAttendanceByDate: (date: string) =>
-    ApiService.get<AttendanceDto[]>(ATTENDANCE_LEAVE_URLS.ATTENDANCE_BY_DATE(date)),
+  getAttendanceHistory: () =>
+    ApiService.get<AttendanceDto[]>(ATTENDANCE_LEAVE_URLS.ATTENDANCE_HISTORY),
 
-  applyLeave: (data: LeaveApplicationFormData) => {
-    const formData = new FormData();
-    formData.append('leaveType', data.leaveType);
-    formData.append('fromDate', data.fromDate);
-    formData.append('toDate', data.toDate);
-    formData.append('halfDayFullDay', String(data.halfDayFullDay));
-    formData.append('leaveReason', data.leaveReason);
-    if (data.attachmentFile) {
-      formData.append('attachmentFile', data.attachmentFile);
-    }
-    return ApiService.post<void>(ATTENDANCE_LEAVE_URLS.APPLY_LEAVE, formData);
-  },
+  applyLeave: (data: LeaveApplicationFormData) =>
+    ApiService.post<void>(ATTENDANCE_LEAVE_URLS.APPLY_LEAVE, data),
 
   getLeaveStatus: () =>
     ApiService.get<LeaveStatusDto[]>(ATTENDANCE_LEAVE_URLS.LEAVE_STATUS),
@@ -28,12 +18,6 @@ export const attendanceLeaveApi = {
   getLeaveBalance: () =>
     ApiService.get<LeaveBalanceDto[]>(ATTENDANCE_LEAVE_URLS.LEAVE_BALANCE),
 
-  getLeaveApprovalQueue: () =>
-    ApiService.get<LeaveStatusDto[]>(ATTENDANCE_LEAVE_URLS.LEAVE_APPROVAL_QUEUE),
-
-  approveLeave: (applicationNo: string, remarks?: string) =>
-    ApiService.post<void>(ATTENDANCE_LEAVE_URLS.APPROVE_LEAVE(applicationNo), { remarks }),
-
-  rejectLeave: (applicationNo: string, remarks?: string) =>
-    ApiService.post<void>(ATTENDANCE_LEAVE_URLS.REJECT_LEAVE(applicationNo), { remarks }),
+  approveLeave: (command: { LeaveApplicationNo: string; ApprovalStatus: string; Remarks?: string }) =>
+    ApiService.put<void>(ATTENDANCE_LEAVE_URLS.APPROVE_LEAVE, command),
 };

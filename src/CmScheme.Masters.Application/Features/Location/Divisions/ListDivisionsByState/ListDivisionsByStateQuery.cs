@@ -3,4 +3,7 @@ using Mediator;
 
 namespace CmScheme.Masters.Application.Features.Location.Divisions.ListDivisionsByState;
 
-public sealed record ListDivisionsByStateQuery(int StateId) : IQuery<Result<List<Core.Dtos.DivisionDto>>>;
+public sealed record ListDivisionsByStateQuery : IQuery<Result<List<Core.Dtos.DivisionDto>>>
+{
+    public int StateId { get; init; }
+}

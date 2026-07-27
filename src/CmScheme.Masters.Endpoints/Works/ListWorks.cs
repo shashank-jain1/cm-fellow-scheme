@@ -12,7 +12,7 @@ public sealed class ListWorks
 {
     public static async Task<IResult> List(int projectId, ISender sender, CancellationToken ct)
     {
-        ValueTask<Result<List<WorkDto>>> result = sender.Send(new ListWorksByProjectQuery(projectId), ct);
+        ValueTask<Result<List<WorkDto>>> result = sender.Send(new ListWorksByProjectQuery { ProjectId = projectId }, ct);
         return await result.ToApiResultAsync();
     }
 }

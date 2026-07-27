@@ -3,4 +3,7 @@ using Mediator;
 
 namespace CmScheme.WorkAllocation.Application.Features.SurveyRecord.GetSurveyRecordById;
 
-public sealed record GetSurveyRecordByIdQuery(int SurveyRecordId) : IQuery<Result<Core.Dtos.SurveyRecordDto?>>;
+public sealed record GetSurveyRecordByIdQuery : IQuery<Result<Core.Dtos.SurveyRecordDto?>>
+{
+    public int SurveyRecordId { get; init; }
+}

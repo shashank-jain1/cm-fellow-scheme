@@ -10,7 +10,7 @@ public static class List
 {
     public static async Task<IResult> Handle(int workAllocationId, ISender sender)
     {
-        ListTaskProgressesQuery query = new ListTaskProgressesQuery(workAllocationId);
+        ListTaskProgressesQuery query = new ListTaskProgressesQuery { WorkAllocationId = workAllocationId };
         Result<IReadOnlyList<Core.Dtos.TaskProgressDto>> result = await sender.Send(query);
         return result.ToApiResult();
     }

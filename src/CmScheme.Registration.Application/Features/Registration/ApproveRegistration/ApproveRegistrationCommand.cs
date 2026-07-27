@@ -3,5 +3,8 @@ using Mediator;
 
 namespace CmScheme.Registration.Application.Features.Registration.ApproveRegistration;
 
-public sealed record ApproveRegistrationCommand(int ApplicantId, int ApprovedBy)
-    : ICommand<Result>;
+public sealed record ApproveRegistrationCommand : ICommand<Result>
+{
+    public int ApplicantId { get; init; }
+    public int ApprovedBy { get; init; }
+}

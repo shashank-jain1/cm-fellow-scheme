@@ -17,12 +17,14 @@ public static class Create
             ISender sender,
             CancellationToken cancellationToken) =>
         {
-            CreateUserAccountCommand command = new CreateUserAccountCommand(
-                request.ApplicantId,
-                request.Username,
-                request.Password,
-                request.Role,
-                request.CreatedBy);
+            CreateUserAccountCommand command = new CreateUserAccountCommand
+            {
+                ApplicantId = request.ApplicantId,
+                Username = request.Username,
+                Password = request.Password,
+                Role = request.Role,
+                CreatedBy = request.CreatedBy
+            };
             ValueTask<Result<int>> result = sender.Send(command, cancellationToken);
             return await result.ToApiResultAsync();
         })

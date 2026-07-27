@@ -1,12 +1,10 @@
-import { useState } from 'react';
 import FaceCaptureWidget from '../components/FaceCaptureWidget';
 import AttendanceStatusBadge from '../components/AttendanceStatusBadge';
-import { useMarkAttendance, useAttendanceByDate } from '../queries';
+import { useMarkAttendance, useAttendanceHistory } from '../queries';
 
 export default function MarkAttendancePage() {
-  const [selectedDate] = useState(new Date().toISOString().split('T')[0]);
   const markAttendance = useMarkAttendance();
-  const { data: todayRecords } = useAttendanceByDate(selectedDate);
+  const { data: todayRecords } = useAttendanceHistory();
 
   const handleCapture = (imageBase64: string, latitude: number, longitude: number) => {
     markAttendance.mutate({

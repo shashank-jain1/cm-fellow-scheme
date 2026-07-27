@@ -12,7 +12,7 @@ public sealed class ListBlocks
 {
     public static async Task<IResult> List(int districtId, ISender sender, CancellationToken ct)
     {
-        ValueTask<Result<List<BlockDto>>> result = sender.Send(new ListBlocksByDistrictQuery(districtId), ct);
+        ValueTask<Result<List<BlockDto>>> result = sender.Send(new ListBlocksByDistrictQuery { DistrictId = districtId }, ct);
         return await result.ToApiResultAsync();
     }
 }

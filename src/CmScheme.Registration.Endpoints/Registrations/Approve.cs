@@ -18,7 +18,7 @@ public static class Approve
             ISender sender,
             CancellationToken cancellationToken) =>
         {
-            ApproveRegistrationCommand command = new ApproveRegistrationCommand(applicantId, request.ApprovedBy);
+            ApproveRegistrationCommand command = new ApproveRegistrationCommand { ApplicantId = applicantId, ApprovedBy = request.ApprovedBy };
             ValueTask<Result> result = sender.Send(command, cancellationToken);
             return await result.ToApiResultAsync();
         })

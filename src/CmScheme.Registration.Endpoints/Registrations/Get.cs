@@ -18,7 +18,7 @@ public static class Get
             ISender sender,
             CancellationToken cancellationToken) =>
         {
-            GetRegistrationByIdQuery query = new GetRegistrationByIdQuery(applicantId);
+            GetRegistrationByIdQuery query = new GetRegistrationByIdQuery { ApplicantId = applicantId };
             ValueTask<Result<ApplicantDto>> result = sender.Send(query, cancellationToken);
             return await result.ToApiResultAsync();
         })

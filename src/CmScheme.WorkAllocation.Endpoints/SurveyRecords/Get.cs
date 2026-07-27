@@ -10,7 +10,7 @@ public static class Get
 {
     public static async Task<IResult> Handle(int surveyRecordId, ISender sender)
     {
-        GetSurveyRecordByIdQuery query = new GetSurveyRecordByIdQuery(surveyRecordId);
+        GetSurveyRecordByIdQuery query = new GetSurveyRecordByIdQuery { SurveyRecordId = surveyRecordId };
         Result<Core.Dtos.SurveyRecordDto?> result = await sender.Send(query);
         return result.ToApiResult();
     }

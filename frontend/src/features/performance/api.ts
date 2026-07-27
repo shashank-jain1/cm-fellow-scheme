@@ -7,15 +7,15 @@ export async function fetchPerformanceSummary(): Promise<PerformanceSummaryDto[]
   return res.data ?? [];
 }
 
-export async function fetchPerformanceDetail(id: number): Promise<PerformanceSummaryDto> {
-  const res = await ApiService.get<PerformanceSummaryDto>(performanceUrls.detail(id));
+export async function fetchPerformanceDetail(_id: number): Promise<PerformanceSummaryDto> {
+  const res = await ApiService.get<PerformanceSummaryDto>(performanceUrls.detail());
   return res.data!;
 }
 
 export async function recordSupervisorRating(command: RecordSupervisorRatingCommand): Promise<void> {
-  await ApiService.post(performanceUrls.recordRating(), command);
+  await ApiService.put(performanceUrls.recordRating(), command);
 }
 
 export async function recordEvaluationRemarks(command: RecordEvaluationRemarksCommand): Promise<void> {
-  await ApiService.post(performanceUrls.recordRemarks(), command);
+  await ApiService.put(performanceUrls.recordRemarks(), command);
 }
