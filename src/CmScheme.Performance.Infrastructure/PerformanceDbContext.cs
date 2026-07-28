@@ -9,6 +9,7 @@ namespace CmScheme.Performance.Infrastructure;
 public class PerformanceDbContext : BaseDbContext, IPerformanceCommandDbContext, IPerformanceQueryDbContext
 {
     public DbSet<PerformanceEvaluation> PerformanceEvaluations => Set<PerformanceEvaluation>();
+    public DbSet<PerformanceReviewHistory> PerformanceReviewHistories => Set<PerformanceReviewHistory>();
 
     public PerformanceDbContext(DbContextOptions<PerformanceDbContext> options)
         : base(options)
@@ -19,7 +20,9 @@ public class PerformanceDbContext : BaseDbContext, IPerformanceCommandDbContext,
     {
         base.OnModelCreating(modelBuilder);
         modelBuilder.ApplyConfiguration(new PerformanceEvaluationConfiguration());
+        modelBuilder.ApplyConfiguration(new PerformanceReviewHistoryConfiguration());
     }
 
     IQueryable<PerformanceEvaluation> IPerformanceQueryDbContext.PerformanceEvaluations => PerformanceEvaluations;
+    IQueryable<PerformanceReviewHistory> IPerformanceQueryDbContext.PerformanceReviewHistories => PerformanceReviewHistories;
 }

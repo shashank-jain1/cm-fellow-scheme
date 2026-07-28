@@ -1,8 +1,10 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { InputText } from 'primereact/inputtext';
 import { Tag } from 'primereact/tag';
 import { usePerformanceSummary } from '../queries';
 import PerformanceSummaryCard from '../components/PerformanceSummaryCard';
+import { PageHeader, EmptyState } from '../../../shared/components/ui';
 
 const scoreColor = (score: number) => {
   if (score >= 80) return 'var(--badge-emerald-text)';
@@ -16,8 +18,28 @@ const scoreTag = (score: number): 'success' | 'warning' | 'danger' => {
   return 'danger';
 };
 
+const levelSeverity = (level: string): 'secondary' | 'info' | 'warning' | 'success' => {
+  switch (level) {
+    case 'Admin': return 'success';
+    case 'Coordinator': return 'warning';
+    case 'Fellow': return 'info';
+    default: return 'secondary';
+  }
+};
+
+const statusSeverity = (status: string): 'success' | 'warning' | 'danger' | 'info' | 'secondary' => {
+  switch (status) {
+    case 'Approved': return 'success';
+    case 'Under Review': return 'warning';
+    case 'Submitted': return 'info';
+    case 'Rejected': return 'danger';
+    default: return 'secondary';
+  }
+};
+
 export default function PerformanceReviewGrid() {
   const [search, setSearch] = useState('');
+  const navigate = useNavigate();
   const { data: records, isLoading } = usePerformanceSummary();
 
   const filtered = (records ?? []).filter((r) =>
@@ -26,12 +48,10 @@ export default function PerformanceReviewGrid() {
 
   return (
     <div>
-      <div className="page-header">
-        <div>
-          <h1>Performance Tracking</h1>
-          <p>Monitor and evaluate CM Fellow performance metrics</p>
-        </div>
-      </div>
+      <PageHeader
+        title="Performance Tracking"
+        subtitle="Monitor and evaluate CM Fellow performance metrics"
+      />
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 16, marginBottom: 24 }}>
         {isLoading
@@ -73,7 +93,7 @@ export default function PerformanceReviewGrid() {
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
               <tr style={{ background: 'var(--bg-primary)' }}>
-                {['Fellow', 'Project', 'Completion', 'Score', 'Grade', 'Status'].map((h) => (
+                {['Fellow', 'Project', 'Completion', 'Score', 'Grade', 'Level', 'Status'].map((h) => (
                   <th
                     key={h}
                     style={{
@@ -94,7 +114,11 @@ export default function PerformanceReviewGrid() {
             </thead>
             <tbody>
               {filtered.map((r) => (
-                <tr key={r.performanceEvaluationId} style={{ borderBottom: '1px solid var(--border-light)' }}>
+                <tr
+                  key={r.performanceEvaluationId}
+                  style={{ borderBottom: '1px solid var(--border-light)', cursor: 'pointer' }}
+                  onClick={() => navigate(`/performance/${r.performanceEvaluationId}`)}
+                >
                   <td style={{ padding: '14px 16px', fontWeight: 600, fontSize: 14, color: 'var(--text-primary)' }}>{r.applicantName}</td>
                   <td style={{ padding: '14px 16px', fontSize: 13, color: 'var(--text-secondary)' }}>{r.projectName}</td>
                   <td style={{ padding: '14px 16px' }}>
@@ -107,21 +131,17 @@ export default function PerformanceReviewGrid() {
                   </td>
                   <td style={{ padding: '14px 16px', fontSize: 13, fontWeight: 700, color: 'var(--text-primary)' }}>{r.performanceGrade}</td>
                   <td style={{ padding: '14px 16px' }}>
-                    <Tag
-                      value={r.performanceStatus}
-                      severity={r.performanceStatus === 'Completed' ? 'success' : 'warning'}
-                    />
+                    <Tag value={r.reviewLevel ?? 'Draft'} severity={levelSeverity(r.reviewLevel ?? 'Draft')} />
+                  </td>
+                  <td style={{ padding: '14px 16px' }}>
+                    <Tag value={r.reviewStatus ?? 'Draft'} severity={statusSeverity(r.reviewStatus ?? 'Draft')} />
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
         ) : (
-          <div className="empty-state">
-            <i className="pi pi-chart-bar" />
-            <h3>No performance records</h3>
-            <p>Performance data will appear here after reviews</p>
-          </div>
+          <EmptyState icon="pi pi-chart-bar" title="No performance records" description="Performance data will appear here after reviews" />
         )}
       </div>
     </div>

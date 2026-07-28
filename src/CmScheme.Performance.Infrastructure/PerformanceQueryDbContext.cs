@@ -14,4 +14,5 @@ public class PerformanceQueryDbContext : IPerformanceQueryDbContext
     }
 
     public IQueryable<PerformanceEvaluation> PerformanceEvaluations => _dbContext.PerformanceEvaluations;
+    public IQueryable<PerformanceReviewHistory> PerformanceReviewHistories => _dbContext.PerformanceReviewHistories;
 }

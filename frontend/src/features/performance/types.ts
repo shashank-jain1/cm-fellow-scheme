@@ -9,6 +9,8 @@ export interface PerformanceSummaryDto {
   performanceGrade: string;
   performanceStatus: string;
   evaluationRemarks?: string;
+  reviewLevel?: string;
+  reviewStatus?: string;
 }
 
 export interface RecordSupervisorRatingCommand {
@@ -19,4 +21,23 @@ export interface RecordSupervisorRatingCommand {
 export interface RecordEvaluationRemarksCommand {
   performanceEvaluationId: number;
   evaluationRemarks: string;
+}
+
+export interface SubmitReviewRequest {
+  action: string;
+  performedBy: string;
+  remarks?: string;
+}
+
+export interface ReviewHistoryDto {
+  performanceReviewHistoryId: number;
+  performanceEvaluationId: number;
+  action: string;
+  previousLevel: string;
+  newLevel: string;
+  previousStatus: string;
+  newStatus: string;
+  performedBy?: string;
+  remarks?: string;
+  performedOn: string;
 }

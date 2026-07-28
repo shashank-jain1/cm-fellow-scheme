@@ -1,6 +1,6 @@
 import ApiService from '../../services/ApiService';
 import performanceUrls from './urls';
-import type { PerformanceSummaryDto, RecordSupervisorRatingCommand, RecordEvaluationRemarksCommand } from './types';
+import type { PerformanceSummaryDto, RecordSupervisorRatingCommand, RecordEvaluationRemarksCommand, SubmitReviewRequest, ReviewHistoryDto } from './types';
 
 export async function fetchPerformanceSummary(): Promise<PerformanceSummaryDto[]> {
   const res = await ApiService.get<PerformanceSummaryDto[]>(performanceUrls.summary());
@@ -22,4 +22,13 @@ export async function recordEvaluationRemarks(command: RecordEvaluationRemarksCo
 
 export async function calculatePerformanceScore(performanceEvaluationId: number): Promise<void> {
   await ApiService.post(`performance/${performanceEvaluationId}/calculate-score`, {});
+}
+
+export async function submitReview(id: number, command: SubmitReviewRequest): Promise<void> {
+  await ApiService.put(performanceUrls.submitReview(id), command);
+}
+
+export async function fetchReviewHistory(id: number): Promise<ReviewHistoryDto[]> {
+  const res = await ApiService.get<ReviewHistoryDto[]>(performanceUrls.reviewHistory(id));
+  return res.data ?? [];
 }

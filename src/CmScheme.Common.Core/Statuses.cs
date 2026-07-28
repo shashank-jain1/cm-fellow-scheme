@@ -88,6 +88,22 @@ public static class Statuses
         public const string Poor = "Poor";
     }
 
+    public static class ReviewLevel
+    {
+        public const string Fellow = "Fellow";
+        public const string Coordinator = "Coordinator";
+        public const string Admin = "Admin";
+    }
+
+    public static class ReviewStatus
+    {
+        public const string Draft = "Draft";
+        public const string Submitted = "Submitted";
+        public const string UnderReview = "Under Review";
+        public const string Approved = "Approved";
+        public const string Rejected = "Rejected";
+    }
+
     public static class Attendance
     {
         public const string Present = "Present";

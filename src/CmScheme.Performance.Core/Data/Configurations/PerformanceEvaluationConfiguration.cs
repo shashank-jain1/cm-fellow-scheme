@@ -21,5 +21,7 @@ public class PerformanceEvaluationConfiguration : IEntityTypeConfiguration<Perfo
         builder.Property(e => e.PerformanceStatus).HasMaxLength(50);
         builder.Property(e => e.EvaluationRemarks).HasMaxLength(2000);
         builder.Property(e => e.EvaluatedBy).HasMaxLength(200);
+        builder.Property(e => e.ReviewLevel).HasMaxLength(20).HasDefaultValue("Draft");
+        builder.Property(e => e.ReviewStatus).HasMaxLength(20).HasDefaultValue("Draft");
     }
 }

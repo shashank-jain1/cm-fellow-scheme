@@ -6,4 +6,5 @@ namespace CmScheme.Performance.Core.Data;
 public interface IPerformanceQueryDbContext
 {
     IQueryable<PerformanceEvaluation> PerformanceEvaluations { get; }
+    IQueryable<PerformanceReviewHistory> PerformanceReviewHistories { get; }
 }

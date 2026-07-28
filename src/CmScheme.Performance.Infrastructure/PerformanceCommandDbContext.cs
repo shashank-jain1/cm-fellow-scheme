@@ -14,6 +14,7 @@ public class PerformanceCommandDbContext : IPerformanceCommandDbContext
     }
 
     public DbSet<PerformanceEvaluation> PerformanceEvaluations => _dbContext.PerformanceEvaluations;
+    public DbSet<PerformanceReviewHistory> PerformanceReviewHistories => _dbContext.PerformanceReviewHistories;
 
     public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {

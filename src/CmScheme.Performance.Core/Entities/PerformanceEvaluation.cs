@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace CmScheme.Performance.Core.Entities;
 
 public class PerformanceEvaluation
@@ -27,6 +29,10 @@ public class PerformanceEvaluation
     public string? EvaluationRemarks { get; set; }
     public string? EvaluatedBy { get; set; }
     public DateTime? EvaluationDate { get; set; }
+    [MaxLength(20)]
+    public string ReviewLevel { get; set; } = "Draft";
+    [MaxLength(20)]
+    public string ReviewStatus { get; set; } = "Draft";
     public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
     public int? CreatedBy { get; set; }
     public DateTime ModifiedOn { get; set; } = DateTime.UtcNow;
