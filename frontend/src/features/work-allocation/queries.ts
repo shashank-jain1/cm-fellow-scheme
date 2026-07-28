@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { workAllocationApi, taskProgressApi, surveyDetailApi } from './api';
 import type { WorkAllocationFormData } from './types';
+import type { RecordSurveyPayload } from './api';
 
 export const useWorkAllocations = () => {
   return useQuery({
@@ -72,6 +73,18 @@ export const useTaskProgressByWorkAllocation = (workAllocationId: number) => {
       return res.data ?? [];
     },
     enabled: !!workAllocationId,
+  });
+};
+
+export const useRecordSurveySubmission = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ taskProgressId, data }: { taskProgressId: number; data: RecordSurveyPayload }) =>
+      taskProgressApi.recordSurveySubmission(taskProgressId, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['task-progress'] });
+      queryClient.invalidateQueries({ queryKey: ['survey-details'] });
+    },
   });
 };
 

@@ -9,4 +9,5 @@ public abstract class TrainingDbContext(DbContextOptions options)
 {
     public DbSet<TrainingSchedule> TrainingSchedules => Set<TrainingSchedule>();
     public DbSet<TrainingParticipant> TrainingParticipants => Set<TrainingParticipant>();
+    public DbSet<MeetingParticipant> MeetingParticipants => Set<MeetingParticipant>();
 }

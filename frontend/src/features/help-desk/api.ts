@@ -12,6 +12,15 @@ export async function fetchTickets(role?: string, applicantId?: number): Promise
   return res.data ?? [];
 }
 
+export async function listTicketsByRole(role: string, applicantId?: number): Promise<TicketDto[]> {
+  let url = helpDeskUrls.tickets();
+  const params: string[] = [`role=${encodeURIComponent(role)}`];
+  if (applicantId) params.push(`applicantId=${applicantId}`);
+  url += `?${params.join('&')}`;
+  const res = await ApiService.get<TicketDto[]>(url);
+  return res.data ?? [];
+}
+
 export async function fetchTicketDetail(id: number): Promise<TicketDto> {
   const res = await ApiService.get<TicketDto>(helpDeskUrls.ticketDetail(id));
   return res.data!;
@@ -28,4 +37,8 @@ export async function resolveTicket(id: number, resolutionRemarks: string): Prom
 
 export async function escalateTicket(id: number): Promise<void> {
   await ApiService.put(helpDeskUrls.escalate(), { ticketId: id });
+}
+
+export async function closeTicket(id: number, resolutionRemarks: string): Promise<void> {
+  await ApiService.put(helpDeskUrls.close(), { ticketId: id, resolutionRemarks });
 }

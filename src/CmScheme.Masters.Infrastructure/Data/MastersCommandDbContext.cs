@@ -19,6 +19,8 @@ public sealed class MastersCommandDbContext : MastersDbContext, IMastersCommandD
     DbSet<Project> IMastersCommandDbContext.Projects => Projects;
     DbSet<Work> IMastersCommandDbContext.Works => Works;
     DbSet<LookupMaster> IMastersCommandDbContext.LookupMasters => LookupMasters;
+    DbSet<TrainingSchedule> IMastersCommandDbContext.TrainingSchedules => TrainingSchedules;
+    DbSet<Department> IMastersCommandDbContext.Departments => Departments;
 
     int IMastersCommandDbContext.SaveChanges()
     {

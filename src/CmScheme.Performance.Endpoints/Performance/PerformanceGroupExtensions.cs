@@ -13,6 +13,7 @@ public static class PerformanceGroupExtensions
         group.MapPut("/rating", RecordRating.Handle);
         group.MapPut("/remarks", RecordRemarks.Handle);
         group.MapGet("/list", List.Handle);
+        group.MapPost("/{performanceEvaluationId:int}/calculate-score", CalculateScore.Handle);
 
         return builder;
     }

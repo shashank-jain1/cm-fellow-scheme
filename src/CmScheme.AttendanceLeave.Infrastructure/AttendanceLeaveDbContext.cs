@@ -11,6 +11,7 @@ public class AttendanceLeaveDbContext : BaseDbContext, IAttendanceLeaveCommandDb
     public DbSet<Attendance> Attendances => Set<Attendance>();
     public DbSet<LeaveApplication> LeaveApplications => Set<LeaveApplication>();
     public DbSet<LeaveBalance> LeaveBalances => Set<LeaveBalance>();
+    public DbSet<PayrollAttendanceSummary> PayrollAttendanceSummaries => Set<PayrollAttendanceSummary>();
 
     public AttendanceLeaveDbContext(DbContextOptions<AttendanceLeaveDbContext> options)
         : base(options)

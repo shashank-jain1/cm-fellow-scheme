@@ -11,6 +11,7 @@ public static class ExitGroupExtensions
 
         group.MapPost("/readiness", SubmitReadiness.Handle);
         group.MapPut("/compliance", VerifyCompliance.Handle);
+        group.MapPut("/{exitRecordId:int}/close-archive", CloseArchive.Handle);
 
         return builder;
     }

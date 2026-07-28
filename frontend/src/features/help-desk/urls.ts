@@ -5,6 +5,7 @@ const helpDeskUrls = {
   raiseTicket: () => 'tickets',
   resolve: () => 'tickets/resolve',
   escalate: () => 'tickets/escalate',
+  close: () => 'tickets/close',
 };
 
 export default helpDeskUrls;

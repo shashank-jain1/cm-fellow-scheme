@@ -27,4 +27,8 @@ public class PerformanceEvaluation
     public string? EvaluationRemarks { get; set; }
     public string? EvaluatedBy { get; set; }
     public DateTime? EvaluationDate { get; set; }
+    public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
+    public int? CreatedBy { get; set; }
+    public DateTime ModifiedOn { get; set; } = DateTime.UtcNow;
+    public int? ModifiedBy { get; set; }
 }

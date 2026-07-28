@@ -6,10 +6,19 @@ namespace CmScheme.Training.Endpoints.Meetings;
 
 public static class MeetingGroupExtensions
 {
-    public static IEndpointRouteBuilder MapMeetingGroup(this IEndpointRouteBuilder builder)
+    public static IEndpointRouteBuilder MapMeetingEndpoints(this IEndpointRouteBuilder builder)
     {
-        return builder.MapGroup("training/meetings")
+        RouteGroupBuilder group = builder.MapGroup("training/meetings")
             .WithDisplayName("Meetings")
             .WithTags("Meetings");
+
+        group.MapGet("/", ListMeetings.List);
+        group.MapGet("/{trainingScheduleId:int}", GetMeeting.GetById);
+        group.MapPost("/", CreateMeeting.Create);
+        group.MapPut("/{trainingScheduleId:int}", UpdateMeeting.Update);
+        group.MapPost("/{trainingScheduleId:int}/attachment", UploadMeetingAttachment.Upload);
+        group.MapPost("/{trainingScheduleId:int}/mom", UploadMom.Upload);
+
+        return builder;
     }
 }

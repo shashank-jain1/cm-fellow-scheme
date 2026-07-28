@@ -2,16 +2,20 @@ import type { ChangeEvent } from 'react';
 import { InputTextarea } from 'primereact/inputtextarea';
 import { InputText } from 'primereact/inputtext';
 import FormSelect from '../../../../shared/components/FormSelect';
-import { useDivisions, useDistricts, useBlocks, useGramPanchayats } from '../../../../shared/hooks/useMasters';
+import { useStates, useDivisions, useDistricts, useBlocks, useGramPanchayats } from '../../../../shared/hooks/useMasters';
 import type { StepProps } from '../form.hook';
 
 export default function AddressLocationFields({ formData, update }: StepProps) {
-  const stateId = 1;
-  const { data: divisions, isLoading: divLoading } = useDivisions(stateId);
+  const { data: states } = useStates();
+  const selectedStateId = states?.[0]?.stateId ?? null;
+  const { data: divisions, isLoading: divLoading } = useDivisions(selectedStateId);
+
   const divisionId = formData.divisionId ? parseInt(formData.divisionId, 10) : null;
   const { data: districts, isLoading: distLoading } = useDistricts(divisionId);
+
   const districtId = formData.districtId ? parseInt(formData.districtId, 10) : null;
   const { data: blocks, isLoading: blockLoading } = useBlocks(districtId);
+
   const blockId = formData.blockId ? parseInt(formData.blockId, 10) : null;
   const { data: gps, isLoading: gpLoading } = useGramPanchayats(blockId);
 
@@ -73,6 +77,7 @@ export default function AddressLocationFields({ formData, update }: StepProps) {
           options={districtOptions}
           placeholder="Select district"
           loading={distLoading}
+          disabled={!divisionId}
         />
       </div>
       <div className="form-field">
@@ -86,6 +91,7 @@ export default function AddressLocationFields({ formData, update }: StepProps) {
           options={blockOptions}
           placeholder="Select block"
           loading={blockLoading}
+          disabled={!districtId}
         />
       </div>
       <div className="form-field">
@@ -96,6 +102,7 @@ export default function AddressLocationFields({ formData, update }: StepProps) {
           options={gpOptions}
           placeholder="Select gram panchayat"
           loading={gpLoading}
+          disabled={!blockId}
         />
       </div>
       <div className="form-field">

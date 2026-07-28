@@ -30,13 +30,48 @@ export interface SubmitRegistrationPayload {
   declarationAccepted: boolean;
 }
 
+export interface VerifyOtpPayload {
+  mobileNumber: string;
+  otpCode: string;
+}
+
+export interface RegistrationListItem {
+  applicantId: number;
+  firstName: string;
+  lastName: string;
+  mobileNumber: string;
+  emailId: string;
+  status: string;
+  createdOn: string;
+}
+
 export const registrationApi = {
-  getFellows: () => ApiService.get<Fellow[]>(REGISTRATION_URLS.FELLOWS),
-  getFellow: (id: number) => ApiService.get<Fellow>(REGISTRATION_URLS.FELLOW_BY_ID(id)),
   submitRegistration: (data: SubmitRegistrationPayload) =>
     ApiService.post<number>(REGISTRATION_URLS.FELLOWS, data),
-  updateFellow: (id: number, data: Partial<Fellow>) => ApiService.put<Fellow>(REGISTRATION_URLS.FELLOW_BY_ID(id), data),
-  deleteFellow: (id: number) => ApiService.delete(REGISTRATION_URLS.FELLOW_BY_ID(id)),
+
+  verifyMobileOtp: (applicantId: number, data: VerifyOtpPayload) =>
+    ApiService.put<void>(`${REGISTRATION_URLS.FELLOWS}/${applicantId}/verify-otp`, data),
+
+  listRegistrations: (params?: { searchTerm?: string; status?: string; pageNumber?: number; pageSize?: number }) => {
+    const query = new URLSearchParams();
+    if (params?.searchTerm) query.set('searchTerm', params.searchTerm);
+    if (params?.status) query.set('status', params.status);
+    if (params?.pageNumber) query.set('pageNumber', String(params.pageNumber));
+    if (params?.pageSize) query.set('pageSize', String(params.pageSize));
+    const qs = query.toString();
+    return ApiService.get<{ items: RegistrationListItem[]; totalCount: number }>(
+      qs ? `${REGISTRATION_URLS.FELLOWS}?${qs}` : REGISTRATION_URLS.FELLOWS
+    );
+  },
+
+  approveRegistration: (applicantId: number, approvedBy: number) =>
+    ApiService.put<void>(`${REGISTRATION_URLS.FELLOWS}/${applicantId}/approve`, { approvedBy }),
+
+  rejectRegistration: (applicantId: number, rejectedBy: number, reason: string) =>
+    ApiService.put<void>(`${REGISTRATION_URLS.FELLOWS}/${applicantId}/reject`, { rejectedBy, reason }),
+
+  getRegistrationById: (id: number) =>
+    ApiService.get<Fellow>(REGISTRATION_URLS.FELLOW_BY_ID(id)),
 
   getDivisions: () => ApiService.get<Division[]>(REGISTRATION_URLS.DIVISIONS),
   getDistricts: (divisionId?: number) =>

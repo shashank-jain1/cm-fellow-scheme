@@ -9,7 +9,7 @@ public sealed class MeetingEndpoints : IApiEndpoint
 {
     public void Configure(IEndpointRouteBuilder builder)
     {
-        IEndpointRouteBuilder group = builder.MapMeetingGroup();
+        IEndpointRouteBuilder group = builder.MapMeetingEndpoints();
 
         group.MapGet("", ListMeetings.List)
             .WithTags("Meetings")

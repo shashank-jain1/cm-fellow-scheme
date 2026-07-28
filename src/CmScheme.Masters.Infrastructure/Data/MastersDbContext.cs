@@ -18,6 +18,8 @@ public abstract class MastersDbContext : DbContext
     public DbSet<Project> Projects => Set<Project>();
     public DbSet<Work> Works => Set<Work>();
     public DbSet<LookupMaster> LookupMasters => Set<LookupMaster>();
+    public DbSet<TrainingSchedule> TrainingSchedules => Set<TrainingSchedule>();
+    public DbSet<Department> Departments => Set<Department>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

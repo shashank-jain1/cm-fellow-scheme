@@ -12,6 +12,7 @@ public static class TaskProgressGroupExtensions
         group.MapPost("/", Create.Handle);
         group.MapGet("/{taskProgressId:int}", Get.Handle);
         group.MapGet("/by-work-allocation/{workAllocationId:int}", List.Handle);
+        group.MapPost("/{taskProgressId:int}/survey", RecordSurvey.Handle);
 
         return builder;
     }

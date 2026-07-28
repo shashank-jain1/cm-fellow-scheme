@@ -9,7 +9,7 @@ public sealed class WorkEndpoints : IApiEndpoint
 {
     public void Configure(IEndpointRouteBuilder builder)
     {
-        IEndpointRouteBuilder group = builder.MapWorkGroup();
+        IEndpointRouteBuilder group = builder.MapWorkEndpoints();
 
         group.MapGet("/", ListWorks.List)
             .WithTags("Works")

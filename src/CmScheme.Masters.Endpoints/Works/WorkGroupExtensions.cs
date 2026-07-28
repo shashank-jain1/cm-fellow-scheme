@@ -6,10 +6,17 @@ namespace CmScheme.Masters.Endpoints.Works;
 
 public static class WorkGroupExtensions
 {
-    public static IEndpointRouteBuilder MapWorkGroup(this IEndpointRouteBuilder builder)
+    public static IEndpointRouteBuilder MapWorkEndpoints(this IEndpointRouteBuilder builder)
     {
-        return builder.MapGroup("masters/works")
+        RouteGroupBuilder group = builder.MapGroup("masters/works")
             .WithDisplayName("Work Masters")
             .WithTags("Masters");
+
+        group.MapGet("/", ListWorks.List);
+        group.MapGet("/{workId:int}", GetWork.GetById);
+        group.MapPost("/", CreateWork.Create);
+        group.MapPut("/{workId:int}", UpdateWork.Update);
+
+        return builder;
     }
 }

@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { fetchCertificates, fetchCertificateDetail, applyForCertificate, approveCertificate, rejectCertificate, submitExitReadiness } from './api';
+import { fetchCertificates, fetchCertificateDetail, applyForCertificate, approveCertificate, rejectCertificate, submitExitReadiness, generateCertificate, closeAndArchiveRecord } from './api';
 import type { CertificateFormData } from './types';
 import type { ExitReadinessPayload } from './api';
 
@@ -48,10 +48,31 @@ export function useRejectCertificate() {
   });
 }
 
+export function useGenerateCertificate() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (certificateId: number) => generateCertificate(certificateId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['certificates'] });
+    },
+  });
+}
+
 export function useSubmitExitReadiness() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (payload: ExitReadinessPayload) => submitExitReadiness(payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['certificates'] });
+    },
+  });
+}
+
+export function useCloseAndArchiveRecord() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ exitRecordId, approvedBy }: { exitRecordId: number; approvedBy: number }) =>
+      closeAndArchiveRecord(exitRecordId, approvedBy),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['certificates'] });
     },

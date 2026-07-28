@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { fetchPerformanceSummary, fetchPerformanceDetail, recordSupervisorRating, recordEvaluationRemarks } from './api';
+import { fetchPerformanceSummary, fetchPerformanceDetail, recordSupervisorRating, recordEvaluationRemarks, calculatePerformanceScore } from './api';
 
 export function usePerformanceSummary() {
   return useQuery({
@@ -30,6 +30,16 @@ export function useRecordEvaluationRemarks() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: recordEvaluationRemarks,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['performance'] });
+    },
+  });
+}
+
+export function useCalculatePerformanceScore() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (performanceEvaluationId: number) => calculatePerformanceScore(performanceEvaluationId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['performance'] });
     },

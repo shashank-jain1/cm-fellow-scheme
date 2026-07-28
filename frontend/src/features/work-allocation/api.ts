@@ -1,6 +1,16 @@
 import ApiService from '../../services/ApiService';
 import type { WorkAllocationFormData, WorkAllocationDto, TaskProgressDto, SurveyDetailDto } from './types';
 
+export interface RecordSurveyPayload {
+  applicantId: number;
+  surveyPersonName: string;
+  mobileNumber: string;
+  panchayatName: string;
+  villageName: string;
+  latitude: number;
+  longitude: number;
+}
+
 export const workAllocationApi = {
   getAll: () => ApiService.get<WorkAllocationDto[]>('work-allocations/list'),
   getById: (id: number) => ApiService.get<WorkAllocationDto>(`work-allocations/${id}`),
@@ -14,6 +24,8 @@ export const taskProgressApi = {
   getAll: () => ApiService.get<TaskProgressDto[]>('task-progresses'),
   getByWorkAllocationId: (workAllocationId: number) =>
     ApiService.get<TaskProgressDto[]>(`task-progresses/by-work-allocation/${workAllocationId}`),
+  recordSurveySubmission: (taskProgressId: number, data: RecordSurveyPayload) =>
+    ApiService.post<void>(`task-progresses/${taskProgressId}/survey`, data),
 };
 
 export const surveyDetailApi = {

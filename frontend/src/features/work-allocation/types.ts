@@ -31,6 +31,7 @@ export interface TaskProgressDto {
   workProject: string;
   numberOfSurveys: number;
   completedSurveys: number;
+  pendingSurveys: number;
   completionPercentage: number;
   workStatus: string;
 }

@@ -1,10 +1,12 @@
 using FluentValidation;
+using Microsoft.EntityFrameworkCore;
+using CmScheme.AttendanceLeave.Core.Data;
 
 namespace CmScheme.AttendanceLeave.Application.Features.Leave.ApplyLeave;
 
 public sealed class ApplyLeaveCommandValidator : AbstractValidator<ApplyLeaveCommand>
 {
-    public ApplyLeaveCommandValidator()
+    public ApplyLeaveCommandValidator(IAttendanceLeaveCommandDbContext dbContext)
     {
         RuleFor(x => x.ApplicantId)
             .GreaterThan(0).WithMessage("ApplicantId must be greater than 0.");
@@ -30,5 +32,18 @@ public sealed class ApplyLeaveCommandValidator : AbstractValidator<ApplyLeaveCom
         RuleFor(x => x.CreatedBy)
             .NotEmpty().WithMessage("CreatedBy is required.")
             .MaximumLength(200).WithMessage("CreatedBy must not exceed 200 characters.");
+
+        RuleFor(x => x)
+            .MustAsync(async (command, cancellationToken) =>
+            {
+                bool hasExistingLeave = await dbContext.LeaveApplications
+                    .AnyAsync(la =>
+                        la.ApplicantId == command.ApplicantId &&
+                        la.FromDate <= command.ToDate &&
+                        la.ToDate >= command.FromDate,
+                        cancellationToken);
+                return !hasExistingLeave;
+            })
+            .WithMessage("Leave application already exists for the selected date range. Same-date leave cannot be applied twice.");
     }
 }

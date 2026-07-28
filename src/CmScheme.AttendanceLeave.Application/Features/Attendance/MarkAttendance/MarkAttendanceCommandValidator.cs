@@ -13,6 +13,9 @@ public sealed class MarkAttendanceCommandValidator : AbstractValidator<MarkAtten
         RuleFor(x => x.CaptureFacePath)
             .NotEmpty().WithMessage("CaptureFacePath is required.")
             .MaximumLength(500).WithMessage("CaptureFacePath must not exceed 500 characters.");
+        RuleFor(x => x.FaceMatchPercentage)
+            .NotNull().WithMessage("FaceMatchPercentage is required.")
+            .GreaterThanOrEqualTo(80m).WithMessage("Face match must be at least 80% for attendance verification.");
         RuleFor(x => x.FaceVerificationStatus)
             .NotEmpty().WithMessage("FaceVerificationStatus is required.")
             .MaximumLength(50).WithMessage("FaceVerificationStatus must not exceed 50 characters.");

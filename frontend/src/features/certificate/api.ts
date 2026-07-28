@@ -30,6 +30,11 @@ export async function downloadCertificate(id: number): Promise<void> {
   window.open(`${API_BASE}/${certificateUrls.download(id)}`, '_blank');
 }
 
+export async function generateCertificate(certificateId: number): Promise<string> {
+  const res = await ApiService.post<string>(`certificates/${certificateId}/generate`, {});
+  return res.data ?? '';
+}
+
 export interface ExitReadinessPayload {
   applicantId: number;
   checklistItems: string[];
@@ -37,4 +42,8 @@ export interface ExitReadinessPayload {
 
 export async function submitExitReadiness(payload: ExitReadinessPayload): Promise<void> {
   await ApiService.post('certificates/exit/readiness', payload);
+}
+
+export async function closeAndArchiveRecord(exitRecordId: number, approvedBy: number): Promise<void> {
+  await ApiService.put(`certificates/exit/${exitRecordId}/close-archive`, { approvedBy });
 }

@@ -15,6 +15,8 @@ public interface IMastersCommandDbContext
     DbSet<Project> Projects { get; }
     DbSet<Work> Works { get; }
     DbSet<LookupMaster> LookupMasters { get; }
+    DbSet<TrainingSchedule> TrainingSchedules { get; }
+    DbSet<Department> Departments { get; }
     int SaveChanges();
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

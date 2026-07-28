@@ -19,3 +19,7 @@ export async function recordSupervisorRating(command: RecordSupervisorRatingComm
 export async function recordEvaluationRemarks(command: RecordEvaluationRemarksCommand): Promise<void> {
   await ApiService.put(performanceUrls.recordRemarks(), command);
 }
+
+export async function calculatePerformanceScore(performanceEvaluationId: number): Promise<void> {
+  await ApiService.post(`performance/${performanceEvaluationId}/calculate-score`, {});
+}

@@ -9,6 +9,7 @@ public interface ITrainingCommandDbContext
     DatabaseFacade Database { get; }
     DbSet<TrainingSchedule> TrainingSchedules { get; }
     DbSet<TrainingParticipant> TrainingParticipants { get; }
+    DbSet<MeetingParticipant> MeetingParticipants { get; }
     int SaveChanges();
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }
