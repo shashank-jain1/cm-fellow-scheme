@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import { ThemeSwitcher } from '../theme/ThemeSwitcher';
@@ -15,12 +16,18 @@ const breadcrumbMap: Record<string, string> = {
 
 export default function AppLayout() {
   const location = useLocation();
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const segments = location.pathname.split('/').filter(Boolean);
   const crumbs = segments.map((seg) => breadcrumbMap[seg] || seg);
 
   return (
-    <div className="app-layout">
-      <Sidebar />
+    <div
+      className="app-layout"
+      style={{
+        '--sidebar-current-width': sidebarCollapsed ? 'var(--sidebar-collapsed-width)' : 'var(--sidebar-width)',
+      } as React.CSSProperties}
+    >
+      <Sidebar collapsed={sidebarCollapsed} onToggleCollapsed={setSidebarCollapsed} />
       <div className="app-main">
         <header className="app-header">
           <div className="app-breadcrumb">

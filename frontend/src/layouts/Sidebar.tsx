@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../features/auth';
 
@@ -23,6 +23,7 @@ const attendanceSubItems = [
 
 const adminNavItems = [
   { path: '/admin/users', label: 'User Management', icon: 'pi pi-users' },
+  { path: '/admin/documents', label: 'Document Verification', icon: 'pi pi-file-check' },
 ];
 
 const masterSubItems = [
@@ -32,17 +33,33 @@ const masterSubItems = [
   { path: '/masters/training-schedules', label: 'Training Schedule', icon: 'pi pi-calendar' },
 ];
 
-export default function Sidebar() {
+interface SidebarProps {
+  collapsed: boolean;
+  onToggleCollapsed: (collapsed: boolean) => void;
+}
+
+export default function Sidebar({ collapsed, onToggleCollapsed }: SidebarProps) {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, logout } = useAuth();
 
-  const [collapsed, setCollapsed] = useState(false);
   const [mastersExpanded, setMastersExpanded] = useState(() => location.pathname.startsWith('/masters'));
   const [attendanceExpanded, setAttendanceExpanded] = useState(() => location.pathname.startsWith('/attendance'));
 
   const isMastersActive = location.pathname.startsWith('/masters');
   const isAttendanceActive = location.pathname.startsWith('/attendance');
+
+  useEffect(() => {
+    if (isAttendanceActive) {
+      setAttendanceExpanded(true);
+    }
+  }, [isAttendanceActive]);
+
+  useEffect(() => {
+    if (isMastersActive) {
+      setMastersExpanded(true);
+    }
+  }, [isMastersActive]);
 
   const handleLogout = () => {
     logout();
@@ -51,7 +68,7 @@ export default function Sidebar() {
 
   return (
     <aside
-      className="sidebar"
+      className={`sidebar ${collapsed ? 'sidebar--collapsed' : ''}`}
       style={{
         width: collapsed ? 'var(--sidebar-collapsed-width)' : 'var(--sidebar-width)',
         transition: 'width var(--transition-slow)',
@@ -71,7 +88,8 @@ export default function Sidebar() {
 
       <button
         className="sidebar-toggle"
-        onClick={() => setCollapsed(!collapsed)}
+        type="button"
+        onClick={() => onToggleCollapsed(!collapsed)}
         aria-label="Toggle sidebar"
       >
         <i className={`pi ${collapsed ? 'pi-angle-right' : 'pi-angle-left'}`} />
@@ -98,9 +116,12 @@ export default function Sidebar() {
         })}
 
         <button
-          className={`sidebar-link ${isAttendanceActive && !attendanceExpanded ? 'active' : ''}`}
+          type="button"
+          className={`sidebar-link ${isAttendanceActive ? 'active' : ''}`}
           onClick={() => setAttendanceExpanded(!attendanceExpanded)}
           title={collapsed ? 'Attendance' : undefined}
+          aria-expanded={attendanceExpanded}
+          aria-controls="attendance-submenu"
           style={{ width: '100%', border: 'none', background: 'none', cursor: 'pointer', textAlign: 'left' }}
         >
           <div className="sidebar-link-icon">
@@ -118,7 +139,7 @@ export default function Sidebar() {
           {isAttendanceActive && <div className="sidebar-active-indicator" />}
         </button>
         {!collapsed && attendanceExpanded && (
-          <div style={{ paddingLeft: 20 }}>
+          <div id="attendance-submenu" style={{ paddingLeft: 18 }}>
             {attendanceSubItems.map((item) => {
               const isActive = location.pathname === item.path;
               return (
@@ -162,9 +183,12 @@ export default function Sidebar() {
               );
             })}
             <button
-              className={`sidebar-link ${isMastersActive && !mastersExpanded ? 'active' : ''}`}
+              type="button"
+              className={`sidebar-link ${isMastersActive ? 'active' : ''}`}
               onClick={() => setMastersExpanded(!mastersExpanded)}
               title={collapsed ? 'Masters' : undefined}
+              aria-expanded={mastersExpanded}
+              aria-controls="masters-submenu"
               style={{ width: '100%', border: 'none', background: 'none', cursor: 'pointer', textAlign: 'left' }}
             >
               <div className="sidebar-link-icon">
@@ -182,7 +206,7 @@ export default function Sidebar() {
               {isMastersActive && <div className="sidebar-active-indicator" />}
             </button>
             {!collapsed && mastersExpanded && (
-              <div style={{ paddingLeft: 20 }}>
+              <div id="masters-submenu" style={{ paddingLeft: 18 }}>
                 {masterSubItems.map((item) => {
                   const isActive = location.pathname === item.path;
                   return (

@@ -110,6 +110,9 @@ export default function LoginPage() {
                 <input type="checkbox" />
                 <span>Remember me</span>
               </label>
+              <a href="/forgot-password" style={{ fontSize: 13, color: 'var(--accent-primary)' }}>
+                Forgot Password?
+              </a>
             </div>
 
             <button type="submit" className="login-btn" disabled={loading}>

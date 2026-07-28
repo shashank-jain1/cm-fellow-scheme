@@ -2,6 +2,7 @@ import { Button } from 'primereact/button';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import { useRegistrationForm } from '../components/form.hook';
 import PersonalInfoStep from '../components/PersonalInfoStep';
+import OtpVerificationStep from '../components/OtpVerificationStep';
 import AddressInfoStep from '../components/AddressInfoStep';
 import TrainingInfoStep from '../components/TrainingInfoStep';
 import EducationalDetailsStep from '../components/EducationalDetailsStep';
@@ -10,6 +11,7 @@ import DeclarationStep from '../components/DeclarationStep';
 
 const steps = [
   { label: 'Personal Info', icon: 'pi pi-user' },
+  { label: 'Verify OTP', icon: 'pi pi-shield' },
   { label: 'Address', icon: 'pi pi-map-marker' },
   { label: 'Training', icon: 'pi pi-book' },
   { label: 'Education', icon: 'pi pi-graduation-cap' },
@@ -61,11 +63,12 @@ export default function RegistrationWizard() {
 
       <div className="glass-card" style={{ padding: 32 }}>
         {currentStep === 0 && <PersonalInfoStep formData={formData} update={update} />}
-        {currentStep === 1 && <AddressInfoStep formData={formData} update={update} />}
-        {currentStep === 2 && <TrainingInfoStep formData={formData} update={update} />}
-        {currentStep === 3 && <EducationalDetailsStep formData={formData} update={update} />}
-        {currentStep === 4 && <DocumentUploadStep />}
-        {currentStep === 5 && <DeclarationStep formData={formData} update={update} />}
+        {currentStep === 1 && <OtpVerificationStep formData={formData} update={update} />}
+        {currentStep === 2 && <AddressInfoStep formData={formData} update={update} />}
+        {currentStep === 3 && <TrainingInfoStep formData={formData} update={update} />}
+        {currentStep === 4 && <EducationalDetailsStep formData={formData} update={update} />}
+        {currentStep === 5 && <DocumentUploadStep />}
+        {currentStep === 6 && <DeclarationStep formData={formData} update={update} />}
 
         <div
           style={{
@@ -76,31 +79,29 @@ export default function RegistrationWizard() {
             borderTop: '1px solid var(--border-color)',
           }}
         >
-          <Button
-            label="Previous"
-            icon="pi pi-arrow-left"
+          <button
             className="btn btn-secondary"
             onClick={prev}
             disabled={currentStep === 0}
-          />
+          >
+            <i className="pi pi-arrow-left" /> Previous
+          </button>
           {currentStep < steps.length - 1 ? (
-            <Button
-              label="Next"
-              icon="pi pi-arrow-right"
-              iconPos="right"
+            <button
               className="btn btn-primary"
               onClick={next}
-            />
+            >
+              Next <i className="pi pi-arrow-right" />
+            </button>
           ) : (
-            <Button
-              label={isSubmitting ? 'Submitting...' : 'Submit Registration'}
-              icon={isSubmitting ? undefined : 'pi pi-check'}
+            <button
               className="btn btn-primary"
               onClick={handleSubmit}
               disabled={!formData.declarationAccepted || isSubmitting}
             >
-              {isSubmitting && <ProgressSpinner style={{ width: 16, height: 16, marginRight: 8 }} />}
-            </Button>
+              {isSubmitting ? <ProgressSpinner style={{ width: 16, height: 16 }} /> : <i className="pi pi-check" />}
+              {isSubmitting ? ' Submitting...' : ' Submit Registration'}
+            </button>
           )}
         </div>
       </div>

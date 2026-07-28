@@ -1,11 +1,12 @@
 .app-layout {
   display: flex;
   min-height: 100vh;
+  --sidebar-current-width: var(--sidebar-width);
 }
 
 .app-main {
   flex: 1;
-  margin-left: var(--sidebar-width);
+  margin-left: var(--sidebar-current-width);
   transition: margin-left var(--transition-slow);
   display: flex;
   flex-direction: column;
@@ -27,6 +28,23 @@
   border-right: 1px solid var(--border-color);
   overflow: hidden;
   transition: width var(--transition-slow);
+}
+
+.sidebar--collapsed .sidebar-brand {
+  justify-content: center;
+}
+
+.sidebar--collapsed .sidebar-nav {
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.sidebar--collapsed .sidebar-footer {
+  justify-content: center;
+}
+
+.sidebar--collapsed .sidebar-user {
+  justify-content: center;
 }
 
 .sidebar-brand {

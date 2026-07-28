@@ -24,6 +24,9 @@ import { PerformanceReviewGrid, PerformanceDetailPage } from './features/perform
 import { ApplyCertificatePage, CertificateApprovalPage, ExitManagementPage } from './features/certificate';
 import { RaiseTicketPage, TicketQueuePage, TicketDetailPage } from './features/help-desk';
 import { LocationsPage, ProjectsPage, WorksPage, TrainingSchedulePage } from './features/masters';
+import DocumentVerificationPage from './features/registration/pages/DocumentVerificationPage';
+import ForgotPasswordPage from './features/registration/pages/ForgotPasswordPage';
+import ResetPasswordPage from './features/registration/pages/ResetPasswordPage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -43,11 +46,14 @@ export default function App() {
           <AuthProvider>
             <Routes>
               <Route path="/login" element={<LoginPage />} />
+              <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+              <Route path="/reset-password" element={<ResetPasswordPage />} />
               <Route path="/" element={<ProtectedRoute><AppLayout /></ProtectedRoute>}>
                 <Route index element={<Navigate to="/dashboard" replace />} />
                 <Route path="dashboard" element={<AdminDashboardPage />} />
                 <Route path="registration" element={<RegistrationWizard />} />
                 <Route path="admin/users" element={<UserManagementPage />} />
+                <Route path="admin/documents" element={<DocumentVerificationPage />} />
                 <Route path="training" element={<ActivityCalendar />} />
                 <Route path="training/new" element={<CreateActivityForm />} />
                 <Route path="work-allocation" element={<WorkAllocationPage />} />

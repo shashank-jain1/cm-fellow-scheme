@@ -79,4 +79,10 @@ export const registrationApi = {
   getBlocks: (districtId?: number) =>
     ApiService.get<Block[]>(districtId ? `${REGISTRATION_URLS.BLOCKS}?districtId=${districtId}` : REGISTRATION_URLS.BLOCKS),
   getProjects: () => ApiService.get<Project[]>(REGISTRATION_URLS.PROJECTS),
+
+  forgotPassword: (email: string) =>
+    ApiService.post<{ message: string; resetToken?: string }>(REGISTRATION_URLS.FORGOT_PASSWORD, { email }),
+
+  resetPassword: (email: string, newPassword: string) =>
+    ApiService.post<void>(REGISTRATION_URLS.RESET_PASSWORD, { email, newPassword }),
 };

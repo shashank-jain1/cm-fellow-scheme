@@ -18,6 +18,8 @@ public static class UserAccountGroupExtensions
         group.MapCreateEndpoint();
         group.MapAssignRoleEndpoint();
         group.MapDeactivateEndpoint();
+        group.MapForgotPasswordEndpoint();
+        group.MapResetPasswordEndpoint();
 
         return builder;
     }
