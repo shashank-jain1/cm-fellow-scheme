@@ -14,6 +14,7 @@ interface Props {
   trainerName: string;
   trainerMobile: string;
   attendanceRequired: boolean;
+  certificateRequired: boolean;
   trainingMaterialFile: File | null;
   onTrainingTitleChange: (v: string) => void;
   onTrainingCategoryChange: (v: string) => void;
@@ -22,6 +23,7 @@ interface Props {
   onTrainerNameChange: (v: string) => void;
   onTrainerMobileChange: (v: string) => void;
   onAttendanceRequiredChange: (v: boolean) => void;
+  onCertificateRequiredChange: (v: boolean) => void;
   onTrainingMaterialChange: (v: File | null) => void;
 }
 
@@ -33,6 +35,7 @@ export default function TrainingFieldsCard({
   trainerName,
   trainerMobile,
   attendanceRequired,
+  certificateRequired,
   trainingMaterialFile,
   onTrainingTitleChange,
   onTrainingCategoryChange,
@@ -41,6 +44,7 @@ export default function TrainingFieldsCard({
   onTrainerNameChange,
   onTrainerMobileChange,
   onAttendanceRequiredChange,
+  onCertificateRequiredChange,
   onTrainingMaterialChange,
 }: Props) {
   const categoryOptions = useLookupOptions('TrainingCategory');
@@ -120,6 +124,18 @@ export default function TrainingFieldsCard({
             />
             <span style={{ fontSize: 13, color: 'var(--text-secondary)' }}>
               {attendanceRequired ? 'Yes' : 'No'}
+            </span>
+          </div>
+        </div>
+        <div className="form-field">
+          <label>Certificate Required</label>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, height: 40 }}>
+            <InputSwitch
+              checked={certificateRequired}
+              onChange={(e) => onCertificateRequiredChange(e.value ?? false)}
+            />
+            <span style={{ fontSize: 13, color: 'var(--text-secondary)' }}>
+              {certificateRequired ? 'Yes' : 'No'}
             </span>
           </div>
         </div>

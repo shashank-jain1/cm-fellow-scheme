@@ -17,6 +17,7 @@ export interface ActivityFormData {
   trainerName?: string;
   trainerMobile?: string;
   attendanceRequired?: boolean;
+  certificateRequired?: boolean;
   trainingMaterialFile?: File | null;
   meetingTitle?: string;
   meetingAgenda?: string;

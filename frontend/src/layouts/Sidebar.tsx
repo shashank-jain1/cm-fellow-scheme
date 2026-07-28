@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../features/auth';
 
 const navItems = [
@@ -46,8 +46,8 @@ export default function Sidebar({ collapsed, onToggleCollapsed }: SidebarProps) 
   const [mastersExpanded, setMastersExpanded] = useState(() => location.pathname.startsWith('/masters'));
   const [attendanceExpanded, setAttendanceExpanded] = useState(() => location.pathname.startsWith('/attendance'));
 
-  const isMastersActive = location.pathname.startsWith('/masters');
   const isAttendanceActive = location.pathname.startsWith('/attendance');
+  const isMastersActive = location.pathname.startsWith('/masters');
 
   useEffect(() => {
     if (isAttendanceActive) {
@@ -65,6 +65,9 @@ export default function Sidebar({ collapsed, onToggleCollapsed }: SidebarProps) 
     logout();
     navigate('/login');
   };
+
+  /** Exact-match active check for sub-items */
+  const isExactActive = (itemPath: string) => location.pathname === itemPath;
 
   return (
     <aside
@@ -99,7 +102,7 @@ export default function Sidebar({ collapsed, onToggleCollapsed }: SidebarProps) 
         {navItems.map((item) => {
           const isActive = location.pathname === item.path || (item.path !== '/dashboard' && location.pathname.startsWith(item.path));
           return (
-            <NavLink
+            <Link
               key={item.path}
               to={item.path}
               className={`sidebar-link ${isActive ? 'active' : ''}`}
@@ -111,13 +114,13 @@ export default function Sidebar({ collapsed, onToggleCollapsed }: SidebarProps) 
               </div>
               {!collapsed && <span className="sidebar-link-label">{item.label}</span>}
               {isActive && <div className="sidebar-active-indicator" />}
-            </NavLink>
+            </Link>
           );
         })}
 
         <button
           type="button"
-          className={`sidebar-link ${isAttendanceActive ? 'active' : ''}`}
+          className={`sidebar-link sidebar-link--group ${attendanceExpanded ? 'expanded' : ''}`}
           onClick={() => setAttendanceExpanded(!attendanceExpanded)}
           title={collapsed ? 'Attendance' : undefined}
           aria-expanded={attendanceExpanded}
@@ -136,14 +139,13 @@ export default function Sidebar({ collapsed, onToggleCollapsed }: SidebarProps) 
               />
             </>
           )}
-          {isAttendanceActive && <div className="sidebar-active-indicator" />}
         </button>
         {!collapsed && attendanceExpanded && (
           <div id="attendance-submenu" style={{ paddingLeft: 18 }}>
             {attendanceSubItems.map((item) => {
-              const isActive = location.pathname === item.path;
+              const isActive = isExactActive(item.path);
               return (
-                <NavLink
+                <Link
                   key={item.path}
                   to={item.path}
                   className={`sidebar-link ${isActive ? 'active' : ''}`}
@@ -155,7 +157,7 @@ export default function Sidebar({ collapsed, onToggleCollapsed }: SidebarProps) 
                   </div>
                   <span className="sidebar-link-label">{item.label}</span>
                   {isActive && <div className="sidebar-active-indicator" />}
-                </NavLink>
+                </Link>
               );
             })}
           </div>
@@ -167,7 +169,7 @@ export default function Sidebar({ collapsed, onToggleCollapsed }: SidebarProps) 
             {adminNavItems.map((item) => {
               const isActive = location.pathname.startsWith(item.path);
               return (
-                <NavLink
+                <Link
                   key={item.path}
                   to={item.path}
                   className={`sidebar-link ${isActive ? 'active' : ''}`}
@@ -179,12 +181,12 @@ export default function Sidebar({ collapsed, onToggleCollapsed }: SidebarProps) 
                   </div>
                   {!collapsed && <span className="sidebar-link-label">{item.label}</span>}
                   {isActive && <div className="sidebar-active-indicator" />}
-                </NavLink>
+                </Link>
               );
             })}
             <button
               type="button"
-              className={`sidebar-link ${isMastersActive ? 'active' : ''}`}
+              className={`sidebar-link sidebar-link--group ${mastersExpanded ? 'expanded' : ''}`}
               onClick={() => setMastersExpanded(!mastersExpanded)}
               title={collapsed ? 'Masters' : undefined}
               aria-expanded={mastersExpanded}
@@ -203,14 +205,13 @@ export default function Sidebar({ collapsed, onToggleCollapsed }: SidebarProps) 
                   />
                 </>
               )}
-              {isMastersActive && <div className="sidebar-active-indicator" />}
             </button>
             {!collapsed && mastersExpanded && (
               <div id="masters-submenu" style={{ paddingLeft: 18 }}>
                 {masterSubItems.map((item) => {
-                  const isActive = location.pathname === item.path;
+                  const isActive = isExactActive(item.path);
                   return (
-                    <NavLink
+                    <Link
                       key={item.path}
                       to={item.path}
                       className={`sidebar-link ${isActive ? 'active' : ''}`}
@@ -222,7 +223,7 @@ export default function Sidebar({ collapsed, onToggleCollapsed }: SidebarProps) 
                       </div>
                       <span className="sidebar-link-label">{item.label}</span>
                       {isActive && <div className="sidebar-active-indicator" />}
-                    </NavLink>
+                    </Link>
                   );
                 })}
               </div>

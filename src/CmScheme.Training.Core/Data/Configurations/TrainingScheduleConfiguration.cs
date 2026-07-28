@@ -21,5 +21,6 @@ public sealed class TrainingScheduleConfiguration : IEntityTypeConfiguration<Tra
         builder.Property(x => x.Remarks).HasMaxLength(2000);
         builder.Property(x => x.MaterialPath).HasMaxLength(255);
         builder.Property(x => x.Status).HasMaxLength(20);
+        builder.Property(x => x.CertificateRequired).HasDefaultValue(false);
     }
 }

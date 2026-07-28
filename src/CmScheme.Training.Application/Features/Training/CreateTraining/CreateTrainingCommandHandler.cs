@@ -33,6 +33,7 @@ public sealed class CreateTrainingCommandHandler(
             TrainerName = command.TrainerName,
             TrainerMobile = command.TrainerMobile,
             AttendanceRequired = command.AttendanceRequired,
+            CertificateRequired = command.CertificateRequired,
             Remarks = command.Remarks,
             Status = Statuses.Training.Scheduled
         };

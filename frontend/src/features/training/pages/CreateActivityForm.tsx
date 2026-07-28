@@ -79,6 +79,7 @@ export default function CreateActivityForm() {
             trainerName={formData.trainerName ?? ''}
             trainerMobile={formData.trainerMobile ?? ''}
             attendanceRequired={formData.attendanceRequired ?? false}
+            certificateRequired={formData.certificateRequired ?? false}
             trainingMaterialFile={formData.trainingMaterialFile ?? null}
             onTrainingTitleChange={(v) => updateField('trainingTitle', v)}
             onTrainingCategoryChange={(v) => updateField('trainingCategory', v)}
@@ -87,6 +88,7 @@ export default function CreateActivityForm() {
             onTrainerNameChange={(v) => updateField('trainerName', v)}
             onTrainerMobileChange={(v) => updateField('trainerMobile', v)}
             onAttendanceRequiredChange={(v) => updateField('attendanceRequired', v)}
+            onCertificateRequiredChange={(v) => updateField('certificateRequired', v)}
             onTrainingMaterialChange={(v) => updateField('trainingMaterialFile', v)}
           />
         ) : (

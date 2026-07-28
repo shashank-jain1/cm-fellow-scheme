@@ -42,3 +42,7 @@ export async function uploadMom(trainingScheduleId: number, file: File): Promise
   const res = await ApiService.postFormData<string>(`training/meetings/${trainingScheduleId}/mom`, formData);
   return res.data ?? '';
 }
+
+export async function updateTrainingStatus(trainingScheduleId: number, newStatus: string): Promise<void> {
+  await ApiService.put<void>(`training/sessions/${trainingScheduleId}/status`, { newStatus });
+}

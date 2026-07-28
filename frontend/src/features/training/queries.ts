@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { fetchTrainingSessions, fetchTrainingMeetings, createTrainingSession, createTrainingMeeting } from './api';
+import { fetchTrainingSessions, fetchTrainingMeetings, createTrainingSession, createTrainingMeeting, updateTrainingStatus } from './api';
 import type { ActivityFormData } from './types';
 
 export function useTrainingSessions() {
@@ -31,6 +31,18 @@ export function useCreateTrainingMeeting() {
   return useMutation({
     mutationFn: (command: ActivityFormData) => createTrainingMeeting(command),
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['training-meetings'] });
+    },
+  });
+}
+
+export function useUpdateTrainingStatus() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ trainingScheduleId, newStatus }: { trainingScheduleId: number; newStatus: string }) =>
+      updateTrainingStatus(trainingScheduleId, newStatus),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['training-sessions'] });
       queryClient.invalidateQueries({ queryKey: ['training-meetings'] });
     },
   });

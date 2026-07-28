@@ -46,7 +46,9 @@ public static class Statuses
     public static class Training
     {
         public const string Scheduled = "Scheduled";
+        public const string Ongoing = "Ongoing";
         public const string Completed = "Completed";
+        public const string Closed = "Closed";
         public const string Cancelled = "Cancelled";
         public const string TrainingType = "Training";
         public const string Meeting = "Meeting";

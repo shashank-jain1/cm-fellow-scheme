@@ -26,7 +26,6 @@
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-right: 1px solid var(--border-color);
-  overflow: hidden;
   transition: width var(--transition-slow);
 }
 
@@ -54,6 +53,7 @@
   padding: 20px 18px;
   border-bottom: 1px solid var(--border-color);
   min-height: 72px;
+  flex-shrink: 0;
 }
 
 .sidebar-logo {
@@ -124,11 +124,30 @@
 
 .sidebar-nav {
   flex: 1;
+  min-height: 0;
   padding: 14px 10px;
   overflow-y: auto;
+  overflow-x: hidden;
   display: flex;
   flex-direction: column;
   gap: 4px;
+}
+
+.sidebar-nav::-webkit-scrollbar {
+  width: 4px;
+}
+
+.sidebar-nav::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
 }
 
 .sidebar-link {
@@ -154,6 +173,11 @@
   color: var(--accent-primary-hover);
   background: var(--accent-light);
   font-weight: 700;
+}
+
+.sidebar-link--group.expanded {
+  color: var(--text-primary);
+  font-weight: 600;
 }
 
 .sidebar-link-icon {
@@ -201,6 +225,7 @@
   align-items: center;
   gap: 10px;
   background: var(--bg-card);
+  flex-shrink: 0;
 }
 
 .sidebar-user {

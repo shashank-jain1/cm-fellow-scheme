@@ -21,6 +21,7 @@ const defaultFormData: ActivityFormData = {
   trainerName: '',
   trainerMobile: '',
   attendanceRequired: false,
+  certificateRequired: false,
   trainingMaterialFile: null,
   meetingTitle: '',
   meetingAgenda: '',

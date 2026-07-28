@@ -47,6 +47,7 @@ public class TrainingSchedule
     [MaxLength(10)]
     public string? TrainerMobile { get; set; }
     public bool AttendanceRequired { get; set; }
+    public bool CertificateRequired { get; set; }
 
     // Meeting-specific fields
     [MaxLength(2000)]

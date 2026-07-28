@@ -21,5 +21,6 @@ public sealed record CreateTrainingCommand : ICommand<Result<int>>
     public string? TrainerName { get; init; }
     public string? TrainerMobile { get; init; }
     public bool AttendanceRequired { get; init; }
+    public bool CertificateRequired { get; init; }
     public string? Remarks { get; init; }
 }
