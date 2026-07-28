@@ -12,6 +12,15 @@ public sealed class CreateTicketCommandHandler(IHelpDeskCommandDbContext dbConte
 {
     public async ValueTask<Result<int>> Handle(CreateTicketCommand request, CancellationToken cancellationToken)
     {
+        DateTime now = DateTime.UtcNow;
+        TimeSpan slaWindow = request.Priority switch
+        {
+            "High" => TimeSpan.FromHours(24),
+            "Medium" => TimeSpan.FromHours(72),
+            "Low" => TimeSpan.FromHours(168),
+            _ => TimeSpan.FromHours(72),
+        };
+
         TicketEntity ticket = new TicketEntity
         {
             ApplicantId = request.ApplicantId,
@@ -21,7 +30,9 @@ public sealed class CreateTicketCommandHandler(IHelpDeskCommandDbContext dbConte
             IssueDescription = request.IssueDescription,
             Priority = request.Priority,
             Status = Statuses.Ticket.Open,
-            CreatedOn = DateTime.UtcNow
+            SLADeadline = now.Add(slaWindow),
+            SLABreached = false,
+            CreatedOn = now
         };
 
         dbContext.Tickets.Add(ticket);

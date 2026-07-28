@@ -31,6 +31,8 @@ using CmScheme.HelpDesk.Infrastructure;
 using CmScheme.Dashboard.Endpoints;
 using CmScheme.Dashboard.Infrastructure;
 
+using CmScheme.Common.Core.Services;
+
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 string connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
@@ -60,7 +62,12 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminPolicy", policy => policy.RequireRole("Admin"));
+    options.AddPolicy("FellowPolicy", policy => policy.RequireRole("Admin", "Fellow"));
+    options.AddPolicy("GuidePolicy", policy => policy.RequireRole("Admin", "Guide"));
+});
 
 builder.Services.AddMediator(options => options.ServiceLifetime = ServiceLifetime.Scoped);
 
@@ -87,6 +94,9 @@ builder.Services
     .AddCertificateApis().AddCertificateServices(connectionString).AddCertificateInfrastructure(connectionString)
     .AddHelpDeskApis().AddHelpDeskServices(connectionString).AddHelpDeskInfrastructure(connectionString)
     .AddDashboardApis().AddDashboardServices(connectionString).AddDashboardInfrastructure();
+
+builder.Services.AddScoped<INotificationService, StubNotificationService>();
+builder.Services.AddSingleton<IBusinessKeyGenerator, BusinessKeyGenerator>();
 
 WebApplication app = builder.Build();
 

@@ -24,6 +24,8 @@ public sealed class GetTicketByIdQueryHandler(IHelpDeskQueryDbContext dbContext)
                 Priority = t.Priority,
                 Status = t.Status,
                 ResolutionRemarks = t.ResolutionRemarks,
+                SLADeadline = t.SLADeadline,
+                SLABreached = t.SLADeadline.HasValue && !t.ClosedOn.HasValue && t.SLADeadline.Value < DateTime.UtcNow,
                 CreatedOn = t.CreatedOn,
                 ClosedOn = t.ClosedOn
             })

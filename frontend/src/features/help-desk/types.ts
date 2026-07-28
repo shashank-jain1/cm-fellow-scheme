@@ -14,6 +14,8 @@ export interface TicketDto {
   priority: string;
   status: string;
   resolutionRemarks?: string;
+  slaDeadline?: string;
+  slaBreached: boolean;
   createdOn: string;
   closedOn?: string;
 }
