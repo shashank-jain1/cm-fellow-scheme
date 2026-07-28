@@ -21,12 +21,40 @@
   font-family: 'Plus Jakarta Sans', sans-serif !important;
   border-radius: var(--radius-md) !important;
   font-weight: 600 !important;
+  height: 40px !important;
+  padding: 0 18px !important;
+  border: 1px solid transparent !important;
+  cursor: pointer !important;
+  transition: all var(--transition-fast) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  box-sizing: border-box !important;
 }
 
 .p-button.p-button-success {
   background: var(--accent-primary) !important;
   border: none !important;
   color: var(--text-inverse) !important;
+}
+
+.p-button.p-button-sm {
+  height: 32px !important;
+  padding: 0 12px !important;
+  font-size: 13px !important;
+}
+
+.p-button.p-button-text {
+  background: transparent !important;
+  border: none !important;
+  color: var(--text-secondary) !important;
+  padding: 0 8px !important;
+  height: 32px !important;
+}
+
+.p-button.p-button-text:hover {
+  background: var(--accent-light) !important;
+  color: var(--accent-primary) !important;
 }
 
 /* All popups above backdrop-filter */

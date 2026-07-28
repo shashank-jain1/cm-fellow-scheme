@@ -7,6 +7,7 @@ interface FormErrors {
   fromDate?: string;
   toDate?: string;
   leaveReason?: string;
+  reportingManagerName?: string;
 }
 
 export function useApplyLeaveForm(onSuccess?: () => void) {
@@ -17,6 +18,7 @@ export function useApplyLeaveForm(onSuccess?: () => void) {
     toDate: '',
     halfDayFullDay: false,
     leaveReason: '',
+    reportingManagerName: '',
     attachmentFile: undefined,
   });
   const [errors, setErrors] = useState<FormErrors>({});
@@ -31,6 +33,7 @@ export function useApplyLeaveForm(onSuccess?: () => void) {
       newErrors.toDate = 'To date must be after from date';
     }
     if (!formData.leaveReason.trim()) newErrors.leaveReason = 'Reason is required';
+    if (!formData.reportingManagerName.trim()) newErrors.reportingManagerName = 'Reporting manager is required';
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -55,6 +58,7 @@ export function useApplyLeaveForm(onSuccess?: () => void) {
           toDate: '',
           halfDayFullDay: false,
           leaveReason: '',
+          reportingManagerName: '',
           attachmentFile: undefined,
         });
         onSuccess?.();

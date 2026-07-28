@@ -28,12 +28,24 @@ export default function ApplyLeaveForm({ onSuccess }: ApplyLeaveFormProps) {
         </div>
 
         <div className="form-field">
+          <label>Reporting Manager *</label>
+          <input
+            type="text"
+            className="form-input"
+            value={formData.reportingManagerName}
+            onChange={(e) => handleChange('reportingManagerName', e.target.value)}
+            placeholder="Enter reporting manager name"
+          />
+          {errors.reportingManagerName && <small style={{ color: 'var(--red-600)', fontSize: 12 }}>{errors.reportingManagerName}</small>}
+        </div>
+
+        <div className="form-field">
           <label>From Date</label>
           <Calendar
             value={formData.fromDate ? new Date(formData.fromDate) : null}
             onChange={(e) => handleChange('fromDate', e.value ? e.value.toISOString().split('T')[0] : '')}
-            showOnFocus={false}
             dateFormat="dd/mm/yy"
+            showIcon
           />
           {errors.fromDate && <small style={{ color: 'var(--red-600)', fontSize: 12 }}>{errors.fromDate}</small>}
         </div>
@@ -43,8 +55,8 @@ export default function ApplyLeaveForm({ onSuccess }: ApplyLeaveFormProps) {
           <Calendar
             value={formData.toDate ? new Date(formData.toDate) : null}
             onChange={(e) => handleChange('toDate', e.value ? e.value.toISOString().split('T')[0] : '')}
-            showOnFocus={false}
             dateFormat="dd/mm/yy"
+            showIcon
           />
           {errors.toDate && <small style={{ color: 'var(--red-600)', fontSize: 12 }}>{errors.toDate}</small>}
         </div>

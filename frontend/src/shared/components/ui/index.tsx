@@ -8,3 +8,4 @@ export { default as ConfirmDialog } from './ConfirmDialog';
 export { default as LoadingSkeleton } from './LoadingSkeleton';
 export { default as FormField } from './FormField';
 export { default as FormGrid } from './FormGrid';
+export { default as AppButton } from './AppButton';

@@ -22,6 +22,7 @@ export interface LeaveApplicationFormData {
   toDate: string;
   halfDayFullDay: boolean;
   leaveReason: string;
+  reportingManagerName: string;
   attachmentFile?: File;
 }
 

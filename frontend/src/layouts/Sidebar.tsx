@@ -7,12 +7,18 @@ const navItems = [
   { path: '/registration', label: 'Registration', icon: 'pi pi-user-plus' },
   { path: '/training', label: 'Training', icon: 'pi pi-calendar' },
   { path: '/work-allocation', label: 'Work Allocation', icon: 'pi pi-briefcase' },
-  { path: '/attendance', label: 'Attendance', icon: 'pi pi-clock' },
-  { path: '/attendance/holidays', label: 'Holiday Calendar', icon: 'pi pi-calendar-plus' },
-  { path: '/attendance/payroll-summary', label: 'Payroll Summary', icon: 'pi pi-money-bill' },
   { path: '/performance', label: 'Performance', icon: 'pi pi-chart-bar' },
   { path: '/certificate', label: 'Certificate', icon: 'pi pi-verified' },
   { path: '/help-desk', label: 'Help Desk', icon: 'pi pi-question-circle' },
+];
+
+const attendanceSubItems = [
+  { path: '/attendance', label: 'Mark Attendance', icon: 'pi pi-clock' },
+  { path: '/attendance/holidays', label: 'Holiday Calendar', icon: 'pi pi-calendar-plus' },
+  { path: '/attendance/payroll-summary', label: 'Payroll Summary', icon: 'pi pi-money-bill' },
+  { path: '/attendance/apply-leave', label: 'Apply Leave', icon: 'pi pi-send' },
+  { path: '/attendance/leave-status', label: 'Leave Status', icon: 'pi pi-list' },
+  { path: '/attendance/leave-balance', label: 'Leave Balance', icon: 'pi pi-wallet' },
 ];
 
 const adminNavItems = [
@@ -27,13 +33,16 @@ const masterSubItems = [
 ];
 
 export default function Sidebar() {
-  const [collapsed, setCollapsed] = useState(false);
-  const [mastersExpanded, setMastersExpanded] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const { user, logout } = useAuth();
 
+  const [collapsed, setCollapsed] = useState(false);
+  const [mastersExpanded, setMastersExpanded] = useState(() => location.pathname.startsWith('/masters'));
+  const [attendanceExpanded, setAttendanceExpanded] = useState(() => location.pathname.startsWith('/attendance'));
+
   const isMastersActive = location.pathname.startsWith('/masters');
+  const isAttendanceActive = location.pathname.startsWith('/attendance');
 
   const handleLogout = () => {
     logout();
@@ -70,7 +79,7 @@ export default function Sidebar() {
 
       <nav className="sidebar-nav">
         {navItems.map((item) => {
-          const isActive = location.pathname.startsWith(item.path);
+          const isActive = location.pathname === item.path || (item.path !== '/dashboard' && location.pathname.startsWith(item.path));
           return (
             <NavLink
               key={item.path}
@@ -87,6 +96,50 @@ export default function Sidebar() {
             </NavLink>
           );
         })}
+
+        <button
+          className={`sidebar-link ${isAttendanceActive && !attendanceExpanded ? 'active' : ''}`}
+          onClick={() => setAttendanceExpanded(!attendanceExpanded)}
+          title={collapsed ? 'Attendance' : undefined}
+          style={{ width: '100%', border: 'none', background: 'none', cursor: 'pointer', textAlign: 'left' }}
+        >
+          <div className="sidebar-link-icon">
+            <i className="pi pi-clock" />
+          </div>
+          {!collapsed && (
+            <>
+              <span className="sidebar-link-label" style={{ flex: 1 }}>Attendance</span>
+              <i
+                className={`pi ${attendanceExpanded ? 'pi-chevron-down' : 'pi-chevron-right'}`}
+                style={{ fontSize: 10, color: 'var(--text-muted)', transition: 'transform 0.15s' }}
+              />
+            </>
+          )}
+          {isAttendanceActive && <div className="sidebar-active-indicator" />}
+        </button>
+        {!collapsed && attendanceExpanded && (
+          <div style={{ paddingLeft: 20 }}>
+            {attendanceSubItems.map((item) => {
+              const isActive = location.pathname === item.path;
+              return (
+                <NavLink
+                  key={item.path}
+                  to={item.path}
+                  className={`sidebar-link ${isActive ? 'active' : ''}`}
+                  style={{ paddingLeft: 12, fontSize: 13 }}
+                >
+                  <div className="sidebar-link-icon" style={{ width: 20, height: 20 }}>
+                    <i className={item.icon} style={{ fontSize: 12 }} />
+                    {isActive && <div className="sidebar-active-dot" />}
+                  </div>
+                  <span className="sidebar-link-label">{item.label}</span>
+                  {isActive && <div className="sidebar-active-indicator" />}
+                </NavLink>
+              );
+            })}
+          </div>
+        )}
+
         {user?.role === 'Admin' && (
           <>
             <div style={{ height: 1, background: 'var(--border-color)', margin: '8px 14px' }} />
