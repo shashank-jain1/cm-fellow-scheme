@@ -141,7 +141,7 @@ export default function Sidebar({ collapsed, onToggleCollapsed }: SidebarProps) 
           )}
         </button>
         {!collapsed && attendanceExpanded && (
-          <div id="attendance-submenu" style={{ paddingLeft: 18 }}>
+          <div id="attendance-submenu" style={{ paddingLeft: 18, flexShrink: 0 }}>
             {attendanceSubItems.map((item) => {
               const isActive = isExactActive(item.path);
               return (
@@ -165,7 +165,7 @@ export default function Sidebar({ collapsed, onToggleCollapsed }: SidebarProps) 
 
         {user?.role === 'Admin' && (
           <>
-            <div style={{ height: 1, background: 'var(--border-color)', margin: '8px 14px' }} />
+            <div style={{ height: 1, background: 'var(--border-color)', margin: '8px 14px', flexShrink: 0 }} />
             {adminNavItems.map((item) => {
               const isActive = location.pathname.startsWith(item.path);
               return (
@@ -207,7 +207,7 @@ export default function Sidebar({ collapsed, onToggleCollapsed }: SidebarProps) 
               )}
             </button>
             {!collapsed && mastersExpanded && (
-              <div id="masters-submenu" style={{ paddingLeft: 18 }}>
+              <div id="masters-submenu" style={{ paddingLeft: 18, flexShrink: 0 }}>
                 {masterSubItems.map((item) => {
                   const isActive = isExactActive(item.path);
                   return (

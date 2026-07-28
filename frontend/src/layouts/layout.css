@@ -162,6 +162,7 @@
   transition: all var(--transition-fast);
   overflow: hidden;
   font-weight: 500;
+  flex-shrink: 0;
 }
 
 .sidebar-link:hover {
