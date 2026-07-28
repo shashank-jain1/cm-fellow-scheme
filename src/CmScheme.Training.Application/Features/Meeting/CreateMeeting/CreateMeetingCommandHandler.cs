@@ -17,6 +17,8 @@ public sealed class CreateMeetingCommandHandler(
         TrainingSchedule schedule = new()
         {
             ActivityType = Statuses.Training.Meeting,
+            ProjectId = command.ProjectId,
+            WorkProjectId = command.WorkProjectId,
             MeetingTitle = command.MeetingTitle,
             MeetingAgenda = command.MeetingAgenda,
             MeetingDescription = command.MeetingDescription,
@@ -25,6 +27,10 @@ public sealed class CreateMeetingCommandHandler(
             Date = command.Date,
             StartTime = command.StartTime,
             EndTime = command.EndTime,
+            Mode = command.Mode,
+            ApplicableDivisionIds = string.Join(",", command.ApplicableDivisionIds),
+            ApplicableDistrictIds = string.Join(",", command.ApplicableDistrictIds),
+            ApplicableBlockIds = string.Join(",", command.ApplicableBlockIds),
             MOMRequired = command.MOMRequired,
             Remarks = command.Remarks,
             Status = Statuses.Training.Scheduled
@@ -32,6 +38,21 @@ public sealed class CreateMeetingCommandHandler(
 
         dbContext.TrainingSchedules.Add(schedule);
         await dbContext.SaveChangesAsync(cancellationToken);
+
+        if (command.ParticipantIds.Count > 0)
+        {
+            List<MeetingParticipant> participants = command.ParticipantIds
+                .Select(id => new MeetingParticipant
+                {
+                    TrainingScheduleId = schedule.TrainingScheduleId,
+                    ApplicantId = id,
+                    CreatedOn = DateTime.UtcNow
+                })
+                .ToList();
+
+            dbContext.MeetingParticipants.AddRange(participants);
+            await dbContext.SaveChangesAsync(cancellationToken);
+        }
 
         return Result.Success(schedule.TrainingScheduleId);
     }

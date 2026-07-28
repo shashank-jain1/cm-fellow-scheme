@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
 import { InputTextarea } from 'primereact/inputtextarea';
-import { Dropdown, DropdownChangeEvent } from 'primereact/dropdown';
-import { Calendar, CalendarChangeEvent } from 'primereact/calendar';
+import { Dropdown } from 'primereact/dropdown';
+import { Calendar } from 'primereact/calendar';
 import { useCreateTrainingSchedule, useUpdateTrainingSchedule, useProjects, useWorks, useDivisions, useDistricts, useBlocks } from '../../queries';
 import type { TrainingScheduleDto } from '../../types';
 
@@ -68,7 +68,7 @@ export default function TrainingScheduleForm({ initialData, onDone }: Props) {
     onDone();
   };
 
-  const handleParentChange = (setter: React.Dispatch<React.SetStateAction<number | null>>) => (e: DropdownChangeEvent) => {
+  const handleParentChange = (setter: React.Dispatch<React.SetStateAction<number | null>>) => (e) => {
     setter(e.value);
   };
 
@@ -79,7 +79,7 @@ export default function TrainingScheduleForm({ initialData, onDone }: Props) {
         <Dropdown
           value={calendarYear}
           options={YEAR_OPTIONS}
-          onChange={(e: DropdownChangeEvent) => setCalendarYear(e.value)}
+          onChange={(e) => setCalendarYear(e.value)}
           placeholder="Select Year"
           className="w-full"
         />
@@ -90,7 +90,7 @@ export default function TrainingScheduleForm({ initialData, onDone }: Props) {
         <Dropdown
           value={projectId}
           options={projectOptions}
-          onChange={(e: DropdownChangeEvent) => { setProjectId(e.value); setWorkId(null); }}
+          onChange={(e) => { setProjectId(e.value); setWorkId(null); }}
           placeholder="Select Project"
           className="w-full"
         />
@@ -101,7 +101,7 @@ export default function TrainingScheduleForm({ initialData, onDone }: Props) {
         <Dropdown
           value={workId}
           options={workOptions}
-          onChange={(e: DropdownChangeEvent) => setWorkId(e.value)}
+          onChange={(e) => setWorkId(e.value)}
           placeholder="Select Work"
           disabled={!projectId}
           className="w-full"
@@ -113,7 +113,7 @@ export default function TrainingScheduleForm({ initialData, onDone }: Props) {
         <Dropdown
           value={divisionId}
           options={divisionOptions}
-          onChange={(e: DropdownChangeEvent) => { setDivisionId(e.value); setDistrictId(null); setBlockId(null); }}
+          onChange={(e) => { setDivisionId(e.value); setDistrictId(null); setBlockId(null); }}
           placeholder="Select Division"
           showClear
           className="w-full"
@@ -125,7 +125,7 @@ export default function TrainingScheduleForm({ initialData, onDone }: Props) {
         <Dropdown
           value={districtId}
           options={districtOptions}
-          onChange={(e: DropdownChangeEvent) => { setDistrictId(e.value); setBlockId(null); }}
+          onChange={(e) => { setDistrictId(e.value); setBlockId(null); }}
           placeholder="Select District"
           disabled={!divisionId}
           showClear
@@ -138,7 +138,7 @@ export default function TrainingScheduleForm({ initialData, onDone }: Props) {
         <Dropdown
           value={blockId}
           options={blockOptions}
-          onChange={(e: DropdownChangeEvent) => setBlockId(e.value)}
+          onChange={(e) => setBlockId(e.value)}
           placeholder="Select Block"
           disabled={!districtId}
           showClear
@@ -150,7 +150,7 @@ export default function TrainingScheduleForm({ initialData, onDone }: Props) {
         <label>Training Date *</label>
         <Calendar
           value={trainingDate}
-          onChange={(e: CalendarChangeEvent) => setTrainingDate(e.value as Date)}
+          onChange={(e) => setTrainingDate(e.value as Date)}
           dateFormat="dd/mm/yy"
           placeholder="Select Date"
           className="w-full"
@@ -179,7 +179,7 @@ export default function TrainingScheduleForm({ initialData, onDone }: Props) {
         />
       </div>
 
-      <div className="form-field col-span-full flex justify-content-end gap-2">
+      <div className="form-field col-span-full" style={{ display: 'flex', justifyContent: 'flex-end', gap: 12, marginTop: 8 }}>
         <Button label="Cancel" severity="secondary" text onClick={onDone} />
         <Button
           label={initialData ? 'Update' : 'Create'}

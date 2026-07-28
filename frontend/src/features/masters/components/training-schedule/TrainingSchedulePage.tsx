@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { Button } from 'primereact/button';
 import { Dialog } from 'primereact/dialog';
-import { InputText } from 'primereact/inputtext';
-import { Dropdown, DropdownChangeEvent } from 'primereact/dropdown';
+import { Dropdown } from 'primereact/dropdown';
+import { DataTable } from 'primereact/datatable';
+import { Column } from 'primereact/column';
 import { useTrainingSchedules, useProjects } from '../../queries';
 import TrainingScheduleForm from './TrainingScheduleForm';
 import type { TrainingScheduleDto } from '../../types';
@@ -26,34 +27,47 @@ export default function TrainingSchedulePage() {
 
   const projectOptions = projects.map((p) => ({ label: p.projectName, value: p.projectId }));
 
+  const dateBody = (row: TrainingScheduleDto) => new Date(row.trainingDate).toLocaleDateString();
+
+  const actionsBody = (row: TrainingScheduleDto) => (
+    <Button
+      icon="pi pi-pencil"
+      size="small"
+      text
+      onClick={() => { setEditingItem(row); setDialogOpen(true); }}
+    />
+  );
+
   return (
-    <div className="page-container">
+    <div>
       <div className="page-header">
         <div>
-          <h2>Training Schedule Calendar</h2>
-          <p className="text-secondary">Plan and manage training sessions</p>
+          <h1>Training Schedule Calendar</h1>
+          <p style={{ color: 'var(--text-secondary)', marginTop: 4 }}>
+            Plan and manage training sessions
+          </p>
         </div>
         <Button label="Add Training Schedule" icon="pi pi-plus" onClick={() => { setEditingItem(null); setDialogOpen(true); }} />
       </div>
 
-      <div className="form-grid mb-4">
-        <div className="form-field">
-          <label>Calendar Year</label>
+      <div style={{ display: 'flex', gap: 20, marginBottom: 24, alignItems: 'flex-end' }}>
+        <div style={{ width: 240 }}>
+          <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: 'var(--text-secondary)', marginBottom: 6 }}>Calendar Year</label>
           <Dropdown
             value={selectedYear}
             options={YEAR_OPTIONS}
-            onChange={(e: DropdownChangeEvent) => setSelectedYear(e.value)}
+            onChange={(e) => setSelectedYear(e.value)}
             placeholder="All Years"
             showClear
             className="w-full"
           />
         </div>
-        <div className="form-field">
-          <label>Project</label>
+        <div style={{ width: 280 }}>
+          <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: 'var(--text-secondary)', marginBottom: 6 }}>Project</label>
           <Dropdown
             value={selectedProjectId}
             options={projectOptions}
-            onChange={(e: DropdownChangeEvent) => setSelectedProjectId(e.value)}
+            onChange={(e) => setSelectedProjectId(e.value)}
             placeholder="All Projects"
             showClear
             className="w-full"
@@ -61,44 +75,23 @@ export default function TrainingSchedulePage() {
         </div>
       </div>
 
-      <div className="card">
-        <table className="data-table">
-          <thead>
-            <tr>
-              <th>Year</th>
-              <th>Project</th>
-              <th>Training Date</th>
-              <th>Venue</th>
-              <th>Division</th>
-              <th>District</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {isLoading ? (
-              <tr><td colSpan={7} className="text-center">Loading...</td></tr>
-            ) : schedules.length === 0 ? (
-              <tr><td colSpan={7} className="text-center text-secondary">No training schedules found</td></tr>
-            ) : schedules.map((s) => (
-              <tr key={s.trainingScheduleId}>
-                <td>{s.calendarYear}</td>
-                <td>{s.projectName}</td>
-                <td>{new Date(s.trainingDate).toLocaleDateString()}</td>
-                <td>{s.venueName ?? '-'}</td>
-                <td>{s.divisionName ?? '-'}</td>
-                <td>{s.districtName ?? '-'}</td>
-                <td>
-                  <Button
-                    icon="pi pi-pencil"
-                    size="small"
-                    text
-                    onClick={() => { setEditingItem(s); setDialogOpen(true); }}
-                  />
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <div className="card" style={{ padding: 0 }}>
+        <DataTable
+          value={schedules}
+          loading={isLoading}
+          emptyMessage="No training schedules found"
+          stripedRows
+          paginator
+          rows={10}
+        >
+          <Column field="calendarYear" header="Year" />
+          <Column field="projectName" header="Project" />
+          <Column header="Training Date" body={dateBody} />
+          <Column field="venueName" header="Venue" />
+          <Column field="divisionName" header="Division" />
+          <Column field="districtName" header="District" />
+          <Column header="Actions" body={actionsBody} style={{ width: 80 }} />
+        </DataTable>
       </div>
 
       <Dialog

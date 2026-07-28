@@ -4,16 +4,19 @@ using CmScheme.Training.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace CmScheme.Training.Infrastructure.Migrations.Query
+namespace CmScheme.Training.Infrastructure.Migrations.Command
 {
-    [DbContext(typeof(TrainingQueryDbContext))]
-    partial class TrainingQueryDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(TrainingCommandDbContext))]
+    [Migration("20260728051255_AddTrainingScheduleFields")]
+    partial class AddTrainingScheduleFields
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

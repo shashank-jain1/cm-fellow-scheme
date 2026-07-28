@@ -22,6 +22,32 @@ namespace CmScheme.Training.Infrastructure.Migrations.Command
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("CmScheme.Training.Core.Entities.MeetingParticipant", b =>
+                {
+                    b.Property<int>("MeetingParticipantId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MeetingParticipantId"));
+
+                    b.Property<int>("ApplicantId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ParticipantName")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("TrainingScheduleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("MeetingParticipantId");
+
+                    b.ToTable("MeetingParticipants");
+                });
+
             modelBuilder.Entity("CmScheme.Training.Core.Entities.TrainingParticipant", b =>
                 {
                     b.Property<int>("TrainingParticipantId")
@@ -62,6 +88,22 @@ namespace CmScheme.Training.Infrastructure.Migrations.Command
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("ApplicableBlockIds")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<string>("ApplicableDistrictIds")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<string>("ApplicableDivisionIds")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<string>("AttachmentPath")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<bool>("AttendanceRequired")
                         .HasColumnType("bit");
@@ -128,6 +170,10 @@ namespace CmScheme.Training.Infrastructure.Migrations.Command
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
+                    b.Property<string>("TargetUserTypes")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
                     b.Property<string>("TrainerMobile")
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
@@ -137,8 +183,8 @@ namespace CmScheme.Training.Infrastructure.Migrations.Command
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("TrainingCategory")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.Property<string>("TrainingDescription")
                         .HasMaxLength(2000)

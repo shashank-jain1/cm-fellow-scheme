@@ -48,15 +48,25 @@ export default function CreateActivityForm() {
         />
 
         <CommonActivityFields
+          projectId={formData.projectId}
+          workProjectId={formData.workProjectId}
           date={formData.date}
           startTime={formData.startTime}
           endTime={formData.endTime}
           mode={formData.mode}
+          applicableDivisionIds={formData.applicableDivisionIds}
+          applicableDistrictIds={formData.applicableDistrictIds}
+          applicableBlockIds={formData.applicableBlockIds}
           remarks={formData.remarks ?? ''}
+          onProjectChange={(v) => updateField('projectId', v)}
+          onWorkChange={(v) => updateField('workProjectId', v)}
           onDateChange={(v) => updateField('date', v)}
           onStartTimeChange={(v) => updateField('startTime', v)}
           onEndTimeChange={(v) => updateField('endTime', v)}
           onModeChange={(v) => updateField('mode', v)}
+          onDivisionsChange={(v) => updateField('applicableDivisionIds', v)}
+          onDistrictsChange={(v) => updateField('applicableDistrictIds', v)}
+          onBlocksChange={(v) => updateField('applicableBlockIds', v)}
           onRemarksChange={(v) => updateField('remarks', v)}
         />
 
@@ -65,26 +75,38 @@ export default function CreateActivityForm() {
             trainingTitle={formData.trainingTitle ?? ''}
             trainingCategory={formData.trainingCategory ?? ''}
             trainingDescription={formData.trainingDescription ?? ''}
+            targetUserTypes={formData.targetUserTypes}
             trainerName={formData.trainerName ?? ''}
             trainerMobile={formData.trainerMobile ?? ''}
             attendanceRequired={formData.attendanceRequired ?? false}
+            trainingMaterialFile={formData.trainingMaterialFile ?? null}
             onTrainingTitleChange={(v) => updateField('trainingTitle', v)}
             onTrainingCategoryChange={(v) => updateField('trainingCategory', v)}
             onTrainingDescriptionChange={(v) => updateField('trainingDescription', v)}
+            onTargetUserTypesChange={(v) => updateField('targetUserTypes', v)}
             onTrainerNameChange={(v) => updateField('trainerName', v)}
             onTrainerMobileChange={(v) => updateField('trainerMobile', v)}
             onAttendanceRequiredChange={(v) => updateField('attendanceRequired', v)}
+            onTrainingMaterialChange={(v) => updateField('trainingMaterialFile', v)}
           />
         ) : (
           <MeetingFieldsCard
             meetingTitle={formData.meetingTitle ?? ''}
             meetingAgenda={formData.meetingAgenda ?? ''}
             meetingDescription={formData.meetingDescription ?? ''}
+            conductPersonId={formData.conductPersonId ?? 0}
+            coordinatorId={formData.coordinatorId ?? 0}
+            participantIds={formData.participantIds}
             momRequired={formData.momRequired ?? false}
+            meetingAttachmentFile={formData.meetingAttachmentFile ?? null}
             onMeetingTitleChange={(v) => updateField('meetingTitle', v)}
             onMeetingAgendaChange={(v) => updateField('meetingAgenda', v)}
             onMeetingDescriptionChange={(v) => updateField('meetingDescription', v)}
+            onConductPersonChange={(v) => updateField('conductPersonId', v)}
+            onCoordinatorChange={(v) => updateField('coordinatorId', v)}
+            onParticipantsChange={(v) => updateField('participantIds', v)}
             onMomRequiredChange={(v) => updateField('momRequired', v)}
+            onMeetingAttachmentChange={(v) => updateField('meetingAttachmentFile', v)}
           />
         )}
       </div>

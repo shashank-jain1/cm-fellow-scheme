@@ -6,19 +6,26 @@ export interface ActivityFormData {
   startTime: string;
   endTime: string;
   mode: string;
+  applicableDivisionIds: number[];
+  applicableDistrictIds: number[];
+  applicableBlockIds: number[];
+  remarks?: string;
   trainingTitle?: string;
   trainingCategory?: string;
   trainingDescription?: string;
+  targetUserTypes: string[];
   trainerName?: string;
   trainerMobile?: string;
   attendanceRequired?: boolean;
+  trainingMaterialFile?: File | null;
   meetingTitle?: string;
   meetingAgenda?: string;
   meetingDescription?: string;
   conductPersonId?: number;
   coordinatorId?: number;
+  participantIds: number[];
   momRequired?: boolean;
-  remarks?: string;
+  meetingAttachmentFile?: File | null;
 }
 
 export interface TrainingScheduleDto {
@@ -33,4 +40,11 @@ export interface TrainingScheduleDto {
   trainingTitle?: string;
   meetingTitle?: string;
   status: string;
+}
+
+export interface UserOption {
+  applicantId: number;
+  firstName: string;
+  lastName: string;
+  email: string;
 }
