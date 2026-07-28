@@ -45,3 +45,39 @@ export interface LeaveBalanceDto {
   pendingApprovalLeave: number;
   availableBalance: number;
 }
+
+export interface HolidayDto {
+  holidayId: number;
+  holidayName: string;
+  holidayDate: string;
+  description?: string;
+  isOptional: boolean;
+  isActive: boolean;
+}
+
+export interface CreateHolidayCommand {
+  holidayName: string;
+  holidayDate: string;
+  description?: string;
+  isOptional: boolean;
+}
+
+export interface UpdateHolidayCommand {
+  holidayId: number;
+  holidayName: string;
+  holidayDate: string;
+  description?: string;
+  isOptional: boolean;
+}
+
+export interface PayrollSummaryDto {
+  payrollAttendanceSummaryId: number;
+  applicantId: number;
+  payrollMonth: string;
+  totalWorkingDays: number;
+  presentDays: number;
+  approvedLeaveDays: number;
+  absentDays: number;
+  payableDays: number;
+  createdOn: string;
+}

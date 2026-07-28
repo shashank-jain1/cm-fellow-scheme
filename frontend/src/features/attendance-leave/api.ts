@@ -1,6 +1,16 @@
 import ApiService from '../../services/ApiService';
 import { ATTENDANCE_LEAVE_URLS } from './urls';
-import type { MarkAttendanceCommand, AttendanceDto, LeaveApplicationFormData, LeaveStatusDto, LeaveBalanceDto } from './types';
+import type {
+  MarkAttendanceCommand,
+  AttendanceDto,
+  LeaveApplicationFormData,
+  LeaveStatusDto,
+  LeaveBalanceDto,
+  HolidayDto,
+  CreateHolidayCommand,
+  UpdateHolidayCommand,
+  PayrollSummaryDto,
+} from './types';
 
 export const attendanceLeaveApi = {
   markAttendance: (data: MarkAttendanceCommand) =>
@@ -20,4 +30,24 @@ export const attendanceLeaveApi = {
 
   approveLeave: (command: { LeaveApplicationNo: string; ApprovalStatus: string; Remarks?: string }) =>
     ApiService.put<void>(ATTENDANCE_LEAVE_URLS.APPROVE_LEAVE, command),
+
+  getHolidays: (year?: number) =>
+    ApiService.get<HolidayDto[]>(ATTENDANCE_LEAVE_URLS.HOLIDAYS, { params: year ? { year } : {} }),
+
+  createHoliday: (data: CreateHolidayCommand) =>
+    ApiService.post<number>(ATTENDANCE_LEAVE_URLS.HOLIDAYS, data),
+
+  updateHoliday: (data: UpdateHolidayCommand) =>
+    ApiService.put<void>(`${ATTENDANCE_LEAVE_URLS.HOLIDAYS}/${data.holidayId}`, data),
+
+  deleteHoliday: (holidayId: number) =>
+    ApiService.delete<void>(`${ATTENDANCE_LEAVE_URLS.HOLIDAYS}/${holidayId}`),
+
+  getPayrollSummary: (payrollMonth?: string, applicantId?: number) =>
+    ApiService.get<PayrollSummaryDto[]>(ATTENDANCE_LEAVE_URLS.PAYROLL_SUMMARY, {
+      params: {
+        ...(payrollMonth ? { payrollMonth } : {}),
+        ...(applicantId ? { applicantId } : {}),
+      },
+    }),
 };

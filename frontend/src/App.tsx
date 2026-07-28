@@ -18,6 +18,8 @@ import ApplyLeavePage from './features/attendance-leave/pages/ApplyLeavePage';
 import LeaveApprovalPage from './features/attendance-leave/pages/LeaveApprovalPage';
 import LeaveStatusPage from './features/attendance-leave/pages/LeaveStatusPage';
 import LeaveBalancePage from './features/attendance-leave/pages/LeaveBalancePage';
+import HolidayCalendarPage from './features/attendance-leave/pages/HolidayCalendarPage';
+import PayrollSummaryPage from './features/attendance-leave/pages/PayrollSummaryPage';
 import { PerformanceReviewGrid, PerformanceDetailPage } from './features/performance';
 import { ApplyCertificatePage, CertificateApprovalPage, ExitManagementPage } from './features/certificate';
 import { RaiseTicketPage, TicketQueuePage, TicketDetailPage } from './features/help-desk';
@@ -54,6 +56,8 @@ export default function App() {
                 <Route path="attendance/leave-approval" element={<LeaveApprovalPage />} />
                 <Route path="attendance/leave-status" element={<LeaveStatusPage />} />
                 <Route path="attendance/leave-balance" element={<LeaveBalancePage />} />
+                <Route path="attendance/holidays" element={<HolidayCalendarPage />} />
+                <Route path="attendance/payroll-summary" element={<PayrollSummaryPage />} />
                 <Route path="performance" element={<PerformanceReviewGrid />} />
                 <Route path="performance/:id" element={<PerformanceDetailPage />} />
                 <Route path="certificate/apply" element={<ApplyCertificatePage />} />

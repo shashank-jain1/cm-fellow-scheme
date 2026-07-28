@@ -8,6 +8,8 @@ const navItems = [
   { path: '/training', label: 'Training', icon: 'pi pi-calendar' },
   { path: '/work-allocation', label: 'Work Allocation', icon: 'pi pi-briefcase' },
   { path: '/attendance', label: 'Attendance', icon: 'pi pi-clock' },
+  { path: '/attendance/holidays', label: 'Holiday Calendar', icon: 'pi pi-calendar-plus' },
+  { path: '/attendance/payroll-summary', label: 'Payroll Summary', icon: 'pi pi-money-bill' },
   { path: '/performance', label: 'Performance', icon: 'pi pi-chart-bar' },
   { path: '/certificate', label: 'Certificate', icon: 'pi pi-verified' },
   { path: '/help-desk', label: 'Help Desk', icon: 'pi pi-question-circle' },

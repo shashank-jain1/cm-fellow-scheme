@@ -7,7 +7,7 @@ public class LeaveApplication
     public string LeaveType { get; set; } = null!;
     public DateTime FromDate { get; set; }
     public DateTime ToDate { get; set; }
-    public int NumberOfDays { get; set; }
+    public decimal NumberOfDays { get; set; }
     public string HalfDayFullDay { get; set; } = null!;
     public string LeaveReason { get; set; } = null!;
     public string? AttachmentPath { get; set; }

@@ -23,7 +23,7 @@ public sealed class LeaveApplicationDto
     public string LeaveType { get; init; } = null!;
     public DateTime FromDate { get; init; }
     public DateTime ToDate { get; init; }
-    public int NumberOfDays { get; init; }
+    public decimal NumberOfDays { get; init; }
     public string HalfDayFullDay { get; init; } = null!;
     public string LeaveReason { get; init; } = null!;
     public string? AttachmentPath { get; init; }
@@ -51,7 +51,7 @@ public sealed class LeaveStatusDto
     public string LeaveType { get; init; } = null!;
     public DateTime FromDate { get; init; }
     public DateTime ToDate { get; init; }
-    public int NumberOfDays { get; init; }
+    public decimal NumberOfDays { get; init; }
     public string Status { get; init; } = null!;
     public DateTime CreatedOn { get; init; }
 }

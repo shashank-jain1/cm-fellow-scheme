@@ -12,6 +12,7 @@ public class AttendanceLeaveDbContext : BaseDbContext, IAttendanceLeaveCommandDb
     public DbSet<LeaveApplication> LeaveApplications => Set<LeaveApplication>();
     public DbSet<LeaveBalance> LeaveBalances => Set<LeaveBalance>();
     public DbSet<PayrollAttendanceSummary> PayrollAttendanceSummaries => Set<PayrollAttendanceSummary>();
+    public DbSet<Holiday> Holidays => Set<Holiday>();
 
     public AttendanceLeaveDbContext(DbContextOptions<AttendanceLeaveDbContext> options)
         : base(options)
@@ -24,6 +25,7 @@ public class AttendanceLeaveDbContext : BaseDbContext, IAttendanceLeaveCommandDb
         modelBuilder.ApplyConfiguration(new AttendanceConfiguration());
         modelBuilder.ApplyConfiguration(new LeaveApplicationConfiguration());
         modelBuilder.ApplyConfiguration(new LeaveBalanceConfiguration());
+        modelBuilder.ApplyConfiguration(new HolidayConfiguration());
     }
 
     IQueryable<Attendance> IAttendanceLeaveQueryDbContext.Attendances => Attendances;

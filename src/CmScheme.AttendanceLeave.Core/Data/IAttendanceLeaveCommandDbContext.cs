@@ -9,5 +9,6 @@ public interface IAttendanceLeaveCommandDbContext
     DbSet<LeaveApplication> LeaveApplications { get; }
     DbSet<LeaveBalance> LeaveBalances { get; }
     DbSet<PayrollAttendanceSummary> PayrollAttendanceSummaries { get; }
+    DbSet<Holiday> Holidays { get; }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

@@ -10,7 +10,9 @@ public static class AttendanceGroupExtensions
         RouteGroupBuilder group = builder.MapGroup("attendance");
 
         group.MapPost("/", Mark.Handle);
+        group.MapPut("/checkout", CheckOut.Handle);
         group.MapGet("/history", GetHistory.Handle);
+        group.MapGet("/payroll-summary", GetPayrollSummary.Handle);
 
         return builder;
     }

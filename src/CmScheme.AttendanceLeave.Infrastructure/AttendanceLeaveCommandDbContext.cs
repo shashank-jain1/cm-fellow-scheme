@@ -17,6 +17,7 @@ public class AttendanceLeaveCommandDbContext : IAttendanceLeaveCommandDbContext
     public DbSet<LeaveApplication> LeaveApplications => _dbContext.LeaveApplications;
     public DbSet<LeaveBalance> LeaveBalances => _dbContext.LeaveBalances;
     public DbSet<PayrollAttendanceSummary> PayrollAttendanceSummaries => _dbContext.PayrollAttendanceSummaries;
+    public DbSet<Holiday> Holidays => _dbContext.Holidays;
 
     public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {

@@ -3,6 +3,7 @@ export { default as ApplyLeavePage } from './pages/ApplyLeavePage';
 export { default as LeaveApprovalPage } from './pages/LeaveApprovalPage';
 export { default as LeaveStatusPage } from './pages/LeaveStatusPage';
 export { default as LeaveBalancePage } from './pages/LeaveBalancePage';
+export { default as HolidayCalendarPage } from './pages/HolidayCalendarPage';
 
 export { default as FaceCaptureWidget } from './components/FaceCaptureWidget';
 export { default as AttendanceStatusBadge } from './components/AttendanceStatusBadge';
@@ -18,6 +19,10 @@ export {
   useLeaveStatus,
   useLeaveBalance,
   useApproveLeave,
+  useHolidays,
+  useCreateHoliday,
+  useUpdateHoliday,
+  useDeleteHoliday,
 } from './queries';
 
 export type {
@@ -26,4 +31,7 @@ export type {
   LeaveApplicationFormData,
   LeaveStatusDto,
   LeaveBalanceDto,
+  HolidayDto,
+  CreateHolidayCommand,
+  UpdateHolidayCommand,
 } from './types';

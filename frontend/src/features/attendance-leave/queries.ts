@@ -1,6 +1,11 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { attendanceLeaveApi } from './api';
-import type { MarkAttendanceCommand, LeaveApplicationFormData } from './types';
+import type {
+  MarkAttendanceCommand,
+  LeaveApplicationFormData,
+  CreateHolidayCommand,
+  UpdateHolidayCommand,
+} from './types';
 
 export function useMarkAttendance() {
   const qc = useQueryClient();
@@ -54,5 +59,49 @@ export function useApproveLeave() {
     mutationFn: (command: { LeaveApplicationNo: string; ApprovalStatus: string; Remarks?: string }) =>
       attendanceLeaveApi.approveLeave(command),
     onSuccess: () => qc.invalidateQueries({ queryKey: ['leaveStatus'] }),
+  });
+}
+
+export function useHolidays(year?: number) {
+  return useQuery({
+    queryKey: ['holidays', year],
+    queryFn: async () => {
+      const res = await attendanceLeaveApi.getHolidays(year);
+      return res.data ?? [];
+    },
+  });
+}
+
+export function useCreateHoliday() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (data: CreateHolidayCommand) => attendanceLeaveApi.createHoliday(data),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['holidays'] }),
+  });
+}
+
+export function useUpdateHoliday() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (data: UpdateHolidayCommand) => attendanceLeaveApi.updateHoliday(data),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['holidays'] }),
+  });
+}
+
+export function useDeleteHoliday() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (holidayId: number) => attendanceLeaveApi.deleteHoliday(holidayId),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['holidays'] }),
+  });
+}
+
+export function usePayrollSummary(payrollMonth?: string, applicantId?: number) {
+  return useQuery({
+    queryKey: ['payrollSummary', payrollMonth, applicantId],
+    queryFn: async () => {
+      const res = await attendanceLeaveApi.getPayrollSummary(payrollMonth, applicantId);
+      return res.data ?? [];
+    },
   });
 }
