@@ -1,7 +1,7 @@
 import ApiService from '../../../services/ApiService';
 import type { UserAccountListItem, CreateUserAccountRequest, AssignRoleRequest } from '../types/user-management';
 
-const BASE = 'registrations/../user-accounts';
+const BASE = 'user-accounts';
 
 export const userManagementApi = {
   list: async (role?: string, isActive?: boolean): Promise<UserAccountListItem[]> => {
