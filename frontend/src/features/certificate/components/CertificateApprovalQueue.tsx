@@ -1,7 +1,9 @@
-import { Button } from 'primereact/button';
 import { useApproveCertificate, useRejectCertificate } from '../queries';
 import { formatDate } from '../../../shared/utils/format';
+import { useAuth } from '../../../features/auth';
+import { AppButton, EmptyState } from '../../../shared/components/ui';
 import type { CertificateApplicationDto } from '../types';
+import { SkeletonTable } from '../../../shared/components/ui';
 
 interface CertificateApprovalQueueProps {
   certificates: CertificateApplicationDto[];
@@ -11,32 +13,24 @@ interface CertificateApprovalQueueProps {
 export default function CertificateApprovalQueue({ certificates, isLoading }: CertificateApprovalQueueProps) {
   const approveMutation = useApproveCertificate();
   const rejectMutation = useRejectCertificate();
+  const { user } = useAuth();
 
-  const pending = certificates.filter((c) => c.status === 'pending');
+  const pending = certificates.filter((c) => c.status === 'Applied');
+
+  const handleApprove = (id: number) => {
+    approveMutation.mutate({ id, verifiedBy: user?.username ?? 'admin' });
+  };
+
+  const handleReject = (id: number) => {
+    rejectMutation.mutate({ id, verifiedBy: user?.username ?? 'admin' });
+  };
 
   if (isLoading) {
-    return (
-      <div style={{ padding: 20 }}>
-        {[1, 2, 3].map((n) => (
-          <div key={n} style={{ display: 'flex', gap: 16, padding: '14px 0', borderBottom: '1px solid var(--border-light)' }}>
-            <div className="skeleton" style={{ width: '20%', height: 14 }} />
-            <div className="skeleton" style={{ width: '25%', height: 14 }} />
-            <div className="skeleton" style={{ width: '15%', height: 14 }} />
-            <div className="skeleton" style={{ width: '20%', height: 14 }} />
-          </div>
-        ))}
-      </div>
-    );
+    return <SkeletonTable columns={5} />;
   }
 
   if (pending.length === 0) {
-    return (
-      <div className="empty-state">
-        <i className="pi pi-check-circle" />
-        <h3>No pending approvals</h3>
-        <p>All certificate applications have been reviewed</p>
-      </div>
-    );
+    return <EmptyState icon="pi pi-check-circle" title="No pending approvals" description="All certificate applications have been reviewed" />;
   }
 
   return (
@@ -72,17 +66,19 @@ export default function CertificateApprovalQueue({ certificates, isLoading }: Ce
               <td style={{ padding: '14px 16px', fontSize: 13, color: 'var(--text-muted)' }}>{formatDate(c.startDate)}</td>
               <td style={{ padding: '14px 16px' }}>
                 <div style={{ display: 'flex', gap: 6 }}>
-                  <Button
+                  <AppButton
+                    variant="primary"
+                    size="sm"
                     icon="pi pi-check"
-                    className="btn btn-sm btn-primary"
-                    onClick={() => approveMutation.mutate(c.certificateId)}
-                    disabled={approveMutation.isPending}
+                    onClick={() => handleApprove(c.certificateId)}
+                    loading={approveMutation.isPending}
                   />
-                  <Button
+                  <AppButton
+                    variant="secondary"
+                    size="sm"
                     icon="pi pi-times"
-                    className="btn btn-sm btn-secondary"
-                    onClick={() => rejectMutation.mutate(c.certificateId)}
-                    disabled={rejectMutation.isPending}
+                    onClick={() => handleReject(c.certificateId)}
+                    loading={rejectMutation.isPending}
                   />
                 </div>
               </td>

@@ -41,6 +41,7 @@ public static class Statuses
         public const string Approved = "Approved";
         public const string Rejected = "Rejected";
         public const string Generated = "Generated";
+        public const string Issued = "Issued";
     }
 
     public static class Training

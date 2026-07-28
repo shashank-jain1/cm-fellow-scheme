@@ -6,6 +6,7 @@ export { default as StatusTag } from './StatusTag';
 export { default as PriorityTag } from './PriorityTag';
 export { default as ConfirmDialog } from './ConfirmDialog';
 export { default as LoadingSkeleton } from './LoadingSkeleton';
+export { default as SkeletonTable } from './SkeletonTable';
 export { default as FormField } from './FormField';
 export { default as FormGrid } from './FormGrid';
 export { default as AppButton } from './AppButton';

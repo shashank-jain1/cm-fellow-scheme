@@ -7,6 +7,7 @@ import { Column } from 'primereact/column';
 import { Tag } from 'primereact/tag';
 import { useTrainingSessions } from '../queries';
 import { formatDate } from '../../../shared/utils/format';
+import { EmptyState, SkeletonTable } from '../../../shared/components/ui';
 
 export default function ActivityList() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -64,22 +65,27 @@ export default function ActivityList() {
       </div>
 
       <div className="card" style={{ padding: 0 }}>
-        <DataTable
-          value={filteredSchedules}
-          loading={isLoading}
-          emptyMessage="No activities found"
-          stripedRows
-          paginator
-          rows={10}
-        >
-          <Column field="activityType" header="Type" />
-          <Column header="Title" body={titleBody} />
-          <Column field="date" header="Date" body={(row) => formatDate(row.date)} />
-          <Column field="startTime" header="Start" />
-          <Column field="endTime" header="End" />
-          <Column field="mode" header="Mode" />
-          <Column field="status" header="Status" body={statusBody} />
-        </DataTable>
+        {isLoading ? (
+          <SkeletonTable columns={7} />
+        ) : filteredSchedules.length > 0 ? (
+          <DataTable
+            value={filteredSchedules}
+            emptyMessage="No activities found"
+            stripedRows
+            paginator
+            rows={10}
+          >
+            <Column field="activityType" header="Type" />
+            <Column header="Title" body={titleBody} />
+            <Column field="date" header="Date" body={(row) => formatDate(row.date)} />
+            <Column field="startTime" header="Start" />
+            <Column field="endTime" header="End" />
+            <Column field="mode" header="Mode" />
+            <Column field="status" header="Status" body={statusBody} />
+          </DataTable>
+        ) : (
+          <EmptyState icon="pi pi-calendar" title="No activities found" description="Create a new activity to get started" />
+        )}
       </div>
     </div>
   );

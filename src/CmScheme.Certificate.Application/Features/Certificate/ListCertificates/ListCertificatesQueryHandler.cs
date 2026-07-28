@@ -28,6 +28,7 @@ public sealed class ListCertificatesQueryHandler(ICertificateQueryDbContext dbCo
                 StartDate = c.StartDate,
                 EndDate = c.EndDate,
                 DurationDays = c.DurationDays,
+                CertificatePdfPath = c.CertificatePdfPath,
                 Status = c.Status,
                 CreatedOn = c.CreatedOn
             })

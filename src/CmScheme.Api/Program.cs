@@ -102,6 +102,8 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseStaticFiles();
+
 app.MapApiEndpoints("/api/v1");
 
 await SeedAdminUser(app);

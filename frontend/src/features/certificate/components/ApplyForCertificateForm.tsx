@@ -1,5 +1,5 @@
 import { InputText } from 'primereact/inputtext';
-import { Button } from 'primereact/button';
+import { AppButton } from '../../../shared/components/ui';
 import { useCertificateForm } from './form.hook';
 
 export default function ApplyForCertificateForm() {
@@ -10,7 +10,17 @@ export default function ApplyForCertificateForm() {
       <h3 style={{ fontSize: 16, fontWeight: 600, marginBottom: 20 }}>Apply for Certificate</h3>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
         <div className="form-group">
-          <label className="form-label">Program Name</label>
+          <label className="form-label">Applicant ID *</label>
+          <InputText
+            type="number"
+            value={formData.applicantId ? formData.applicantId.toString() : ''}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateField('applicantId', e.target.value ? Number(e.target.value) : 0)}
+            placeholder="Enter applicant ID"
+            style={{ width: '100%' }}
+          />
+        </div>
+        <div className="form-group">
+          <label className="form-label">Program Name *</label>
           <InputText
             value={formData.programName}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateField('programName', e.target.value)}
@@ -20,7 +30,7 @@ export default function ApplyForCertificateForm() {
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
           <div className="form-group">
-            <label className="form-label">Start Date</label>
+            <label className="form-label">Start Date *</label>
             <InputText
               type="date"
               value={formData.startDate}
@@ -29,7 +39,7 @@ export default function ApplyForCertificateForm() {
             />
           </div>
           <div className="form-group">
-            <label className="form-label">End Date</label>
+            <label className="form-label">End Date *</label>
             <InputText
               type="date"
               value={formData.endDate}
@@ -39,13 +49,14 @@ export default function ApplyForCertificateForm() {
           </div>
         </div>
         <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <Button
-            label="Submit Application"
-            className="btn btn-primary"
+          <AppButton
+            icon="pi pi-send"
             onClick={submit}
-            disabled={!formData.programName || isSubmitting}
+            disabled={!formData.programName || !formData.applicantId || isSubmitting}
             loading={isSubmitting}
-          />
+          >
+            Submit Application
+          </AppButton>
         </div>
       </div>
     </div>

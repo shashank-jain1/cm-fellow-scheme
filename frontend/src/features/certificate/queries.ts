@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { fetchCertificates, fetchCertificateDetail, applyForCertificate, approveCertificate, rejectCertificate, submitExitReadiness, generateCertificate, closeAndArchiveRecord } from './api';
 import type { CertificateFormData } from './types';
-import type { ExitReadinessPayload } from './api';
+import type { ExitReadinessPayload } from './types';
 
 export function useCertificates() {
   return useQuery({
@@ -31,7 +31,7 @@ export function useApplyForCertificate() {
 export function useApproveCertificate() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (id: number) => approveCertificate(id),
+    mutationFn: ({ id, verifiedBy }: { id: number; verifiedBy: string }) => approveCertificate(id, verifiedBy),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['certificates'] });
     },
@@ -41,7 +41,7 @@ export function useApproveCertificate() {
 export function useRejectCertificate() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (id: number) => rejectCertificate(id),
+    mutationFn: ({ id, verifiedBy }: { id: number; verifiedBy: string }) => rejectCertificate(id, verifiedBy),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['certificates'] });
     },

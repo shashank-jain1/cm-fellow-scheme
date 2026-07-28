@@ -24,6 +24,7 @@ public sealed class GetCertificateStatusQueryHandler(ICertificateQueryDbContext 
                 DurationDays = c.DurationDays,
                 VerifiedBy = c.VerifiedBy,
                 CertificateIssueDate = c.CertificateIssueDate,
+                CertificatePdfPath = c.CertificatePdfPath,
                 Status = c.Status,
                 CreatedOn = c.CreatedOn
             })

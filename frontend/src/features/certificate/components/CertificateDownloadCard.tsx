@@ -1,6 +1,8 @@
-import { Button } from 'primereact/button';
 import { Tag } from 'primereact/tag';
-import { downloadCertificate } from '../api';
+import { useGenerateCertificate } from '../queries';
+import { getDownloadUrl } from '../api';
+import { useAuth } from '../../../features/auth';
+import { AppButton } from '../../../shared/components/ui';
 import type { CertificateApplicationDto } from '../types';
 
 interface CertificateDownloadCardProps {
@@ -8,7 +10,22 @@ interface CertificateDownloadCardProps {
 }
 
 export default function CertificateDownloadCard({ certificate }: CertificateDownloadCardProps) {
-  const isApproved = certificate.status === 'approved' || certificate.status === 'issued';
+  const isApproved = certificate.status === 'Approved';
+  const isIssued = certificate.status === 'Issued';
+  const canGenerate = isApproved && !isIssued;
+  const canDownload = isIssued && certificate.certificatePdfPath;
+
+  const generateMutation = useGenerateCertificate();
+  const { user } = useAuth();
+
+  const handleGenerate = () => {
+    generateMutation.mutate(certificate.certificateId);
+  };
+
+  const handleDownload = () => {
+    const url = getDownloadUrl(certificate.certificateId);
+    window.open(url, '_blank');
+  };
 
   return (
     <div className="kpi-card" style={{ padding: 24, display: 'flex', alignItems: 'center', gap: 20 }}>
@@ -17,7 +34,7 @@ export default function CertificateDownloadCard({ certificate }: CertificateDown
           width: 56,
           height: 56,
           borderRadius: 14,
-          background: isApproved ? 'var(--emerald-100)' : 'var(--amber-100)',
+          background: isIssued ? 'var(--emerald-100)' : 'var(--amber-100)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -25,8 +42,8 @@ export default function CertificateDownloadCard({ certificate }: CertificateDown
         }}
       >
         <i
-          className={`pi ${isApproved ? 'pi-verified' : 'pi-hourglass'}`}
-          style={{ fontSize: 24, color: isApproved ? 'var(--emerald-500)' : 'var(--amber-500)' }}
+          className={`pi ${isIssued ? 'pi-verified' : 'pi-hourglass'}`}
+          style={{ fontSize: 24, color: isIssued ? 'var(--emerald-500)' : 'var(--amber-500)' }}
         />
       </div>
       <div style={{ flex: 1, minWidth: 0 }}>
@@ -36,18 +53,33 @@ export default function CertificateDownloadCard({ certificate }: CertificateDown
         </div>
         <Tag
           value={certificate.status}
-          severity={isApproved ? 'success' : 'warning'}
+          severity={isIssued ? 'success' : 'warning'}
           style={{ marginTop: 6 }}
         />
       </div>
-      {isApproved && certificate.certificatePdfPath && (
-        <Button
-          icon="pi pi-download"
-          label="Download"
-          className="btn btn-primary"
-          onClick={() => downloadCertificate(certificate.certificateId)}
-        />
-      )}
+      <div style={{ display: 'flex', gap: 8 }}>
+        {canGenerate && (
+          <AppButton
+            variant="primary"
+            size="sm"
+            icon="pi pi-file-pdf"
+            onClick={handleGenerate}
+            loading={generateMutation.isPending}
+          >
+            Generate
+          </AppButton>
+        )}
+        {canDownload && (
+          <AppButton
+            variant="primary"
+            size="sm"
+            icon="pi pi-download"
+            onClick={handleDownload}
+          >
+            Download
+          </AppButton>
+        )}
+      </div>
     </div>
   );
 }

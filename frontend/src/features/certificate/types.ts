@@ -1,17 +1,30 @@
 export interface CertificateFormData {
   applicantId: number;
-  programName: string;
-  startDate: string;
-  endDate: string;
-}
-
-export interface CertificateApplicationDto {
-  certificateId: number;
   applicantName: string;
   programName: string;
   startDate: string;
   endDate: string;
   durationDays: number;
-  status: string;
+}
+
+export interface CertificateApplicationDto {
+  certificateId: number;
+  applicantId: number;
+  applicantName: string;
+  programName: string;
+  startDate: string;
+  endDate: string;
+  durationDays: number;
+  verifiedBy?: string;
+  certificateIssueDate?: string;
   certificatePdfPath?: string;
+  status: string;
+  createdOn: string;
+}
+
+export interface ExitReadinessPayload {
+  applicantId: number;
+  completionStatus: string;
+  verificationFlags: string;
+  createdBy: string;
 }

@@ -3,6 +3,10 @@ using Mediator;
 using Microsoft.EntityFrameworkCore;
 using CmScheme.Certificate.Core.Data;
 using CmScheme.Certificate.Core.Entities;
+using CmScheme.Common.Core;
+using QuestPDF.Fluent;
+using QuestPDF.Helpers;
+using QuestPDF.Infrastructure;
 
 namespace CmScheme.Certificate.Application.Features.Certificate.GenerateCertificate;
 
@@ -21,7 +25,7 @@ public sealed class GenerateCertificateCommandHandler(ICertificateCommandDbConte
             return Result.NotFound("Certificate not found.");
         }
 
-        if (certificate.Status != "Approved")
+        if (!string.Equals(certificate.Status, Statuses.Certificate.Approved, StringComparison.OrdinalIgnoreCase))
         {
             return Result.Invalid(new ValidationError("Certificate must be approved before generation."));
         }
@@ -32,12 +36,12 @@ public sealed class GenerateCertificateCommandHandler(ICertificateCommandDbConte
         string uniqueFileName = $"{certificate.CertificateId}_{DateTime.UtcNow:yyyyMMddHHmmss}.pdf";
         string filePath = Path.Combine(uploadDir, uniqueFileName);
 
-        string certificateContent = GenerateCertificatePdfContent(certificate);
-        await File.WriteAllTextAsync(filePath, certificateContent, cancellationToken);
+        byte[] pdfBytes = GeneratePdf(certificate);
+        await File.WriteAllBytesAsync(filePath, pdfBytes, cancellationToken);
 
         certificate.CertificatePdfPath = $"/uploads/certificates/{uniqueFileName}";
         certificate.CertificateIssueDate = DateTime.UtcNow;
-        certificate.Status = "Issued";
+        certificate.Status = Statuses.Certificate.Issued;
         certificate.ModifiedOn = DateTime.UtcNow;
 
         await dbContext.SaveChangesAsync(cancellationToken);
@@ -45,38 +49,88 @@ public sealed class GenerateCertificateCommandHandler(ICertificateCommandDbConte
         return Result.Success(certificate.CertificatePdfPath);
     }
 
-    private static string GenerateCertificatePdfContent(CertificateApplication certificate)
+    private static byte[] GeneratePdf(CertificateApplication certificate)
     {
-        return $@"
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Certificate of Completion</title>
-    <style>
-        body {{ font-family: Arial, sans-serif; text-align: center; padding: 50px; }}
-        .certificate {{ border: 3px solid #333; padding: 40px; margin: 20px auto; max-width: 800px; }}
-        .title {{ font-size: 28px; font-weight: bold; color: #2c5f2d; margin-bottom: 20px; }}
-        .name {{ font-size: 24px; font-weight: bold; color: #333; margin: 20px 0; }}
-        .details {{ font-size: 16px; color: #555; margin: 10px 0; }}
-        .signature {{ margin-top: 50px; font-size: 14px; color: #777; }}
-    </style>
-</head>
-<body>
-    <div class='certificate'>
-        <div class='title'>CERTIFICATE OF COMPLETION</div>
-        <p class='details'>This is to certify that</p>
-        <div class='name'>{certificate.ApplicantName}</div>
-        <p class='details'>has successfully completed the program</p>
-        <p class='details'><strong>{certificate.ProgramName}</strong></p>
-        <p class='details'>Duration: {certificate.StartDate:dd MMM yyyy} to {certificate.EndDate:dd MMM yyyy} ({certificate.DurationDays} days)</p>
-        <p class='details'>Certificate ID: {certificate.CertificateId}</p>
-        <p class='details'>Issue Date: {certificate.CertificateIssueDate:dd MMM yyyy}</p>
-        <div class='signature'>
-            <p>Verified By: {certificate.VerifiedBy ?? "N/A"}</p>
-            <p>Atal Bihari Vajpayee Institute of Good Governance and Policy Analysis</p>
-        </div>
-    </div>
-</body>
-</html>";
+        IDocument document = Document.Create(container =>
+        {
+            container.Page(page =>
+            {
+                page.Size(PageSizes.A4.Landscape());
+                page.MarginHorizontal(60);
+                page.MarginVertical(40);
+
+                page.Content().Column(column =>
+                {
+                    column.Item().PaddingBottom(10).Row(row =>
+                    {
+                        row.RelativeItem().AlignLeft().Text("ATAL BIHARI VAJPAYEE INSTITUTE OF")
+                            .FontSize(11).Bold().FontColor(Colors.Grey.Medium);
+                        row.RelativeItem().AlignRight().Text($"Certificate No: CERT-{certificate.CertificateId:D4}")
+                            .FontSize(10).FontColor(Colors.Grey.Medium);
+                    });
+
+                    column.Item().PaddingBottom(4).Text("GOOD GOVERNANCE AND POLICY ANALYSIS")
+                        .FontSize(11).Bold().FontColor(Colors.Grey.Medium);
+
+                    column.Item().PaddingBottom(30)
+                        .LineHorizontal(1).LineColor(Colors.Grey.Lighten1);
+
+                    column.Item().AlignCenter().PaddingBottom(20)
+                        .Text("CERTIFICATE OF COMPLETION")
+                        .FontSize(26).Bold().FontColor(Colors.Green.Darken3);
+
+                    column.Item().AlignCenter().PaddingBottom(10)
+                        .Text("This is to certify that")
+                        .FontSize(13).FontColor(Colors.Grey.Medium);
+
+                    column.Item().AlignCenter().PaddingBottom(10)
+                        .Text(certificate.ApplicantName)
+                        .FontSize(22).Bold().FontColor(Colors.Grey.Darken4);
+
+                    column.Item().AlignCenter().PaddingBottom(10)
+                        .Text("has successfully completed the program")
+                        .FontSize(13).FontColor(Colors.Grey.Medium);
+
+                    column.Item().AlignCenter().PaddingBottom(20)
+                        .Text(certificate.ProgramName)
+                        .FontSize(18).Bold().FontColor(Colors.Blue.Darken2);
+
+                    column.Item().AlignCenter().PaddingBottom(8)
+                        .Text($"Duration: {certificate.StartDate:dd MMM yyyy} to {certificate.EndDate:dd MMM yyyy} ({certificate.DurationDays} days)")
+                        .FontSize(12).FontColor(Colors.Grey.Medium);
+
+                    column.Item().PaddingBottom(30)
+                        .LineHorizontal(1).LineColor(Colors.Grey.Lighten1);
+
+                    column.Item().Row(row =>
+                    {
+                        row.RelativeItem().Column(col =>
+                        {
+                            col.Item().Text("Verified By:").FontSize(10).Bold().FontColor(Colors.Grey.Medium);
+                            col.Item().Text(certificate.VerifiedBy ?? "N/A").FontSize(11);
+                        });
+
+                        row.RelativeItem().AlignCenter().Column(col =>
+                        {
+                            col.Item().Text("Date of Issue:").FontSize(10).Bold().FontColor(Colors.Grey.Medium);
+                            col.Item().Text(certificate.CertificateIssueDate?.ToString("dd MMM yyyy") ?? DateTime.UtcNow.ToString("dd MMM yyyy")).FontSize(11);
+                        });
+
+                        row.RelativeItem().AlignRight().Column(col =>
+                        {
+                            col.Item().Text("Certificate ID:").FontSize(10).Bold().FontColor(Colors.Grey.Medium);
+                            col.Item().Text($"CERT-{certificate.CertificateId:D4}").FontSize(11);
+                        });
+                    });
+
+                    column.Item().PaddingTop(20)
+                        .AlignCenter()
+                        .Text("Atal Bihari Vajpayee Institute of Good Governance and Policy Analysis")
+                        .FontSize(10).Italic().FontColor(Colors.Grey.Medium);
+                });
+            });
+        });
+
+        return document.GeneratePdf();
     }
 }

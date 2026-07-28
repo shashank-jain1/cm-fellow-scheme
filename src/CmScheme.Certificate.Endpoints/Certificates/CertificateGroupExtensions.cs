@@ -13,6 +13,8 @@ public static class CertificateGroupExtensions
         group.MapPost("/", Apply.Handle);
         group.MapPut("/review", Review.Handle);
         group.MapGet("/status", GetStatus.Handle);
+        group.MapPost("/{certificateId:int}/generate", Generate.Handle);
+        group.MapGet("/{certificateId:int}/download", Download.Handle);
 
         return builder;
     }

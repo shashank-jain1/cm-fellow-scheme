@@ -1,6 +1,6 @@
 import ApiService from '../../services/ApiService';
 import certificateUrls from './urls';
-import type { CertificateApplicationDto, CertificateFormData } from './types';
+import type { CertificateApplicationDto, CertificateFormData, ExitReadinessPayload } from './types';
 
 export async function fetchCertificates(): Promise<CertificateApplicationDto[]> {
   const res = await ApiService.get<CertificateApplicationDto[]>(certificateUrls.list());
@@ -17,33 +17,36 @@ export async function applyForCertificate(command: CertificateFormData): Promise
   return res.data!;
 }
 
-export async function approveCertificate(id: number): Promise<void> {
-  await ApiService.put(certificateUrls.review(), { certificateId: id, ReviewStatus: 'approved' });
+export async function approveCertificate(id: number, verifiedBy: string): Promise<void> {
+  await ApiService.put(certificateUrls.review(), {
+    certificateId: id,
+    status: 'Approved',
+    verifiedBy,
+  });
 }
 
-export async function rejectCertificate(id: number): Promise<void> {
-  await ApiService.put(certificateUrls.review(), { certificateId: id, ReviewStatus: 'rejected' });
-}
-
-export async function downloadCertificate(id: number): Promise<void> {
-  const API_BASE = import.meta.env.VITE_API_URL || '/api/v1';
-  window.open(`${API_BASE}/${certificateUrls.download(id)}`, '_blank');
+export async function rejectCertificate(id: number, verifiedBy: string): Promise<void> {
+  await ApiService.put(certificateUrls.review(), {
+    certificateId: id,
+    status: 'Rejected',
+    verifiedBy,
+  });
 }
 
 export async function generateCertificate(certificateId: number): Promise<string> {
-  const res = await ApiService.post<string>(`certificates/${certificateId}/generate`, {});
+  const res = await ApiService.post<string>(certificateUrls.generate(certificateId), {});
   return res.data ?? '';
 }
 
-export interface ExitReadinessPayload {
-  applicantId: number;
-  checklistItems: string[];
+export function getDownloadUrl(id: number): string {
+  const API_BASE = import.meta.env.VITE_API_URL || '/api/v1';
+  return `${API_BASE}/${certificateUrls.download(id)}`;
 }
 
 export async function submitExitReadiness(payload: ExitReadinessPayload): Promise<void> {
-  await ApiService.post('certificates/exit/readiness', payload);
+  await ApiService.post(certificateUrls.exitReadiness(), payload);
 }
 
 export async function closeAndArchiveRecord(exitRecordId: number, approvedBy: number): Promise<void> {
-  await ApiService.put(`certificates/exit/${exitRecordId}/close-archive`, { approvedBy });
+  await ApiService.put(certificateUrls.exitCloseArchive(exitRecordId), { approvedBy });
 }

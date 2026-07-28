@@ -4,7 +4,7 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Tag } from 'primereact/tag';
 import { usePayrollSummary } from '../queries';
-import { PageHeader, EmptyState, AppButton } from '../../../shared/components/ui';
+import { PageHeader, EmptyState, AppButton, SkeletonTable } from '../../../shared/components/ui';
 import type { PayrollSummaryDto } from '../types';
 
 export default function PayrollSummaryPage() {
@@ -65,21 +65,24 @@ export default function PayrollSummaryPage() {
       </div>
 
       <div className="table-wrapper">
-        <DataTable value={summaries} loading={isLoading} rows={10} paginator emptyMessage=" ">
-          <Column field="payrollMonth" header="Month" />
-          <Column field="applicantId" header="Applicant ID" />
-          <Column field="totalWorkingDays" header="Working Days" />
-          <Column field="presentDays" header="Present" />
-          <Column field="approvedLeaveDays" header="Approved Leave" />
-          <Column field="absentDays" header="Absent" body={absentDaysBody} />
-          <Column field="payableDays" header="Payable Days" />
-          <Column
-            field="createdOn"
-            header="Generated"
-            body={(row: PayrollSummaryDto) => new Date(row.createdOn).toLocaleDateString('en-IN')}
-          />
-        </DataTable>
-        {summaries.length === 0 && !isLoading && (
+        {isLoading ? (
+          <SkeletonTable columns={8} />
+        ) : summaries.length > 0 ? (
+          <DataTable value={summaries} rows={10} paginator emptyMessage=" ">
+            <Column field="payrollMonth" header="Month" />
+            <Column field="applicantId" header="Applicant ID" />
+            <Column field="totalWorkingDays" header="Working Days" />
+            <Column field="presentDays" header="Present" />
+            <Column field="approvedLeaveDays" header="Approved Leave" />
+            <Column field="absentDays" header="Absent" body={absentDaysBody} />
+            <Column field="payableDays" header="Payable Days" />
+            <Column
+              field="createdOn"
+              header="Generated"
+              body={(row: PayrollSummaryDto) => new Date(row.createdOn).toLocaleDateString('en-IN')}
+            />
+          </DataTable>
+        ) : (
           <EmptyState icon="pi pi-money-bill" title="No payroll records found" description="Try adjusting your search filters" />
         )}
       </div>

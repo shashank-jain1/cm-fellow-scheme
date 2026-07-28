@@ -7,7 +7,7 @@ import { InputText } from 'primereact/inputtext';
 import { Toast } from 'primereact/toast';
 import { useRef } from 'react';
 import { useListRegistrationsQuery, useApproveRegistrationMutation, useRejectRegistrationMutation } from '../queries';
-import { PageHeader, EmptyState, AppButton, SearchInput } from '../../../shared/components/ui';
+import { PageHeader, EmptyState, AppButton, SearchInput, SkeletonTable } from '../../../shared/components/ui';
 
 export default function DocumentVerificationPage() {
   const [search, setSearch] = useState('');
@@ -75,50 +75,53 @@ export default function DocumentVerificationPage() {
       </div>
 
       <div className="table-wrapper">
-        <DataTable value={pendingDocs} loading={isLoading} rows={10} paginator emptyMessage=" ">
-          <Column
-            field="firstName"
-            header="Applicant"
-            body={(row: any) => (
-              <div>
-                <div style={{ fontWeight: 600, fontSize: 14 }}>{row.firstName} {row.lastName}</div>
-                <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>{row.mobileNumber}</div>
-              </div>
-            )}
-          />
-          <Column
-            header="Documents"
-            body={(row: any) => (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-                {docLink(row.photographPath, 'Photograph')}
-                {docLink(row.identityProofPath, 'Identity Proof')}
-                {docLink(row.educationalCertificatePath, 'Education Cert')}
-              </div>
-            )}
-          />
-          <Column field="status" header="Status" body={statusBody} />
-          <Column
-            header="Actions"
-            body={(row: any) => (
-              <div style={{ display: 'flex', gap: 8 }}>
-                <AppButton size="sm" onClick={() => handleApprove(row.applicantId)}>
-                  Approve
-                </AppButton>
-                <AppButton
-                  size="sm"
-                  variant="danger"
-                  onClick={() => {
-                    setRejectTarget({ id: row.applicantId, name: `${row.firstName} ${row.lastName}` });
-                    setRejectDialogVisible(true);
-                  }}
-                >
-                  Reject
-                </AppButton>
-              </div>
-            )}
-          />
-        </DataTable>
-        {pendingDocs.length === 0 && !isLoading && (
+        {isLoading ? (
+          <SkeletonTable columns={4} />
+        ) : pendingDocs.length > 0 ? (
+          <DataTable value={pendingDocs} rows={10} paginator emptyMessage=" ">
+            <Column
+              field="firstName"
+              header="Applicant"
+              body={(row: any) => (
+                <div>
+                  <div style={{ fontWeight: 600, fontSize: 14 }}>{row.firstName} {row.lastName}</div>
+                  <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>{row.mobileNumber}</div>
+                </div>
+              )}
+            />
+            <Column
+              header="Documents"
+              body={(row: any) => (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                  {docLink(row.photographPath, 'Photograph')}
+                  {docLink(row.identityProofPath, 'Identity Proof')}
+                  {docLink(row.educationalCertificatePath, 'Education Cert')}
+                </div>
+              )}
+            />
+            <Column field="status" header="Status" body={statusBody} />
+            <Column
+              header="Actions"
+              body={(row: any) => (
+                <div style={{ display: 'flex', gap: 8 }}>
+                  <AppButton size="sm" onClick={() => handleApprove(row.applicantId)}>
+                    Approve
+                  </AppButton>
+                  <AppButton
+                    size="sm"
+                    variant="danger"
+                    onClick={() => {
+                      setRejectTarget({ id: row.applicantId, name: `${row.firstName} ${row.lastName}` });
+                      setRejectDialogVisible(true);
+                    }}
+                  >
+                    Reject
+                  </AppButton>
+                </div>
+              )}
+            />
+          </DataTable>
+        ) : (
           <EmptyState icon="pi pi-file-check" title="No registrations found" description="No pending registrations to review" />
         )}
       </div>

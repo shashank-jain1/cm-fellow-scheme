@@ -8,7 +8,6 @@ const navItems = [
   { path: '/training', label: 'Training', icon: 'pi pi-calendar' },
   { path: '/work-allocation', label: 'Work Allocation', icon: 'pi pi-briefcase' },
   { path: '/performance', label: 'Performance', icon: 'pi pi-chart-bar' },
-  { path: '/certificate', label: 'Certificate', icon: 'pi pi-verified' },
   { path: '/help-desk', label: 'Help Desk', icon: 'pi pi-question-circle' },
 ];
 
@@ -24,6 +23,12 @@ const attendanceSubItems = [
 const adminNavItems = [
   { path: '/admin/users', label: 'User Management', icon: 'pi pi-users' },
   { path: '/admin/documents', label: 'Document Verification', icon: 'pi pi-file-check' },
+];
+
+const certificateSubItems = [
+  { path: '/certificate', label: 'Certificate Queue', icon: 'pi pi-list' },
+  { path: '/certificate/apply', label: 'Apply for Certificate', icon: 'pi pi-send' },
+  { path: '/certificate/exit', label: 'Exit Management', icon: 'pi pi-sign-out' },
 ];
 
 const masterSubItems = [
@@ -45,9 +50,11 @@ export default function Sidebar({ collapsed, onToggleCollapsed }: SidebarProps) 
 
   const [mastersExpanded, setMastersExpanded] = useState(() => location.pathname.startsWith('/masters'));
   const [attendanceExpanded, setAttendanceExpanded] = useState(() => location.pathname.startsWith('/attendance'));
+  const [certificateExpanded, setCertificateExpanded] = useState(() => location.pathname.startsWith('/certificate'));
 
   const isAttendanceActive = location.pathname.startsWith('/attendance');
   const isMastersActive = location.pathname.startsWith('/masters');
+  const isCertificateActive = location.pathname.startsWith('/certificate');
 
   useEffect(() => {
     if (isAttendanceActive) {
@@ -60,6 +67,12 @@ export default function Sidebar({ collapsed, onToggleCollapsed }: SidebarProps) 
       setMastersExpanded(true);
     }
   }, [isMastersActive]);
+
+  useEffect(() => {
+    if (isCertificateActive) {
+      setCertificateExpanded(true);
+    }
+  }, [isCertificateActive]);
 
   const handleLogout = () => {
     logout();
@@ -143,6 +156,51 @@ export default function Sidebar({ collapsed, onToggleCollapsed }: SidebarProps) 
         {!collapsed && attendanceExpanded && (
           <div id="attendance-submenu" style={{ paddingLeft: 18, flexShrink: 0 }}>
             {attendanceSubItems.map((item) => {
+              const isActive = isExactActive(item.path);
+              return (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className={`sidebar-link ${isActive ? 'active' : ''}`}
+                  style={{ paddingLeft: 12, fontSize: 13 }}
+                >
+                  <div className="sidebar-link-icon" style={{ width: 20, height: 20 }}>
+                    <i className={item.icon} style={{ fontSize: 12 }} />
+                    {isActive && <div className="sidebar-active-dot" />}
+                  </div>
+                  <span className="sidebar-link-label">{item.label}</span>
+                  {isActive && <div className="sidebar-active-indicator" />}
+                </Link>
+              );
+            })}
+          </div>
+        )}
+
+        <button
+          type="button"
+          className={`sidebar-link sidebar-link--group ${certificateExpanded ? 'expanded' : ''}`}
+          onClick={() => setCertificateExpanded(!certificateExpanded)}
+          title={collapsed ? 'Certificate' : undefined}
+          aria-expanded={certificateExpanded}
+          aria-controls="certificate-submenu"
+          style={{ width: '100%', border: 'none', background: 'none', cursor: 'pointer', textAlign: 'left' }}
+        >
+          <div className="sidebar-link-icon">
+            <i className="pi pi-verified" />
+          </div>
+          {!collapsed && (
+            <>
+              <span className="sidebar-link-label" style={{ flex: 1 }}>Certificate</span>
+              <i
+                className={`pi ${certificateExpanded ? 'pi-chevron-down' : 'pi-chevron-right'}`}
+                style={{ fontSize: 10, color: 'var(--text-muted)', transition: 'transform 0.15s' }}
+              />
+            </>
+          )}
+        </button>
+        {!collapsed && certificateExpanded && (
+          <div id="certificate-submenu" style={{ paddingLeft: 18, flexShrink: 0 }}>
+            {certificateSubItems.map((item) => {
               const isActive = isExactActive(item.path);
               return (
                 <Link

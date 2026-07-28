@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { Button } from 'primereact/button';
-import { ProgressSpinner } from 'primereact/progressspinner';
+import { AppButton } from '../../../shared/components/ui';
 
 interface ChecklistItem {
   id: string;
@@ -10,7 +9,7 @@ interface ChecklistItem {
 
 interface ExitReadinessChecklistProps {
   applicantId: number;
-  onSubmit?: (checkedItems: string[]) => void;
+  onSubmit?: (completionStatus: string, verificationFlags: string) => void;
   isSubmitting?: boolean;
 }
 
@@ -32,6 +31,12 @@ export default function ExitReadinessChecklist({ onSubmit, isSubmitting }: ExitR
 
   const allChecked = items.every((item) => item.checked);
   const checkedCount = items.filter((item) => item.checked).length;
+
+  const handleSubmit = () => {
+    const completionStatus = allChecked ? 'Completed' : 'In Progress';
+    const verificationFlags = JSON.stringify(items.filter((i) => i.checked).map((i) => i.id));
+    onSubmit?.(completionStatus, verificationFlags);
+  };
 
   return (
     <div className="card" style={{ padding: 24 }}>
@@ -75,15 +80,14 @@ export default function ExitReadinessChecklist({ onSubmit, isSubmitting }: ExitR
       </div>
 
       <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 20 }}>
-        <Button
-          label={isSubmitting ? 'Submitting...' : 'Mark Ready'}
-          icon={isSubmitting ? undefined : 'pi pi-check'}
-          className="btn btn-primary"
+        <AppButton
+          icon="pi pi-check"
+          onClick={handleSubmit}
           disabled={!allChecked || isSubmitting}
-          onClick={() => onSubmit?.(items.filter((i) => i.checked).map((i) => i.id))}
+          loading={isSubmitting}
         >
-          {isSubmitting && <ProgressSpinner style={{ width: 14, height: 14, marginRight: 8 }} />}
-        </Button>
+          Mark Ready
+        </AppButton>
       </div>
     </div>
   );

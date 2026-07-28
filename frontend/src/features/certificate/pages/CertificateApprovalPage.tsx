@@ -1,12 +1,13 @@
 import { useCertificates } from '../queries';
 import CertificateApprovalQueue from '../components/CertificateApprovalQueue';
 import CertificateDownloadCard from '../components/CertificateDownloadCard';
+import { SkeletonTable } from '../../../shared/components/ui';
 
 export default function CertificateApprovalPage() {
   const { data: certificates, isLoading } = useCertificates();
 
   const approved = (certificates ?? []).filter(
-    (c) => c.status === 'approved' || c.status === 'issued'
+    (c) => c.status === 'Approved' || c.status === 'Issued'
   );
 
   return (
@@ -21,7 +22,11 @@ export default function CertificateApprovalPage() {
       </div>
 
       <h3 style={{ fontSize: 16, fontWeight: 600, marginBottom: 16 }}>Pending Approvals</h3>
-      <CertificateApprovalQueue certificates={certificates ?? []} isLoading={isLoading} />
+      {isLoading ? (
+        <SkeletonTable columns={5} />
+      ) : (
+        <CertificateApprovalQueue certificates={certificates ?? []} isLoading={isLoading} />
+      )}
 
       {approved.length > 0 && (
         <>

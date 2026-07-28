@@ -6,6 +6,7 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { useTrainingSchedules, useProjects } from '../../queries';
 import TrainingScheduleForm from './TrainingScheduleForm';
+import { EmptyState, SkeletonTable } from '../../../../shared/components/ui';
 import type { TrainingScheduleDto } from '../../types';
 
 const YEAR_OPTIONS = Array.from({ length: 5 }, (_, i) => {
@@ -76,22 +77,27 @@ export default function TrainingSchedulePage() {
       </div>
 
       <div className="card" style={{ padding: 0 }}>
-        <DataTable
-          value={schedules}
-          loading={isLoading}
-          emptyMessage="No training schedules found"
-          stripedRows
-          paginator
-          rows={10}
-        >
-          <Column field="calendarYear" header="Year" />
-          <Column field="projectName" header="Project" />
-          <Column header="Training Date" body={dateBody} />
-          <Column field="venueName" header="Venue" />
-          <Column field="divisionName" header="Division" />
-          <Column field="districtName" header="District" />
-          <Column header="Actions" body={actionsBody} style={{ width: 80 }} />
-        </DataTable>
+        {isLoading ? (
+          <SkeletonTable columns={7} />
+        ) : schedules.length > 0 ? (
+          <DataTable
+            value={schedules}
+            emptyMessage="No training schedules found"
+            stripedRows
+            paginator
+            rows={10}
+          >
+            <Column field="calendarYear" header="Year" />
+            <Column field="projectName" header="Project" />
+            <Column header="Training Date" body={dateBody} />
+            <Column field="venueName" header="Venue" />
+            <Column field="divisionName" header="Division" />
+            <Column field="districtName" header="District" />
+            <Column header="Actions" body={actionsBody} style={{ width: 80 }} />
+          </DataTable>
+        ) : (
+          <EmptyState icon="pi pi-calendar" title="No training schedules found" description="Add a training schedule to get started" />
+        )}
       </div>
 
       <Dialog

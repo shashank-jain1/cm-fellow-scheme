@@ -8,7 +8,7 @@ import { Column } from 'primereact/column';
 import { Tag } from 'primereact/tag';
 import { Toast } from 'primereact/toast';
 import { useHolidays, useCreateHoliday, useUpdateHoliday, useDeleteHoliday } from '../queries';
-import { PageHeader, EmptyState, ConfirmDialog, AppButton } from '../../../shared/components/ui';
+import { PageHeader, EmptyState, ConfirmDialog, AppButton, SkeletonTable } from '../../../shared/components/ui';
 import type { HolidayDto } from '../types';
 
 export default function HolidayCalendarPage() {
@@ -106,32 +106,35 @@ export default function HolidayCalendarPage() {
       />
 
       <div className="table-wrapper">
-        <DataTable value={holidays} loading={isLoading} rows={10} paginator emptyMessage=" ">
-          <Column field="holidayName" header="Holiday Name" />
-          <Column
-            field="holidayDate"
-            header="Date"
-            body={(row: HolidayDto) => new Date(row.holidayDate).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}
-          />
-          <Column field="description" header="Description" />
-          <Column
-            field="isOptional"
-            header="Type"
-            body={(row: HolidayDto) => (
-              <Tag value={row.isOptional ? 'Optional' : 'Compulsory'} severity={row.isOptional ? 'info' : 'success'} />
-            )}
-          />
-          <Column
-            header="Actions"
-            body={(row: HolidayDto) => (
-              <div style={{ display: 'flex', gap: 4 }}>
-                <AppButton variant="ghost" size="sm" icon="pi pi-pencil" onClick={() => openEdit(row)} title="Edit" />
-                <AppButton variant="ghost" size="sm" icon="pi pi-trash" onClick={() => setDeleteTarget(row)} title="Delete" />
-              </div>
-            )}
-          />
-        </DataTable>
-        {holidays.length === 0 && !isLoading && (
+        {isLoading ? (
+          <SkeletonTable columns={5} />
+        ) : holidays.length > 0 ? (
+          <DataTable value={holidays} rows={10} paginator emptyMessage=" ">
+            <Column field="holidayName" header="Holiday Name" />
+            <Column
+              field="holidayDate"
+              header="Date"
+              body={(row: HolidayDto) => new Date(row.holidayDate).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}
+            />
+            <Column field="description" header="Description" />
+            <Column
+              field="isOptional"
+              header="Type"
+              body={(row: HolidayDto) => (
+                <Tag value={row.isOptional ? 'Optional' : 'Compulsory'} severity={row.isOptional ? 'info' : 'success'} />
+              )}
+            />
+            <Column
+              header="Actions"
+              body={(row: HolidayDto) => (
+                <div style={{ display: 'flex', gap: 4 }}>
+                  <AppButton variant="ghost" size="sm" icon="pi pi-pencil" onClick={() => openEdit(row)} title="Edit" />
+                  <AppButton variant="ghost" size="sm" icon="pi pi-trash" onClick={() => setDeleteTarget(row)} title="Delete" />
+                </div>
+              )}
+            />
+          </DataTable>
+        ) : (
           <EmptyState icon="pi pi-calendar" title="No holidays for this year" description="Click 'Add Holiday' to add holidays for this year" />
         )}
       </div>

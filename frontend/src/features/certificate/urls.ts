@@ -4,7 +4,10 @@ const certificateUrls = {
   detail: (id: number) => `certificates/status?CertificateId=${id}`,
   apply: () => 'certificates',
   review: () => 'certificates/review',
-  download: (id: number) => `certificates/status?CertificateId=${id}`,
+  generate: (id: number) => `certificates/${id}/generate`,
+  download: (id: number) => `certificates/${id}/download`,
+  exitReadiness: () => 'exit/readiness',
+  exitCloseArchive: (id: number) => `exit/${id}/close-archive`,
 };
 
 export default certificateUrls;
