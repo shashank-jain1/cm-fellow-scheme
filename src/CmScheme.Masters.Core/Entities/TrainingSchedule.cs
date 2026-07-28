@@ -38,4 +38,7 @@ public class TrainingSchedule
     public DateTime ModifiedOn { get; set; } = DateTime.UtcNow;
 
     public int? ModifiedBy { get; set; }
+
+    // Navigation properties
+    public Project Project { get; set; } = null!;
 }

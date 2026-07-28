@@ -7,4 +7,5 @@ export const MASTER_URLS = {
   projects: 'masters/projects',
   works: 'masters/works',
   lookups: 'masters/lookup',
+  trainingSchedules: 'masters/training-schedules',
 } as const;

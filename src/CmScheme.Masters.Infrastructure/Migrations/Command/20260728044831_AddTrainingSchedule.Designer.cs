@@ -4,16 +4,19 @@ using CmScheme.Masters.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace CmScheme.Masters.Infrastructure.Migrations.Query
+namespace CmScheme.Masters.Infrastructure.Migrations.Command
 {
-    [DbContext(typeof(MastersQueryDbContext))]
-    partial class MastersQueryDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(MastersCommandDbContext))]
+    [Migration("20260728044831_AddTrainingSchedule")]
+    partial class AddTrainingSchedule
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -86,7 +89,7 @@ namespace CmScheme.Masters.Infrastructure.Migrations.Query
 
                     b.HasKey("DepartmentId");
 
-                    b.ToTable("Departments");
+                    b.ToTable("Department");
                 });
 
             modelBuilder.Entity("CmScheme.Masters.Core.Entities.District", b =>

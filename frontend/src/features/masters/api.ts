@@ -7,6 +7,7 @@ import type {
   GramPanchayatDto,
   ProjectDto,
   WorkDto,
+  TrainingScheduleDto,
   CreateStateCommand,
   CreateDivisionCommand,
   CreateDistrictCommand,
@@ -14,6 +15,8 @@ import type {
   CreateGramPanchayatCommand,
   CreateProjectCommand,
   CreateWorkCommand,
+  CreateTrainingScheduleCommand,
+  UpdateTrainingScheduleCommand,
 } from './types';
 import { MASTER_URLS } from './urls';
 
@@ -43,4 +46,19 @@ export const mastersApi = {
   getWorks: (projectId?: number) =>
     ApiService.get<WorkDto[]>(`${MASTER_URLS.works}${projectId ? `?projectId=${projectId}` : ''}`),
   createWork: (data: CreateWorkCommand) => ApiService.post<number>(MASTER_URLS.works, data),
+
+  getTrainingSchedules: (filters?: { calendarYear?: string; projectId?: number; divisionId?: number }) => {
+    const params = new URLSearchParams();
+    if (filters?.calendarYear) params.append('calendarYear', filters.calendarYear);
+    if (filters?.projectId) params.append('projectId', String(filters.projectId));
+    if (filters?.divisionId) params.append('divisionId', String(filters.divisionId));
+    const qs = params.toString();
+    return ApiService.get<TrainingScheduleDto[]>(`${MASTER_URLS.trainingSchedules}${qs ? `?${qs}` : ''}`);
+  },
+  getTrainingSchedule: (id: number) =>
+    ApiService.get<TrainingScheduleDto>(`${MASTER_URLS.trainingSchedules}/${id}`),
+  createTrainingSchedule: (data: CreateTrainingScheduleCommand) =>
+    ApiService.post<number>(MASTER_URLS.trainingSchedules, data),
+  updateTrainingSchedule: (id: number, data: UpdateTrainingScheduleCommand) =>
+    ApiService.put<void>(`${MASTER_URLS.trainingSchedules}/${id}`, { ...data, trainingScheduleId: id }),
 };

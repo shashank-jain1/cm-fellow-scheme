@@ -21,6 +21,7 @@ const masterSubItems = [
   { path: '/masters/locations', label: 'Locations', icon: 'pi pi-map' },
   { path: '/masters/projects', label: 'Projects', icon: 'pi pi-briefcase' },
   { path: '/masters/works', label: 'Works', icon: 'pi pi-file-edit' },
+  { path: '/masters/training-schedules', label: 'Training Schedule', icon: 'pi pi-calendar' },
 ];
 
 export default function Sidebar() {

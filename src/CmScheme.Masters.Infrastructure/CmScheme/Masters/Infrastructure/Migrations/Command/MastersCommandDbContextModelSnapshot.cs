@@ -52,6 +52,43 @@ namespace CmScheme.Masters.Infrastructure.Migrations.Command
                     b.ToTable("Block");
                 });
 
+            modelBuilder.Entity("CmScheme.Masters.Core.Entities.Department", b =>
+                {
+                    b.Property<int>("DepartmentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DepartmentId"));
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DepartmentCode")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("DepartmentName")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("ModifiedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("DepartmentId");
+
+                    b.ToTable("Department");
+                });
+
             modelBuilder.Entity("CmScheme.Masters.Core.Entities.District", b =>
                 {
                     b.Property<int>("DistrictId")
@@ -280,6 +317,67 @@ namespace CmScheme.Masters.Infrastructure.Migrations.Command
                     b.ToTable("State");
                 });
 
+            modelBuilder.Entity("CmScheme.Masters.Core.Entities.TrainingSchedule", b =>
+                {
+                    b.Property<int>("TrainingScheduleId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TrainingScheduleId"));
+
+                    b.Property<int?>("BlockId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CalendarYear")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("DistrictId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("DivisionId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("ModifiedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("TrainingDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("TrainingDescription")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<string>("VenueName")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<int?>("WorkId")
+                        .HasColumnType("int");
+
+                    b.HasKey("TrainingScheduleId");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("TrainingSchedule", (string)null);
+                });
+
             modelBuilder.Entity("CmScheme.Masters.Core.Entities.Work", b =>
                 {
                     b.Property<int>("WorkId")
@@ -384,6 +482,17 @@ namespace CmScheme.Masters.Infrastructure.Migrations.Command
                         .IsRequired();
 
                     b.Navigation("Block");
+                });
+
+            modelBuilder.Entity("CmScheme.Masters.Core.Entities.TrainingSchedule", b =>
+                {
+                    b.HasOne("CmScheme.Masters.Core.Entities.Project", "Project")
+                        .WithMany()
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Project");
                 });
 
             modelBuilder.Entity("CmScheme.Masters.Core.Entities.Work", b =>
