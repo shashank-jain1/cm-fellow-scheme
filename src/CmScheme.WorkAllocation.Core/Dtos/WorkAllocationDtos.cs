@@ -16,6 +16,7 @@ public sealed class WorkAllocationDto
     public int BlockId { get; init; }
     public bool ActiveStatus { get; init; }
     public string Status { get; init; } = null!;
+    public int? AssignedToUserId { get; init; }
     public DateTime CreatedOn { get; init; }
     public string CreatedBy { get; init; } = null!;
     public DateTime? ModifiedOn { get; init; }
@@ -32,6 +33,7 @@ public sealed class TaskProgressDto
     public string Priority { get; init; } = null!;
     public int NumberOfSurveys { get; init; }
     public int CompletedSurveys { get; init; }
+    public int PendingSurveys { get; init; }
     public DateTime? CompletionDate { get; init; }
     public string WorkStatus { get; init; } = null!;
     public decimal CompletionPercentage { get; init; }

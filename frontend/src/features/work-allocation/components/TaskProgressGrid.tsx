@@ -60,7 +60,7 @@ export default function TaskProgressGrid({ data, isLoading = false, onRowClick }
       <table style={{ width: '100%', borderCollapse: 'collapse' }}>
         <thead>
           <tr style={{ background: 'var(--navy-50)' }}>
-            {['Project', 'Work', 'Surveys', 'Completion %', 'Status'].map((h) => (
+            {['Project', 'Work', 'Surveys', 'Pending', 'Completion %', 'Status'].map((h) => (
               <th
                 key={h}
                 style={{
@@ -97,6 +97,13 @@ export default function TaskProgressGrid({ data, isLoading = false, onRowClick }
               </td>
               <td style={{ padding: '14px 16px', fontSize: 14 }}>
                 {task.completedSurveys} / {task.numberOfSurveys}
+              </td>
+              <td style={{ padding: '14px 16px', fontSize: 14 }}>
+                {task.pendingSurveys > 0 ? (
+                  <span style={{ color: '#d97706', fontWeight: 600 }}>{task.pendingSurveys}</span>
+                ) : (
+                  <span style={{ color: '#059669', fontWeight: 600 }}>0</span>
+                )}
               </td>
               <td style={{ padding: '14px 16px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>

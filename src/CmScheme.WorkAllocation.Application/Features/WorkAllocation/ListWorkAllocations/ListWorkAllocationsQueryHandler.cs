@@ -28,6 +28,7 @@ public sealed class ListWorkAllocationsQueryHandler(IWorkAllocationQueryDbContex
                 BlockId = w.BlockId,
                 ActiveStatus = w.ActiveStatus,
                 Status = w.Status,
+                AssignedToUserId = w.AssignedToUserId,
                 CreatedOn = w.CreatedOn,
                 CreatedBy = w.CreatedBy,
                 ModifiedOn = w.ModifiedOn,

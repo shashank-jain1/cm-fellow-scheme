@@ -16,6 +16,7 @@ public class WorkAllocation
     public int BlockId { get; set; }
     public bool ActiveStatus { get; set; }
     public string Status { get; set; } = null!;
+    public int? AssignedToUserId { get; set; }
     public DateTime CreatedOn { get; set; }
     public string CreatedBy { get; set; } = null!;
     public DateTime? ModifiedOn { get; set; }

@@ -1,0 +1,138 @@
+/* Global PrimeReact overrides */
+.p-inputtext {
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  border-radius: var(--radius-md) !important;
+  border-color: var(--border-color) !important;
+  background-color: var(--bg-input) !important;
+  color: var(--text-primary) !important;
+  padding: 9px 13px;
+  font-size: 14px !important;
+  height: 40px !important;
+  transition: all var(--transition-fast) !important;
+  box-shadow: var(--shadow-sm);
+}
+
+.p-inputtext:focus {
+  border-color: var(--accent-primary) !important;
+  box-shadow: 0 0 0 3px var(--accent-light) !important;
+}
+
+.p-button {
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  border-radius: var(--radius-md) !important;
+  font-weight: 600 !important;
+}
+
+.p-button.p-button-success {
+  background: var(--accent-primary) !important;
+  border: none !important;
+  color: var(--text-inverse) !important;
+}
+
+/* All popups above backdrop-filter */
+.p-datepicker,
+.p-dropdown-panel,
+.p-dialog,
+.p-overlay-visible {
+  z-index: 99999 !important;
+}
+
+.p-dialog-mask {
+  overflow: visible !important;
+}
+
+.p-dialog-content {
+  padding: 0 24px 24px !important;
+  overflow: visible !important;
+}
+
+.p-dialog .p-dialog-header {
+  padding: 20px 24px 16px !important;
+}
+
+/* Tag overrides */
+.p-tag {
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  padding: 4px 12px !important;
+  border-radius: 20px !important;
+  letter-spacing: 0.2px !important;
+  border: none !important;
+  line-height: 1.5 !important;
+}
+
+.p-tag.p-tag-success {
+  background: rgba(16, 185, 129, 0.12) !important;
+  color: #059669 !important;
+}
+
+.p-tag.p-tag-danger {
+  background: rgba(239, 68, 68, 0.12) !important;
+  color: #dc2626 !important;
+}
+
+.p-tag.p-tag-warning {
+  background: rgba(245, 158, 11, 0.12) !important;
+  color: #d97706 !important;
+}
+
+.p-tag.p-tag-info {
+  background: rgba(59, 130, 246, 0.12) !important;
+  color: #2563eb !important;
+}
+
+.p-tag.p-tag-secondary {
+  background: rgba(107, 114, 128, 0.12) !important;
+  color: #4b5563 !important;
+}
+
+.p-tag.p-tag-contrast {
+  background: rgba(0, 0, 0, 0.08) !important;
+  color: #1f2937 !important;
+}
+
+/* Checkbox */
+.p-checkbox {
+  flex-shrink: 0 !important;
+}
+
+/* Radio */
+.p-radiobutton {
+  width: 20px !important;
+  height: 20px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+}
+
+.p-radiobutton .p-radiobutton-box {
+  width: 20px !important;
+  height: 20px !important;
+  border-radius: 50% !important;
+  border: 2px solid var(--border-highlight) !important;
+  background: var(--bg-input) !important;
+  transition: all var(--transition-fast) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.p-radiobutton .p-radiobutton-box.p-highlight {
+  border-color: var(--accent-primary) !important;
+  background: var(--bg-input) !important;
+}
+
+.p-radiobutton .p-radiobutton-box .p-radiobutton-icon {
+  width: 10px !important;
+  height: 10px !important;
+  border-radius: 50% !important;
+  background-color: var(--accent-primary) !important;
+  transition: transform var(--transition-fast) !important;
+}
+
+/* Toast */
+.p-toast {
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+}

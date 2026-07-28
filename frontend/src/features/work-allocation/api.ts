@@ -18,6 +18,10 @@ export const workAllocationApi = {
   update: (id: number, data: WorkAllocationFormData) =>
     ApiService.put<WorkAllocationDto>(`work-allocations/${id}`, data),
   delete: (id: number) => ApiService.delete(`work-allocations/${id}`),
+  assign: (id: number, assignedToUserId: number) =>
+    ApiService.put<void>(`work-allocations/${id}/assign`, { workAllocationId: id, assignedToUserId }),
+  deactivate: (id: number) =>
+    ApiService.put<void>(`work-allocations/${id}/deactivate`, {}),
 };
 
 export const taskProgressApi = {

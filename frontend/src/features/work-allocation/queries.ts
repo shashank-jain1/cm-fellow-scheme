@@ -55,6 +55,27 @@ export const useDeleteWorkAllocation = () => {
   });
 };
 
+export const useAssignWorkAllocation = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, assignedToUserId }: { id: number; assignedToUserId: number }) =>
+      workAllocationApi.assign(id, assignedToUserId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['work-allocations'] });
+    },
+  });
+};
+
+export const useDeactivateWorkAllocation = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id: number) => workAllocationApi.deactivate(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['work-allocations'] });
+    },
+  });
+};
+
 export const useTaskProgress = () => {
   return useQuery({
     queryKey: ['task-progress'],

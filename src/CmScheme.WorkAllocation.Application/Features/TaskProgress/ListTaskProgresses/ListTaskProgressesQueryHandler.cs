@@ -23,6 +23,7 @@ public sealed class ListTaskProgressesQueryHandler(IWorkAllocationQueryDbContext
                 Priority = t.Priority,
                 NumberOfSurveys = t.NumberOfSurveys,
                 CompletedSurveys = t.CompletedSurveys,
+                PendingSurveys = t.NumberOfSurveys - t.CompletedSurveys,
                 CompletionDate = t.CompletionDate,
                 WorkStatus = t.WorkStatus,
                 CompletionPercentage = t.CompletionPercentage

@@ -23,6 +23,7 @@ export interface WorkAllocationDto {
   surveysPerIntern: number;
   status: string;
   completionPercentage: number;
+  assignedToUserId?: number;
 }
 
 export interface TaskProgressDto {
@@ -47,4 +48,9 @@ export interface SurveyDetailDto {
   surveyStatus: string;
   latitude: number;
   longitude: number;
+}
+
+export interface AssignWorkAllocationCommand {
+  workAllocationId: number;
+  assignedToUserId: number;
 }

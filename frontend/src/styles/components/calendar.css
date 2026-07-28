@@ -1,0 +1,216 @@
+/* Calendar */
+.p-calendar {
+  width: 100% !important;
+  display: inline-flex !important;
+  position: relative !important;
+  height: 40px !important;
+  border: none !important;
+  padding: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  gap: 8px !important;
+}
+
+.p-calendar .p-inputtext {
+  flex: 1 1 auto;
+  width: 100%;
+  border-radius: var(--radius-md) !important;
+}
+
+.p-calendar.p-calendar-w-btn .p-inputtext {
+  border-radius: var(--radius-md) !important;
+}
+
+.p-calendar .p-datepicker-trigger {
+  height: 40px !important;
+  width: 40px !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: var(--radius-md) !important;
+  background: var(--bg-card-hover) !important;
+  color: var(--text-secondary) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  flex-shrink: 0 !important;
+  transition: all var(--transition-fast) !important;
+}
+
+.p-calendar .p-datepicker-trigger:hover {
+  background: var(--accent-light) !important;
+  color: var(--accent-primary) !important;
+}
+
+.p-calendar:focus-within {
+  box-shadow: 0 0 0 3px var(--accent-light) !important;
+}
+
+/* Datepicker overlay */
+.p-datepicker {
+  background: var(--bg-secondary) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: var(--radius-lg) !important;
+  box-shadow: var(--shadow-lg) !important;
+  padding: 14px !important;
+  color: var(--text-primary) !important;
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  z-index: 99999 !important;
+  position: absolute !important;
+  margin-top: 4px;
+  min-width: 290px !important;
+  width: auto !important;
+}
+
+.p-datepicker .p-datepicker-header {
+  background: transparent !important;
+  border-bottom: 1px solid var(--border-color) !important;
+  padding: 0 0 10px 0 !important;
+  margin-bottom: 8px !important;
+  color: var(--text-primary) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 8px !important;
+}
+
+.p-datepicker .p-datepicker-header .p-datepicker-title {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 10px !important;
+  font-weight: 700 !important;
+  font-size: 14px !important;
+  color: var(--text-primary) !important;
+  line-height: 1.2 !important;
+  margin: 0 auto !important;
+  position: relative !important;
+  width: auto !important;
+  flex: 1 1 auto !important;
+}
+
+.p-datepicker .p-datepicker-header .p-datepicker-title .p-datepicker-month,
+.p-datepicker .p-datepicker-header .p-datepicker-title .p-datepicker-year,
+.p-datepicker .p-datepicker-header .p-datepicker-title button,
+.p-datepicker .p-datepicker-header .p-datepicker-title span {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  float: none !important;
+  font-weight: 700 !important;
+  font-size: 14px !important;
+  color: var(--text-primary) !important;
+  padding: 2px 6px !important;
+  margin: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  cursor: pointer !important;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+  min-width: max-content !important;
+  width: auto !important;
+}
+
+.p-datepicker .p-datepicker-header .p-datepicker-title button:hover {
+  color: var(--accent-primary) !important;
+  background: var(--accent-light) !important;
+  border-radius: var(--radius-xs) !important;
+}
+
+.p-datepicker .p-datepicker-header button {
+  color: var(--text-secondary) !important;
+  width: 28px !important;
+  height: 28px !important;
+  border-radius: var(--radius-sm) !important;
+}
+
+.p-datepicker .p-datepicker-header button:hover {
+  background: var(--accent-light) !important;
+  color: var(--accent-primary) !important;
+}
+
+.p-datepicker table th {
+  color: var(--text-secondary) !important;
+  font-weight: 600 !important;
+  font-size: 12px !important;
+  padding: 6px !important;
+}
+
+.p-datepicker table td {
+  padding: 3px !important;
+}
+
+.p-datepicker table td > span {
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: var(--radius-md) !important;
+  color: var(--text-primary) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all var(--transition-fast) !important;
+  font-size: 13px !important;
+}
+
+.p-datepicker table td > span:hover {
+  background: var(--bg-card-hover) !important;
+}
+
+.p-datepicker table td.p-datepicker-today > span {
+  background: var(--accent-light) !important;
+  color: var(--accent-primary) !important;
+  font-weight: 700 !important;
+}
+
+.p-datepicker table td > span.p-highlight {
+  background: var(--accent-primary) !important;
+  color: var(--text-inverse) !important;
+}
+
+/* Timepicker */
+.p-datepicker .p-timepicker {
+  border-top: 1px solid var(--border-color) !important;
+  padding-top: 10px !important;
+  margin-top: 10px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 12px !important;
+}
+
+.p-datepicker .p-timepicker span {
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  color: var(--text-primary) !important;
+}
+
+.p-datepicker .p-timepicker button {
+  width: 30px !important;
+  height: 30px !important;
+  border-radius: var(--radius-sm) !important;
+  color: var(--text-secondary) !important;
+  background: transparent !important;
+  border: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.p-datepicker .p-timepicker button:hover {
+  background: var(--accent-light) !important;
+  color: var(--accent-primary) !important;
+}
+
+/* Textarea */
+.form-field textarea,
+textarea.p-inputtextarea {
+  height: auto !important;
+  min-height: 80px !important;
+  padding: 10px 14px !important;
+  resize: vertical !important;
+}
