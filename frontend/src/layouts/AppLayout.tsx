@@ -71,10 +71,25 @@ export default function AppLayout() {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [sidebarWidth, setSidebarWidth] = useState<number>(() => {
+    const saved = localStorage.getItem('sidebar_custom_width');
+    const parsed = saved ? parseInt(saved, 10) : 260;
+    if (isNaN(parsed) || parsed < 200 || parsed > 320) {
+      localStorage.removeItem('sidebar_custom_width');
+      return 260;
+    }
+    return parsed;
+  });
   const [showNotifications, setShowNotifications] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [globalSearch, setGlobalSearch] = useState('');
   const [searchOpen, setSearchOpen] = useState(false);
+
+  const handleWidthChange = (w: number) => {
+    const clamped = Math.min(Math.max(w, 210), 320);
+    setSidebarWidth(clamped);
+    localStorage.setItem('sidebar_custom_width', clamped.toString());
+  };
 
   const searchInputRef = useRef<HTMLInputElement>(null);
   const searchContainerRef = useRef<HTMLDivElement>(null);
@@ -138,10 +153,16 @@ export default function AppLayout() {
     <div
       className="app-layout"
       style={{
-        '--sidebar-current-width': sidebarCollapsed ? 'var(--sidebar-collapsed-width)' : 'var(--sidebar-width)',
+        '--sidebar-width': `${sidebarWidth}px`,
+        '--sidebar-current-width': sidebarCollapsed ? 'var(--sidebar-collapsed-width)' : `${sidebarWidth}px`,
       } as React.CSSProperties}
     >
-      <Sidebar collapsed={sidebarCollapsed} onToggleCollapsed={setSidebarCollapsed} />
+      <Sidebar
+        collapsed={sidebarCollapsed}
+        onToggleCollapsed={setSidebarCollapsed}
+        width={sidebarWidth}
+        onWidthChange={handleWidthChange}
+      />
       <div className="app-main">
         <header className="app-header">
           {/* Left: Sidebar Toggle & Breadcrumbs */}

@@ -29,7 +29,24 @@
   flex-direction: column;
   background: var(--bg-sidebar);
   transition: width var(--transition-slow);
-  overflow: hidden;
+  overflow: visible;
+}
+
+.sidebar-resizer {
+  position: absolute;
+  top: 0;
+  right: -3px;
+  width: 6px;
+  height: 100%;
+  cursor: col-resize;
+  z-index: 1000;
+  transition: background var(--transition-fast);
+}
+
+.sidebar-resizer:hover,
+.sidebar-resizer.active {
+  background: var(--accent);
+  opacity: 0.85;
 }
 
 .sidebar--collapsed .sidebar-brand {

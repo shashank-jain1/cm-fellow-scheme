@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../features/auth';
 
@@ -41,12 +41,15 @@ const masterSubItems = [
 interface SidebarProps {
   collapsed: boolean;
   onToggleCollapsed: (collapsed: boolean) => void;
+  width?: number;
+  onWidthChange?: (width: number) => void;
 }
 
-export default function Sidebar({ collapsed, onToggleCollapsed }: SidebarProps) {
+export default function Sidebar({ collapsed, onToggleCollapsed, width = 260, onWidthChange }: SidebarProps) {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, logout } = useAuth();
+  const [isResizing, setIsResizing] = useState(false);
 
   const [mastersExpanded, setMastersExpanded] = useState(() => location.pathname.startsWith('/masters'));
   const [attendanceExpanded, setAttendanceExpanded] = useState(() => location.pathname.startsWith('/attendance'));
@@ -74,6 +77,36 @@ export default function Sidebar({ collapsed, onToggleCollapsed }: SidebarProps) 
     }
   }, [isCertificateActive]);
 
+  const handleMouseDown = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsResizing(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isResizing || !onWidthChange) return;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      const newWidth = Math.min(Math.max(e.clientX, 210), 320);
+      onWidthChange(newWidth);
+    };
+
+    const handleMouseUp = () => {
+      setIsResizing(false);
+    };
+
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
+    document.body.style.userSelect = 'none';
+    document.body.style.cursor = 'col-resize';
+
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+      document.body.style.userSelect = '';
+      document.body.style.cursor = '';
+    };
+  }, [isResizing, onWidthChange]);
+
   const handleLogout = () => {
     logout();
     navigate('/login');
@@ -86,8 +119,8 @@ export default function Sidebar({ collapsed, onToggleCollapsed }: SidebarProps) 
     <aside
       className={`sidebar ${collapsed ? 'sidebar--collapsed' : ''}`}
       style={{
-        width: collapsed ? 'var(--sidebar-collapsed-width)' : 'var(--sidebar-width)',
-        transition: 'width var(--transition-slow)',
+        width: collapsed ? 'var(--sidebar-collapsed-width)' : `${width}px`,
+        transition: isResizing ? 'none' : 'width var(--transition-slow)',
       }}
     >
       <div className="sidebar-brand">
@@ -316,6 +349,14 @@ export default function Sidebar({ collapsed, onToggleCollapsed }: SidebarProps) 
           <i className="pi pi-sign-out" />
         </button>
       </div>
+
+      {!collapsed && (
+        <div
+          className={`sidebar-resizer ${isResizing ? 'active' : ''}`}
+          onMouseDown={handleMouseDown}
+          title="Drag to adjust sidebar width"
+        />
+      )}
     </aside>
   );
 }
