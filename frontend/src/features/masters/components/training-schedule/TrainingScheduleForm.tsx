@@ -1,9 +1,6 @@
 import { useState } from 'react';
 import { Button } from 'primereact/button';
-import { InputText } from 'primereact/inputtext';
-import { InputTextarea } from 'primereact/inputtextarea';
-import { Dropdown } from 'primereact/dropdown';
-import { Calendar } from 'primereact/calendar';
+import { AppInput, AppTextarea, AppSelect, AppCalendar } from '../../../../shared/components/forms';
 import { useCreateTrainingSchedule, useUpdateTrainingSchedule, useProjects, useWorks, useDivisions, useDistricts, useBlocks } from '../../queries';
 import type { TrainingScheduleDto } from '../../types';
 
@@ -68,18 +65,14 @@ export default function TrainingScheduleForm({ initialData, onDone }: Props) {
     onDone();
   };
 
-  const handleParentChange = (setter: React.Dispatch<React.SetStateAction<number | null>>) => (e) => {
-    setter(e.value);
-  };
-
   return (
     <div className="form-grid">
       <div className="form-field">
         <label>Calendar Year *</label>
-        <Dropdown
+        <AppSelect
           value={calendarYear}
           options={YEAR_OPTIONS}
-          onChange={(e) => setCalendarYear(e.value)}
+          onChange={(val) => setCalendarYear(val as string)}
           placeholder="Select Year"
           className="w-full"
         />
@@ -87,10 +80,10 @@ export default function TrainingScheduleForm({ initialData, onDone }: Props) {
 
       <div className="form-field">
         <label>Project *</label>
-        <Dropdown
+        <AppSelect
           value={projectId}
           options={projectOptions}
-          onChange={(e) => { setProjectId(e.value); setWorkId(null); }}
+          onChange={(val) => { setProjectId(val as number); setWorkId(null); }}
           placeholder="Select Project"
           className="w-full"
         />
@@ -98,10 +91,10 @@ export default function TrainingScheduleForm({ initialData, onDone }: Props) {
 
       <div className="form-field">
         <label>Work</label>
-        <Dropdown
+        <AppSelect
           value={workId}
           options={workOptions}
-          onChange={(e) => setWorkId(e.value)}
+          onChange={(val) => setWorkId(val as number)}
           placeholder="Select Work"
           disabled={!projectId}
           className="w-full"
@@ -110,10 +103,10 @@ export default function TrainingScheduleForm({ initialData, onDone }: Props) {
 
       <div className="form-field">
         <label>Division</label>
-        <Dropdown
+        <AppSelect
           value={divisionId}
           options={divisionOptions}
-          onChange={(e) => { setDivisionId(e.value); setDistrictId(null); setBlockId(null); }}
+          onChange={(val) => { setDivisionId(val as number); setDistrictId(null); setBlockId(null); }}
           placeholder="Select Division"
           showClear
           className="w-full"
@@ -122,10 +115,10 @@ export default function TrainingScheduleForm({ initialData, onDone }: Props) {
 
       <div className="form-field">
         <label>District</label>
-        <Dropdown
+        <AppSelect
           value={districtId}
           options={districtOptions}
-          onChange={(e) => { setDistrictId(e.value); setBlockId(null); }}
+          onChange={(val) => { setDistrictId(val as number); setBlockId(null); }}
           placeholder="Select District"
           disabled={!divisionId}
           showClear
@@ -135,10 +128,10 @@ export default function TrainingScheduleForm({ initialData, onDone }: Props) {
 
       <div className="form-field">
         <label>Block</label>
-        <Dropdown
+        <AppSelect
           value={blockId}
           options={blockOptions}
-          onChange={(e) => setBlockId(e.value)}
+          onChange={(val) => setBlockId(val as number)}
           placeholder="Select Block"
           disabled={!districtId}
           showClear
@@ -148,7 +141,7 @@ export default function TrainingScheduleForm({ initialData, onDone }: Props) {
 
       <div className="form-field">
         <label>Training Date *</label>
-        <Calendar
+        <AppCalendar
           value={trainingDate}
           onChange={(e) => setTrainingDate(e.value as Date)}
           dateFormat="dd/mm/yy"
@@ -160,7 +153,7 @@ export default function TrainingScheduleForm({ initialData, onDone }: Props) {
 
       <div className="form-field">
         <label>Venue Name</label>
-        <InputText
+        <AppInput
           value={venueName}
           onChange={(e) => setVenueName(e.target.value)}
           placeholder="Enter venue name"
@@ -170,7 +163,7 @@ export default function TrainingScheduleForm({ initialData, onDone }: Props) {
 
       <div className="form-field col-span-full">
         <label>Training Description</label>
-        <InputTextarea
+        <AppTextarea
           value={trainingDescription}
           onChange={(e) => setTrainingDescription(e.target.value)}
           rows={3}

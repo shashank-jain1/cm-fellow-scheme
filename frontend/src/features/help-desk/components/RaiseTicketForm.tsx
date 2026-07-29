@@ -1,6 +1,5 @@
 import { Button } from 'primereact/button';
-import { InputTextarea } from 'primereact/inputtextarea';
-import FormSelect from '../../../shared/components/FormSelect';
+import { AppTextarea, AppSelect } from '../../../shared/components/forms';
 import { useLookupOptions } from '../../../shared/hooks/useMasters';
 import { useTicketForm } from './form.hook';
 
@@ -24,7 +23,7 @@ export default function RaiseTicketForm({ onSubmit }: RaiseTicketFormProps) {
       <div className="form-grid" style={{ maxWidth: 480 }}>
         <div className="form-field">
           <label>Issue Category</label>
-          <FormSelect
+          <AppSelect
             value={formData.issueCategory}
             onChange={(val) => updateField('issueCategory', val)}
             options={categoryOptions}
@@ -33,7 +32,7 @@ export default function RaiseTicketForm({ onSubmit }: RaiseTicketFormProps) {
         </div>
         <div className="form-field">
           <label>Priority</label>
-          <FormSelect
+          <AppSelect
             value={formData.priority}
             onChange={(val) => updateField('priority', val as 'High' | 'Medium' | 'Low')}
             options={priorityOptions}
@@ -41,7 +40,7 @@ export default function RaiseTicketForm({ onSubmit }: RaiseTicketFormProps) {
         </div>
         <div className="form-field full-width">
           <label>Description</label>
-          <InputTextarea
+          <AppTextarea
             value={formData.issueDescription}
             onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => updateField('issueDescription', e.target.value)}
             placeholder="Provide detailed information about your issue..."

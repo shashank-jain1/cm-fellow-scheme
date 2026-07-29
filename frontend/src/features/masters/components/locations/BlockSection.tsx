@@ -1,7 +1,6 @@
 import { useState } from 'react';
-import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
-import FormSelect from '../../../../shared/components/FormSelect';
+import { AppInput, AppSelect } from '../../../../shared/components/forms';
 import { useDistricts, useBlocks, useCreateBlock } from '../../queries';
 
 export default function BlockSection() {
@@ -30,7 +29,7 @@ export default function BlockSection() {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
         <h3 style={{ fontSize: 16, fontWeight: 700, margin: 0 }}>Blocks ({blocks?.length ?? 0})</h3>
         <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-          <FormSelect
+          <AppSelect
             value={selectedDistrictId ? String(selectedDistrictId) : ''}
             options={[{ label: 'All Districts', value: '' }, ...districtOptions]}
             onChange={(val) => setSelectedDistrictId(val ? Number(val) : null)}
@@ -45,7 +44,7 @@ export default function BlockSection() {
           <div className="form-grid">
             <div className="form-field">
               <label>District *</label>
-              <FormSelect
+              <AppSelect
                 value={selectedDistrictId ? String(selectedDistrictId) : ''}
                 options={districtOptions}
                 onChange={(val) => setSelectedDistrictId(val ? Number(val) : null)}
@@ -54,11 +53,11 @@ export default function BlockSection() {
             </div>
             <div className="form-field">
               <label>Block Name *</label>
-              <InputText value={formName} onChange={(e) => setFormName(e.target.value)} placeholder="e.g. Huzur" />
+              <AppInput value={formName} onChange={(e) => setFormName(e.target.value)} placeholder="e.g. Huzur" />
             </div>
             <div className="form-field">
               <label>Block Code *</label>
-              <InputText value={formCode} onChange={(e) => setFormCode(e.target.value)} placeholder="e.g. HZ" maxLength={10} />
+              <AppInput value={formCode} onChange={(e) => setFormCode(e.target.value)} placeholder="e.g. HZ" maxLength={10} />
             </div>
           </div>
           <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end', marginTop: 12 }}>

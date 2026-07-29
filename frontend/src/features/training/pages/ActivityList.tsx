@@ -1,13 +1,12 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button } from 'primereact/button';
-import { InputText } from 'primereact/inputtext';
+import { AppInput } from '../../../shared/components/forms';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Tag } from 'primereact/tag';
 import { useTrainingSessions } from '../queries';
 import { formatDate } from '../../../shared/utils/format';
-import { EmptyState, SkeletonTable } from '../../../shared/components/ui';
+import { EmptyState, SkeletonTable, AppButton } from '../../../shared/components/ui';
 
 export default function ActivityList() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -44,18 +43,15 @@ export default function ActivityList() {
             All scheduled training and meeting activities
           </p>
         </div>
-        <Button
-          label="New Activity"
-          icon="pi pi-plus"
-          className="btn btn-primary"
-          onClick={() => navigate('/training/new')}
-        />
+        <AppButton icon="pi pi-plus" onClick={() => navigate('/training/new')}>
+          New Activity
+        </AppButton>
       </div>
 
       <div style={{ display: 'flex', gap: 12, marginBottom: 24 }}>
         <div style={{ position: 'relative', flex: '0 0 320px' }}>
           <i className="pi pi-search" style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
-          <InputText
+          <AppInput
             value={searchTerm}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
             placeholder="Search activities..."

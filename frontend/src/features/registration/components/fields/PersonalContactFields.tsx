@@ -1,5 +1,5 @@
 import type { ChangeEvent } from 'react';
-import { InputText } from 'primereact/inputtext';
+import { AppInput } from '../../../../shared/components/forms';
 import type { StepProps } from '../form.hook';
 
 export default function PersonalContactFields({ formData, update }: StepProps) {
@@ -7,7 +7,7 @@ export default function PersonalContactFields({ formData, update }: StepProps) {
     <>
       <div className="form-field">
         <label>Mobile Number *</label>
-        <InputText
+        <AppInput
           value={formData.mobileNumber}
           onChange={(e: ChangeEvent<HTMLInputElement>) => update('mobileNumber', e.target.value)}
           placeholder="10-digit mobile number"
@@ -16,7 +16,7 @@ export default function PersonalContactFields({ formData, update }: StepProps) {
       </div>
       <div className="form-field">
         <label>Email *</label>
-        <InputText
+        <AppInput
           value={formData.emailId}
           onChange={(e: ChangeEvent<HTMLInputElement>) => update('emailId', e.target.value)}
           placeholder="fellow@email.com"

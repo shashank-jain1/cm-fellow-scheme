@@ -24,13 +24,13 @@
 }
 
 .btn-primary {
-  background: var(--ink);
+  background: var(--accent);
   color: var(--text-inverse);
   box-shadow: var(--shadow-xs);
 }
 
 .btn-primary:hover {
-  background: var(--ink-700);
+  background: var(--accent-hover);
   box-shadow: var(--shadow-sm);
 }
 

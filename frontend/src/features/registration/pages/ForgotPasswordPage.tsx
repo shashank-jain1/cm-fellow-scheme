@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { InputText } from 'primereact/inputtext';
+import { AppInput } from '../../../shared/components/forms';
 import { Toast } from 'primereact/toast';
 import { useRef } from 'react';
 import { useForgotPasswordMutation } from '../queries';
@@ -43,7 +43,7 @@ export default function ForgotPasswordPage() {
         <form onSubmit={handleSubmit}>
           <div className="form-field">
             <label>Email Address</label>
-            <InputText
+            <AppInput
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your registered email"

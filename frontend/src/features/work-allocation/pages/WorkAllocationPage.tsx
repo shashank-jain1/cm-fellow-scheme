@@ -1,7 +1,6 @@
 import { useState } from 'react';
-import { InputText } from 'primereact/inputtext';
 import { Tag } from 'primereact/tag';
-import FormSelect from '../../../shared/components/FormSelect';
+import { AppInput, AppSelect } from '../../../shared/components/forms';
 import { AppButton } from '../../../shared/components/ui';
 import WorkAllocationForm from '../components/WorkAllocationForm';
 import { useWorkAllocationForm } from '../components/form.hook';
@@ -135,14 +134,14 @@ export default function WorkAllocationPage() {
       <div style={{ display: 'flex', gap: 'var(--space-3)', marginBottom: 'var(--space-5)', alignItems: 'center' }}>
         <div className="search-input-wrapper" style={{ flex: '0 0 320px' }}>
           <i className="pi pi-search" />
-          <InputText
+          <AppInput
             value={search}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value)}
             placeholder="Search by description..."
             style={{ width: '100%' }}
           />
         </div>
-        <FormSelect
+        <AppSelect
           value={statusFilter}
           onChange={(val: string) => setStatusFilter(val)}
           options={statusOptions}

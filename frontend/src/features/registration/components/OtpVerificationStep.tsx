@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { InputText } from 'primereact/inputtext';
+import { AppInput } from '../../../shared/components/forms';
 import { Toast } from 'primereact/toast';
 import { useRef } from 'react';
 import { useVerifyMobileOtpMutation } from '../queries';
@@ -51,7 +51,7 @@ export default function OtpVerificationStep({ formData, update }: StepProps) {
       <div className="form-grid">
         <div className="form-field">
           <label>Mobile Number *</label>
-          <InputText
+          <AppInput
             value={formData.mobileNumber}
             onChange={(e) => {
               update('mobileNumber' as any, e.target.value);
@@ -88,7 +88,7 @@ export default function OtpVerificationStep({ formData, update }: StepProps) {
           <div className="form-field full-width">
             <label>Enter OTP *</label>
             <div style={{ display: 'flex', gap: 12, alignItems: 'flex-end' }}>
-              <InputText
+              <AppInput
                 value={otp}
                 onChange={(e) => setOtp(e.target.value.replace(/\D/g, '').slice(0, 6))}
                 placeholder="6-digit OTP"

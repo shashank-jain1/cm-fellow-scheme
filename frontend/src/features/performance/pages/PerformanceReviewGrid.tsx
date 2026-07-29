@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { InputText } from 'primereact/inputtext';
 import { Tag } from 'primereact/tag';
+import { AppInput } from '../../../shared/components/forms';
 import { usePerformanceSummary } from '../queries';
 import PerformanceSummaryCard from '../components/PerformanceSummaryCard';
 import { PageHeader, EmptyState } from '../../../shared/components/ui';
@@ -68,7 +68,7 @@ export default function PerformanceReviewGrid() {
 
       <div className="search-input-wrapper" style={{ width: '100%', maxWidth: 360, marginBottom: 'var(--space-4)' }}>
         <i className="pi pi-search" />
-        <InputText
+        <AppInput
           value={search}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value)}
           placeholder="Search by fellow name..."

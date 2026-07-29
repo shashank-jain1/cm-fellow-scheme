@@ -1,6 +1,5 @@
 import type { ChangeEvent } from 'react';
-import { InputText } from 'primereact/inputtext';
-import FormSelect from '../../../../shared/components/FormSelect';
+import { AppInput, AppSelect } from '../../../../shared/components/forms';
 import { useDivisions } from '../../../../shared/hooks/useMasters';
 import type { StepProps } from '../form.hook';
 
@@ -22,7 +21,7 @@ export default function TrainingPreferenceFields({ formData, update }: StepProps
     <>
       <div className="form-field">
         <label>Applied For Training *</label>
-        <FormSelect
+        <AppSelect
           value={formData.appliedForTraining}
           onChange={(val: string) => update('appliedForTraining', val)}
           options={trainingOptions}
@@ -31,7 +30,7 @@ export default function TrainingPreferenceFields({ formData, update }: StepProps
       </div>
       <div className="form-field">
         <label>Preferred Training Location *</label>
-        <FormSelect
+        <AppSelect
           value={formData.preferredTrainingLocationId}
           onChange={(val: string) => update('preferredTrainingLocationId', val)}
           options={locationOptions}
@@ -40,7 +39,7 @@ export default function TrainingPreferenceFields({ formData, update }: StepProps
       </div>
       <div className="form-field full-width">
         <label>Experience Details</label>
-        <InputText
+        <AppInput
           value={formData.experienceDetails}
           onChange={(e: ChangeEvent<HTMLInputElement>) => update('experienceDetails', e.target.value)}
           placeholder="Describe relevant experience (optional)"

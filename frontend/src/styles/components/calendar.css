@@ -8,27 +8,50 @@
   padding: 0 !important;
   background: transparent !important;
   box-shadow: none !important;
-  gap: 8px !important;
+  gap: 0 !important;
+  align-items: center !important;
 }
 
-.p-calendar .p-inputtext {
-  flex: 1 1 auto;
-  width: 100%;
-  border-radius: var(--radius-md) !important;
-  height: 40px !important;
-  font-family: var(--font-body) !important;
-}
-
+.p-calendar .p-inputtext,
 .p-calendar.p-calendar-w-btn .p-inputtext {
+  flex: 1 1 auto !important;
+  width: 100% !important;
+  height: 40px !important;
+  border: 1px solid var(--border) !important;
   border-radius: var(--radius-md) !important;
+  padding-right: 40px !important;
+  padding-left: var(--space-4) !important;
+  font-family: var(--font-body) !important;
+  font-size: var(--text-base) !important;
+  color: var(--text-heading) !important;
+  background: var(--bg-input) !important;
+  transition: all var(--transition-fast) !important;
+  outline: none !important;
+  box-sizing: border-box !important;
+}
+
+.p-calendar .p-inputtext:hover,
+.p-calendar.p-calendar-w-btn .p-inputtext:hover {
+  border-color: var(--carbon-300) !important;
+}
+
+.p-calendar .p-inputtext:focus,
+.p-calendar:focus-within .p-inputtext {
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 3px var(--accent-light) !important;
 }
 
 .p-calendar .p-datepicker-trigger {
+  position: absolute !important;
+  right: 0 !important;
+  top: 0 !important;
   height: 40px !important;
   width: 40px !important;
-  border: 1px solid var(--border) !important;
-  border-radius: var(--radius-md) !important;
-  background: var(--carbon-50) !important;
+  min-width: 40px !important;
+  border: none !important;
+  border-top-right-radius: var(--radius-md) !important;
+  border-bottom-right-radius: var(--radius-md) !important;
+  background: transparent !important;
   color: var(--text-muted) !important;
   display: flex !important;
   align-items: center !important;
@@ -36,11 +59,34 @@
   cursor: pointer !important;
   flex-shrink: 0 !important;
   transition: all var(--transition-fast) !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+  z-index: 2 !important;
 }
 
 .p-calendar .p-datepicker-trigger:hover {
-  background: var(--accent-light) !important;
+  background: transparent !important;
   color: var(--accent) !important;
+}
+
+.p-calendar .p-datepicker-trigger .p-button-icon {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  font-size: 1rem !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.p-calendar .p-datepicker-trigger svg {
+  display: block !important;
+  margin: 0 auto !important;
+  flex-shrink: 0 !important;
+  width: 1rem !important;
+  height: 1rem !important;
+  fill: currentColor !important;
 }
 
 .p-calendar:focus-within {

@@ -1,8 +1,5 @@
-import { InputNumber } from 'primereact/inputnumber';
-import { InputTextarea } from 'primereact/inputtextarea';
-import { Calendar } from 'primereact/calendar';
 import { Button } from 'primereact/button';
-import FormSelect from '../../../shared/components/FormSelect';
+import { AppInputNumber, AppTextarea, AppCalendar, AppSelect } from '../../../shared/components/forms';
 import { useLookupOptions, useProjects, useWorks, useDivisions, useDistricts, useBlocks } from '../../../shared/hooks/useMasters';
 import type { WorkAllocationFormData } from '../types';
 
@@ -47,7 +44,7 @@ export default function WorkAllocationForm({
       <div className="form-grid">
         <div className="form-field">
           <label>Project <span style={{ color: 'var(--badge-red-text)' }}>*</span></label>
-          <FormSelect
+          <AppSelect
             value={formData.projectId ? String(formData.projectId) : ''}
             options={projectOptions}
             onChange={(val) => {
@@ -61,7 +58,7 @@ export default function WorkAllocationForm({
 
         <div className="form-field">
           <label>Work Project <span style={{ color: 'var(--badge-red-text)' }}>*</span></label>
-          <FormSelect
+          <AppSelect
             value={formData.workProjectId ? String(formData.workProjectId) : ''}
             options={workOptions}
             onChange={(val) => onChange('workProjectId', Number(val))}
@@ -73,7 +70,7 @@ export default function WorkAllocationForm({
 
         <div className="form-field">
           <label>Priority <span style={{ color: 'var(--badge-red-text)' }}>*</span></label>
-          <FormSelect
+          <AppSelect
             value={formData.priority}
             options={priorityOptions}
             onChange={(val) => onChange('priority', val)}
@@ -83,7 +80,7 @@ export default function WorkAllocationForm({
 
         <div className="form-field">
           <label>Surveys Per Intern <span style={{ color: 'var(--badge-red-text)' }}>*</span></label>
-          <InputNumber
+          <AppInputNumber
             value={formData.surveysPerIntern || undefined}
             onValueChange={(e) => onChange('surveysPerIntern', e.value ?? 0)}
             className={errors.surveysPerIntern ? 'p-invalid' : ''}
@@ -94,7 +91,7 @@ export default function WorkAllocationForm({
 
       <div className="form-field full-width">
         <label>Work Description <span style={{ color: 'var(--badge-red-text)' }}>*</span></label>
-        <InputTextarea
+        <AppTextarea
           value={formData.workDescription}
           onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => onChange('workDescription', e.target.value)}
           rows={4}
@@ -108,7 +105,7 @@ export default function WorkAllocationForm({
       <div className="form-grid">
         <div className="form-field">
           <label>Start Date <span style={{ color: 'var(--badge-red-text)' }}>*</span></label>
-          <Calendar
+          <AppCalendar
             value={formData.startDate ? new Date(formData.startDate) : null}
             onChange={(e) => onChange('startDate', e.value?.toISOString().split('T')[0] ?? '')}
             showOnFocus={false}
@@ -119,7 +116,7 @@ export default function WorkAllocationForm({
 
         <div className="form-field">
           <label>End Date <span style={{ color: 'var(--badge-red-text)' }}>*</span></label>
-          <Calendar
+          <AppCalendar
             value={formData.endDate ? new Date(formData.endDate) : null}
             onChange={(e) => onChange('endDate', e.value?.toISOString().split('T')[0] ?? '')}
             showOnFocus={false}
@@ -132,7 +129,7 @@ export default function WorkAllocationForm({
       <div className="form-grid">
         <div className="form-field">
           <label>Division <span style={{ color: 'var(--badge-red-text)' }}>*</span></label>
-          <FormSelect
+          <AppSelect
             value={formData.divisionId ? String(formData.divisionId) : ''}
             options={divisionOptions}
             onChange={(val) => {
@@ -147,7 +144,7 @@ export default function WorkAllocationForm({
 
         <div className="form-field">
           <label>District <span style={{ color: 'var(--badge-red-text)' }}>*</span></label>
-          <FormSelect
+          <AppSelect
             value={formData.districtId ? String(formData.districtId) : ''}
             options={districtOptions}
             onChange={(val) => {
@@ -162,7 +159,7 @@ export default function WorkAllocationForm({
 
         <div className="form-field">
           <label>Block <span style={{ color: 'var(--badge-red-text)' }}>*</span></label>
-          <FormSelect
+          <AppSelect
             value={formData.blockId ? String(formData.blockId) : ''}
             options={blockOptions}
             onChange={(val) => onChange('blockId', Number(val))}

@@ -1,14 +1,9 @@
-import React, { useId, useState, useRef, useEffect, useCallback } from 'react';
+import { useId, useState, useRef, useEffect, useCallback } from 'react';
 
-interface SelectOption {
-  label: string;
-  value: string;
-}
-
-interface FormSelectProps {
-  value: string;
-  onChange: (value: string) => void;
-  options: SelectOption[];
+interface FormSelectProps<T extends string | number = string | number> {
+  value?: T | null;
+  onChange: (value: T) => void;
+  options: { label: string; value: T }[];
   placeholder?: string;
   disabled?: boolean;
   loading?: boolean;
@@ -17,7 +12,7 @@ interface FormSelectProps {
   className?: string;
 }
 
-export default function FormSelect({
+export default function FormSelect<T extends string | number = string | number>({
   value,
   onChange,
   options,
@@ -27,12 +22,14 @@ export default function FormSelect({
   showClear = false,
   style,
   className,
-}: FormSelectProps) {
+}: FormSelectProps<T>) {
   const id = useId();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
   const selected = options.find((o) => o.value === value);
+  const hasValue = value !== undefined && value !== null && value !== '';
+  const isClearable = showClear && hasValue && selected;
 
   const handleClickOutside = useCallback((e: MouseEvent) => {
     if (ref.current && !ref.current.contains(e.target as Node)) {
@@ -62,57 +59,83 @@ export default function FormSelect({
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          padding: showClear && selected ? '9px 36px 9px 13px' : '9px 13px',
-          border: '1px solid var(--border-color)',
+          padding: '9px 12px',
+          border: '1px solid var(--border)',
           borderRadius: 'var(--radius-md)',
-          background: disabled ? 'var(--bg-card)' : 'var(--bg-input)',
-          fontFamily: "'Plus Jakarta Sans', sans-serif",
-          fontSize: 14,
+          background: disabled ? 'var(--carbon-50)' : 'var(--bg-input)',
+          fontFamily: 'var(--font-body)',
+          fontSize: 'var(--text-base)',
           height: 40,
-          color: selected ? 'var(--text-primary)' : 'var(--text-muted)',
+          color: hasValue && selected ? 'var(--text-heading)' : 'var(--text-muted)',
           cursor: disabled ? 'not-allowed' : 'pointer',
           outline: 'none',
           transition: 'all var(--transition-fast)',
           textAlign: 'left',
-          boxShadow: 'var(--shadow-sm)',
+        }}
+        onMouseEnter={(e) => {
+          if (!disabled) e.currentTarget.style.borderColor = 'var(--carbon-300)';
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.borderColor = 'var(--border)';
+        }}
+        onFocus={(e) => {
+          e.currentTarget.style.borderColor = 'var(--accent)';
+          e.currentTarget.style.boxShadow = '0 0 0 3px var(--accent-light)';
+        }}
+        onBlur={(e) => {
+          e.currentTarget.style.borderColor = 'var(--border)';
+          e.currentTarget.style.boxShadow = 'none';
         }}
       >
-        <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1 }}>
+        <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1, paddingRight: 8 }}>
           {loading ? 'Loading...' : (selected?.label ?? placeholder)}
         </span>
-        <span style={{ marginLeft: 8, fontSize: 11, color: 'var(--text-muted)', flexShrink: 0, display: 'flex', alignItems: 'center' }}>
-          <i className={`pi ${open ? 'pi-chevron-up' : 'pi-chevron-down'}`} />
-        </span>
+        
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexShrink: 0 }}>
+          {isClearable && (
+            <span
+              role="button"
+              tabIndex={0}
+              onClick={(e) => {
+                e.stopPropagation();
+                onChange('' as T);
+              }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.stopPropagation();
+                  onChange('' as T);
+                }
+              }}
+              title="Clear selection"
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: 18,
+                height: 18,
+                borderRadius: '50%',
+                color: 'var(--text-muted)',
+                fontSize: 10,
+                cursor: 'pointer',
+                transition: 'all var(--transition-fast)',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.color = 'var(--text-heading)';
+                e.currentTarget.style.background = 'var(--carbon-100)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.color = 'var(--text-muted)';
+                e.currentTarget.style.background = 'transparent';
+              }}
+            >
+              <i className="pi pi-times" />
+            </span>
+          )}
+          <span style={{ fontSize: 11, color: 'var(--text-muted)', display: 'flex', alignItems: 'center' }}>
+            <i className={`pi ${open ? 'pi-chevron-up' : 'pi-chevron-down'}`} />
+          </span>
+        </div>
       </button>
-
-      {showClear && selected && (
-        <button
-          type="button"
-          onClick={(e) => {
-            e.stopPropagation();
-            onChange('');
-          }}
-          title="Clear selection"
-          style={{
-            position: 'absolute',
-            right: 28,
-            top: '50%',
-            transform: 'translateY(-50%)',
-            background: 'none',
-            border: 'none',
-            cursor: 'pointer',
-            color: 'var(--text-muted)',
-            fontSize: 11,
-            padding: '2px 4px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            borderRadius: '50%',
-          }}
-        >
-          <i className="pi pi-times" />
-        </button>
-      )}
 
       {open && (
         <ul
@@ -121,8 +144,8 @@ export default function FormSelect({
             top: 'calc(100% + 4px)',
             left: 0,
             right: 0,
-            background: 'var(--bg-secondary)',
-            border: '1px solid var(--border-color)',
+            background: 'var(--bg-surface)',
+            border: '1px solid var(--border)',
             borderRadius: 'var(--radius-md)',
             boxShadow: 'var(--shadow-lg)',
             listStyle: 'none',
@@ -142,7 +165,7 @@ export default function FormSelect({
               const isSelected = opt.value === value;
               return (
                 <li
-                  key={opt.value}
+                  key={String(opt.value)}
                   onClick={() => {
                     onChange(opt.value);
                     setOpen(false);
@@ -153,7 +176,7 @@ export default function FormSelect({
                     fontSize: 13,
                     cursor: 'pointer',
                     background: isSelected ? 'var(--accent-light)' : 'transparent',
-                    color: isSelected ? 'var(--accent-primary-hover)' : 'var(--text-primary)',
+                    color: isSelected ? 'var(--accent)' : 'var(--text-body)',
                     fontWeight: isSelected ? 600 : 400,
                     transition: 'all var(--transition-fast)',
                     display: 'flex',
@@ -161,14 +184,14 @@ export default function FormSelect({
                     justifyContent: 'space-between',
                   }}
                   onMouseEnter={(e) => {
-                    if (!isSelected) e.currentTarget.style.background = 'var(--bg-card-hover)';
+                    if (!isSelected) e.currentTarget.style.background = 'var(--carbon-50)';
                   }}
                   onMouseLeave={(e) => {
                     if (!isSelected) e.currentTarget.style.background = 'transparent';
                   }}
                 >
                   <span>{opt.label}</span>
-                  {isSelected && <i className="pi pi-check" style={{ fontSize: 11, color: 'var(--accent-primary)' }} />}
+                  {isSelected && <i className="pi pi-check" style={{ fontSize: 11, color: 'var(--accent)' }} />}
                 </li>
               );
             })

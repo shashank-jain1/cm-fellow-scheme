@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { InputText } from 'primereact/inputtext';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Tag } from 'primereact/tag';
+import { AppInput } from '../../../shared/components/forms';
 import { usePayrollSummary } from '../queries';
 import { PageHeader, EmptyState, AppButton, SkeletonTable } from '../../../shared/components/ui';
 import type { PayrollSummaryDto } from '../types';
@@ -41,7 +41,7 @@ export default function PayrollSummaryPage() {
         <div style={{ display: 'flex', gap: 12, alignItems: 'flex-end', flexWrap: 'wrap' }}>
           <div className="form-field" style={{ minWidth: 180 }}>
             <label>Payroll Month</label>
-            <InputText
+            <AppInput
               value={payrollMonth}
               onChange={(e) => setPayrollMonth(e.target.value)}
               placeholder="e.g. 2026-07"
@@ -50,7 +50,7 @@ export default function PayrollSummaryPage() {
           </div>
           <div className="form-field" style={{ minWidth: 150 }}>
             <label>Applicant ID</label>
-            <InputText
+            <AppInput
               value={applicantId}
               onChange={(e) => setApplicantId(e.target.value)}
               placeholder="Applicant ID"

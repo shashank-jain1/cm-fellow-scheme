@@ -1,4 +1,4 @@
-import { InputText } from 'primereact/inputtext';
+import { AppInput } from '../../../shared/components/forms';
 import { AppButton } from '../../../shared/components/ui';
 import { useCertificateForm } from './form.hook';
 
@@ -11,7 +11,7 @@ export default function ApplyForCertificateForm() {
       <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
         <div className="form-group">
           <label className="form-label">Applicant ID *</label>
-          <InputText
+          <AppInput
             type="number"
             value={formData.applicantId ? formData.applicantId.toString() : ''}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateField('applicantId', e.target.value ? Number(e.target.value) : 0)}
@@ -21,7 +21,7 @@ export default function ApplyForCertificateForm() {
         </div>
         <div className="form-group">
           <label className="form-label">Program Name *</label>
-          <InputText
+          <AppInput
             value={formData.programName}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateField('programName', e.target.value)}
             placeholder="e.g. CM Fellow Fellowship"
@@ -31,7 +31,7 @@ export default function ApplyForCertificateForm() {
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
           <div className="form-group">
             <label className="form-label">Start Date *</label>
-            <InputText
+            <AppInput
               type="date"
               value={formData.startDate}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateField('startDate', e.target.value)}
@@ -40,7 +40,7 @@ export default function ApplyForCertificateForm() {
           </div>
           <div className="form-group">
             <label className="form-label">End Date *</label>
-            <InputText
+            <AppInput
               type="date"
               value={formData.endDate}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateField('endDate', e.target.value)}

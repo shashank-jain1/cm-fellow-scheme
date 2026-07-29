@@ -1,6 +1,6 @@
-import { InputText } from 'primereact/inputtext';
+import { AppInput } from '../../../shared/components/forms';
 import { useQuery } from '@tanstack/react-query';
-import FormSelect from '../../../shared/components/FormSelect';
+import { AppSelect } from '../../../shared/components/forms';
 import ApiService from '../../../services/ApiService';
 import type { DashboardFilters } from '../types';
 
@@ -32,7 +32,7 @@ export default function DashboardFilterBar({ filters, onChange }: DashboardFilte
     <div style={{ display: 'flex', gap: 12, marginBottom: 24, flexWrap: 'wrap' }}>
       <div className="form-group" style={{ marginBottom: 0 }}>
         <label className="form-label">Start Date</label>
-        <InputText
+        <AppInput
           type="date"
           value={filters.startDate ?? ''}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -42,7 +42,7 @@ export default function DashboardFilterBar({ filters, onChange }: DashboardFilte
       </div>
       <div className="form-group" style={{ marginBottom: 0 }}>
         <label className="form-label">End Date</label>
-        <InputText
+        <AppInput
           type="date"
           value={filters.endDate ?? ''}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -52,7 +52,7 @@ export default function DashboardFilterBar({ filters, onChange }: DashboardFilte
       </div>
       <div className="form-group" style={{ marginBottom: 0 }}>
         <label className="form-label">Project</label>
-        <FormSelect
+        <AppSelect
           value={filters.projectId?.toString() ?? ''}
           onChange={(val) => onChange({ ...filters, projectId: val ? Number(val) : undefined })}
           options={projectOptions}

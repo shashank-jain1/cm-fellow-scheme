@@ -1,9 +1,6 @@
 import { useState } from 'react';
-import { InputText } from 'primereact/inputtext';
-import { InputTextarea } from 'primereact/inputtextarea';
-import { Calendar } from 'primereact/calendar';
 import { Button } from 'primereact/button';
-import { InputNumber } from 'primereact/inputnumber';
+import { AppInput, AppTextarea, AppCalendar, AppInputNumber } from '../../../../shared/components/forms';
 import { useProjects, useCreateProject } from '../../queries';
 import type { CreateProjectCommand } from '../../types';
 
@@ -43,35 +40,35 @@ export default function ProjectSection() {
           <div className="form-grid">
             <div className="form-field">
               <label>Project Name *</label>
-              <InputText value={form.projectName} onChange={(e) => setForm({ ...form, projectName: e.target.value })} placeholder="Enter project name" />
+              <AppInput value={form.projectName} onChange={(e) => setForm({ ...form, projectName: e.target.value })} placeholder="Enter project name" />
             </div>
             <div className="form-field">
               <label>Project Code *</label>
-              <InputText value={form.projectCode} onChange={(e) => setForm({ ...form, projectCode: e.target.value })} placeholder="e.g. PRJ001" />
+              <AppInput value={form.projectCode} onChange={(e) => setForm({ ...form, projectCode: e.target.value })} placeholder="e.g. PRJ001" />
             </div>
             <div className="form-field">
               <label>Department *</label>
-              <InputText value={form.departmentName} onChange={(e) => setForm({ ...form, departmentName: e.target.value })} placeholder="Department name" />
+              <AppInput value={form.departmentName} onChange={(e) => setForm({ ...form, departmentName: e.target.value })} placeholder="Department name" />
             </div>
             <div className="form-field">
               <label>Project Incharge *</label>
-              <InputText value={form.projectIncharge} onChange={(e) => setForm({ ...form, projectIncharge: e.target.value })} placeholder="Incharge name" />
+              <AppInput value={form.projectIncharge} onChange={(e) => setForm({ ...form, projectIncharge: e.target.value })} placeholder="Incharge name" />
             </div>
             <div className="form-field">
               <label>Start Date *</label>
-              <Calendar value={form.startDate ? new Date(form.startDate) : null} onChange={(e) => setForm({ ...form, startDate: e.value?.toISOString().split('T')[0] ?? '' })} showOnFocus={false} />
+              <AppCalendar value={form.startDate ? new Date(form.startDate) : null} onChange={(e) => setForm({ ...form, startDate: e.value?.toISOString().split('T')[0] ?? '' })} showOnFocus={false} />
             </div>
             <div className="form-field">
               <label>End Date *</label>
-              <Calendar value={form.endDate ? new Date(form.endDate) : null} onChange={(e) => setForm({ ...form, endDate: e.value?.toISOString().split('T')[0] ?? '' })} showOnFocus={false} />
+              <AppCalendar value={form.endDate ? new Date(form.endDate) : null} onChange={(e) => setForm({ ...form, endDate: e.value?.toISOString().split('T')[0] ?? '' })} showOnFocus={false} />
             </div>
             <div className="form-field">
               <label>Budget Amount</label>
-              <InputNumber value={form.budgetAmount ?? undefined} onValueChange={(e) => setForm({ ...form, budgetAmount: e.value ?? undefined })} mode="currency" currency="INR" locale="en-IN" />
+              <AppInputNumber value={form.budgetAmount ?? undefined} onValueChange={(e) => setForm({ ...form, budgetAmount: e.value ?? undefined })} mode="currency" currency="INR" locale="en-IN" />
             </div>
             <div className="form-field full-width">
               <label>Description</label>
-              <InputTextarea value={form.projectDescription ?? ''} onChange={(e) => setForm({ ...form, projectDescription: e.target.value })} rows={3} placeholder="Project description" />
+              <AppTextarea value={form.projectDescription ?? ''} onChange={(e) => setForm({ ...form, projectDescription: e.target.value })} rows={3} placeholder="Project description" />
             </div>
           </div>
           <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end', marginTop: 12 }}>

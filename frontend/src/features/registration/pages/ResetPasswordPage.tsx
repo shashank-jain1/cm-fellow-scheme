@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { InputText } from 'primereact/inputtext';
+import { AppInput } from '../../../shared/components/forms';
 import { Toast } from 'primereact/toast';
 import { useRef } from 'react';
 import { useResetPasswordMutation } from '../queries';
@@ -56,7 +56,7 @@ export default function ResetPasswordPage() {
         <form onSubmit={handleSubmit}>
           <div className="form-field">
             <label>Email Address</label>
-            <InputText
+            <AppInput
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email"
@@ -67,7 +67,7 @@ export default function ResetPasswordPage() {
 
           <div className="form-field">
             <label>New Password</label>
-            <InputText
+            <AppInput
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
               placeholder="Enter new password"
@@ -78,7 +78,7 @@ export default function ResetPasswordPage() {
 
           <div className="form-field">
             <label>Confirm Password</label>
-            <InputText
+            <AppInput
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               placeholder="Confirm new password"

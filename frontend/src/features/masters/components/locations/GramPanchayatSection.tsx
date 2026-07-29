@@ -1,7 +1,6 @@
 import { useState } from 'react';
-import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
-import FormSelect from '../../../../shared/components/FormSelect';
+import { AppInput, AppSelect } from '../../../../shared/components/forms';
 import { useBlocks, useGramPanchayats, useCreateGramPanchayat } from '../../queries';
 
 export default function GramPanchayatSection() {
@@ -30,7 +29,7 @@ export default function GramPanchayatSection() {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
         <h3 style={{ fontSize: 16, fontWeight: 700, margin: 0 }}>Gram Panchayats ({gps?.length ?? 0})</h3>
         <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-          <FormSelect
+          <AppSelect
             value={selectedBlockId ? String(selectedBlockId) : ''}
             options={[{ label: 'All Blocks', value: '' }, ...blockOptions]}
             onChange={(val) => setSelectedBlockId(val ? Number(val) : null)}
@@ -45,7 +44,7 @@ export default function GramPanchayatSection() {
           <div className="form-grid">
             <div className="form-field">
               <label>Block *</label>
-              <FormSelect
+              <AppSelect
                 value={selectedBlockId ? String(selectedBlockId) : ''}
                 options={blockOptions}
                 onChange={(val) => setSelectedBlockId(val ? Number(val) : null)}
@@ -54,11 +53,11 @@ export default function GramPanchayatSection() {
             </div>
             <div className="form-field">
               <label>GP Name *</label>
-              <InputText value={formName} onChange={(e) => setFormName(e.target.value)} placeholder="e.g. Gram Panchayat name" />
+              <AppInput value={formName} onChange={(e) => setFormName(e.target.value)} placeholder="e.g. Gram Panchayat name" />
             </div>
             <div className="form-field">
               <label>GP Code</label>
-              <InputText value={formCode} onChange={(e) => setFormCode(e.target.value)} placeholder="Optional code" maxLength={20} />
+              <AppInput value={formCode} onChange={(e) => setFormCode(e.target.value)} placeholder="Optional code" maxLength={20} />
             </div>
           </div>
           <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end', marginTop: 12 }}>

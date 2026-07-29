@@ -1,7 +1,6 @@
 import { Tag } from 'primereact/tag';
 import { useGenerateCertificate } from '../queries';
 import { getDownloadUrl } from '../api';
-import { useAuth } from '../../../features/auth';
 import { AppButton } from '../../../shared/components/ui';
 import type { CertificateApplicationDto } from '../types';
 
@@ -16,7 +15,6 @@ export default function CertificateDownloadCard({ certificate }: CertificateDown
   const canDownload = isIssued && certificate.certificatePdfPath;
 
   const generateMutation = useGenerateCertificate();
-  const { user } = useAuth();
 
   const handleGenerate = () => {
     generateMutation.mutate(certificate.certificateId);

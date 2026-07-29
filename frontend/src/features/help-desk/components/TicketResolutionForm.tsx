@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { InputTextarea } from 'primereact/inputtextarea';
+import { AppTextarea } from '../../../shared/components/forms';
 import { Button } from 'primereact/button';
 import { useResolveTicket, useEscalateTicket } from '../queries';
 
@@ -43,7 +43,7 @@ export default function TicketResolutionForm({ ticketId, currentStatus, onResolv
       <h3 style={{ fontSize: 16, fontWeight: 600, marginBottom: 16 }}>Resolve / Escalate</h3>
       <div className="form-group" style={{ marginBottom: 16 }}>
         <label className="form-label">Resolution Remarks</label>
-        <InputTextarea
+        <AppTextarea
           value={remarks}
           onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setRemarks(e.target.value)}
           placeholder="Enter resolution details..."

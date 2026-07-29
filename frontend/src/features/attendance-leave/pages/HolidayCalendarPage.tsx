@@ -1,12 +1,9 @@
 import { useState, useRef } from 'react';
-import { Dialog } from 'primereact/dialog';
-import { InputText } from 'primereact/inputtext';
-import { InputSwitch } from 'primereact/inputswitch';
-import { Calendar } from 'primereact/calendar';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Tag } from 'primereact/tag';
 import { Toast } from 'primereact/toast';
+import { AppDialog, AppInput, AppSwitch, AppCalendar } from '../../../shared/components/forms';
 import { useHolidays, useCreateHoliday, useUpdateHoliday, useDeleteHoliday } from '../queries';
 import { PageHeader, EmptyState, ConfirmDialog, AppButton, SkeletonTable } from '../../../shared/components/ui';
 import type { HolidayDto } from '../types';
@@ -139,7 +136,7 @@ export default function HolidayCalendarPage() {
         )}
       </div>
 
-      <Dialog
+      <AppDialog
         header={editingHoliday ? 'Edit Holiday' : 'Add Holiday'}
         visible={dialogVisible}
         style={{ width: '480px' }}
@@ -149,26 +146,26 @@ export default function HolidayCalendarPage() {
         <div className="form-grid" style={{ marginTop: 16 }}>
           <div className="form-field full-width">
             <label>Holiday Name *</label>
-            <InputText value={holidayName} onChange={(e) => setHolidayName(e.target.value)} style={{ width: '100%' }} />
+            <AppInput value={holidayName} onChange={(e) => setHolidayName(e.target.value)} style={{ width: '100%' }} />
           </div>
           <div className="form-field">
             <label>Date *</label>
-            <Calendar value={holidayDate} onChange={(e) => setHolidayDate(e.value as Date)} dateFormat="dd/mm/yy" style={{ width: '100%' }} showIcon />
+            <AppCalendar value={holidayDate} onChange={(e) => setHolidayDate(e.value as Date)} dateFormat="dd/mm/yy" style={{ width: '100%' }} showIcon />
           </div>
           <div className="form-field">
             <label>Optional Holiday</label>
-            <InputSwitch checked={isOptional} onChange={(e) => setIsOptional(Boolean(e.value))} />
+            <AppSwitch checked={isOptional} onChange={(e) => setIsOptional(Boolean(e.value))} />
           </div>
           <div className="form-field full-width">
             <label>Description</label>
-            <InputText value={description} onChange={(e) => setDescription(e.target.value)} style={{ width: '100%' }} />
+            <AppInput value={description} onChange={(e) => setDescription(e.target.value)} style={{ width: '100%' }} />
           </div>
         </div>
         <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8, marginTop: 16 }}>
           <AppButton variant="secondary" onClick={() => setDialogVisible(false)}>Cancel</AppButton>
           <AppButton onClick={saveHoliday} loading={createHoliday.isPending || updateHoliday.isPending}>Save</AppButton>
         </div>
-      </Dialog>
+      </AppDialog>
 
       <ConfirmDialog
         visible={!!deleteTarget}

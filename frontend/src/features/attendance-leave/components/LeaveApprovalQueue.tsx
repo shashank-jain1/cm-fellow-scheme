@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Button } from 'primereact/button';
-import { InputTextarea } from 'primereact/inputtextarea';
+import { AppTextarea } from '../../../shared/components/forms';
 import { useLeaveStatus, useApproveLeave } from '../queries';
 import AttendanceStatusBadge from './AttendanceStatusBadge';
 
@@ -77,7 +77,7 @@ export default function LeaveApprovalQueue() {
             <AttendanceStatusBadge status={request.approvalStatus} />
           </div>
 
-          <InputTextarea
+          <AppTextarea
             value={remarksMap[request.leaveApplicationNo] || ''}
             onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
               setRemarksMap((prev) => ({ ...prev, [request.leaveApplicationNo]: e.target.value }))

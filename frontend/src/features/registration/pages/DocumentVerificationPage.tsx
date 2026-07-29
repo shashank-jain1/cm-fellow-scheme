@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Tag } from 'primereact/tag';
-import { Dialog } from 'primereact/dialog';
-import { InputText } from 'primereact/inputtext';
+import { AppDialog } from '../../../shared/components/forms';
+import { AppInput } from '../../../shared/components/forms';
 import { Toast } from 'primereact/toast';
 import { useRef } from 'react';
 import { useListRegistrationsQuery, useApproveRegistrationMutation, useRejectRegistrationMutation } from '../queries';
@@ -126,7 +126,7 @@ export default function DocumentVerificationPage() {
         )}
       </div>
 
-      <Dialog
+      <AppDialog
         header="Reject Registration"
         visible={rejectDialogVisible}
         style={{ width: '420px' }}
@@ -138,7 +138,7 @@ export default function DocumentVerificationPage() {
         </p>
         <div className="form-field">
           <label>Reason *</label>
-          <InputText
+          <AppInput
             value={rejectReason}
             onChange={(e) => setRejectReason(e.target.value)}
             placeholder="Enter rejection reason"
@@ -149,7 +149,7 @@ export default function DocumentVerificationPage() {
           <AppButton variant="secondary" onClick={() => setRejectDialogVisible(false)}>Cancel</AppButton>
           <AppButton variant="danger" onClick={handleReject} disabled={!rejectReason.trim()}>Reject</AppButton>
         </div>
-      </Dialog>
+      </AppDialog>
     </div>
   );
 }

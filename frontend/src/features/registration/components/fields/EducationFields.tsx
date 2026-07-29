@@ -1,6 +1,5 @@
 import type { ChangeEvent } from 'react';
-import { InputText } from 'primereact/inputtext';
-import FormSelect from '../../../../shared/components/FormSelect';
+import { AppInput, AppSelect } from '../../../../shared/components/forms';
 import { useLookupOptions } from '../../../../shared/hooks/useMasters';
 import type { StepProps } from '../form.hook';
 
@@ -19,7 +18,7 @@ export default function EducationFields({ formData, update }: StepProps) {
     <>
       <div className="form-field">
         <label>Highest Qualification *</label>
-        <FormSelect
+        <AppSelect
           value={formData.qualificationId}
           onChange={(val: string) => update('qualificationId', val)}
           options={qualificationOptions}
@@ -28,7 +27,7 @@ export default function EducationFields({ formData, update }: StepProps) {
       </div>
       <div className="form-field">
         <label>Board / University *</label>
-        <InputText
+        <AppInput
           value={formData.boardUniversityName}
           onChange={(e: ChangeEvent<HTMLInputElement>) => update('boardUniversityName', e.target.value)}
           placeholder="Enter board or university name"
@@ -36,7 +35,7 @@ export default function EducationFields({ formData, update }: StepProps) {
       </div>
       <div className="form-field">
         <label>Year of Passing *</label>
-        <FormSelect
+        <AppSelect
           value={formData.passingYear}
           onChange={(val: string) => update('passingYear', val)}
           options={yearOptions}
@@ -45,7 +44,7 @@ export default function EducationFields({ formData, update }: StepProps) {
       </div>
       <div className="form-field">
         <label>Percentage / CGPA *</label>
-        <InputText
+        <AppInput
           value={formData.percentageCgpa}
           onChange={(e: ChangeEvent<HTMLInputElement>) => update('percentageCgpa', e.target.value)}
           placeholder="e.g. 85.5"

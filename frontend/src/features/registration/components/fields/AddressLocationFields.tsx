@@ -1,7 +1,5 @@
 import type { ChangeEvent } from 'react';
-import { InputTextarea } from 'primereact/inputtextarea';
-import { InputText } from 'primereact/inputtext';
-import FormSelect from '../../../../shared/components/FormSelect';
+import { AppTextarea, AppInput, AppSelect } from '../../../../shared/components/forms';
 import { useStates, useDivisions, useDistricts, useBlocks, useGramPanchayats } from '../../../../shared/hooks/useMasters';
 import type { StepProps } from '../form.hook';
 
@@ -43,7 +41,7 @@ export default function AddressLocationFields({ formData, update }: StepProps) {
     <>
       <div className="form-field full-width">
         <label>Full Address *</label>
-        <InputTextarea
+        <AppTextarea
           value={formData.permanentAddress}
           onChange={(e: ChangeEvent<HTMLTextAreaElement>) => update('permanentAddress', e.target.value)}
           placeholder="Enter full address"
@@ -52,7 +50,7 @@ export default function AddressLocationFields({ formData, update }: StepProps) {
       </div>
       <div className="form-field">
         <label>Division *</label>
-        <FormSelect
+        <AppSelect
           value={formData.divisionId}
           onChange={(val: string) => {
             update('divisionId', val);
@@ -67,7 +65,7 @@ export default function AddressLocationFields({ formData, update }: StepProps) {
       </div>
       <div className="form-field">
         <label>District *</label>
-        <FormSelect
+        <AppSelect
           value={formData.districtId}
           onChange={(val: string) => {
             update('districtId', val);
@@ -82,7 +80,7 @@ export default function AddressLocationFields({ formData, update }: StepProps) {
       </div>
       <div className="form-field">
         <label>Block *</label>
-        <FormSelect
+        <AppSelect
           value={formData.blockId}
           onChange={(val: string) => {
             update('blockId', val);
@@ -96,7 +94,7 @@ export default function AddressLocationFields({ formData, update }: StepProps) {
       </div>
       <div className="form-field">
         <label>Gram Panchayat *</label>
-        <FormSelect
+        <AppSelect
           value={formData.gramPanchayatId}
           onChange={(val: string) => update('gramPanchayatId', val)}
           options={gpOptions}
@@ -107,7 +105,7 @@ export default function AddressLocationFields({ formData, update }: StepProps) {
       </div>
       <div className="form-field">
         <label>PIN Code *</label>
-        <InputText
+        <AppInput
           value={formData.pinCode}
           onChange={(e: ChangeEvent<HTMLInputElement>) => update('pinCode', e.target.value)}
           placeholder="6-digit PIN"

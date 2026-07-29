@@ -100,6 +100,25 @@ export default function Sidebar({ collapsed, onToggleCollapsed }: SidebarProps) 
             <span className="sidebar-brand-subtitle">Management System</span>
           </div>
         )}
+        <button
+          type="button"
+          className="sidebar-collapse-btn"
+          onClick={() => onToggleCollapsed(!collapsed)}
+          title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+          style={{
+            background: 'transparent',
+            border: 'none',
+            color: 'rgba(255, 255, 255, 0.7)',
+            cursor: 'pointer',
+            marginLeft: 'auto',
+            padding: 4,
+            display: 'flex',
+            alignItems: 'center',
+            borderRadius: 4,
+          }}
+        >
+          <i className={`pi ${collapsed ? 'pi-chevron-right' : 'pi-chevron-left'}`} style={{ fontSize: 14 }} />
+        </button>
       </div>
 
       <nav className="sidebar-nav">

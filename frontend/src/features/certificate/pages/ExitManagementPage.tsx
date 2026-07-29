@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { InputText } from 'primereact/inputtext';
+import { AppInput } from '../../../shared/components/forms';
 import { ToastService } from '../../../shared/utils/toast';
 import { useSubmitExitReadiness } from '../queries';
 import { useAuth } from '../../auth';
@@ -39,7 +39,7 @@ export default function ExitManagementPage() {
       <div className="card" style={{ padding: 24, marginBottom: 24, maxWidth: 400 }}>
         <label className="form-label">Applicant ID</label>
         <div style={{ display: 'flex', gap: 12 }}>
-          <InputText
+          <AppInput
             type="number"
             value={applicantId?.toString() ?? ''}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {

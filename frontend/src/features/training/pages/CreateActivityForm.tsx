@@ -1,10 +1,10 @@
 import { useNavigate } from 'react-router-dom';
-import { Button } from 'primereact/button';
 import { useActivityForm } from '../components/form.hook';
 import ActivityTypeSelector from '../components/ActivityTypeSelector';
 import CommonActivityFields from '../components/CommonActivityFields';
 import TrainingFieldsCard from '../components/TrainingFieldsCard';
 import MeetingFieldsCard from '../components/MeetingFieldsCard';
+import { AppButton } from '../../../shared/components/ui';
 
 export default function CreateActivityForm() {
   const navigate = useNavigate();
@@ -20,28 +20,21 @@ export default function CreateActivityForm() {
       <div className="page-header">
         <div>
           <h1>Create Activity</h1>
-          <p style={{ color: 'var(--text-secondary)', marginTop: 4 }}>
+          <p style={{ color: 'var(--text-muted)', marginTop: 4 }}>
             Schedule a new training or meeting activity
           </p>
         </div>
         <div style={{ display: 'flex', gap: 8 }}>
-          <Button
-            label="Cancel"
-            icon="pi pi-times"
-            className="btn btn-secondary"
-            onClick={() => navigate('/training')}
-          />
-          <Button
-            label="Save"
-            icon="pi pi-check"
-            className="btn btn-primary"
-            loading={isSubmitting}
-            onClick={handleSubmit}
-          />
+          <AppButton variant="secondary" icon="pi pi-times" onClick={() => navigate('/training')}>
+            Cancel
+          </AppButton>
+          <AppButton icon="pi pi-check" loading={isSubmitting} onClick={handleSubmit}>
+            Save
+          </AppButton>
         </div>
       </div>
 
-      <div className="glass-card" style={{ padding: 28 }}>
+      <div className="card" style={{ padding: 28 }}>
         <ActivityTypeSelector
           value={formData.activityType}
           onChange={(v) => updateField('activityType', v)}

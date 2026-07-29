@@ -36,6 +36,32 @@ class ApiService {
   static async post<T>(url: string, body: unknown) { return this.request<T>('POST', url, body); }
   static async put<T>(url: string, body: unknown) { return this.request<T>('PUT', url, body); }
   static async delete<T>(url: string) { return this.request<T>('DELETE', url); }
+
+  static async postFormData<T>(url: string, formData: FormData): Promise<ApiResponse<T>> {
+    const headers: Record<string, string> = {};
+    const token = localStorage.getItem('token');
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+
+    const response = await fetch(`${API_BASE}/${url}`, {
+      method: 'POST',
+      headers,
+      body: formData,
+    });
+
+    if (!response.ok) {
+      if (response.status === 401) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('auth_user');
+        window.location.href = '/login';
+        throw new Error('Session expired. Please login again.');
+      }
+      const errorText = await response.text().catch(() => response.statusText);
+      throw new Error(`API POST ${url} failed (${response.status}): ${errorText}`);
+    }
+
+    const text = await response.text();
+    return { data: text ? JSON.parse(text) : undefined };
+  }
 }
 
 export default ApiService;

@@ -1,9 +1,5 @@
 import { useRef } from 'react';
-import { InputText } from 'primereact/inputtext';
-import { InputTextarea } from 'primereact/inputtextarea';
-import { InputSwitch } from 'primereact/inputswitch';
-import { MultiSelect } from 'primereact/multiselect';
-import { Button } from 'primereact/button';
+import { AppInput, AppTextarea, AppSwitch, AppMultiSelect } from '../../../shared/components/forms';
 import { useLookupOptions } from '../../../shared/hooks/useMasters';
 
 interface Props {
@@ -61,7 +57,7 @@ export default function TrainingFieldsCard({
       <div className="form-grid">
         <div className="form-field">
           <label>Training Title *</label>
-          <InputText
+          <AppInput
             value={trainingTitle}
             onChange={(e) => onTrainingTitleChange(e.target.value)}
             placeholder="Enter training title"
@@ -69,7 +65,7 @@ export default function TrainingFieldsCard({
         </div>
         <div className="form-field">
           <label>Training Category *</label>
-          <MultiSelect
+          <AppMultiSelect
             value={trainingCategory ? trainingCategory.split(',') : []}
             options={categoryOptions}
             onChange={(e) => onTrainingCategoryChange(e.value?.join(',') ?? '')}
@@ -80,7 +76,7 @@ export default function TrainingFieldsCard({
         </div>
         <div className="form-field full-width">
           <label>Training Description</label>
-          <InputTextarea
+          <AppTextarea
             value={trainingDescription}
             onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => onTrainingDescriptionChange(e.target.value)}
             rows={3}
@@ -89,7 +85,7 @@ export default function TrainingFieldsCard({
         </div>
         <div className="form-field full-width">
           <label>Target User Type *</label>
-          <MultiSelect
+          <AppMultiSelect
             value={targetUserTypes}
             options={userTypeOptions}
             onChange={(e) => onTargetUserTypesChange(e.value ?? [])}
@@ -100,7 +96,7 @@ export default function TrainingFieldsCard({
         </div>
         <div className="form-field">
           <label>Trainer Name *</label>
-          <InputText
+          <AppInput
             value={trainerName}
             onChange={(e) => onTrainerNameChange(e.target.value)}
             placeholder="Enter trainer name"
@@ -108,7 +104,7 @@ export default function TrainingFieldsCard({
         </div>
         <div className="form-field">
           <label>Trainer Mobile</label>
-          <InputText
+          <AppInput
             value={trainerMobile}
             onChange={(e) => onTrainerMobileChange(e.target.value)}
             placeholder="Enter 10-digit mobile number"
@@ -118,7 +114,7 @@ export default function TrainingFieldsCard({
         <div className="form-field">
           <label>Attendance Required</label>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, height: 40 }}>
-            <InputSwitch
+            <AppSwitch
               checked={attendanceRequired}
               onChange={(e) => onAttendanceRequiredChange(e.value ?? false)}
             />
@@ -130,7 +126,7 @@ export default function TrainingFieldsCard({
         <div className="form-field">
           <label>Certificate Required</label>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, height: 40 }}>
-            <InputSwitch
+            <AppSwitch
               checked={certificateRequired}
               onChange={(e) => onCertificateRequiredChange(e.value ?? false)}
             />
@@ -159,15 +155,14 @@ export default function TrainingFieldsCard({
               {trainingMaterialFile ? trainingMaterialFile.name : 'Choose File'}
             </button>
             {trainingMaterialFile && (
-              <Button
-                icon="pi pi-times"
-                severity="danger"
-                text
-                rounded
-                onClick={() => onTrainingMaterialChange(null)}
+              <button
                 type="button"
-                style={{ width: 32, height: 32 }}
-              />
+                onClick={() => onTrainingMaterialChange(null)}
+                className="btn btn-ghost btn-sm"
+                style={{ width: 32, height: 32, padding: 0, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', color: 'var(--danger)' }}
+              >
+                <i className="pi pi-times" />
+              </button>
             )}
           </div>
         </div>

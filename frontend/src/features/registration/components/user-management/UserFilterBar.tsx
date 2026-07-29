@@ -1,4 +1,4 @@
-import FormSelect from '../../../../shared/components/FormSelect';
+import { AppSelect } from '../../../../shared/components/forms';
 import { useLookupOptions } from '../../../../shared/hooks/useMasters';
 import { statusFilterOptions } from './constants';
 
@@ -17,7 +17,7 @@ export default function UserFilterBar({ roleFilter, statusFilter, onRoleChange, 
     <div style={{ display: 'flex', gap: 12, marginBottom: 24, flexWrap: 'wrap' }}>
       <div className="form-group" style={{ marginBottom: 0 }}>
         <label className="form-label">Role</label>
-        <FormSelect
+        <AppSelect
           value={roleFilter}
           onChange={onRoleChange}
           options={filterRoleOptions}
@@ -26,7 +26,7 @@ export default function UserFilterBar({ roleFilter, statusFilter, onRoleChange, 
       </div>
       <div className="form-group" style={{ marginBottom: 0 }}>
         <label className="form-label">Status</label>
-        <FormSelect
+        <AppSelect
           value={statusFilter}
           onChange={onStatusChange}
           options={statusFilterOptions}

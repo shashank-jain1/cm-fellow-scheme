@@ -1,10 +1,5 @@
 import { useRef } from 'react';
-import { InputText } from 'primereact/inputtext';
-import { InputTextarea } from 'primereact/inputtextarea';
-import { InputSwitch } from 'primereact/inputswitch';
-import { Dropdown } from 'primereact/dropdown';
-import { MultiSelect } from 'primereact/multiselect';
-import { Button } from 'primereact/button';
+import { AppInput, AppTextarea, AppSwitch, AppMultiSelect, AppSelect } from '../../../shared/components/forms';
 import { useLookupOptions } from '../../../shared/hooks/useMasters';
 import { useListUserAccounts } from '../../registration/queries/user-management';
 import type { UserAccountListItem } from '../../registration/types/user-management';
@@ -62,7 +57,7 @@ export default function MeetingFieldsCard({
       <div className="form-grid">
         <div className="form-field">
           <label>Meeting Title *</label>
-          <InputText
+          <AppInput
             value={meetingTitle}
             onChange={(e) => onMeetingTitleChange(e.target.value)}
             placeholder="Enter meeting title"
@@ -70,17 +65,16 @@ export default function MeetingFieldsCard({
         </div>
         <div className="form-field">
           <label>Meeting Agenda *</label>
-          <Dropdown
-            value={meetingAgenda || undefined}
+          <AppSelect
+            value={meetingAgenda}
             options={agendaOptions}
-            onChange={(e) => onMeetingAgendaChange(e.value ?? '')}
-            placeholder="Select Agenda"
-            className="w-full"
+            onChange={(v) => onMeetingAgendaChange(v)}
+            placeholder="Select agenda"
           />
         </div>
         <div className="form-field full-width">
           <label>Meeting Description *</label>
-          <InputTextarea
+          <AppTextarea
             value={meetingDescription}
             onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => onMeetingDescriptionChange(e.target.value)}
             rows={3}
@@ -89,29 +83,25 @@ export default function MeetingFieldsCard({
         </div>
         <div className="form-field">
           <label>Conduct Person *</label>
-          <Dropdown
-            value={conductPersonId || undefined}
+          <AppSelect
+            value={conductPersonId}
             options={userOptions}
-            onChange={(e) => onConductPersonChange(e.value ?? 0)}
-            placeholder="Select Conduct Person"
-            filter
-            className="w-full"
+            onChange={(v) => onConductPersonChange(v)}
+            placeholder="Select conduct person"
           />
         </div>
         <div className="form-field">
           <label>Coordinator *</label>
-          <Dropdown
-            value={coordinatorId || undefined}
+          <AppSelect
+            value={coordinatorId}
             options={userOptions}
-            onChange={(e) => onCoordinatorChange(e.value ?? 0)}
-            placeholder="Select Coordinator"
-            filter
-            className="w-full"
+            onChange={(v) => onCoordinatorChange(v)}
+            placeholder="Select coordinator"
           />
         </div>
         <div className="form-field full-width">
           <label>Participants *</label>
-          <MultiSelect
+          <AppMultiSelect
             value={participantIds}
             options={userOptions}
             onChange={(e) => onParticipantsChange(e.value ?? [])}
@@ -124,7 +114,7 @@ export default function MeetingFieldsCard({
         <div className="form-field">
           <label>MOM Required</label>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, height: 40 }}>
-            <InputSwitch
+            <AppSwitch
               checked={momRequired}
               onChange={(e) => onMomRequiredChange(e.value ?? false)}
             />
@@ -153,15 +143,14 @@ export default function MeetingFieldsCard({
               {meetingAttachmentFile ? meetingAttachmentFile.name : 'Choose File'}
             </button>
             {meetingAttachmentFile && (
-              <Button
-                icon="pi pi-times"
-                severity="danger"
-                text
-                rounded
-                onClick={() => onMeetingAttachmentChange(null)}
+              <button
                 type="button"
-                style={{ width: 32, height: 32 }}
-              />
+                onClick={() => onMeetingAttachmentChange(null)}
+                className="btn btn-ghost btn-sm"
+                style={{ width: 32, height: 32, padding: 0, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', color: 'var(--danger)' }}
+              >
+                <i className="pi pi-times" />
+              </button>
             )}
           </div>
         </div>

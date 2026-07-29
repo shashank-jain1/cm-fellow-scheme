@@ -1,9 +1,6 @@
 import { useState } from 'react';
 import { Button } from 'primereact/button';
-import { InputText } from 'primereact/inputtext';
-import { Dialog } from 'primereact/dialog';
-import { Dropdown } from 'primereact/dropdown';
-import FormSelect from '../../../../shared/components/FormSelect';
+import { AppInput, AppDialog, AppSelect } from '../../../../shared/components/forms';
 import { useLookupOptions } from '../../../../shared/hooks/useMasters';
 import { useCreateUserAccount } from '../../queries/user-management';
 import { useListRegistrationsQuery } from '../../queries';
@@ -34,22 +31,21 @@ export default function CreateUserDialog({ visible, onHide }: CreateUserDialogPr
   };
 
   return (
-    <Dialog header="Create User Account" visible={visible} onHide={onHide} style={{ width: 500 }} modal>
+    <AppDialog header="Create User Account" visible={visible} onHide={onHide} style={{ width: 500 }} modal>
       <div className="form-grid" style={{ paddingTop: 8 }}>
         <div className="form-field">
           <label>Applicant *</label>
-          <Dropdown
-            value={form.applicantId || undefined}
+          <AppSelect
+            value={form.applicantId || ''}
             options={applicantOptions}
-            onChange={(e) => setForm({ ...form, applicantId: e.value ?? 0 })}
+            onChange={(val) => setForm({ ...form, applicantId: (val as number) ?? 0 })}
             placeholder="Select Applicant"
-            filter
             className="w-full"
           />
         </div>
         <div className="form-field">
           <label>Username *</label>
-          <InputText
+          <AppInput
             value={form.username}
             onChange={(e) => setForm({ ...form, username: e.target.value })}
             placeholder="Enter username"
@@ -57,7 +53,7 @@ export default function CreateUserDialog({ visible, onHide }: CreateUserDialogPr
         </div>
         <div className="form-field">
           <label>Password *</label>
-          <InputText
+          <AppInput
             type="password"
             value={form.password}
             onChange={(e) => setForm({ ...form, password: e.target.value })}
@@ -66,13 +62,13 @@ export default function CreateUserDialog({ visible, onHide }: CreateUserDialogPr
         </div>
         <div className="form-field">
           <label>Role *</label>
-          <FormSelect value={form.role} onChange={(val) => setForm({ ...form, role: val })} options={roleOptions} />
+          <AppSelect value={form.role} onChange={(val) => setForm({ ...form, role: val })} options={roleOptions} />
         </div>
       </div>
       <div style={{ display: 'flex', gap: 12, justifyContent: 'flex-end', marginTop: 24 }}>
         <Button label="Cancel" className="btn btn-secondary" onClick={onHide} />
         <Button label="Create" className="btn btn-primary" onClick={handleCreate} loading={createMutation.isPending} />
       </div>
-    </Dialog>
+    </AppDialog>
   );
 }

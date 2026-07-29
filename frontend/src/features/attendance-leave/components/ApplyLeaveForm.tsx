@@ -1,7 +1,5 @@
 import { Button } from 'primereact/button';
-import { InputTextarea } from 'primereact/inputtextarea';
-import { Calendar } from 'primereact/calendar';
-import FormSelect from '../../../shared/components/FormSelect';
+import { AppTextarea, AppCalendar, AppSelect } from '../../../shared/components/forms';
 import { useLookupOptions } from '../../../shared/hooks/useMasters';
 import { useApplyLeaveForm } from './form.hook';
 
@@ -18,7 +16,7 @@ export default function ApplyLeaveForm({ onSuccess }: ApplyLeaveFormProps) {
       <div className="form-grid">
         <div className="form-field">
           <label>Leave Type</label>
-          <FormSelect
+          <AppSelect
             value={formData.leaveType}
             onChange={(val: string) => handleChange('leaveType', val)}
             options={leaveTypeOptions}
@@ -41,7 +39,7 @@ export default function ApplyLeaveForm({ onSuccess }: ApplyLeaveFormProps) {
 
         <div className="form-field">
           <label>From Date</label>
-          <Calendar
+          <AppCalendar
             value={formData.fromDate ? new Date(formData.fromDate) : null}
             onChange={(e) => handleChange('fromDate', e.value ? e.value.toISOString().split('T')[0] : '')}
             dateFormat="dd/mm/yy"
@@ -52,7 +50,7 @@ export default function ApplyLeaveForm({ onSuccess }: ApplyLeaveFormProps) {
 
         <div className="form-field">
           <label>To Date</label>
-          <Calendar
+          <AppCalendar
             value={formData.toDate ? new Date(formData.toDate) : null}
             onChange={(e) => handleChange('toDate', e.value ? e.value.toISOString().split('T')[0] : '')}
             dateFormat="dd/mm/yy"
@@ -79,7 +77,7 @@ export default function ApplyLeaveForm({ onSuccess }: ApplyLeaveFormProps) {
 
       <div className="form-field full-width">
         <label>Reason for Leave</label>
-        <InputTextarea
+        <AppTextarea
           value={formData.leaveReason}
           onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => handleChange('leaveReason', e.target.value)}
           rows={4}

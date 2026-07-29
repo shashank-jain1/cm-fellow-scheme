@@ -32,7 +32,7 @@ export const attendanceLeaveApi = {
     ApiService.put<void>(ATTENDANCE_LEAVE_URLS.APPROVE_LEAVE, command),
 
   getHolidays: (year?: number) =>
-    ApiService.get<HolidayDto[]>(ATTENDANCE_LEAVE_URLS.HOLIDAYS, { params: year ? { year } : {} }),
+    ApiService.get<HolidayDto[]>(`${ATTENDANCE_LEAVE_URLS.HOLIDAYS}${year ? `?year=${year}` : ''}`),
 
   createHoliday: (data: CreateHolidayCommand) =>
     ApiService.post<number>(ATTENDANCE_LEAVE_URLS.HOLIDAYS, data),
@@ -43,11 +43,11 @@ export const attendanceLeaveApi = {
   deleteHoliday: (holidayId: number) =>
     ApiService.delete<void>(`${ATTENDANCE_LEAVE_URLS.HOLIDAYS}/${holidayId}`),
 
-  getPayrollSummary: (payrollMonth?: string, applicantId?: number) =>
-    ApiService.get<PayrollSummaryDto[]>(ATTENDANCE_LEAVE_URLS.PAYROLL_SUMMARY, {
-      params: {
-        ...(payrollMonth ? { payrollMonth } : {}),
-        ...(applicantId ? { applicantId } : {}),
-      },
-    }),
+  getPayrollSummary: (payrollMonth?: string, applicantId?: number) => {
+    const params = new URLSearchParams();
+    if (payrollMonth) params.append('payrollMonth', payrollMonth);
+    if (applicantId) params.append('applicantId', String(applicantId));
+    const query = params.toString();
+    return ApiService.get<PayrollSummaryDto[]>(`${ATTENDANCE_LEAVE_URLS.PAYROLL_SUMMARY}${query ? `?${query}` : ''}`);
+  },
 };

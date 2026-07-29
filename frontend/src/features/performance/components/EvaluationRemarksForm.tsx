@@ -1,5 +1,5 @@
 import { Button } from 'primereact/button';
-import { InputTextarea } from 'primereact/inputtextarea';
+import { AppTextarea } from '../../../shared/components/forms';
 
 interface EvaluationRemarksFormProps {
   value: string;
@@ -29,7 +29,7 @@ export default function EvaluationRemarksForm({
       )}
       <div className="form-group">
         <label className="form-label">Add / Update Remarks</label>
-        <InputTextarea
+        <AppTextarea
           value={value}
           onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => onChange(e.target.value)}
           placeholder="Enter evaluation remarks..."

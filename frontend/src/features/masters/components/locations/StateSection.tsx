@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
+import { AppInput } from '../../../../shared/components/forms';
 import { useStates, useCreateState } from '../../queries';
 
 export default function StateSection() {
@@ -30,11 +30,11 @@ export default function StateSection() {
           <div className="form-grid">
             <div className="form-field">
               <label>State Name *</label>
-              <InputText value={formName} onChange={(e) => setFormName(e.target.value)} placeholder="e.g. Madhya Pradesh" />
+              <AppInput value={formName} onChange={(e) => setFormName(e.target.value)} placeholder="e.g. Madhya Pradesh" />
             </div>
             <div className="form-field">
               <label>State Code *</label>
-              <InputText value={formCode} onChange={(e) => setFormCode(e.target.value)} placeholder="e.g. MP" maxLength={10} />
+              <AppInput value={formCode} onChange={(e) => setFormCode(e.target.value)} placeholder="e.g. MP" maxLength={10} />
             </div>
           </div>
           <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end', marginTop: 12 }}>

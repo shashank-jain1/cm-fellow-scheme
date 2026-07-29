@@ -1,5 +1,4 @@
-import { InputText } from 'primereact/inputtext';
-import FormSelect from '../../../shared/components/FormSelect';
+import { AppInput, AppSelect } from '../../../shared/components/forms';
 import { useLookupOptions } from '../../../shared/hooks/useMasters';
 
 interface TicketFiltersProps {
@@ -27,15 +26,15 @@ export default function TicketFilters({ search, onSearchChange, statusFilter, on
     <div style={{ display: 'flex', gap: 12, marginBottom: 20, alignItems: 'center' }}>
       <div className="search-input-wrapper" style={{ flex: '0 0 320px' }}>
         <i className="pi pi-search" />
-        <InputText
+        <AppInput
           value={search}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => onSearchChange(e.target.value)}
           placeholder="Search tickets..."
           style={{ width: '100%' }}
         />
       </div>
-      <FormSelect value={statusFilter} onChange={onStatusFilterChange} options={statusOptions} showClear style={{ width: 160 }} />
-      <FormSelect value={priorityFilter} onChange={onPriorityFilterChange} options={priorityOptions} showClear style={{ width: 160 }} />
+      <AppSelect value={statusFilter} onChange={onStatusFilterChange} options={statusOptions} showClear style={{ width: 160 }} />
+      <AppSelect value={priorityFilter} onChange={onPriorityFilterChange} options={priorityOptions} showClear style={{ width: 160 }} />
     </div>
   );
 }

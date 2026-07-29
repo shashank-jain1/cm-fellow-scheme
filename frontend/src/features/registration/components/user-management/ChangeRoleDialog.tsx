@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Button } from 'primereact/button';
-import { Dialog } from 'primereact/dialog';
-import FormSelect from '../../../../shared/components/FormSelect';
+import { AppDialog, AppSelect } from '../../../../shared/components/forms';
 import { useLookupOptions } from '../../../../shared/hooks/useMasters';
 import { useAssignRole } from '../../queries/user-management';
 import { useAuth } from '../../../auth';
@@ -33,7 +32,7 @@ export default function ChangeRoleDialog({ visible, user, onHide }: ChangeRoleDi
   };
 
   return (
-    <Dialog header="Change Role" visible={visible} onHide={onHide} style={{ width: 440 }} modal>
+    <AppDialog header="Change Role" visible={visible} onHide={onHide} style={{ width: 440 }} modal>
       {user && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 18, paddingTop: 8 }}>
           <p style={{ color: 'var(--text-secondary)', fontSize: 14, margin: 0 }}>
@@ -41,7 +40,7 @@ export default function ChangeRoleDialog({ visible, user, onHide }: ChangeRoleDi
           </p>
           <div className="form-field">
             <label>New Role</label>
-            <FormSelect value={newRole} onChange={setNewRole} options={roleOptions} />
+            <AppSelect value={newRole} onChange={setNewRole} options={roleOptions} />
           </div>
         </div>
       )}
@@ -49,6 +48,6 @@ export default function ChangeRoleDialog({ visible, user, onHide }: ChangeRoleDi
         <Button label="Cancel" className="btn btn-secondary" onClick={onHide} />
         <Button label="Update Role" className="btn btn-primary" onClick={handleAssignRole} loading={assignRoleMutation.isPending} />
       </div>
-    </Dialog>
+    </AppDialog>
   );
 }

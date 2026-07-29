@@ -1,8 +1,7 @@
 import { useState } from 'react';
-import { InputText } from 'primereact/inputtext';
-import { InputTextarea } from 'primereact/inputtextarea';
 import { Toast } from 'primereact/toast';
 import { useRef } from 'react';
+import { AppInput, AppTextarea } from '../../../shared/components/forms';
 import { useSubmitReview } from '../queries';
 import { AppButton } from '../../../shared/components/ui';
 import type { SubmitReviewRequest } from '../types';
@@ -56,7 +55,7 @@ export default function ReviewActionsForm({ reviewLevel, reviewStatus, evaluatio
         <div className="form-grid">
           <div className="form-field">
             <label>Your Name *</label>
-            <InputText
+            <AppInput
               value={performedBy}
               onChange={(e) => setPerformedBy(e.target.value)}
               placeholder="Enter your name"
@@ -97,7 +96,7 @@ export default function ReviewActionsForm({ reviewLevel, reviewStatus, evaluatio
           </div>
           <div className="form-field full-width">
             <label>Remarks</label>
-            <InputTextarea
+            <AppTextarea
               value={reviewRemarks}
               onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setReviewRemarks(e.target.value)}
               rows={2}

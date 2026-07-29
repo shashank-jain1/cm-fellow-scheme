@@ -1,9 +1,6 @@
 import { useState } from 'react';
-import { InputText } from 'primereact/inputtext';
-import { InputTextarea } from 'primereact/inputtextarea';
-import { Calendar } from 'primereact/calendar';
 import { Button } from 'primereact/button';
-import FormSelect from '../../../../shared/components/FormSelect';
+import { AppInput, AppTextarea, AppCalendar, AppSelect } from '../../../../shared/components/forms';
 import { useWorks, useProjects, useCreateWork } from '../../queries';
 import { useLookupOptions } from '../../../../shared/hooks/useMasters';
 import type { CreateWorkCommand } from '../../types';
@@ -42,7 +39,7 @@ export default function WorkSection() {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
         <h3 style={{ fontSize: 16, fontWeight: 700, margin: 0 }}>Works ({works?.length ?? 0})</h3>
         <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-          <FormSelect
+          <AppSelect
             value={selectedProjectId ? String(selectedProjectId) : ''}
             options={[{ label: 'All Projects', value: '' }, ...projectOptions]}
             onChange={(val) => setSelectedProjectId(val ? Number(val) : null)}
@@ -57,35 +54,35 @@ export default function WorkSection() {
           <div className="form-grid">
             <div className="form-field">
               <label>Project *</label>
-              <FormSelect value={form.projectId ? String(form.projectId) : ''} options={projectOptions} onChange={(val) => setForm({ ...form, projectId: Number(val) })} placeholder="Select project" />
+              <AppSelect value={form.projectId ? String(form.projectId) : ''} options={projectOptions} onChange={(val) => setForm({ ...form, projectId: Number(val) })} placeholder="Select project" />
             </div>
             <div className="form-field">
               <label>Work Name *</label>
-              <InputText value={form.workName} onChange={(e) => setForm({ ...form, workName: e.target.value })} placeholder="Enter work name" />
+              <AppInput value={form.workName} onChange={(e) => setForm({ ...form, workName: e.target.value })} placeholder="Enter work name" />
             </div>
             <div className="form-field">
               <label>Priority *</label>
-              <FormSelect value={form.priority} options={priorityOptions} onChange={(val) => setForm({ ...form, priority: val })} placeholder="Select priority" />
+              <AppSelect value={form.priority} options={priorityOptions} onChange={(val) => setForm({ ...form, priority: val })} placeholder="Select priority" />
             </div>
             <div className="form-field">
               <label>Assigned To *</label>
-              <InputText value={form.assignedTo} onChange={(e) => setForm({ ...form, assignedTo: e.target.value })} placeholder="Assignee name" />
+              <AppInput value={form.assignedTo} onChange={(e) => setForm({ ...form, assignedTo: e.target.value })} placeholder="Assignee name" />
             </div>
             <div className="form-field">
               <label>Start Date *</label>
-              <Calendar value={form.startDate ? new Date(form.startDate) : null} onChange={(e) => setForm({ ...form, startDate: e.value?.toISOString().split('T')[0] ?? '' })} showOnFocus={false} />
+              <AppCalendar value={form.startDate ? new Date(form.startDate) : null} onChange={(e) => setForm({ ...form, startDate: e.value?.toISOString().split('T')[0] ?? '' })} showOnFocus={false} />
             </div>
             <div className="form-field">
               <label>End Date *</label>
-              <Calendar value={form.endDate ? new Date(form.endDate) : null} onChange={(e) => setForm({ ...form, endDate: e.value?.toISOString().split('T')[0] ?? '' })} showOnFocus={false} />
+              <AppCalendar value={form.endDate ? new Date(form.endDate) : null} onChange={(e) => setForm({ ...form, endDate: e.value?.toISOString().split('T')[0] ?? '' })} showOnFocus={false} />
             </div>
             <div className="form-field full-width">
               <label>Description</label>
-              <InputTextarea value={form.workDescription ?? ''} onChange={(e) => setForm({ ...form, workDescription: e.target.value })} rows={3} placeholder="Work description" />
+              <AppTextarea value={form.workDescription ?? ''} onChange={(e) => setForm({ ...form, workDescription: e.target.value })} rows={3} placeholder="Work description" />
             </div>
             <div className="form-field full-width">
               <label>Remarks</label>
-              <InputTextarea value={form.remarks ?? ''} onChange={(e) => setForm({ ...form, remarks: e.target.value })} rows={2} placeholder="Remarks" />
+              <AppTextarea value={form.remarks ?? ''} onChange={(e) => setForm({ ...form, remarks: e.target.value })} rows={2} placeholder="Remarks" />
             </div>
           </div>
           <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end', marginTop: 12 }}>

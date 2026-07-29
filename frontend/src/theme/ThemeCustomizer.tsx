@@ -33,7 +33,7 @@ function saveCustomizer(state: CustomizerState) {
 }
 
 export default function ThemeCustomizer({ sidebarCollapsed, onToggleSidebar }: CustomizerProps) {
-  const { theme, setTheme, currentThemeOption } = useTheme();
+  const { theme, setTheme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
   const [settings, setSettings] = useState<CustomizerState>(loadCustomizer);
   const panelRef = useRef<HTMLDivElement>(null);

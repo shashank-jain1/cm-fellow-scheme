@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Button } from 'primereact/button';
-import { Dialog } from 'primereact/dialog';
-import { Dropdown } from 'primereact/dropdown';
+import { AppDialog, AppSelect } from '../../../../shared/components/forms';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { useTrainingSchedules, useProjects } from '../../queries';
@@ -54,10 +53,10 @@ export default function TrainingSchedulePage() {
       <div style={{ display: 'flex', gap: 20, marginBottom: 24, alignItems: 'flex-end' }}>
         <div style={{ width: 240 }}>
           <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: 'var(--text-secondary)', marginBottom: 6 }}>Calendar Year</label>
-          <Dropdown
-            value={selectedYear}
+          <AppSelect
+            value={selectedYear ?? ''}
             options={YEAR_OPTIONS}
-            onChange={(e) => setSelectedYear(e.value)}
+            onChange={(val) => setSelectedYear(val as string)}
             placeholder="All Years"
             showClear
             className="w-full"
@@ -65,10 +64,10 @@ export default function TrainingSchedulePage() {
         </div>
         <div style={{ width: 280 }}>
           <label style={{ display: 'block', fontSize: 13, fontWeight: 600, color: 'var(--text-secondary)', marginBottom: 6 }}>Project</label>
-          <Dropdown
-            value={selectedProjectId}
+          <AppSelect
+            value={selectedProjectId ?? ''}
             options={projectOptions}
-            onChange={(e) => setSelectedProjectId(e.value)}
+            onChange={(val) => setSelectedProjectId(val as number)}
             placeholder="All Projects"
             showClear
             className="w-full"
@@ -100,7 +99,7 @@ export default function TrainingSchedulePage() {
         )}
       </div>
 
-      <Dialog
+      <AppDialog
         header={editingItem ? 'Edit Training Schedule' : 'Add Training Schedule'}
         visible={dialogOpen}
         onHide={() => { setDialogOpen(false); setEditingItem(null); }}
@@ -111,7 +110,7 @@ export default function TrainingSchedulePage() {
           initialData={editingItem}
           onDone={() => { setDialogOpen(false); setEditingItem(null); }}
         />
-      </Dialog>
+      </AppDialog>
     </div>
   );
 }

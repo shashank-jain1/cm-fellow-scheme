@@ -2,34 +2,55 @@
 .p-inputswitch {
   width: 40px !important;
   height: 22px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  vertical-align: middle !important;
 }
 
 .p-inputswitch .p-inputswitch-slider {
-  border-radius: var(--radius-full) !important;
-  background: var(--carbon-200) !important;
-  transition: all var(--transition-fast) !important;
+  width: 40px !important;
+  height: 22px !important;
+  border-radius: 9999px !important;
+  background: var(--carbon-200, #e2e8f0) !important;
+  transition: background var(--transition-fast, 0.2s) ease-in-out !important;
   border: none !important;
+  box-sizing: border-box !important;
+  cursor: pointer !important;
+  position: relative !important;
 }
 
 .p-inputswitch .p-inputswitch-slider:before {
+  content: "" !important;
+  display: block !important;
   width: 18px !important;
   height: 18px !important;
   border-radius: 50% !important;
-  background: var(--white) !important;
-  box-shadow: var(--shadow-xs) !important;
-  transition: all var(--transition-fast) !important;
+  background: #ffffff !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25) !important;
+  transition: transform var(--transition-fast, 0.2s) ease-in-out !important;
+  position: absolute !important;
   top: 2px !important;
   left: 2px !important;
+  margin-top: 0 !important;
 }
 
-.p-inputswitch.p-inputswitch-checked .p-inputswitch-slider {
-  background: var(--accent) !important;
+.p-inputswitch.p-inputswitch-checked .p-inputswitch-slider,
+.p-inputswitch.p-highlight .p-inputswitch-slider,
+.p-inputswitch-slider.p-highlight,
+.p-inputswitch[aria-checked="true"] .p-inputswitch-slider,
+.p-inputswitch[data-p-highlight="true"] .p-inputswitch-slider {
+  background: var(--accent, #8B3A2A) !important;
 }
 
-.p-inputswitch.p-inputswitch-checked .p-inputswitch-slider:before {
+.p-inputswitch.p-inputswitch-checked .p-inputswitch-slider:before,
+.p-inputswitch.p-highlight .p-inputswitch-slider:before,
+.p-inputswitch-slider.p-highlight:before,
+.p-inputswitch[aria-checked="true"] .p-inputswitch-slider:before,
+.p-inputswitch[data-p-highlight="true"] .p-inputswitch-slider:before {
   transform: translateX(18px) !important;
 }
 
-.p-inputswitch:focus {
+.p-inputswitch:focus-within .p-inputswitch-slider,
+.p-inputswitch.p-focus .p-inputswitch-slider {
   box-shadow: 0 0 0 3px var(--accent-light) !important;
 }

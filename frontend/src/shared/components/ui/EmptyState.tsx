@@ -1,7 +1,7 @@
 interface EmptyStateProps {
   icon: string;
   title: string;
-  description: string;
+  description?: string;
 }
 
 export default function EmptyState({ icon, title, description }: EmptyStateProps) {
@@ -9,7 +9,7 @@ export default function EmptyState({ icon, title, description }: EmptyStateProps
     <div className="empty-state">
       <i className={icon} />
       <h3>{title}</h3>
-      <p>{description}</p>
+      {description && <p>{description}</p>}
     </div>
   );
 }

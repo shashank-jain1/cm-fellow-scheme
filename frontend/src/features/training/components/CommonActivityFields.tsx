@@ -1,8 +1,4 @@
-import { useState, useEffect } from 'react';
-import { Calendar } from 'primereact/calendar';
-import { InputTextarea } from 'primereact/inputtextarea';
-import { Dropdown } from 'primereact/dropdown';
-import { MultiSelect } from 'primereact/multiselect';
+import { AppTextarea, AppCalendar, AppMultiSelect, AppSelect } from '../../../shared/components/forms';
 import { useProjects, useWorks, useDivisions, useDistricts, useBlocks } from '../../masters/queries';
 
 interface Props {
@@ -87,28 +83,26 @@ export default function CommonActivityFields({
     <div className="form-grid">
       <div className="form-field">
         <label>Project Name *</label>
-        <Dropdown
-          value={projectId || undefined}
+        <AppSelect
+          value={projectId}
           options={projectOptions}
-          onChange={(e) => { onProjectChange(e.value ?? 0); onWorkChange(0); }}
-          placeholder="Select Project"
-          className="w-full"
+          onChange={(v) => { onProjectChange(v); onWorkChange(0); }}
+          placeholder="Select project"
         />
       </div>
       <div className="form-field">
         <label>Work Project *</label>
-        <Dropdown
-          value={workProjectId || undefined}
+        <AppSelect
+          value={workProjectId}
           options={workOptions}
-          onChange={(e) => onWorkChange(e.value ?? 0)}
-          placeholder="Select Work"
+          onChange={(v) => onWorkChange(v)}
+          placeholder="Select work project"
           disabled={!projectId}
-          className="w-full"
         />
       </div>
       <div className="form-field">
         <label>Date *</label>
-        <Calendar
+        <AppCalendar
           value={date ? new Date(date) : null}
           onChange={(e) => onDateChange(e.value ? e.value.toISOString().split('T')[0] : '')}
           dateFormat="dd/mm/yy"
@@ -119,17 +113,16 @@ export default function CommonActivityFields({
       </div>
       <div className="form-field">
         <label>Mode *</label>
-        <Dropdown
-          value={mode || undefined}
+        <AppSelect
+          value={mode}
           options={modeOptions}
-          onChange={(e) => onModeChange(e.value ?? '')}
-          placeholder="Select Mode"
-          className="w-full"
+          onChange={(v) => onModeChange(v)}
+          placeholder="Select mode"
         />
       </div>
       <div className="form-field">
         <label>Start Time *</label>
-        <Calendar
+        <AppCalendar
           value={timeStringToDate(startTime)}
           onChange={(e) => onStartTimeChange(dateToTimeString(e.value as Date | null))}
           timeOnly
@@ -141,7 +134,7 @@ export default function CommonActivityFields({
       </div>
       <div className="form-field">
         <label>End Time *</label>
-        <Calendar
+        <AppCalendar
           value={timeStringToDate(endTime)}
           onChange={(e) => onEndTimeChange(dateToTimeString(e.value as Date | null))}
           timeOnly
@@ -153,22 +146,22 @@ export default function CommonActivityFields({
       </div>
       <div className="form-field">
         <label>Applicable Divisions *</label>
-        <MultiSelect
+        <AppMultiSelect
           value={applicableDivisionIds}
           options={divisionOptions}
           onChange={(e) => { onDivisionsChange(e.value); onDistrictsChange([]); onBlocksChange([]); }}
-          placeholder="Select Divisions"
+          placeholder="Select divisions"
           display="chip"
           className="w-full"
         />
       </div>
       <div className="form-field">
         <label>Applicable Districts *</label>
-        <MultiSelect
+        <AppMultiSelect
           value={applicableDistrictIds}
           options={districtOptions}
           onChange={(e) => { onDistrictsChange(e.value); onBlocksChange([]); }}
-          placeholder="Select Districts"
+          placeholder="Select districts"
           disabled={!applicableDivisionIds.length}
           display="chip"
           className="w-full"
@@ -176,11 +169,11 @@ export default function CommonActivityFields({
       </div>
       <div className="form-field">
         <label>Applicable Blocks</label>
-        <MultiSelect
+        <AppMultiSelect
           value={applicableBlockIds}
           options={blockOptions}
           onChange={(e) => onBlocksChange(e.value)}
-          placeholder="Select Blocks"
+          placeholder="Select blocks"
           disabled={!applicableDistrictIds.length}
           display="chip"
           className="w-full"
@@ -188,7 +181,7 @@ export default function CommonActivityFields({
       </div>
       <div className="form-field full-width">
         <label>Remarks</label>
-        <InputTextarea
+        <AppTextarea
           value={remarks}
           onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => onRemarksChange(e.target.value)}
           rows={3}

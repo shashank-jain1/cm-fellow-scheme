@@ -1,5 +1,5 @@
 import type { ChangeEvent } from 'react';
-import { InputText } from 'primereact/inputtext';
+import { AppInput } from '../../../../shared/components/forms';
 import type { StepProps } from '../form.hook';
 
 export default function PersonalIdentityFields({ formData, update }: StepProps) {
@@ -7,7 +7,7 @@ export default function PersonalIdentityFields({ formData, update }: StepProps) 
     <>
       <div className="form-field">
         <label>Aadhaar Number</label>
-        <InputText
+        <AppInput
           value={formData.aadhaarNumber}
           onChange={(e: ChangeEvent<HTMLInputElement>) => update('aadhaarNumber', e.target.value)}
           placeholder="12-digit Aadhaar"
@@ -16,7 +16,7 @@ export default function PersonalIdentityFields({ formData, update }: StepProps) 
       </div>
       <div className="form-field">
         <label>PAN Number</label>
-        <InputText
+        <AppInput
           value={formData.panNumber}
           onChange={(e: ChangeEvent<HTMLInputElement>) => update('panNumber', e.target.value.toUpperCase())}
           placeholder="ABCDE1234F"
@@ -25,7 +25,7 @@ export default function PersonalIdentityFields({ formData, update }: StepProps) 
       </div>
       <div className="form-field">
         <label>Driving License</label>
-        <InputText
+        <AppInput
           value={formData.drivingLicenseNumber}
           onChange={(e: ChangeEvent<HTMLInputElement>) => update('drivingLicenseNumber', e.target.value)}
           placeholder="DL number"
@@ -33,7 +33,7 @@ export default function PersonalIdentityFields({ formData, update }: StepProps) 
       </div>
       <div className="form-field">
         <label>Samagra ID</label>
-        <InputText
+        <AppInput
           value={formData.samagraId}
           onChange={(e: ChangeEvent<HTMLInputElement>) => update('samagraId', e.target.value)}
           placeholder="9-digit Samagra ID"

@@ -1,6 +1,5 @@
 import type { ChangeEvent } from 'react';
-import { InputText } from 'primereact/inputtext';
-import FormSelect from '../../../../shared/components/FormSelect';
+import { AppInput, AppSelect } from '../../../../shared/components/forms';
 import { useLookupOptions } from '../../../../shared/hooks/useMasters';
 import type { StepProps } from '../form.hook';
 
@@ -10,7 +9,7 @@ export default function PersonalBasicFields({ formData, update }: StepProps) {
     <>
       <div className="form-field">
         <label>First Name *</label>
-        <InputText
+        <AppInput
           value={formData.firstName}
           onChange={(e: ChangeEvent<HTMLInputElement>) => update('firstName', e.target.value)}
           placeholder="Enter first name"
@@ -18,7 +17,7 @@ export default function PersonalBasicFields({ formData, update }: StepProps) {
       </div>
       <div className="form-field">
         <label>Middle Name</label>
-        <InputText
+        <AppInput
           value={formData.middleName}
           onChange={(e: ChangeEvent<HTMLInputElement>) => update('middleName', e.target.value)}
           placeholder="Enter middle name"
@@ -26,7 +25,7 @@ export default function PersonalBasicFields({ formData, update }: StepProps) {
       </div>
       <div className="form-field">
         <label>Last Name *</label>
-        <InputText
+        <AppInput
           value={formData.lastName}
           onChange={(e: ChangeEvent<HTMLInputElement>) => update('lastName', e.target.value)}
           placeholder="Enter last name"
@@ -34,7 +33,7 @@ export default function PersonalBasicFields({ formData, update }: StepProps) {
       </div>
       <div className="form-field">
         <label>Father's Name *</label>
-        <InputText
+        <AppInput
           value={formData.fatherName}
           onChange={(e: ChangeEvent<HTMLInputElement>) => update('fatherName', e.target.value)}
           placeholder="Enter father's name"
@@ -42,7 +41,7 @@ export default function PersonalBasicFields({ formData, update }: StepProps) {
       </div>
       <div className="form-field">
         <label>Gender</label>
-        <FormSelect
+        <AppSelect
           value={formData.gender}
           onChange={(val: string) => update('gender', val)}
           options={genderOptions}
@@ -51,7 +50,7 @@ export default function PersonalBasicFields({ formData, update }: StepProps) {
       </div>
       <div className="form-field">
         <label>Date of Birth *</label>
-        <InputText
+        <AppInput
           type="date"
           value={formData.dateOfBirth}
           onChange={(e: ChangeEvent<HTMLInputElement>) => update('dateOfBirth', e.target.value)}
