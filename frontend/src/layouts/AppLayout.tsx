@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import Sidebar from './Sidebar';
-import { ThemeSwitcher } from '../theme/ThemeSwitcher';
+import ThemeCustomizer from '../theme/ThemeCustomizer';
 
 const breadcrumbMap: Record<string, string> = {
   dashboard: 'Dashboard',
@@ -43,7 +43,10 @@ export default function AppLayout() {
           </div>
 
           <div className="app-header-actions">
-            <ThemeSwitcher />
+            <ThemeCustomizer
+              sidebarCollapsed={sidebarCollapsed}
+              onToggleSidebar={() => setSidebarCollapsed(!sidebarCollapsed)}
+            />
             <button className="header-icon-btn" title="Notifications">
               <i className="pi pi-bell" />
               <span className="notification-dot" />

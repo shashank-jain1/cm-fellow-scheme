@@ -92,7 +92,7 @@ export default function Sidebar({ collapsed, onToggleCollapsed }: SidebarProps) 
     >
       <div className="sidebar-brand">
         <div className="sidebar-logo">
-          <img src="/logo.jpeg" alt="Logo" style={{ width: collapsed ? 28 : 36, height: collapsed ? 28 : 36, borderRadius: '50%', objectFit: 'cover' }} />
+          <img src="/logo.jpeg" alt="Logo" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
         </div>
         {!collapsed && (
           <div className="sidebar-brand-text">
@@ -101,15 +101,6 @@ export default function Sidebar({ collapsed, onToggleCollapsed }: SidebarProps) 
           </div>
         )}
       </div>
-
-      <button
-        className="sidebar-toggle"
-        type="button"
-        onClick={() => onToggleCollapsed(!collapsed)}
-        aria-label="Toggle sidebar"
-      >
-        <i className={`pi ${collapsed ? 'pi-angle-right' : 'pi-angle-left'}`} />
-      </button>
 
       <nav className="sidebar-nav">
         {navItems.map((item) => {

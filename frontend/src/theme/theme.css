@@ -556,3 +556,122 @@
   --badge-red-bg: var(--danger-light);
   --badge-red-text: var(--danger);
 }
+
+/* ============================================================
+   Design Style: Floating
+   Elevated cards, softer shadows, rounded corners
+   ============================================================ */
+[data-design="floating"] .card,
+[data-design="floating"] .p-card {
+  border-radius: var(--radius-xl) !important;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(0, 0, 0, 0.02) !important;
+  border: none !important;
+}
+
+[data-design="floating"] .app-content {
+  padding: var(--space-6) var(--space-8);
+}
+
+[data-design="floating"] .sidebar {
+  border-radius: 0 var(--radius-xl) var(--radius-xl) 0;
+  margin: var(--space-3) 0 var(--space-3) var(--space-3);
+  height: calc(100vh - var(--space-6));
+}
+
+[data-design="floating"] .app-main {
+  margin-left: calc(var(--sidebar-current-width) + var(--space-3));
+}
+
+[data-design="floating"] .app-header {
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  margin: 0 var(--space-3);
+  border: 1px solid var(--border);
+  border-top: none;
+}
+
+[data-design="floating"] .sidebar-link {
+  border-radius: var(--radius-lg);
+}
+
+[data-design="floating"] .sidebar-brand {
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+}
+
+[data-design="floating"] .sidebar-footer {
+  border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+}
+
+[data-design="floating"] .header-icon-btn {
+  border-radius: var(--radius-lg);
+}
+
+/* ============================================================
+   Design Style: Boxy (default)
+   Sharp edges, clean lines
+   ============================================================ */
+[data-design="boxy"] .card,
+[data-design="boxy"] .p-card {
+  border-radius: var(--radius-md) !important;
+  box-shadow: var(--shadow-card) !important;
+  border: 1px solid var(--border) !important;
+}
+
+/* ============================================================
+   Border Radius Overrides
+   ============================================================ */
+[data-radius="sharp"] {
+  --radius-xs: 2px;
+  --radius-sm: 3px;
+  --radius-md: 4px;
+  --radius-lg: 6px;
+  --radius-xl: 8px;
+}
+
+[data-radius="round"] {
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+}
+
+/* ============================================================
+   Font Size Overrides
+   ============================================================ */
+[data-fontsize="small"] {
+  --text-xs: 11px;
+  --text-sm: 12px;
+  --text-base: 13px;
+  --text-md: 14px;
+  --text-lg: 15px;
+}
+
+[data-fontsize="large"] {
+  --text-xs: 14px;
+  --text-sm: 15px;
+  --text-base: 16px;
+  --text-md: 17px;
+  --text-lg: 18px;
+  --text-xl: 20px;
+}
+
+/* ============================================================
+   Sidebar Compact Mode
+   ============================================================ */
+[data-sidebar="compact"] .sidebar-link {
+  padding: 8px 12px;
+}
+
+[data-sidebar="compact"] .sidebar-link-label {
+  font-size: var(--text-sm);
+}
+
+[data-sidebar="compact"] .sidebar-brand {
+  padding: var(--space-4);
+  min-height: 56px;
+}
+
+[data-sidebar="compact"] .sidebar-nav {
+  padding: var(--space-3) var(--space-2);
+  gap: 1px;
+}
