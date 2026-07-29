@@ -7,9 +7,9 @@ import PerformanceSummaryCard from '../components/PerformanceSummaryCard';
 import { PageHeader, EmptyState } from '../../../shared/components/ui';
 
 const scoreColor = (score: number) => {
-  if (score >= 80) return 'var(--badge-emerald-text)';
-  if (score >= 60) return 'var(--badge-amber-text)';
-  return 'var(--badge-red-text)';
+  if (score >= 80) return 'var(--filing)';
+  if (score >= 60) return 'var(--ledger)';
+  return 'var(--seal)';
 };
 
 const scoreTag = (score: number): 'success' | 'warning' | 'danger' => {
@@ -53,12 +53,12 @@ export default function PerformanceReviewGrid() {
         subtitle="Monitor and evaluate CM Fellow performance metrics"
       />
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 16, marginBottom: 24 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 'var(--space-4)', marginBottom: 'var(--space-5)' }}>
         {isLoading
           ? [1, 2, 3].map((n) => (
-              <div key={n} className="kpi-card" style={{ padding: 20 }}>
-                <div className="skeleton" style={{ width: '60%', height: 16, marginBottom: 12 }} />
-                <div className="skeleton" style={{ width: '40%', height: 28 }} />
+              <div key={n} className="metric-item" style={{ border: '1px solid var(--border)', borderRadius: 'var(--radius-lg)' }}>
+                <div className="skeleton" style={{ width: '60%', height: 12, marginBottom: 8 }} />
+                <div className="skeleton" style={{ width: '40%', height: 24 }} />
               </div>
             ))
           : (records ?? []).slice(0, 3).map((r) => (
@@ -66,7 +66,7 @@ export default function PerformanceReviewGrid() {
             ))}
       </div>
 
-      <div className="search-input-wrapper" style={{ width: '100%', maxWidth: 360, marginBottom: 24 }}>
+      <div className="search-input-wrapper" style={{ width: '100%', maxWidth: 360, marginBottom: 'var(--space-4)' }}>
         <i className="pi pi-search" />
         <InputText
           value={search}
@@ -78,9 +78,9 @@ export default function PerformanceReviewGrid() {
 
       <div className="table-wrapper">
         {isLoading ? (
-          <div style={{ padding: 20 }}>
+          <div style={{ padding: 'var(--space-4)' }}>
             {[1, 2, 3, 4, 5].map((n) => (
-              <div key={n} style={{ display: 'flex', gap: 16, padding: '14px 0', borderBottom: '1px solid var(--border-light)' }}>
+              <div key={n} style={{ display: 'flex', gap: 16, padding: '10px 0', borderBottom: '1px solid var(--border)' }}>
                 <div className="skeleton" style={{ width: '20%', height: 14 }} />
                 <div className="skeleton" style={{ width: '20%', height: 14 }} />
                 <div className="skeleton" style={{ width: '12%', height: 14 }} />
@@ -92,19 +92,20 @@ export default function PerformanceReviewGrid() {
         ) : filtered.length > 0 ? (
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
-              <tr style={{ background: 'var(--bg-primary)' }}>
+              <tr>
                 {['Fellow', 'Project', 'Completion', 'Score', 'Grade', 'Level', 'Status'].map((h) => (
                   <th
                     key={h}
                     style={{
-                      padding: '12px 16px',
+                      padding: '8px 12px',
                       textAlign: 'left',
-                      fontSize: 12,
-                      fontWeight: 700,
-                      color: 'var(--text-secondary)',
+                      fontSize: 11,
+                      fontWeight: 600,
+                      color: 'var(--text-muted)',
                       textTransform: 'uppercase',
-                      letterSpacing: '0.5px',
-                      borderBottom: '1px solid var(--border-color)',
+                      letterSpacing: '0.04em',
+                      borderBottom: '1px solid var(--border)',
+                      background: 'var(--carbon-50)',
                     }}
                   >
                     {h}
@@ -116,24 +117,24 @@ export default function PerformanceReviewGrid() {
               {filtered.map((r) => (
                 <tr
                   key={r.performanceEvaluationId}
-                  style={{ borderBottom: '1px solid var(--border-light)', cursor: 'pointer' }}
+                  style={{ borderBottom: '1px solid var(--border)', cursor: 'pointer' }}
                   onClick={() => navigate(`/performance/${r.performanceEvaluationId}`)}
                 >
-                  <td style={{ padding: '14px 16px', fontWeight: 600, fontSize: 14, color: 'var(--text-primary)' }}>{r.applicantName}</td>
-                  <td style={{ padding: '14px 16px', fontSize: 13, color: 'var(--text-secondary)' }}>{r.projectName}</td>
-                  <td style={{ padding: '14px 16px' }}>
+                  <td style={{ padding: '8px 12px', fontWeight: 600, fontSize: 13, color: 'var(--text-heading)' }}>{r.applicantName}</td>
+                  <td style={{ padding: '8px 12px', fontSize: 13, color: 'var(--text-body)' }}>{r.projectName}</td>
+                  <td style={{ padding: '8px 12px' }}>
                     <Tag value={`${r.completionPercentage}%`} severity={scoreTag(r.completionPercentage)} />
                   </td>
-                  <td style={{ padding: '14px 16px' }}>
-                    <span style={{ fontWeight: 800, fontSize: 15, color: scoreColor(r.performanceScore) }}>
+                  <td style={{ padding: '8px 12px' }}>
+                    <span style={{ fontWeight: 700, fontSize: 14, color: scoreColor(r.performanceScore) }}>
                       {r.performanceScore}
                     </span>
                   </td>
-                  <td style={{ padding: '14px 16px', fontSize: 13, fontWeight: 700, color: 'var(--text-primary)' }}>{r.performanceGrade}</td>
-                  <td style={{ padding: '14px 16px' }}>
+                  <td style={{ padding: '8px 12px', fontSize: 13, fontWeight: 700, color: 'var(--text-heading)' }}>{r.performanceGrade}</td>
+                  <td style={{ padding: '8px 12px' }}>
                     <Tag value={r.reviewLevel ?? 'Draft'} severity={levelSeverity(r.reviewLevel ?? 'Draft')} />
                   </td>
-                  <td style={{ padding: '14px 16px' }}>
+                  <td style={{ padding: '8px 12px' }}>
                     <Tag value={r.reviewStatus ?? 'Draft'} severity={statusSeverity(r.reviewStatus ?? 'Draft')} />
                   </td>
                 </tr>

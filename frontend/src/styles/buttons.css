@@ -1,13 +1,14 @@
+/* ── Buttons ── */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
   height: 40px;
-  padding: 0 18px;
+  padding: 0 var(--space-5);
   border-radius: var(--radius-md);
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 14px;
+  font-family: var(--font-body);
+  font-size: var(--text-base);
   font-weight: 600;
   cursor: pointer;
   border: 1px solid transparent;
@@ -15,6 +16,7 @@
   white-space: nowrap;
   outline: none;
   box-sizing: border-box;
+  line-height: 1;
 }
 
 .btn:active {
@@ -22,61 +24,66 @@
 }
 
 .btn-primary {
-  background: var(--accent-primary);
+  background: var(--ink);
   color: var(--text-inverse);
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-xs);
 }
 
 .btn-primary:hover {
-  background: var(--accent-primary-hover);
-  box-shadow: var(--shadow-md);
-  transform: translateY(-1px);
-}
-
-.btn-secondary {
-  background: var(--bg-card);
-  color: var(--text-primary);
-  border-color: var(--border-color);
+  background: var(--ink-700);
   box-shadow: var(--shadow-sm);
 }
 
+.btn-secondary {
+  background: var(--bg-surface);
+  color: var(--text-body);
+  border-color: var(--border-strong);
+}
+
 .btn-secondary:hover {
-  background: var(--bg-card-hover);
-  border-color: var(--border-highlight);
+  background: var(--carbon-50);
+  border-color: var(--carbon-300);
 }
 
 .btn-ghost {
   background: transparent;
-  color: var(--text-secondary);
+  color: var(--text-muted);
+  border-color: transparent;
 }
 
 .btn-ghost:hover {
   background: var(--accent-light);
-  color: var(--accent-primary-hover);
+  color: var(--text-heading);
+}
+
+.btn-accent {
+  background: var(--accent);
+  color: var(--text-inverse);
+}
+
+.btn-accent:hover {
+  background: var(--accent-hover);
 }
 
 .btn-danger {
-  background: #ef4444;
-  color: #ffffff;
+  background: var(--danger);
+  color: var(--text-inverse);
 }
 
 .btn-danger:hover {
-  background: #dc2626;
-  transform: translateY(-1px);
+  opacity: 0.9;
 }
 
 .btn-sm {
-  height: 32px;
-  padding: 0 12px;
-  font-size: 13px;
-  border-radius: var(--radius-sm);
+  height: 34px;
+  padding: 0 var(--space-4);
+  font-size: var(--text-sm);
 }
 
 .btn-lg {
   height: 46px;
-  padding: 0 24px;
-  font-size: 15px;
-  border-radius: var(--radius-md);
+  padding: 0 var(--space-6);
+  font-size: var(--text-md);
 }
 
 .file-upload-btn {
@@ -84,21 +91,20 @@
   align-items: center !important;
   gap: 8px !important;
   height: 40px !important;
-  padding: 0 16px !important;
+  padding: 0 var(--space-5) !important;
   border-radius: var(--radius-md) !important;
-  font-family: 'Plus Jakarta Sans', sans-serif !important;
-  font-size: 14px !important;
+  font-family: var(--font-body) !important;
+  font-size: var(--text-base) !important;
   font-weight: 600 !important;
   cursor: pointer !important;
-  border: 1px solid var(--border-color) !important;
-  background: var(--bg-card) !important;
-  color: var(--text-primary) !important;
+  border: 1px solid var(--border-strong) !important;
+  background: var(--bg-surface) !important;
+  color: var(--text-body) !important;
   transition: all var(--transition-fast) !important;
-  box-shadow: var(--shadow-sm) !important;
 }
 
 .file-upload-btn:hover {
   background: var(--accent-light) !important;
-  border-color: var(--accent-primary) !important;
-  color: var(--accent-primary-hover) !important;
+  border-color: var(--accent) !important;
+  color: var(--accent) !important;
 }

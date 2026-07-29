@@ -1,22 +1,34 @@
 import { Tag } from 'primereact/tag';
 
-type StatusSeverity = 'success' | 'info' | 'warning' | 'danger' | 'secondary' | 'contrast';
+type TagSeverity = 'success' | 'info' | 'warning' | 'danger' | 'secondary' | 'contrast';
 
-const severityMap: Record<string, StatusSeverity> = {
+const severityMap: Record<string, TagSeverity> = {
   active: 'success',
   completed: 'success',
   approved: 'success',
+  issued: 'success',
+  generated: 'success',
+  closed: 'success',
+  'close-archived': 'success',
   pending: 'warning',
   'in-progress': 'info',
+  review: 'info',
+  'under-review': 'info',
+  applied: 'info',
+  assigned: 'info',
   inactive: 'secondary',
+  draft: 'secondary',
+  submitted: 'info',
   rejected: 'danger',
   cancelled: 'danger',
-  closed: 'secondary',
+  escalated: 'danger',
+  overdue: 'danger',
+  suspended: 'danger',
 };
 
 interface StatusTagProps {
   value: string;
-  severity?: StatusSeverity;
+  severity?: TagSeverity;
 }
 
 export default function StatusTag({ value, severity }: StatusTagProps) {

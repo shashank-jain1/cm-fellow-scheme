@@ -10,21 +10,19 @@ export default function CoordinatorFellowDashboardPage() {
       <div className="page-header">
         <div>
           <h1>Coordinator Dashboard</h1>
-          <p style={{ color: 'var(--text-secondary)', marginTop: 4 }}>
-            Team overview and task management
-          </p>
+          <p>Team overview and task management</p>
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 20, marginBottom: 28 }}>
-        <KpiCard label="Team Size" value={stats?.teamSize ?? 0} icon="pi pi-users" accent="emerald" isLoading={isLoading} />
-        <KpiCard label="Active Projects" value={stats?.activeProjects ?? 0} icon="pi pi-briefcase" accent="navy" isLoading={isLoading} />
-        <KpiCard label="Pending Tasks" value={stats?.pendingTasks ?? 0} icon="pi pi-exclamation-triangle" accent="amber" isLoading={isLoading} />
-        <KpiCard label="Completed Surveys" value={stats?.completedSurveys ?? 0} icon="pi pi-check-square" accent="emerald" isLoading={isLoading} />
-        <KpiCard label="Pending Surveys" value={stats?.pendingSurveys ?? 0} icon="pi pi-clock" accent="red" isLoading={isLoading} />
+      <div className="metric-bar" style={{ marginBottom: 'var(--space-6)' }}>
+        <KpiCard label="Team" value={stats?.teamSize ?? 0} icon="pi pi-users" accent="accent" isLoading={isLoading} />
+        <KpiCard label="Active" value={stats?.activeProjects ?? 0} icon="pi pi-briefcase" accent="success" isLoading={isLoading} />
+        <KpiCard label="Pending" value={stats?.pendingTasks ?? 0} icon="pi pi-exclamation-triangle" accent="pending" isLoading={isLoading} />
+        <KpiCard label="Surveys Done" value={stats?.completedSurveys ?? 0} icon="pi pi-check-square" accent="success" isLoading={isLoading} />
+        <KpiCard label="Surveys Due" value={stats?.pendingSurveys ?? 0} icon="pi pi-clock" accent="danger" isLoading={isLoading} />
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, marginBottom: 20 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-5)' }}>
         <TrainingSurveyChart
           completed={stats?.completedSurveys ?? 0}
           pending={stats?.pendingSurveys ?? 0}

@@ -1,12 +1,12 @@
 /* InputSwitch */
 .p-inputswitch {
-  width: 44px !important;
-  height: 24px !important;
+  width: 40px !important;
+  height: 22px !important;
 }
 
 .p-inputswitch .p-inputswitch-slider {
-  border-radius: 12px !important;
-  background: var(--border-color) !important;
+  border-radius: var(--radius-full) !important;
+  background: var(--carbon-200) !important;
   transition: all var(--transition-fast) !important;
   border: none !important;
 }
@@ -15,19 +15,19 @@
   width: 18px !important;
   height: 18px !important;
   border-radius: 50% !important;
-  background: white !important;
-  box-shadow: var(--shadow-sm) !important;
+  background: var(--white) !important;
+  box-shadow: var(--shadow-xs) !important;
   transition: all var(--transition-fast) !important;
-  top: 3px !important;
-  left: 3px !important;
+  top: 2px !important;
+  left: 2px !important;
 }
 
 .p-inputswitch.p-inputswitch-checked .p-inputswitch-slider {
-  background: var(--accent-primary) !important;
+  background: var(--accent) !important;
 }
 
 .p-inputswitch.p-inputswitch-checked .p-inputswitch-slider:before {
-  transform: translateX(20px) !important;
+  transform: translateX(18px) !important;
 }
 
 .p-inputswitch:focus {

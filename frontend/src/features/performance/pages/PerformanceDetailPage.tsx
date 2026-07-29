@@ -8,12 +8,6 @@ import EvaluationRemarksForm from '../components/EvaluationRemarksForm';
 import { usePerformanceForm } from '../components/form.hook';
 import { PageHeader, EmptyState } from '../../../shared/components/ui';
 
-const STATS = [
-  { label: 'Score', key: 'performanceScore' as const, icon: 'pi pi-chart-line', color: 'var(--emerald-500)' },
-  { label: 'Grade', key: 'performanceGrade' as const, icon: 'pi pi-star', color: 'var(--amber-500)' },
-  { label: 'Completion', key: 'completionPercentage' as const, icon: 'pi pi-percentage', color: 'var(--emerald-600)' },
-];
-
 export default function PerformanceDetailPage() {
   const { id } = useParams<{ id: string }>();
   const evaluationId = Number(id);
@@ -51,22 +45,22 @@ export default function PerformanceDetailPage() {
         subtitle={`${record.applicantName} — ${record.projectName}`}
       />
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16, marginBottom: 24 }}>
-        {STATS.map((stat, i) => (
-          <div key={i} className="kpi-card" style={{ textAlign: 'center', padding: 20 }}>
-            <i className={stat.icon} style={{ fontSize: 22, color: stat.color, marginBottom: 10 }} />
-            <div style={{ fontSize: 24, fontWeight: 700, color: 'var(--text-primary)' }}>
-              {stat.key === 'completionPercentage' ? `${record[stat.key]}%` : record[stat.key]}
-            </div>
-            <div style={{ fontSize: 13, color: 'var(--text-secondary)', marginTop: 4 }}>{stat.label}</div>
-          </div>
-        ))}
-        <div className="kpi-card" style={{ textAlign: 'center', padding: 20 }}>
-          <i className="pi pi-check-square" style={{ fontSize: 22, color: 'var(--navy-600)', marginBottom: 10 }} />
-          <div style={{ fontSize: 24, fontWeight: 700, color: 'var(--text-primary)' }}>
-            {record.surveysCompleted}/{record.totalSurveysAssigned}
-          </div>
-          <div style={{ fontSize: 13, color: 'var(--text-secondary)', marginTop: 4 }}>Surveys Done</div>
+      <div className="metric-bar" style={{ marginBottom: 'var(--space-4)' }}>
+        <div className="metric-item">
+          <span className="metric-label">Score</span>
+          <span className="metric-value">{record.performanceScore}</span>
+        </div>
+        <div className="metric-item">
+          <span className="metric-label">Grade</span>
+          <span className="metric-value">{record.performanceGrade}</span>
+        </div>
+        <div className="metric-item">
+          <span className="metric-label">Completion</span>
+          <span className="metric-value">{record.completionPercentage}%</span>
+        </div>
+        <div className="metric-item">
+          <span className="metric-label">Surveys</span>
+          <span className="metric-value">{record.surveysCompleted}/{record.totalSurveysAssigned}</span>
         </div>
       </div>
 
@@ -75,7 +69,7 @@ export default function PerformanceDetailPage() {
         reviewStatus={record.reviewStatus ?? 'Draft'}
       />
 
-      <div className="card" style={{ padding: 24, marginBottom: 20 }}>
+      <div className="card" style={{ padding: 'var(--space-5)', marginBottom: 'var(--space-4)' }}>
         <ReviewActionsForm
           reviewLevel={record.reviewLevel ?? 'Draft'}
           reviewStatus={record.reviewStatus ?? 'Draft'}
@@ -85,7 +79,7 @@ export default function PerformanceDetailPage() {
 
       <ReviewHistoryList history={history} />
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-4)' }}>
         <SupervisorRatingInput
           value={supervisorRating}
           onChange={setSupervisorRating}

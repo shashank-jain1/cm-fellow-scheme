@@ -5,20 +5,30 @@ interface TicketKpiCardsProps {
 }
 
 export default function TicketKpiCards({ tickets }: TicketKpiCardsProps) {
-  const slaBreachedCount = tickets.filter((t) => t.slaBreached).length;
+  const open = tickets.filter((t) => t.status === 'Open').length;
+  const inProgress = tickets.filter((t) => t.status === 'In Progress').length;
+  const resolved = tickets.filter((t) => t.status === 'Resolved' || t.status === 'Closed').length;
+  const breached = tickets.filter((t) => t.slaBreached).length;
+
+  const items = [
+    { label: 'Total', value: tickets.length, color: 'var(--accent)', bg: 'var(--accent-muted)' },
+    { label: 'Open', value: open, color: 'var(--pending)', bg: 'var(--pending-light)' },
+    { label: 'In Progress', value: inProgress, color: 'var(--kpi-4, #6B5B95)', bg: 'rgba(107, 91, 149, 0.10)' },
+    { label: 'Resolved', value: resolved, color: 'var(--success)', bg: 'var(--success-light)' },
+    { label: 'SLA Breached', value: breached, color: 'var(--danger)', bg: 'var(--danger-light)', isDanger: breached > 0 },
+  ];
 
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 16, marginBottom: 24 }}>
-      {[
-        { label: 'Total Tickets', value: tickets.length, color: 'var(--accent-primary)' },
-        { label: 'Open', value: tickets.filter((t) => t.status === 'Open').length, color: 'var(--badge-amber-text)' },
-        { label: 'In Progress', value: tickets.filter((t) => t.status === 'In Progress').length, color: 'var(--badge-emerald-text)' },
-        { label: 'Resolved', value: tickets.filter((t) => t.status === 'Resolved' || t.status === 'Closed').length, color: 'var(--accent-secondary)' },
-        { label: 'SLA Breached', value: slaBreachedCount, color: 'var(--badge-red-text)' },
-      ].map((stat, i) => (
-        <div key={i} className="kpi-card" style={{ textAlign: 'center', padding: 20 }}>
-          <div style={{ fontSize: 28, fontWeight: 800, color: stat.color }}>{stat.value}</div>
-          <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-secondary)', marginTop: 4 }}>{stat.label}</div>
+    <div className="metric-bar" style={{ marginBottom: 'var(--space-5)' }}>
+      {items.map((item, i) => (
+        <div key={i} className="metric-item">
+          <span className="metric-label">{item.label}</span>
+          <span
+            className="metric-value"
+            style={{ color: item.isDanger ? 'var(--danger)' : item.color }}
+          >
+            {item.value}
+          </span>
         </div>
       ))}
     </div>

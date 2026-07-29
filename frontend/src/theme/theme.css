@@ -1,171 +1,558 @@
-/* Theme Engine Token System */
+/* ============================================================
+   CM Portal — Design Tokens
+   Colorful light themes. Tinted sidebars, warm surfaces.
+   ============================================================ */
 
-[data-theme="light"] {
-  --bg-primary: #f8fafc;
-  --bg-secondary: #ffffff;
-  --bg-card: #ffffff;
-  --bg-card-hover: #f1f5f9;
-  --bg-glass: rgba(255, 255, 255, 0.92);
-  --bg-input: #ffffff;
-
-  --text-primary: #0f172a;
-  --text-secondary: #475569;
-  --text-muted: #94a3b8;
-  --text-inverse: #ffffff;
-
-  --accent-primary: #4f46e5;
-  --accent-primary-hover: #4338ca;
-  --accent-secondary: #0284c7;
-  --accent-light: rgba(79, 70, 229, 0.08);
-  --accent-glow: rgba(79, 70, 229, 0.16);
-
-  --border-color: #e2e8f0;
-  --border-highlight: #cbd5e1;
-  --border-light: #f1f5f9;
-
-  --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.04);
-  --shadow-md: 0 4px 14px rgba(15, 23, 42, 0.06);
-  --shadow-lg: 0 10px 30px rgba(15, 23, 42, 0.09);
-  --shadow-glow: 0 4px 20px rgba(79, 70, 229, 0.12);
-
-  --badge-emerald-bg: #dcfce7;
-  --badge-emerald-text: #15803d;
-  --badge-amber-bg: #fef3c7;
-  --badge-amber-text: #b45309;
-  --badge-blue-bg: #e0e7ff;
-  --badge-blue-text: #4338ca;
-  --badge-red-bg: #fee2e2;
-  --badge-red-text: #b91c1c;
-}
-
-[data-theme="corporate-light"] {
-  --bg-primary: #f4f7f6;
-  --bg-secondary: #ffffff;
-  --bg-card: #ffffff;
-  --bg-card-hover: #ecfdf5;
-  --bg-glass: rgba(255, 255, 255, 0.94);
-  --bg-input: #ffffff;
-
-  --text-primary: #064e3b;
-  --text-secondary: #374151;
-  --text-muted: #9ca3af;
-  --text-inverse: #ffffff;
-
-  --accent-primary: #059669;
-  --accent-primary-hover: #047857;
-  --accent-secondary: #0d9488;
-  --accent-light: rgba(5, 150, 105, 0.08);
-  --accent-glow: rgba(5, 150, 105, 0.16);
-
-  --border-color: #e5e7eb;
-  --border-highlight: #a7f3d0;
-  --border-light: #f3f4f6;
-
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.06);
-  --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.08);
-  --shadow-glow: 0 4px 20px rgba(5, 150, 105, 0.15);
-
-  --badge-emerald-bg: #d1fae5;
-  --badge-emerald-text: #065f46;
-  --badge-amber-bg: #fef3c7;
-  --badge-amber-text: #92400e;
-  --badge-blue-bg: #ccfbf1;
-  --badge-blue-text: #115e59;
-  --badge-red-bg: #fee2e2;
-  --badge-red-text: #991b1b;
-}
-
-[data-theme="dark"] {
-  --bg-primary: #0f172a;
-  --bg-secondary: #1e293b;
-  --bg-card: rgba(30, 41, 59, 0.85);
-  --bg-card-hover: rgba(51, 65, 85, 0.9);
-  --bg-glass: rgba(15, 23, 42, 0.8);
-  --bg-input: rgba(15, 23, 42, 0.7);
-
-  --text-primary: #f8fafc;
-  --text-secondary: #94a3b8;
-  --text-muted: #64748b;
-  --text-inverse: #0f172a;
-
-  --accent-primary: #6366f1;
-  --accent-primary-hover: #818cf8;
-  --accent-secondary: #38bdf8;
-  --accent-light: rgba(99, 102, 241, 0.15);
-  --accent-glow: rgba(99, 102, 241, 0.25);
-
-  --border-color: rgba(255, 255, 255, 0.1);
-  --border-highlight: rgba(99, 102, 241, 0.35);
-  --border-light: rgba(255, 255, 255, 0.05);
-
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.25);
-  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.35);
-  --shadow-lg: 0 16px 36px rgba(0, 0, 0, 0.5);
-  --shadow-glow: 0 0 25px rgba(99, 102, 241, 0.2);
-
-  --badge-emerald-bg: rgba(16, 185, 129, 0.15);
-  --badge-emerald-text: #34d399;
-  --badge-amber-bg: rgba(245, 158, 11, 0.15);
-  --badge-amber-text: #fbbf24;
-  --badge-blue-bg: rgba(99, 102, 241, 0.18);
-  --badge-blue-text: #818cf8;
-  --badge-red-bg: rgba(239, 68, 68, 0.15);
-  --badge-red-text: #f87171;
-}
-
-[data-theme="emerald-dark"] {
-  --bg-primary: #0b0f19;
-  --bg-secondary: #111827;
-  --bg-card: rgba(17, 24, 39, 0.85);
-  --bg-card-hover: rgba(31, 41, 55, 0.9);
-  --bg-glass: rgba(11, 15, 25, 0.8);
-  --bg-input: rgba(15, 23, 42, 0.7);
-
-  --text-primary: #f8fafc;
-  --text-secondary: #94a3b8;
-  --text-muted: #64748b;
-  --text-inverse: #0f172a;
-
-  --accent-primary: #10b981;
-  --accent-primary-hover: #34d399;
-  --accent-secondary: #06b6d4;
-  --accent-light: rgba(16, 185, 129, 0.15);
-  --accent-glow: rgba(16, 185, 129, 0.25);
-
-  --border-color: rgba(255, 255, 255, 0.1);
-  --border-highlight: rgba(16, 185, 129, 0.35);
-  --border-light: rgba(255, 255, 255, 0.05);
-
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.25);
-  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.35);
-  --shadow-lg: 0 16px 36px rgba(0, 0, 0, 0.5);
-  --shadow-glow: 0 0 25px rgba(16, 185, 129, 0.2);
-
-  --badge-emerald-bg: rgba(16, 185, 129, 0.15);
-  --badge-emerald-text: #34d399;
-  --badge-amber-bg: rgba(245, 158, 11, 0.15);
-  --badge-amber-text: #fbbf24;
-  --badge-blue-bg: rgba(59, 130, 246, 0.15);
-  --badge-blue-text: #60a5fa;
-  --badge-red-bg: rgba(239, 68, 68, 0.15);
-  --badge-red-text: #f87171;
-}
-
-/* Base Tokens */
 :root {
+  /* ── Shared Neutrals ── */
+  --carbon-800: #1C1F26;
+  --carbon-700: #2D3139;
+  --carbon-600: #3E424B;
+  --carbon: #5C6070;
+  --carbon-400: #8C8F9C;
+  --carbon-300: #B0B2BD;
+  --carbon-200: #D5D6DC;
+  --carbon-100: #ECECEE;
+  --carbon-50: #F5F5F7;
+  --white: #FFFFFF;
+
+  /* ── Spacing ── */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  /* ── Radii ── */
   --radius-xs: 4px;
-  --radius-sm: 8px;
-  --radius-md: 10px;
-  --radius-lg: 14px;
-  --radius-xl: 20px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
   --radius-full: 9999px;
 
-  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-base: 200ms cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-slow: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  /* ── Typography ── */
+  --font-display: 'DM Sans', system-ui, -apple-system, sans-serif;
+  --font-body: 'Source Sans 3', 'Source Sans Pro', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
 
+  --text-xs: 0.75rem;
+  --text-sm: 0.8125rem;
+  --text-base: 0.875rem;
+  --text-md: 0.9375rem;
+  --text-lg: 1.0625rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+
+  /* ── Transitions ── */
+  --transition-fast: 120ms ease;
+  --transition-base: 180ms ease;
+  --transition-slow: 280ms ease;
+
+  /* ── Elevation ── */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.10);
+  --shadow-card: 0 1px 4px rgba(0, 0, 0, 0.05);
+
+  /* ── Layout ── */
   --sidebar-width: 260px;
-  --sidebar-collapsed-width: 72px;
-  --header-height: 68px;
+  --sidebar-collapsed-width: 68px;
+  --header-height: 56px;
+}
+
+/* ============================================================
+   Theme: Slate Registry
+   Cool blue sidebar, blue-tinted surfaces
+   ============================================================ */
+[data-theme="slate"] {
+  --accent: #3B5998;
+  --accent-hover: #2F4A80;
+  --accent-light: rgba(59, 89, 152, 0.06);
+  --accent-muted: rgba(59, 89, 152, 0.12);
+  --accent-strong: rgba(59, 89, 152, 0.18);
+
+  --success: #2E8B57;
+  --success-light: rgba(46, 139, 87, 0.08);
+  --danger: #C0392B;
+  --danger-light: rgba(192, 57, 43, 0.08);
+  --pending: #D4A017;
+  --pending-light: rgba(212, 160, 23, 0.08);
+  --info: #3B5998;
+  --info-light: rgba(59, 89, 152, 0.08);
+
+  --bg-page: #EAF0F7;
+  --bg-surface: #FFFFFF;
+  --bg-sidebar: #2C3E6B;
+  --bg-sidebar-hover: rgba(255, 255, 255, 0.10);
+  --bg-sidebar-active: rgba(255, 255, 255, 0.16);
+  --bg-input: #FFFFFF;
+  --bg-header: rgba(255, 255, 255, 0.85);
+
+  --text-heading: #1A2744;
+  --text-body: #3A4558;
+  --text-muted: #7A869C;
+  --text-inverse: #FFFFFF;
+  --text-link: #3B5998;
+
+  --border: #D4DEE8;
+  --border-strong: #B8C6D6;
+
+  --scrollbar-thumb: #C0CCD8;
+  --scrollbar-hover: #9AAABE;
+
+  --sidebar-border: rgba(255, 255, 255, 0.12);
+  --sidebar-text: rgba(255, 255, 255, 0.70);
+  --sidebar-text-active: #FFFFFF;
+
+  --kpi-1: #3B5998;
+  --kpi-2: #2E8B57;
+  --kpi-3: #D4A017;
+  --kpi-4: #6B5B95;
+  --kpi-5: #C0392B;
+}
+
+/* ============================================================
+   Theme: Sandstone
+   Warm ochre sidebar, amber-tinted surfaces
+   ============================================================ */
+[data-theme="sandstone"] {
+  --accent: #B8860B;
+  --accent-hover: #9A7209;
+  --accent-light: rgba(184, 134, 11, 0.06);
+  --accent-muted: rgba(184, 134, 11, 0.12);
+  --accent-strong: rgba(184, 134, 11, 0.18);
+
+  --success: #5E7C4F;
+  --success-light: rgba(94, 124, 79, 0.08);
+  --danger: #9C3B32;
+  --danger-light: rgba(156, 59, 50, 0.08);
+  --pending: #7C6A9B;
+  --pending-light: rgba(124, 106, 155, 0.08);
+  --info: #7C6A9B;
+  --info-light: rgba(124, 106, 155, 0.08);
+
+  --bg-page: #F5F0E8;
+  --bg-surface: #FFFFFF;
+  --bg-sidebar: #4A3F2F;
+  --bg-sidebar-hover: rgba(255, 255, 255, 0.10);
+  --bg-sidebar-active: rgba(255, 255, 255, 0.16);
+  --bg-input: #FFFFFF;
+  --bg-header: rgba(255, 255, 255, 0.85);
+
+  --text-heading: #2B2620;
+  --text-body: #3E424B;
+  --text-muted: #8A8478;
+  --text-inverse: #FFFFFF;
+  --text-link: #B8860B;
+
+  --border: #E0D8C8;
+  --border-strong: #CCC2AE;
+
+  --scrollbar-thumb: #D0C8B8;
+  --scrollbar-hover: #B0A898;
+
+  --sidebar-border: rgba(255, 255, 255, 0.12);
+  --sidebar-text: rgba(255, 255, 255, 0.70);
+  --sidebar-text-active: #FFFFFF;
+
+  --kpi-1: #B8860B;
+  --kpi-2: #5E7C4F;
+  --kpi-3: #7C6A9B;
+  --kpi-4: #9C3B32;
+  --kpi-5: #4A8B8B;
+}
+
+/* ============================================================
+   Theme: Post & Ledger
+   Deep violet sidebar, purple-tinted surfaces
+   ============================================================ */
+[data-theme="ledger"] {
+  --accent: #5B4B8A;
+  --accent-hover: #4A3D75;
+  --accent-light: rgba(91, 75, 138, 0.06);
+  --accent-muted: rgba(91, 75, 138, 0.12);
+  --accent-strong: rgba(91, 75, 138, 0.18);
+
+  --success: #3F6B4E;
+  --success-light: rgba(63, 107, 78, 0.08);
+  --danger: #8B3A3A;
+  --danger-light: rgba(139, 58, 58, 0.08);
+  --pending: #B08A45;
+  --pending-light: rgba(176, 138, 69, 0.08);
+  --info: #5B4B8A;
+  --info-light: rgba(91, 75, 138, 0.08);
+
+  --bg-page: #EFECF5;
+  --bg-surface: #FFFFFF;
+  --bg-sidebar: #2E2648;
+  --bg-sidebar-hover: rgba(255, 255, 255, 0.10);
+  --bg-sidebar-active: rgba(255, 255, 255, 0.16);
+  --bg-input: #FFFFFF;
+  --bg-header: rgba(255, 255, 255, 0.85);
+
+  --text-heading: #1E1A30;
+  --text-body: #3A3650;
+  --text-muted: #7A7490;
+  --text-inverse: #FFFFFF;
+  --text-link: #5B4B8A;
+
+  --border: #D8D4E4;
+  --border-strong: #C0B8D0;
+
+  --scrollbar-thumb: #C8C0D8;
+  --scrollbar-hover: #A8A0B8;
+
+  --sidebar-border: rgba(255, 255, 255, 0.12);
+  --sidebar-text: rgba(255, 255, 255, 0.70);
+  --sidebar-text-active: #FFFFFF;
+
+  --kpi-1: #5B4B8A;
+  --kpi-2: #3F6B4E;
+  --kpi-3: #B08A45;
+  --kpi-4: #8B3A3A;
+  --kpi-5: #4A8B8B;
+}
+
+/* ============================================================
+   Theme: Emerald
+   Forest green sidebar, green-tinted surfaces
+   ============================================================ */
+[data-theme="emerald"] {
+  --accent: #2D6A4F;
+  --accent-hover: #1B4332;
+  --accent-light: rgba(45, 106, 79, 0.06);
+  --accent-muted: rgba(45, 106, 79, 0.12);
+  --accent-strong: rgba(45, 106, 79, 0.18);
+
+  --success: #40916C;
+  --success-light: rgba(64, 145, 108, 0.08);
+  --danger: #C1292E;
+  --danger-light: rgba(193, 41, 46, 0.08);
+  --pending: #E9C46A;
+  --pending-light: rgba(233, 196, 106, 0.08);
+  --info: #264653;
+  --info-light: rgba(38, 70, 83, 0.08);
+
+  --bg-page: #E8F5EE;
+  --bg-surface: #FFFFFF;
+  --bg-sidebar: #1B4332;
+  --bg-sidebar-hover: rgba(255, 255, 255, 0.10);
+  --bg-sidebar-active: rgba(255, 255, 255, 0.16);
+  --bg-input: #FFFFFF;
+  --bg-header: rgba(255, 255, 255, 0.85);
+
+  --text-heading: #0B2027;
+  --text-body: #2D3B3E;
+  --text-muted: #5F7A7F;
+  --text-inverse: #FFFFFF;
+  --text-link: #2D6A4F;
+
+  --border: #C8E0D4;
+  --border-strong: #A8CDB8;
+
+  --scrollbar-thumb: #B0D0C0;
+  --scrollbar-hover: #90B8A8;
+
+  --sidebar-border: rgba(255, 255, 255, 0.12);
+  --sidebar-text: rgba(255, 255, 255, 0.70);
+  --sidebar-text-active: #FFFFFF;
+
+  --kpi-1: #2D6A4F;
+  --kpi-2: #40916C;
+  --kpi-3: #E9C46A;
+  --kpi-4: #E76F51;
+  --kpi-5: #264653;
+}
+
+/* ============================================================
+   Theme: Rose
+   Deep rose sidebar, pink-tinted surfaces
+   ============================================================ */
+[data-theme="rose"] {
+  --accent: #A4133C;
+  --accent-hover: #8B0000;
+  --accent-light: rgba(164, 19, 60, 0.06);
+  --accent-muted: rgba(164, 19, 60, 0.12);
+  --accent-strong: rgba(164, 19, 60, 0.18);
+
+  --success: #4A7C59;
+  --success-light: rgba(74, 124, 89, 0.08);
+  --danger: #C1292E;
+  --danger-light: rgba(193, 41, 46, 0.08);
+  --pending: #E8983E;
+  --pending-light: rgba(232, 152, 62, 0.08);
+  --info: #9B2335;
+  --info-light: rgba(155, 35, 53, 0.08);
+
+  --bg-page: #FDF2F4;
+  --bg-surface: #FFFFFF;
+  --bg-sidebar: #6B1D2E;
+  --bg-sidebar-hover: rgba(255, 255, 255, 0.10);
+  --bg-sidebar-active: rgba(255, 255, 255, 0.16);
+  --bg-input: #FFFFFF;
+  --bg-header: rgba(255, 255, 255, 0.85);
+
+  --text-heading: #2D0A14;
+  --text-body: #4A2030;
+  --text-muted: #9E6070;
+  --text-inverse: #FFFFFF;
+  --text-link: #A4133C;
+
+  --border: #F0D0D8;
+  --border-strong: #E0B0B8;
+
+  --scrollbar-thumb: #E0B8C0;
+  --scrollbar-hover: #C898A0;
+
+  --sidebar-border: rgba(255, 255, 255, 0.12);
+  --sidebar-text: rgba(255, 255, 255, 0.70);
+  --sidebar-text-active: #FFFFFF;
+
+  --kpi-1: #A4133C;
+  --kpi-2: #4A7C59;
+  --kpi-3: #E8983E;
+  --kpi-4: #6B1D2E;
+  --kpi-5: #2D6A4F;
+}
+
+/* ============================================================
+   Theme: Ocean
+   Teal sidebar, cyan-tinted surfaces
+   ============================================================ */
+[data-theme="ocean"] {
+  --accent: #0077B6;
+  --accent-hover: #005F8A;
+  --accent-light: rgba(0, 119, 182, 0.06);
+  --accent-muted: rgba(0, 119, 182, 0.12);
+  --accent-strong: rgba(0, 119, 182, 0.18);
+
+  --success: #2D936C;
+  --success-light: rgba(45, 147, 108, 0.08);
+  --danger: #D62828;
+  --danger-light: rgba(214, 40, 40, 0.08);
+  --pending: #F7B32B;
+  --pending-light: rgba(247, 179, 43, 0.08);
+  --info: #0096C7;
+  --info-light: rgba(0, 150, 199, 0.08);
+
+  --bg-page: #E6F4F9;
+  --bg-surface: #FFFFFF;
+  --bg-sidebar: #023E8A;
+  --bg-sidebar-hover: rgba(255, 255, 255, 0.10);
+  --bg-sidebar-active: rgba(255, 255, 255, 0.16);
+  --bg-input: #FFFFFF;
+  --bg-header: rgba(255, 255, 255, 0.85);
+
+  --text-heading: #03045E;
+  --text-body: #1D3557;
+  --text-muted: #457B9D;
+  --text-inverse: #FFFFFF;
+  --text-link: #0077B6;
+
+  --border: #B8DEEE;
+  --border-strong: #90CCDE;
+
+  --scrollbar-thumb: #A0D0E0;
+  --scrollbar-hover: #78B8D0;
+
+  --sidebar-border: rgba(255, 255, 255, 0.12);
+  --sidebar-text: rgba(255, 255, 255, 0.70);
+  --sidebar-text-active: #FFFFFF;
+
+  --kpi-1: #0077B6;
+  --kpi-2: #2D936C;
+  --kpi-3: #F7B32B;
+  --kpi-4: #D62828;
+  --kpi-5: #023E8A;
+}
+
+/* ============================================================
+   Theme: Amber
+   Warm brown sidebar, gold-tinted surfaces
+   ============================================================ */
+[data-theme="amber"] {
+  --accent: #B8860B;
+  --accent-hover: #96690A;
+  --accent-light: rgba(184, 134, 11, 0.06);
+  --accent-muted: rgba(184, 134, 11, 0.12);
+  --accent-strong: rgba(184, 134, 11, 0.18);
+
+  --success: #588157;
+  --success-light: rgba(88, 129, 87, 0.08);
+  --danger: #BC4749;
+  --danger-light: rgba(188, 71, 73, 0.08);
+  --pending: #D4A017;
+  --pending-light: rgba(212, 160, 23, 0.08);
+  --info: #A3722A;
+  --info-light: rgba(163, 114, 42, 0.08);
+
+  --bg-page: #FDF6E3;
+  --bg-surface: #FFFFFF;
+  --bg-sidebar: #5C4033;
+  --bg-sidebar-hover: rgba(255, 255, 255, 0.10);
+  --bg-sidebar-active: rgba(255, 255, 255, 0.16);
+  --bg-input: #FFFFFF;
+  --bg-header: rgba(255, 255, 255, 0.85);
+
+  --text-heading: #2C1810;
+  --text-body: #4A3728;
+  --text-muted: #8A7058;
+  --text-inverse: #FFFFFF;
+  --text-link: #B8860B;
+
+  --border: #E8D8C0;
+  --border-strong: #D4C4A8;
+
+  --scrollbar-thumb: #D0C0A8;
+  --scrollbar-hover: #B8A890;
+
+  --sidebar-border: rgba(255, 255, 255, 0.12);
+  --sidebar-text: rgba(255, 255, 255, 0.70);
+  --sidebar-text-active: #FFFFFF;
+
+  --kpi-1: #B8860B;
+  --kpi-2: #588157;
+  --kpi-3: #D4A017;
+  --kpi-4: #BC4749;
+  --kpi-5: #A3722A;
+}
+
+/* ============================================================
+   Theme: Plum
+   Deep purple sidebar, lavender-tinted surfaces
+   ============================================================ */
+[data-theme="plum"] {
+  --accent: #6B2FA0;
+  --accent-hover: #5A1F8A;
+  --accent-light: rgba(107, 47, 160, 0.06);
+  --accent-muted: rgba(107, 47, 160, 0.12);
+  --accent-strong: rgba(107, 47, 160, 0.18);
+
+  --success: #2D6A4F;
+  --success-light: rgba(45, 106, 79, 0.08);
+  --danger: #C1292E;
+  --danger-light: rgba(193, 41, 46, 0.08);
+  --pending: #D4A017;
+  --pending-light: rgba(212, 160, 23, 0.08);
+  --info: #7B2D8E;
+  --info-light: rgba(123, 45, 142, 0.08);
+
+  --bg-page: #F3EDF9;
+  --bg-surface: #FFFFFF;
+  --bg-sidebar: #3C1361;
+  --bg-sidebar-hover: rgba(255, 255, 255, 0.10);
+  --bg-sidebar-active: rgba(255, 255, 255, 0.16);
+  --bg-input: #FFFFFF;
+  --bg-header: rgba(255, 255, 255, 0.85);
+
+  --text-heading: #1A0A30;
+  --text-body: #3A2850;
+  --text-muted: #7A6090;
+  --text-inverse: #FFFFFF;
+  --text-link: #6B2FA0;
+
+  --border: #D8C8E8;
+  --border-strong: #C0B0D8;
+
+  --scrollbar-thumb: #C8B8D8;
+  --scrollbar-hover: #A898C0;
+
+  --sidebar-border: rgba(255, 255, 255, 0.12);
+  --sidebar-text: rgba(255, 255, 255, 0.70);
+  --sidebar-text-active: #FFFFFF;
+
+  --kpi-1: #6B2FA0;
+  --kpi-2: #2D6A4F;
+  --kpi-3: #D4A017;
+  --kpi-4: #C1292E;
+  --kpi-5: #7B2D8E;
+}
+
+/* ============================================================
+   Theme: Coral
+   Warm terracotta sidebar, peach-tinted surfaces
+   ============================================================ */
+[data-theme="coral"] {
+  --accent: #C45B28;
+  --accent-hover: #A84A20;
+  --accent-light: rgba(196, 91, 40, 0.06);
+  --accent-muted: rgba(196, 91, 40, 0.12);
+  --accent-strong: rgba(196, 91, 40, 0.18);
+
+  --success: #4A7C59;
+  --success-light: rgba(74, 124, 89, 0.08);
+  --danger: #C1292E;
+  --danger-light: rgba(193, 41, 46, 0.08);
+  --pending: #E8983E;
+  --pending-light: rgba(232, 152, 62, 0.08);
+  --info: #D4764E;
+  --info-light: rgba(212, 118, 78, 0.08);
+
+  --bg-page: #FEF0E8;
+  --bg-surface: #FFFFFF;
+  --bg-sidebar: #8B3A2A;
+  --bg-sidebar-hover: rgba(255, 255, 255, 0.10);
+  --bg-sidebar-active: rgba(255, 255, 255, 0.16);
+  --bg-input: #FFFFFF;
+  --bg-header: rgba(255, 255, 255, 0.85);
+
+  --text-heading: #2C1008;
+  --text-body: #4A2820;
+  --text-muted: #9E6858;
+  --text-inverse: #FFFFFF;
+  --text-link: #C45B28;
+
+  --border: #F0D0C0;
+  --border-strong: #E0B8A8;
+
+  --scrollbar-thumb: #E0B8A0;
+  --scrollbar-hover: #C89880;
+
+  --sidebar-border: rgba(255, 255, 255, 0.12);
+  --sidebar-text: rgba(255, 255, 255, 0.70);
+  --sidebar-text-active: #FFFFFF;
+
+  --kpi-1: #C45B28;
+  --kpi-2: #4A7C59;
+  --kpi-3: #E8983E;
+  --kpi-4: #C1292E;
+  --kpi-5: #D4764E;
+}
+
+/* ============================================================
+   Backwards-compatible aliases
+   Old variable names → new token names
+   ============================================================ */
+:root {
+  --ink: var(--accent);
+  --ink-700: var(--accent-hover);
+
+  --text-primary: var(--text-heading);
+  --text-secondary: var(--text-body);
+  --accent-primary: var(--accent);
+  --accent-primary-hover: var(--accent-hover);
+  --accent-light: var(--accent-light);
+  --border-color: var(--border);
+  --border-highlight: var(--border-strong);
+  --border-light: var(--carbon-100);
+  --bg-card: var(--bg-surface);
+  --bg-primary: var(--bg-page);
+  --bg-secondary: var(--bg-surface);
+  --bg-glass: var(--bg-surface);
+  --shadow-glow: var(--shadow-md);
+  --badge-emerald-bg: var(--success-light);
+  --badge-emerald-text: var(--success);
+  --badge-amber-bg: var(--pending-light);
+  --badge-amber-text: var(--pending);
+  --badge-blue-bg: var(--info-light);
+  --badge-blue-text: var(--info);
+  --badge-red-bg: var(--danger-light);
+  --badge-red-text: var(--danger);
 }

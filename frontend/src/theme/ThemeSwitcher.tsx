@@ -17,57 +17,51 @@ export const ThemeSwitcher: React.FC = () => {
   }, []);
 
   return (
-    <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
-      {/* Quick Sun/Moon Toggle Button */}
+    <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
       <button
         type="button"
         onClick={toggleTheme}
-        title={`Switch to ${currentThemeOption.isDark ? 'Light' : 'Dark'} Mode`}
+        title="Switch theme"
         style={{
-          width: '40px',
-          height: '40px',
+          width: '36px',
+          height: '36px',
           borderRadius: 'var(--radius-md)',
-          border: '1px solid var(--border-color)',
-          background: 'var(--bg-card)',
-          color: 'var(--text-primary)',
+          border: '1px solid var(--border)',
+          background: 'var(--bg-surface)',
+          color: 'var(--text-muted)',
           cursor: 'pointer',
           display: 'inline-flex',
           alignItems: 'center',
           justifyContent: 'center',
           transition: 'all var(--transition-fast)',
           flexShrink: 0,
-          boxShadow: 'var(--shadow-sm)',
+          fontSize: '15px',
         }}
       >
-        <i
-          className={`pi ${currentThemeOption.isDark ? 'pi-sun' : 'pi-moon'}`}
-          style={{ fontSize: '16px', color: currentThemeOption.isDark ? '#fbbf24' : '#4f46e5' }}
-        />
+        <i className="pi pi-palette" />
       </button>
 
-      {/* Theme Select Dropdown Button */}
       <div ref={dropdownRef} style={{ position: 'relative', display: 'inline-block' }}>
         <button
           type="button"
           onClick={() => setIsOpen(!isOpen)}
-          title={`Active Theme: ${currentThemeOption.name}`}
+          title="Select theme"
           style={{
-            height: '40px',
-            padding: '0 14px',
+            height: '36px',
+            padding: '0 12px',
             borderRadius: 'var(--radius-md)',
-            border: '1px solid var(--border-color)',
-            background: 'var(--bg-card)',
+            border: '1px solid var(--border)',
+            background: 'var(--bg-surface)',
             cursor: 'pointer',
-            color: 'var(--text-primary)',
+            color: 'var(--text-body)',
             fontSize: '13px',
             fontWeight: 600,
+            fontFamily: 'var(--font-body)',
             transition: 'all var(--transition-fast)',
-            boxShadow: 'var(--shadow-sm)',
             display: 'inline-flex',
             alignItems: 'center',
             gap: '8px',
             whiteSpace: 'nowrap',
-            width: 'auto',
           }}
         >
           <span
@@ -75,13 +69,13 @@ export const ThemeSwitcher: React.FC = () => {
               width: '10px',
               height: '10px',
               borderRadius: '50%',
-              backgroundColor: currentThemeOption.primaryColor,
-              boxShadow: `0 0 6px ${currentThemeOption.primaryColor}`,
+              background: currentThemeOption.accent,
               flexShrink: 0,
+              border: '1px solid rgba(0,0,0,0.08)',
             }}
           />
-          <span style={{ whiteSpace: 'nowrap' }}>{currentThemeOption.name}</span>
-          <i className="pi pi-chevron-down" style={{ fontSize: '10px', color: 'var(--text-muted)', marginLeft: '2px' }} />
+          <span>{currentThemeOption.name}</span>
+          <i className="pi pi-chevron-down" style={{ fontSize: '9px', color: 'var(--text-muted)' }} />
         </button>
 
         {isOpen && (
@@ -91,11 +85,13 @@ export const ThemeSwitcher: React.FC = () => {
               position: 'absolute',
               top: 'calc(100% + 6px)',
               right: 0,
-              width: '210px',
+              width: '220px',
+              maxHeight: '400px',
+              overflowY: 'auto',
               padding: '6px',
-              borderRadius: 'var(--radius-md)',
-              background: 'var(--bg-secondary)',
-              border: '1px solid var(--border-color)',
+              borderRadius: 'var(--radius-lg)',
+              background: 'var(--bg-surface)',
+              border: '1px solid var(--border)',
               boxShadow: 'var(--shadow-lg)',
               zIndex: 1000,
             }}
@@ -103,61 +99,61 @@ export const ThemeSwitcher: React.FC = () => {
             <div
               style={{
                 fontSize: '11px',
-                fontWeight: 700,
+                fontWeight: 600,
                 textTransform: 'uppercase',
-                letterSpacing: '0.8px',
+                letterSpacing: '0.06em',
                 color: 'var(--text-muted)',
-                marginBottom: '6px',
-                padding: '4px 8px',
+                padding: '4px 10px 6px',
+                fontFamily: 'var(--font-body)',
               }}
             >
-              Theme Preset
+              Theme
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-              {THEME_OPTIONS.map((opt) => {
-                const isActive = opt.id === theme;
-                return (
-                  <button
-                    key={opt.id}
-                    type="button"
-                    onClick={() => {
-                      setTheme(opt.id as ThemeMode);
-                      setIsOpen(false);
-                    }}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      padding: '8px 10px',
-                      borderRadius: 'var(--radius-sm)',
-                      border: isActive ? '1px solid var(--border-highlight)' : '1px solid transparent',
-                      background: isActive ? 'var(--accent-light)' : 'transparent',
-                      color: isActive ? 'var(--accent-primary-hover)' : 'var(--text-primary)',
-                      cursor: 'pointer',
-                      fontSize: '13px',
-                      fontWeight: isActive ? 600 : 500,
-                      textAlign: 'left',
-                      transition: 'all var(--transition-fast)',
-                    }}
-                  >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <span
-                        style={{
-                          width: '12px',
-                          height: '12px',
-                          borderRadius: '50%',
-                          background: opt.primaryColor,
-                          border: '1px solid rgba(0, 0, 0, 0.1)',
-                          flexShrink: 0,
-                        }}
-                      />
-                      {opt.name}
-                    </div>
-                    {isActive && <i className="pi pi-check" style={{ fontSize: '12px' }} />}
-                  </button>
-                );
-              })}
-            </div>
+            {THEME_OPTIONS.map((opt) => {
+              const isActive = opt.id === theme;
+              return (
+                <button
+                  key={opt.id}
+                  type="button"
+                  onClick={() => {
+                    setTheme(opt.id as ThemeMode);
+                    setIsOpen(false);
+                  }}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    width: '100%',
+                    padding: '8px 10px',
+                    borderRadius: 'var(--radius-sm)',
+                    border: isActive ? '1px solid var(--accent-muted)' : '1px solid transparent',
+                    background: isActive ? 'var(--accent-light)' : 'transparent',
+                    color: isActive ? 'var(--accent)' : 'var(--text-body)',
+                    cursor: 'pointer',
+                    fontSize: '13px',
+                    fontFamily: 'var(--font-body)',
+                    fontWeight: isActive ? 600 : 500,
+                    textAlign: 'left',
+                    transition: 'all var(--transition-fast)',
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <span
+                      style={{
+                        width: '12px',
+                        height: '12px',
+                        borderRadius: '50%',
+                        background: opt.accent,
+                        flexShrink: 0,
+                        border: '1px solid rgba(0,0,0,0.08)',
+                      }}
+                    />
+                    {opt.name}
+                  </div>
+                  {isActive && <i className="pi pi-check" style={{ fontSize: '11px', color: 'var(--accent)' }} />}
+                </button>
+              );
+            })}
           </div>
         )}
       </div>

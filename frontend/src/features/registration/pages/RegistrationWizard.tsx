@@ -1,4 +1,3 @@
-import { Button } from 'primereact/button';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import { useRegistrationForm } from '../components/form.hook';
 import PersonalInfoStep from '../components/PersonalInfoStep';
@@ -8,6 +7,7 @@ import TrainingInfoStep from '../components/TrainingInfoStep';
 import EducationalDetailsStep from '../components/EducationalDetailsStep';
 import DocumentUploadStep from '../components/DocumentUploadStep';
 import DeclarationStep from '../components/DeclarationStep';
+import { AppButton } from '../../../shared/components/ui';
 
 const steps = [
   { label: 'Personal Info', icon: 'pi pi-user' },
@@ -27,9 +27,7 @@ export default function RegistrationWizard() {
       <div className="page-header">
         <div>
           <h1>Fellow Registration</h1>
-          <p style={{ color: 'var(--text-secondary)', marginTop: 4 }}>
-            Register a new CM Fellow through the multi-step wizard
-          </p>
+          <p>Register a new CM Fellow through the multi-step wizard</p>
         </div>
       </div>
 
@@ -39,29 +37,18 @@ export default function RegistrationWizard() {
             key={i}
             className={`step-item ${i === currentStep ? 'active' : ''} ${i < currentStep ? 'completed' : ''}`}
             onClick={() => i <= currentStep && goToStep(i)}
-            style={{
-              background: i === currentStep ? 'var(--accent-light)' : i < currentStep ? 'var(--accent-primary)' : 'var(--bg-card)',
-              borderColor: i === currentStep ? 'var(--border-highlight)' : 'var(--border-color)',
-              color: i < currentStep ? 'var(--text-inverse)' : i === currentStep ? 'var(--accent-primary-hover)' : 'var(--text-secondary)',
-            }}
           >
-            <div
-              className="step-number"
-              style={{
-                background: i < currentStep ? 'rgba(255,255,255,0.3)' : i === currentStep ? 'var(--accent-primary)' : 'var(--border-color)',
-                color: i === currentStep || i < currentStep ? 'var(--text-inverse)' : 'var(--text-muted)',
-              }}
-            >
+            <div className="step-number">
               {i < currentStep ? <i className="pi pi-check" /> : i + 1}
             </div>
-            <span className="step-label" style={{ fontWeight: i === currentStep ? 700 : 500 }}>
+            <span className="step-label">
               {step.label}
             </span>
           </div>
         ))}
       </div>
 
-      <div className="glass-card" style={{ padding: 32 }}>
+      <div className="card" style={{ padding: 'var(--space-8)' }}>
         {currentStep === 0 && <PersonalInfoStep formData={formData} update={update} />}
         {currentStep === 1 && <OtpVerificationStep formData={formData} update={update} />}
         {currentStep === 2 && <AddressInfoStep formData={formData} update={update} />}
@@ -74,34 +61,33 @@ export default function RegistrationWizard() {
           style={{
             display: 'flex',
             justifyContent: 'space-between',
-            marginTop: 32,
-            paddingTop: 24,
-            borderTop: '1px solid var(--border-color)',
+            marginTop: 'var(--space-8)',
+            paddingTop: 'var(--space-6)',
+            borderTop: '1px solid var(--border)',
           }}
         >
-          <button
-            className="btn btn-secondary"
+          <AppButton
+            variant="secondary"
+            icon="pi pi-arrow-left"
             onClick={prev}
             disabled={currentStep === 0}
           >
-            <i className="pi pi-arrow-left" /> Previous
-          </button>
+            Previous
+          </AppButton>
           {currentStep < steps.length - 1 ? (
-            <button
-              className="btn btn-primary"
+            <AppButton
               onClick={next}
             >
               Next <i className="pi pi-arrow-right" />
-            </button>
+            </AppButton>
           ) : (
-            <button
-              className="btn btn-primary"
+            <AppButton
               onClick={handleSubmit}
               disabled={!formData.declarationAccepted || isSubmitting}
             >
               {isSubmitting ? <ProgressSpinner style={{ width: 16, height: 16 }} /> : <i className="pi pi-check" />}
               {isSubmitting ? ' Submitting...' : ' Submit Registration'}
-            </button>
+            </AppButton>
           )}
         </div>
       </div>

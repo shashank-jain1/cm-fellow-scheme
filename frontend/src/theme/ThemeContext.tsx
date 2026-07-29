@@ -1,44 +1,23 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 
-export type ThemeMode = 'light' | 'dark' | 'corporate-light' | 'emerald-dark';
+export type ThemeMode = 'slate' | 'sandstone' | 'ledger' | 'emerald' | 'rose' | 'ocean' | 'amber' | 'plum' | 'coral';
 
 export interface ThemeOption {
   id: ThemeMode;
   name: string;
-  primaryColor: string;
-  previewGradient: string;
-  isDark: boolean;
+  accent: string;
 }
 
 export const THEME_OPTIONS: ThemeOption[] = [
-  {
-    id: 'light',
-    name: 'Clean Light',
-    primaryColor: '#4f46e5',
-    previewGradient: 'linear-gradient(135deg, #ffffff 0%, #4f46e5 100%)',
-    isDark: false,
-  },
-  {
-    id: 'corporate-light',
-    name: 'Emerald Light',
-    primaryColor: '#059669',
-    previewGradient: 'linear-gradient(135deg, #ffffff 0%, #059669 100%)',
-    isDark: false,
-  },
-  {
-    id: 'dark',
-    name: 'Pro Dark',
-    primaryColor: '#6366f1',
-    previewGradient: 'linear-gradient(135deg, #0f172a 0%, #6366f1 100%)',
-    isDark: true,
-  },
-  {
-    id: 'emerald-dark',
-    name: 'Emerald Dark',
-    primaryColor: '#10b981',
-    previewGradient: 'linear-gradient(135deg, #0b0f19 0%, #10b981 100%)',
-    isDark: true,
-  },
+  { id: 'slate', name: 'Slate Registry', accent: '#35507A' },
+  { id: 'sandstone', name: 'Sandstone', accent: '#B08A50' },
+  { id: 'ledger', name: 'Post & Ledger', accent: '#4A4570' },
+  { id: 'emerald', name: 'Emerald', accent: '#2D6A4F' },
+  { id: 'rose', name: 'Rose', accent: '#A4133C' },
+  { id: 'ocean', name: 'Ocean', accent: '#0077B6' },
+  { id: 'amber', name: 'Amber', accent: '#B8860B' },
+  { id: 'plum', name: 'Plum', accent: '#6B2FA0' },
+  { id: 'coral', name: 'Coral', accent: '#C45B28' },
 ];
 
 interface ThemeContextType {
@@ -50,12 +29,12 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-const STORAGE_KEY = 'cm_fellow_theme';
+const STORAGE_KEY = 'cm_portal_theme';
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [theme, setThemeState] = useState<ThemeMode>(() => {
     const saved = localStorage.getItem(STORAGE_KEY) as ThemeMode;
-    return saved && THEME_OPTIONS.some((t) => t.id === saved) ? saved : 'light';
+    return saved && THEME_OPTIONS.some((t) => t.id === saved) ? saved : 'slate';
   });
 
   const setTheme = (newTheme: ThemeMode) => {
@@ -64,8 +43,9 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   };
 
   const toggleTheme = () => {
-    const next = currentThemeOption.isDark ? 'light' : 'dark';
-    setTheme(next);
+    const idx = THEME_OPTIONS.findIndex((t) => t.id === theme);
+    const next = THEME_OPTIONS[(idx + 1) % THEME_OPTIONS.length];
+    setTheme(next.id);
   };
 
   useEffect(() => {

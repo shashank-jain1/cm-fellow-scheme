@@ -92,7 +92,7 @@ export default function Sidebar({ collapsed, onToggleCollapsed }: SidebarProps) 
     >
       <div className="sidebar-brand">
         <div className="sidebar-logo">
-          <i className="pi pi-shield" style={{ fontSize: 22, color: 'var(--accent-primary)' }} />
+          <img src="/logo.jpeg" alt="Logo" style={{ width: collapsed ? 28 : 36, height: collapsed ? 28 : 36, borderRadius: '50%', objectFit: 'cover' }} />
         </div>
         {!collapsed && (
           <div className="sidebar-brand-text">

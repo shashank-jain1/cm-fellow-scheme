@@ -28,13 +28,13 @@ export default function CertificateDownloadCard({ certificate }: CertificateDown
   };
 
   return (
-    <div className="kpi-card" style={{ padding: 24, display: 'flex', alignItems: 'center', gap: 20 }}>
+    <div className="card" style={{ padding: 'var(--space-4) var(--space-5)', display: 'flex', alignItems: 'center', gap: 'var(--space-4)' }}>
       <div
         style={{
-          width: 56,
-          height: 56,
-          borderRadius: 14,
-          background: isIssued ? 'var(--emerald-100)' : 'var(--amber-100)',
+          width: 44,
+          height: 44,
+          borderRadius: 'var(--radius-md)',
+          background: isIssued ? 'var(--filing-100)' : 'var(--ledger-100)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -43,21 +43,21 @@ export default function CertificateDownloadCard({ certificate }: CertificateDown
       >
         <i
           className={`pi ${isIssued ? 'pi-verified' : 'pi-hourglass'}`}
-          style={{ fontSize: 24, color: isIssued ? 'var(--emerald-500)' : 'var(--amber-500)' }}
+          style={{ fontSize: 20, color: isIssued ? 'var(--filing)' : 'var(--ledger)' }}
         />
       </div>
       <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-primary)' }}>{certificate.applicantName}</div>
-        <div style={{ fontSize: 12, color: 'var(--text-secondary)', marginTop: 2 }}>
+        <div style={{ fontFamily: 'var(--font-body)', fontSize: 'var(--text-base)', fontWeight: 600, color: 'var(--text-heading)' }}>{certificate.applicantName}</div>
+        <div style={{ fontFamily: 'var(--font-body)', fontSize: 'var(--text-xs)', color: 'var(--text-muted)', marginTop: 1 }}>
           {certificate.programName} &middot; {certificate.durationDays} days
         </div>
         <Tag
           value={certificate.status}
           severity={isIssued ? 'success' : 'warning'}
-          style={{ marginTop: 6 }}
+          style={{ marginTop: 4 }}
         />
       </div>
-      <div style={{ display: 'flex', gap: 8 }}>
+      <div style={{ display: 'flex', gap: 'var(--space-2)' }}>
         {canGenerate && (
           <AppButton
             variant="primary"

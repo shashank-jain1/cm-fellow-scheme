@@ -1,26 +1,7 @@
-import { Tag } from 'primereact/tag';
+import { SealChain } from '../../../shared/components/ui';
+import type { SealChainStep } from '../../../shared/components/ui';
 
 const REVIEW_LEVEL_ORDER = ['Draft', 'Fellow', 'Coordinator', 'Admin'];
-
-const levelSeverity = (level: string): 'secondary' | 'info' | 'warning' | 'success' | 'danger' => {
-  switch (level) {
-    case 'Admin': return 'success';
-    case 'Coordinator': return 'warning';
-    case 'Fellow': return 'info';
-    case 'Draft': return 'secondary';
-    default: return 'secondary';
-  }
-};
-
-const statusSeverity = (status: string): 'success' | 'warning' | 'danger' | 'info' | 'secondary' => {
-  switch (status) {
-    case 'Approved': return 'success';
-    case 'Under Review': return 'warning';
-    case 'Submitted': return 'info';
-    case 'Rejected': return 'danger';
-    default: return 'secondary';
-  }
-};
 
 interface Props {
   reviewLevel: string;
@@ -28,38 +9,35 @@ interface Props {
 }
 
 export default function ReviewChainProgress({ reviewLevel, reviewStatus }: Props) {
-  const currentLevelIndex = REVIEW_LEVEL_ORDER.indexOf(reviewLevel ?? 'Draft');
+  const currentIdx = REVIEW_LEVEL_ORDER.indexOf(reviewLevel ?? 'Draft');
+
+  const steps: SealChainStep[] = REVIEW_LEVEL_ORDER.map((level, i) => {
+    let status: SealChainStep['status'];
+    if (i < currentIdx) status = 'completed';
+    else if (i === currentIdx) {
+      if (reviewStatus === 'Approved') status = 'completed';
+      else if (reviewStatus === 'Rejected') status = 'failed';
+      else status = 'current';
+    } else {
+      status = 'pending';
+    }
+    return { label: level, status };
+  });
 
   return (
-    <div className="card" style={{ padding: 24, marginBottom: 20 }}>
-      <h3 className="form-section-header">Review Chain</h3>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 20 }}>
-        {REVIEW_LEVEL_ORDER.map((level, i) => (
-          <div key={level} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <div style={{
-              padding: '6px 14px',
-              borderRadius: 20,
-              fontSize: 12,
-              fontWeight: 700,
-              background: i <= currentLevelIndex ? 'var(--accent-primary)' : 'var(--bg-secondary)',
-              color: i <= currentLevelIndex ? 'white' : 'var(--text-muted)',
-            }}>
-              {level}
-            </div>
-            {i < REVIEW_LEVEL_ORDER.length - 1 && (
-              <i className="pi pi-arrow-right" style={{ fontSize: 12, color: 'var(--text-muted)' }} />
-            )}
-          </div>
-        ))}
+    <div className="card" style={{ padding: 'var(--space-5)', marginBottom: 'var(--space-4)' }}>
+      <div style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: 'var(--space-3)' }}>
+        Review Chain
       </div>
-      <div style={{ display: 'flex', gap: 12 }}>
+      <SealChain steps={steps} />
+      <div style={{ display: 'flex', gap: 'var(--space-3)', marginTop: 'var(--space-3)' }}>
         <div>
-          <label style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-secondary)', display: 'block', marginBottom: 4 }}>Current Level</label>
-          <Tag value={reviewLevel ?? 'Draft'} severity={levelSeverity(reviewLevel ?? 'Draft')} />
+          <span style={{ fontFamily: 'var(--font-body)', fontSize: 'var(--text-xs)', color: 'var(--text-muted)' }}>Level </span>
+          <span style={{ fontFamily: 'var(--font-body)', fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--text-heading)' }}>{reviewLevel ?? 'Draft'}</span>
         </div>
         <div>
-          <label style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-secondary)', display: 'block', marginBottom: 4 }}>Status</label>
-          <Tag value={reviewStatus ?? 'Draft'} severity={statusSeverity(reviewStatus ?? 'Draft')} />
+          <span style={{ fontFamily: 'var(--font-body)', fontSize: 'var(--text-xs)', color: 'var(--text-muted)' }}>Status </span>
+          <span style={{ fontFamily: 'var(--font-body)', fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--text-heading)' }}>{reviewStatus ?? 'Draft'}</span>
         </div>
       </div>
     </div>

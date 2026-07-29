@@ -17,23 +17,21 @@ export default function AdminDashboardPage() {
       <div className="page-header">
         <div>
           <h1>Admin Dashboard</h1>
-          <p style={{ color: 'var(--text-secondary)', marginTop: 4 }}>
-            System-wide overview and management
-          </p>
+          <p>System-wide overview and management</p>
         </div>
       </div>
 
       <DashboardFilterBar filters={filters} onChange={setFilters} />
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 20, marginBottom: 28 }}>
-        <KpiCard label="Total Users" value={stats?.totalRegisteredUsers ?? 0} icon="pi pi-users" accent="emerald" isLoading={isLoading} />
-        <KpiCard label="Total Projects" value={stats?.totalProjects ?? 0} icon="pi pi-briefcase" accent="navy" isLoading={isLoading} />
-        <KpiCard label="Surveys Completed" value={stats?.totalSurveysCompleted ?? 0} icon="pi pi-check-square" accent="emerald" isLoading={isLoading} />
-        <KpiCard label="Surveys Pending" value={stats?.totalSurveysPending ?? 0} icon="pi pi-clock" accent="amber" isLoading={isLoading} />
-        <KpiCard label="Open Tickets" value={stats?.totalTicketsOpen ?? 0} icon="pi pi-exclamation-triangle" accent="red" isLoading={isLoading} />
+      <div className="metric-bar" style={{ marginBottom: 'var(--space-6)' }}>
+        <KpiCard label="Users" value={stats?.totalRegisteredUsers ?? 0} icon="pi pi-users" accent="accent" isLoading={isLoading} />
+        <KpiCard label="Projects" value={stats?.totalProjects ?? 0} icon="pi pi-briefcase" accent="success" isLoading={isLoading} />
+        <KpiCard label="Surveys Done" value={stats?.totalSurveysCompleted ?? 0} icon="pi pi-check-square" accent="success" isLoading={isLoading} />
+        <KpiCard label="Surveys Pending" value={stats?.totalSurveysPending ?? 0} icon="pi pi-clock" accent="pending" isLoading={isLoading} />
+        <KpiCard label="Open Tickets" value={stats?.totalTicketsOpen ?? 0} icon="pi pi-exclamation-triangle" accent="danger" isLoading={isLoading} />
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, marginBottom: 20 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-5)', marginBottom: 'var(--space-5)' }}>
         <AttendanceLeaveChart
           attendancePercentage={stats?.overallAttendancePercentage ?? 0}
           isLoading={isLoading}
@@ -41,7 +39,7 @@ export default function AdminDashboardPage() {
         <ProjectProgressChart />
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-5)' }}>
         <TrainingSurveyChart
           completed={stats?.totalSurveysCompleted ?? 0}
           pending={stats?.totalSurveysPending ?? 0}

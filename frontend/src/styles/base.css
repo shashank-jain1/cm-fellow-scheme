@@ -1,7 +1,7 @@
 @import "primereact/resources/themes/lara-light-indigo/theme.css";
 @import "primereact/resources/primereact.min.css";
 @import "primeicons/primeicons.css";
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400;1,9..40,500&family=Source+Sans+3:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap');
 
 *,
 *::before,
@@ -15,13 +15,14 @@ body {
   margin: 0;
   min-height: 100vh;
   overflow-x: hidden;
-  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-  font-size: 14px;
-  line-height: 1.5;
-  color: var(--text-primary);
-  background-color: var(--bg-primary);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: 1.55;
+  color: var(--text-body);
+  background-color: var(--bg-page);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: 'tnum' 1, 'lnum' 1;
   transition: background-color var(--transition-base), color var(--transition-base);
 }
 
@@ -30,19 +31,32 @@ body {
 }
 
 a {
-  color: var(--accent-primary);
+  color: var(--text-link);
   text-decoration: none;
   transition: color var(--transition-fast);
 }
 
 a:hover {
-  color: var(--accent-primary-hover);
+  color: var(--accent-hover);
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: var(--font-display);
   font-weight: 700;
-  color: var(--text-primary);
+  color: var(--text-heading);
   line-height: 1.25;
   letter-spacing: -0.02em;
+}
+
+h1 { font-size: var(--text-3xl); }
+h2 { font-size: var(--text-2xl); }
+h3 { font-size: var(--text-xl); }
+h4 { font-size: var(--text-lg); }
+
+table {
+  font-variant-numeric: tabular-nums;
+}
+
+code, pre, .mono {
+  font-family: var(--font-mono);
 }

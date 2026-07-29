@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { InputText } from 'primereact/inputtext';
-import { Button } from 'primereact/button';
 import { Tag } from 'primereact/tag';
 import FormSelect from '../../../shared/components/FormSelect';
+import { AppButton } from '../../../shared/components/ui';
 import WorkAllocationForm from '../components/WorkAllocationForm';
 import { useWorkAllocationForm } from '../components/form.hook';
 import {
@@ -104,26 +104,19 @@ export default function WorkAllocationPage() {
           <h1>Work Allocation</h1>
           <p>Manage work allocations for CM Fellows</p>
         </div>
-        <Button
-          label="New Allocation"
+        <AppButton
           icon="pi pi-plus"
-          className="btn btn-primary"
           onClick={handleNewAllocation}
-        />
+        >
+          New Allocation
+        </AppButton>
       </div>
 
       {showForm && (
-        <div style={{
-          background: 'var(--bg-card)',
-          borderRadius: 'var(--radius-lg)',
-          padding: 24,
-          marginBottom: 24,
-          border: '1px solid var(--border-color)',
-          boxShadow: 'var(--shadow-sm)',
-        }}>
-          <h2 style={{ marginTop: 0, marginBottom: 20, fontSize: 18, fontWeight: 700 }}>
+        <div className="card" style={{ padding: 'var(--space-6)', marginBottom: 'var(--space-5)' }}>
+          <h3 style={{ marginTop: 0, marginBottom: 'var(--space-5)' }}>
             {editingAllocation ? 'Edit Work Allocation' : 'Create New Work Allocation'}
-          </h2>
+          </h3>
           <WorkAllocationForm
             formData={formData}
             errors={errors}
@@ -139,7 +132,7 @@ export default function WorkAllocationPage() {
         </div>
       )}
 
-      <div style={{ display: 'flex', gap: 12, marginBottom: 24, alignItems: 'center' }}>
+      <div style={{ display: 'flex', gap: 'var(--space-3)', marginBottom: 'var(--space-5)', alignItems: 'center' }}>
         <div className="search-input-wrapper" style={{ flex: '0 0 320px' }}>
           <i className="pi pi-search" />
           <InputText
@@ -161,9 +154,9 @@ export default function WorkAllocationPage() {
 
       <div className="table-wrapper">
         {isLoading ? (
-          <div style={{ padding: 20 }}>
+          <div style={{ padding: 'var(--space-4)' }}>
             {[1, 2, 3, 4, 5].map((n) => (
-              <div key={n} style={{ display: 'flex', gap: 16, padding: '14px 0', borderBottom: '1px solid var(--border-light)' }}>
+              <div key={n} style={{ display: 'flex', gap: 16, padding: '12px 0', borderBottom: '1px solid var(--border)' }}>
                 <div className="skeleton" style={{ width: '15%', height: 14 }} />
                 <div className="skeleton" style={{ width: '20%', height: 14 }} />
                 <div className="skeleton" style={{ width: '15%', height: 14 }} />
@@ -175,19 +168,20 @@ export default function WorkAllocationPage() {
         ) : filtered.length > 0 ? (
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
-              <tr style={{ background: 'var(--bg-primary)' }}>
+              <tr>
                 {['Description', 'Priority', 'Duration', 'Surveys', 'Completion', 'Status', 'Actions'].map((h) => (
                   <th
                     key={h}
                     style={{
-                      padding: '12px 16px',
+                      padding: '10px 16px',
                       textAlign: 'left',
                       fontSize: 12,
-                      fontWeight: 700,
-                      color: 'var(--text-secondary)',
+                      fontWeight: 600,
+                      color: 'var(--text-muted)',
                       textTransform: 'uppercase',
-                      letterSpacing: '0.5px',
-                      borderBottom: '1px solid var(--border-color)',
+                      letterSpacing: '0.04em',
+                      borderBottom: '1px solid var(--border)',
+                      background: 'var(--carbon-50)',
                     }}
                   >
                     {h}
@@ -197,28 +191,28 @@ export default function WorkAllocationPage() {
             </thead>
             <tbody>
               {filtered.map((a) => (
-                <tr key={a.workAllocationId} style={{ borderBottom: '1px solid var(--border-light)' }}>
-                  <td style={{ padding: '14px 16px', fontWeight: 600, fontSize: 14, color: 'var(--text-primary)' }}>
+                <tr key={a.workAllocationId} style={{ borderBottom: '1px solid var(--border)' }}>
+                  <td style={{ padding: '12px 16px', fontWeight: 600, fontSize: 14, color: 'var(--text-heading)' }}>
                     {a.workDescription}
                   </td>
-                  <td style={{ padding: '14px 16px' }}>
+                  <td style={{ padding: '12px 16px' }}>
                     <Tag value={a.priority} severity={prioritySeverity(a.priority)} />
                   </td>
-                  <td style={{ padding: '14px 16px', fontSize: 13, color: 'var(--text-muted)' }}>
+                  <td style={{ padding: '12px 16px', fontSize: 13, color: 'var(--text-muted)' }}>
                     {a.startDate} - {a.endDate}
                   </td>
-                  <td style={{ padding: '14px 16px', fontSize: 14 }}>
+                  <td style={{ padding: '12px 16px', fontSize: 14 }}>
                     {a.surveysPerIntern}
                   </td>
-                  <td style={{ padding: '14px 16px' }}>
+                  <td style={{ padding: '12px 16px' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                      <div style={{ width: 60, height: 4, borderRadius: 2, background: 'var(--border-color)' }}>
+                      <div style={{ width: 60, height: 4, borderRadius: 2, background: 'var(--border)' }}>
                         <div
                           style={{
                             width: `${a.completionPercentage}%`,
                             height: '100%',
                             borderRadius: 2,
-                            background: a.completionPercentage >= 80 ? 'var(--accent-primary)' : 'var(--badge-amber-text)',
+                            background: a.completionPercentage >= 80 ? 'var(--success)' : 'var(--pending)',
                           }}
                         />
                       </div>
@@ -227,23 +221,25 @@ export default function WorkAllocationPage() {
                       </span>
                     </div>
                   </td>
-                  <td style={{ padding: '14px 16px' }}>
+                  <td style={{ padding: '12px 16px' }}>
                     <Tag
                       value={a.status}
                       severity={a.status === 'active' ? 'success' : a.status === 'pending' ? 'warning' : 'secondary'}
                     />
                   </td>
-                  <td style={{ padding: '14px 16px' }}>
+                  <td style={{ padding: '12px 16px' }}>
                     <div style={{ display: 'flex', gap: 8 }}>
-                      <Button
+                      <AppButton
+                        variant="ghost"
+                        size="sm"
                         icon="pi pi-pencil"
-                        className="p-button-text p-button-sm"
                         onClick={() => handleEditAllocation(a)}
                         title="Edit"
                       />
-                      <Button
+                      <AppButton
+                        variant="ghost"
+                        size="sm"
                         icon="pi pi-trash"
-                        className="p-button-text p-button-danger p-button-sm"
                         onClick={() => handleDeleteAllocation(a.workAllocationId)}
                         title="Delete"
                       />

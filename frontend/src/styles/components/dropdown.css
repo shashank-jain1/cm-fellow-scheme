@@ -1,25 +1,25 @@
 /* Dropdown */
 .p-dropdown {
-  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  font-family: var(--font-body) !important;
   border-radius: var(--radius-md) !important;
-  border-color: var(--border-color) !important;
+  border-color: var(--border) !important;
   background-color: var(--bg-input) !important;
   height: 40px !important;
   display: flex !important;
   align-items: center !important;
-  box-shadow: var(--shadow-sm) !important;
 }
 
 .p-dropdown:focus-within {
+  border-color: var(--accent) !important;
   box-shadow: 0 0 0 3px var(--accent-light) !important;
 }
 
 .p-dropdown-panel {
-  background: var(--bg-secondary) !important;
-  border: 1px solid var(--border-color) !important;
+  background: var(--bg-surface) !important;
+  border: 1px solid var(--border) !important;
   border-radius: var(--radius-md) !important;
   box-shadow: var(--shadow-lg) !important;
-  padding: 4px !important;
+  padding: var(--space-1) !important;
   z-index: 1000 !important;
 }
 
@@ -30,16 +30,17 @@
 }
 
 .p-dropdown-item {
-  padding: 8px 12px !important;
+  padding: var(--space-2) var(--space-3) !important;
   border-radius: var(--radius-sm) !important;
-  font-size: 13px !important;
-  color: var(--text-primary) !important;
-  transition: all var(--transition-fast) !important;
+  font-family: var(--font-body) !important;
+  font-size: var(--text-base) !important;
+  color: var(--text-body) !important;
+  transition: background var(--transition-fast) !important;
   cursor: pointer !important;
 }
 
 .p-dropdown-item:hover,
 .p-dropdown-item.p-highlight {
   background: var(--accent-light) !important;
-  color: var(--accent-primary-hover) !important;
+  color: var(--accent) !important;
 }

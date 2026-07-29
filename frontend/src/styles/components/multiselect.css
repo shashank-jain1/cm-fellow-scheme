@@ -9,65 +9,62 @@
 }
 
 .p-multiselect-panel {
-  background: var(--bg-secondary) !important;
-  border: 1px solid var(--border-color) !important;
+  background: var(--bg-surface) !important;
+  border: 1px solid var(--border) !important;
   border-radius: var(--radius-md) !important;
   box-shadow: var(--shadow-lg) !important;
-  padding: 4px !important;
+  padding: var(--space-1) !important;
   z-index: 1000 !important;
-  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  font-family: var(--font-body) !important;
 }
 
 .p-multiselect-items {
   padding: 0 !important;
   margin: 0 !important;
   list-style: none !important;
-  max-height: 200px !important;
+  max-height: 220px !important;
   overflow-y: auto !important;
 }
 
 .p-multiselect-item {
-  padding: 10px 12px !important;
+  padding: var(--space-2) var(--space-3) !important;
   border-radius: var(--radius-sm) !important;
-  font-size: 13px !important;
-  color: var(--text-primary) !important;
-  transition: all var(--transition-fast) !important;
+  font-family: var(--font-body) !important;
+  font-size: var(--text-base) !important;
+  color: var(--text-body) !important;
+  transition: background var(--transition-fast) !important;
   cursor: pointer !important;
   display: flex !important;
   align-items: center !important;
-  gap: 10px !important;
+  gap: var(--space-2) !important;
 }
 
-.p-multiselect-item:hover {
-  background: var(--accent-light) !important;
-  color: var(--accent-primary-hover) !important;
-}
-
+.p-multiselect-item:hover,
 .p-multiselect-item.p-highlight {
   background: var(--accent-light) !important;
-  color: var(--accent-primary-hover) !important;
+  color: var(--accent) !important;
 }
 
 .p-multiselect .p-multiselect-token {
   display: inline-flex !important;
   align-items: center !important;
   gap: 4px !important;
-  padding: 4px 10px !important;
+  padding: 2px 10px !important;
   margin: 2px 4px 2px 0 !important;
   border-radius: var(--radius-sm) !important;
   background: var(--accent-light) !important;
-  color: var(--accent-primary-hover) !important;
-  font-size: 12px !important;
+  color: var(--accent) !important;
+  font-size: var(--text-sm) !important;
   font-weight: 600 !important;
-  font-family: 'Plus Jakarta Sans', sans-serif !important;
-  border: 1px solid var(--border-highlight) !important;
+  font-family: var(--font-body) !important;
+  border: 1px solid var(--accent-muted) !important;
 }
 
 .p-multiselect .p-multiselect-token-icon {
   cursor: pointer !important;
   font-size: 10px !important;
   margin-left: 2px !important;
-  opacity: 0.7 !important;
+  opacity: 0.6 !important;
   transition: opacity var(--transition-fast) !important;
 }
 
@@ -79,36 +76,33 @@
   display: flex !important;
   flex-wrap: wrap !important;
   align-items: center !important;
-  gap: 2px !important;
-  padding: 6px 12px !important;
+  gap: 3px !important;
   line-height: 1.5 !important;
+  font-family: var(--font-body) !important;
 }
 
 .p-multiselect-close {
-  color: var(--text-secondary) !important;
+  color: var(--text-muted) !important;
   background: transparent !important;
   border: none !important;
   cursor: pointer !important;
-  padding: 4px !important;
+  padding: 6px !important;
   border-radius: var(--radius-sm) !important;
   transition: all var(--transition-fast) !important;
 }
 
 .p-multiselect-close:hover {
-  color: var(--accent-primary) !important;
+  color: var(--text-body) !important;
   background: var(--accent-light) !important;
 }
 
 .p-multiselect-header {
-  padding: 8px !important;
-  border-bottom: 1px solid var(--border-color) !important;
+  padding: var(--space-2) !important;
+  border-bottom: 1px solid var(--border) !important;
   background: transparent !important;
 }
 
-.p-multiselect .p-multiselect-label {
-  font-family: 'Plus Jakarta Sans', sans-serif !important;
-}
-
 .p-multiselect:focus-within {
+  border-color: var(--accent) !important;
   box-shadow: 0 0 0 3px var(--accent-light) !important;
 }

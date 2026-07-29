@@ -1,7 +1,7 @@
 import type { ReactNode, ButtonHTMLAttributes } from 'react';
 
 interface AppButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'ghost' | 'danger';
+  variant?: 'primary' | 'secondary' | 'ghost' | 'danger' | 'accent';
   size?: 'sm' | 'md' | 'lg';
   icon?: string;
   loading?: boolean;
@@ -13,6 +13,7 @@ const variantClass: Record<string, string> = {
   secondary: 'btn-secondary',
   ghost: 'btn-ghost',
   danger: 'btn-danger',
+  accent: 'btn-accent',
 };
 
 const sizeClass: Record<string, string> = {
