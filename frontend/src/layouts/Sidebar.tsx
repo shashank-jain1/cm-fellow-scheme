@@ -23,6 +23,7 @@ const attendanceSubItems = [
 const adminNavItems = [
   { path: '/admin/users', label: 'User Management', icon: 'pi pi-users' },
   { path: '/admin/documents', label: 'Document Verification', icon: 'pi pi-file-check' },
+  { path: '/admin/seed', label: 'Seed Data', icon: 'pi pi-database' },
 ];
 
 const certificateSubItems = [

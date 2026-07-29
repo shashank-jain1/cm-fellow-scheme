@@ -27,6 +27,7 @@ import { LocationsPage, ProjectsPage, WorksPage, TrainingSchedulePage } from './
 import DocumentVerificationPage from './features/registration/pages/DocumentVerificationPage';
 import ForgotPasswordPage from './features/registration/pages/ForgotPasswordPage';
 import ResetPasswordPage from './features/registration/pages/ResetPasswordPage';
+import { SeedDataPage } from './features/seed';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -54,6 +55,7 @@ export default function App() {
                 <Route path="registration" element={<RegistrationWizard />} />
                 <Route path="admin/users" element={<UserManagementPage />} />
                 <Route path="admin/documents" element={<DocumentVerificationPage />} />
+                <Route path="admin/seed" element={<SeedDataPage />} />
                 <Route path="training" element={<ActivityCalendar />} />
                 <Route path="training/new" element={<CreateActivityForm />} />
                 <Route path="work-allocation" element={<WorkAllocationPage />} />

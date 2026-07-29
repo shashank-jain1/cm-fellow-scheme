@@ -11,6 +11,7 @@ using CmScheme.Masters.Core.Data;
 using CmScheme.Masters.Core.Entities;
 using CmScheme.Masters.Endpoints;
 using CmScheme.Masters.Infrastructure;
+using CmScheme.Masters.Infrastructure.Data;
 using CmScheme.Api.SeedData;
 using CmScheme.Registration.Core.Data;
 using CmScheme.Registration.Core.Entities;
@@ -18,6 +19,7 @@ using CmScheme.Registration.Endpoints;
 using CmScheme.Registration.Infrastructure;
 using CmScheme.Training.Endpoints;
 using CmScheme.Training.Infrastructure;
+using CmScheme.Training.Infrastructure.Data;
 using CmScheme.WorkAllocation.Endpoints;
 using CmScheme.WorkAllocation.Infrastructure;
 using CmScheme.AttendanceLeave.Endpoints;
@@ -104,6 +106,40 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+
+    using IServiceScope migrationScope = app.Services.CreateScope();
+    IServiceProvider sp = migrationScope.ServiceProvider;
+
+    (string Name, DbContext Context)[] contexts =
+    [
+        ("Masters", sp.GetRequiredService<MastersCommandDbContext>()),
+        ("Registration", sp.GetRequiredService<RegistrationCommandDbContext>()),
+        ("Training", sp.GetRequiredService<TrainingCommandDbContext>()),
+        ("WorkAllocation", sp.GetRequiredService<WorkAllocationDbContext>()),
+        ("AttendanceLeave", sp.GetRequiredService<AttendanceLeaveDbContext>()),
+        ("Certificate", sp.GetRequiredService<CertificateDbContext>()),
+        ("HelpDesk", sp.GetRequiredService<HelpDeskDbContext>()),
+        ("Performance", sp.GetRequiredService<PerformanceDbContext>()),
+    ];
+
+    foreach ((string Name, DbContext Context) in contexts)
+    {
+        try
+        {
+            await Context.Database.MigrateAsync();
+        }
+        catch (Exception)
+        {
+            try
+            {
+                await Context.Database.EnsureCreatedAsync();
+            }
+            catch (Exception)
+            {
+                // Skip context if neither Migrate nor EnsureCreated works
+            }
+        }
+    }
 }
 
 app.UseCors();
