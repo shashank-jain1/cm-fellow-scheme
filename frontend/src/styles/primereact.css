@@ -130,6 +130,9 @@
   border-radius: var(--radius-lg) !important;
   border: 1px solid var(--border) !important;
   box-shadow: var(--shadow-lg) !important;
+  max-height: 85vh !important;
+  display: flex !important;
+  flex-direction: column !important;
 }
 
 .p-dialog-mask {
@@ -139,9 +142,11 @@
 }
 
 .p-dialog-content {
-  padding: 0 var(--space-6) var(--space-6) !important;
-  overflow: visible !important;
+  padding: 0 !important;
+  overflow: hidden !important;
   background: transparent !important;
+  display: flex;
+  flex-direction: column;
 }
 
 .p-dialog .p-dialog-header {

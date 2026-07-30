@@ -32,6 +32,8 @@ export interface ModuleMasterDto {
   moduleName: string;
   description?: string;
   sortOrder: number;
+  parentModuleMasterId?: number;
+  children?: ModuleMasterDto[];
 }
 
 export interface BulkUpdateRequest {

@@ -24,5 +24,11 @@ public sealed class ModuleMasterConfiguration : IEntityTypeConfiguration<ModuleM
 
         builder.HasIndex(mm => mm.ModuleCode)
             .IsUnique();
+
+        builder.HasOne(mm => mm.ParentModule)
+            .WithMany(mm => mm.Children)
+            .HasForeignKey(mm => mm.ParentModuleMasterId)
+            .OnDelete(DeleteBehavior.Restrict)
+            .IsRequired(false);
     }
 }

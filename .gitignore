@@ -94,6 +94,11 @@ frontend/build/
 .env.test.local
 .env.production.local
 
+# App settings with secrets
+appsettings.json
+appsettings.Development.json
+!appsettings.json.example
+
 # Logs
 *.log
 npm-debug.log*

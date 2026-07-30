@@ -306,27 +306,90 @@ static async Task SeedModuleMaster(WebApplication app)
     IRegistrationCommandDbContext dbContext = scope.ServiceProvider
         .GetRequiredService<IRegistrationCommandDbContext>();
 
-    bool anyExists = await dbContext.ModuleMasters.AnyAsync();
-    if (anyExists)
+    bool hasChildren = await dbContext.ModuleMasters.AnyAsync(mm => mm.ParentModuleMasterId != null);
+    if (hasChildren)
     {
         return;
     }
 
-    List<ModuleMaster> modules =
+    bool parentsExist = await dbContext.ModuleMasters.AnyAsync(mm => mm.ParentModuleMasterId == null);
+    if (!parentsExist)
+    {
+        List<ModuleMaster> modules =
+        [
+            new() { ModuleCode = "REGISTRATION", ModuleName = "User Registration & Authentication", SortOrder = 1, IsActive = true, CreatedOn = DateTime.UtcNow },
+            new() { ModuleCode = "TRAINING", ModuleName = "Training Management System", SortOrder = 2, IsActive = true, CreatedOn = DateTime.UtcNow },
+            new() { ModuleCode = "WORK_ALLOCATION", ModuleName = "Work Allocation & Task Management", SortOrder = 3, IsActive = true, CreatedOn = DateTime.UtcNow },
+            new() { ModuleCode = "ATTENDANCE", ModuleName = "Attendance & Leave Management", SortOrder = 4, IsActive = true, CreatedOn = DateTime.UtcNow },
+            new() { ModuleCode = "PERFORMANCE", ModuleName = "Monitoring, Evaluation & Performance", SortOrder = 5, IsActive = true, CreatedOn = DateTime.UtcNow },
+            new() { ModuleCode = "CERTIFICATE", ModuleName = "Certificate & Exit Management", SortOrder = 6, IsActive = true, CreatedOn = DateTime.UtcNow },
+            new() { ModuleCode = "HELP_DESK", ModuleName = "Communication & Help Desk", SortOrder = 7, IsActive = true, CreatedOn = DateTime.UtcNow },
+            new() { ModuleCode = "MASTERS", ModuleName = "Master Data Management", SortOrder = 8, IsActive = true, CreatedOn = DateTime.UtcNow },
+            new() { ModuleCode = "DASHBOARD", ModuleName = "Dashboard & Analytics", SortOrder = 9, IsActive = true, CreatedOn = DateTime.UtcNow },
+            new() { ModuleCode = "ADMINISTRATION", ModuleName = "System Administration", SortOrder = 10, IsActive = true, CreatedOn = DateTime.UtcNow },
+        ];
+
+        dbContext.ModuleMasters.AddRange(modules);
+        await dbContext.SaveChangesAsync();
+    }
+
+    List<ModuleMaster> parents = await dbContext.ModuleMasters
+        .Where(mm => mm.ParentModuleMasterId == null && mm.IsActive)
+        .OrderBy(mm => mm.SortOrder)
+        .ToListAsync();
+
+    int parentReg = parents.First(m => m.ModuleCode == "REGISTRATION").ModuleMasterId;
+    int parentTrain = parents.First(m => m.ModuleCode == "TRAINING").ModuleMasterId;
+    int parentWork = parents.First(m => m.ModuleCode == "WORK_ALLOCATION").ModuleMasterId;
+    int parentAttend = parents.First(m => m.ModuleCode == "ATTENDANCE").ModuleMasterId;
+    int parentPerf = parents.First(m => m.ModuleCode == "PERFORMANCE").ModuleMasterId;
+    int parentCert = parents.First(m => m.ModuleCode == "CERTIFICATE").ModuleMasterId;
+    int parentHelp = parents.First(m => m.ModuleCode == "HELP_DESK").ModuleMasterId;
+    int parentMasters = parents.First(m => m.ModuleCode == "MASTERS").ModuleMasterId;
+    int parentDash = parents.First(m => m.ModuleCode == "DASHBOARD").ModuleMasterId;
+    int parentAdmin = parents.First(m => m.ModuleCode == "ADMINISTRATION").ModuleMasterId;
+
+    List<ModuleMaster> children =
     [
-        new() { ModuleCode = "REGISTRATION", ModuleName = "User Registration & Authentication", SortOrder = 1, IsActive = true, CreatedOn = DateTime.UtcNow },
-        new() { ModuleCode = "TRAINING", ModuleName = "Training Management System", SortOrder = 2, IsActive = true, CreatedOn = DateTime.UtcNow },
-        new() { ModuleCode = "WORK_ALLOCATION", ModuleName = "Work Allocation & Task Management", SortOrder = 3, IsActive = true, CreatedOn = DateTime.UtcNow },
-        new() { ModuleCode = "ATTENDANCE", ModuleName = "Attendance & Leave Management", SortOrder = 4, IsActive = true, CreatedOn = DateTime.UtcNow },
-        new() { ModuleCode = "PERFORMANCE", ModuleName = "Monitoring, Evaluation & Performance", SortOrder = 5, IsActive = true, CreatedOn = DateTime.UtcNow },
-        new() { ModuleCode = "CERTIFICATE", ModuleName = "Certificate & Exit Management", SortOrder = 6, IsActive = true, CreatedOn = DateTime.UtcNow },
-        new() { ModuleCode = "HELP_DESK", ModuleName = "Communication & Help Desk", SortOrder = 7, IsActive = true, CreatedOn = DateTime.UtcNow },
-        new() { ModuleCode = "MASTERS", ModuleName = "Master Data Management", SortOrder = 8, IsActive = true, CreatedOn = DateTime.UtcNow },
-        new() { ModuleCode = "DASHBOARD", ModuleName = "Dashboard & Analytics", SortOrder = 9, IsActive = true, CreatedOn = DateTime.UtcNow },
-        new() { ModuleCode = "ADMINISTRATION", ModuleName = "System Administration", SortOrder = 10, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { ModuleCode = "REG_REGISTRATIONS", ModuleName = "Registrations", SortOrder = 1, ParentModuleMasterId = parentReg, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { ModuleCode = "REG_USER_MGMT", ModuleName = "User Management", SortOrder = 2, ParentModuleMasterId = parentReg, IsActive = true, CreatedOn = DateTime.UtcNow },
+
+        new() { ModuleCode = "TRN_TRAINING", ModuleName = "Training Sessions", SortOrder = 1, ParentModuleMasterId = parentTrain, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { ModuleCode = "TRN_MEETINGS", ModuleName = "Meeting Schedule", SortOrder = 2, ParentModuleMasterId = parentTrain, IsActive = true, CreatedOn = DateTime.UtcNow },
+
+        new() { ModuleCode = "WA_ALLOCATIONS", ModuleName = "Work Allocations", SortOrder = 1, ParentModuleMasterId = parentWork, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { ModuleCode = "WA_TASKS", ModuleName = "Task Progress", SortOrder = 2, ParentModuleMasterId = parentWork, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { ModuleCode = "WA_SURVEYS", ModuleName = "Survey Records", SortOrder = 3, ParentModuleMasterId = parentWork, IsActive = true, CreatedOn = DateTime.UtcNow },
+
+        new() { ModuleCode = "ATT_MARK", ModuleName = "Mark Attendance", SortOrder = 1, ParentModuleMasterId = parentAttend, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { ModuleCode = "ATT_HOLIDAYS", ModuleName = "Holiday Calendar", SortOrder = 2, ParentModuleMasterId = parentAttend, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { ModuleCode = "ATT_LEAVE", ModuleName = "Apply Leave", SortOrder = 3, ParentModuleMasterId = parentAttend, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { ModuleCode = "ATT_LEAVE_STATUS", ModuleName = "Leave Status", SortOrder = 4, ParentModuleMasterId = parentAttend, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { ModuleCode = "ATT_LEAVE_BALANCE", ModuleName = "Leave Balance", SortOrder = 5, ParentModuleMasterId = parentAttend, IsActive = true, CreatedOn = DateTime.UtcNow },
+
+        new() { ModuleCode = "PERF_EVALUATION", ModuleName = "Performance Evaluation", SortOrder = 1, ParentModuleMasterId = parentPerf, IsActive = true, CreatedOn = DateTime.UtcNow },
+
+        new() { ModuleCode = "CERT_QUEUE", ModuleName = "Certificate Queue", SortOrder = 1, ParentModuleMasterId = parentCert, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { ModuleCode = "CERT_APPLY", ModuleName = "Apply for Certificate", SortOrder = 2, ParentModuleMasterId = parentCert, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { ModuleCode = "CERT_EXIT", ModuleName = "Exit Management", SortOrder = 3, ParentModuleMasterId = parentCert, IsActive = true, CreatedOn = DateTime.UtcNow },
+
+        new() { ModuleCode = "HD_TICKETS", ModuleName = "Help Desk Tickets", SortOrder = 1, ParentModuleMasterId = parentHelp, IsActive = true, CreatedOn = DateTime.UtcNow },
+
+        new() { ModuleCode = "MAS_LOCATIONS", ModuleName = "Locations", SortOrder = 1, ParentModuleMasterId = parentMasters, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { ModuleCode = "MAS_PROJECTS", ModuleName = "Projects", SortOrder = 2, ParentModuleMasterId = parentMasters, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { ModuleCode = "MAS_WORKS", ModuleName = "Works", SortOrder = 3, ParentModuleMasterId = parentMasters, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { ModuleCode = "MAS_TRAINING", ModuleName = "Training Schedule", SortOrder = 4, ParentModuleMasterId = parentMasters, IsActive = true, CreatedOn = DateTime.UtcNow },
+
+        new() { ModuleCode = "DASH_OVERVIEW", ModuleName = "Dashboard Overview", SortOrder = 1, ParentModuleMasterId = parentDash, IsActive = true, CreatedOn = DateTime.UtcNow },
+
+        new() { ModuleCode = "ADM_USER_MGMT", ModuleName = "User Management", SortOrder = 1, ParentModuleMasterId = parentAdmin, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { ModuleCode = "ADM_ACCESS", ModuleName = "User Access Management", SortOrder = 2, ParentModuleMasterId = parentAdmin, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { ModuleCode = "ADM_AUDIT", ModuleName = "Access Audit Log", SortOrder = 3, ParentModuleMasterId = parentAdmin, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { ModuleCode = "ADM_DOCS", ModuleName = "Document Verification", SortOrder = 4, ParentModuleMasterId = parentAdmin, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { ModuleCode = "ADM_SEED", ModuleName = "Seed Data", SortOrder = 5, ParentModuleMasterId = parentAdmin, IsActive = true, CreatedOn = DateTime.UtcNow },
     ];
 
-    dbContext.ModuleMasters.AddRange(modules);
+    dbContext.ModuleMasters.AddRange(children);
     await dbContext.SaveChangesAsync();
 }
 
@@ -356,21 +419,58 @@ static async Task SeedAdminModuleAccess(WebApplication app)
         .Where(mm => mm.IsActive)
         .ToListAsync();
 
-    List<UserModuleAccess> adminAccess = modules.Select(mm => new UserModuleAccess
-    {
-        UserAccountId = admin.UserAccountId,
-        ModuleMasterId = mm.ModuleMasterId,
-        CanRead = true,
-        CanWrite = true,
-        CanApprove = true,
-        CanExport = true,
-        IsActive = true,
-        CreatedOn = DateTime.UtcNow,
-        CreatedBy = admin.UserAccountId,
-    }).ToList();
+    bool adminAccessExists = await dbContext.UserModuleAccesses
+        .AnyAsync(uma => uma.UserAccountId == admin.UserAccountId);
 
-    dbContext.UserModuleAccesses.AddRange(adminAccess);
-    await dbContext.SaveChangesAsync();
+    if (!adminAccessExists)
+    {
+        List<UserModuleAccess> adminAccess = modules.Select(mm => new UserModuleAccess
+        {
+            UserAccountId = admin.UserAccountId,
+            ModuleMasterId = mm.ModuleMasterId,
+            CanRead = true,
+            CanWrite = true,
+            CanApprove = true,
+            CanExport = true,
+            IsActive = true,
+            CreatedOn = DateTime.UtcNow,
+            CreatedBy = admin.UserAccountId,
+        }).ToList();
+
+        dbContext.UserModuleAccesses.AddRange(adminAccess);
+        await dbContext.SaveChangesAsync();
+    }
+    else
+    {
+        List<int> existingModuleIds = await dbContext.UserModuleAccesses
+            .Where(uma => uma.UserAccountId == admin.UserAccountId)
+            .Select(uma => uma.ModuleMasterId)
+            .ToListAsync();
+
+        List<int> newModuleIds = modules
+            .Where(mm => !existingModuleIds.Contains(mm.ModuleMasterId))
+            .Select(mm => mm.ModuleMasterId)
+            .ToList();
+
+        if (newModuleIds.Count > 0)
+        {
+            List<UserModuleAccess> newAccess = newModuleIds.Select(moduleId => new UserModuleAccess
+            {
+                UserAccountId = admin.UserAccountId,
+                ModuleMasterId = moduleId,
+                CanRead = true,
+                CanWrite = true,
+                CanApprove = true,
+                CanExport = true,
+                IsActive = true,
+                CreatedOn = DateTime.UtcNow,
+                CreatedBy = admin.UserAccountId,
+            }).ToList();
+
+            dbContext.UserModuleAccesses.AddRange(newAccess);
+            await dbContext.SaveChangesAsync();
+        }
+    }
 }
 
 static async Task SeedAdminUserRole(WebApplication app)

@@ -14,6 +14,8 @@ public sealed record ListModulesResult
     public string ModuleName { get; init; } = null!;
     public string? Description { get; init; }
     public int SortOrder { get; init; }
+    public int? ParentModuleMasterId { get; init; }
+    public List<ListModulesResult> Children { get; init; } = new();
 }
 
 public sealed class ListModulesQueryHandler(IRegistrationCommandDbContext dbContext)
@@ -23,7 +25,7 @@ public sealed class ListModulesQueryHandler(IRegistrationCommandDbContext dbCont
         ListModulesQuery request,
         CancellationToken cancellationToken)
     {
-        List<ListModulesResult> modules = await dbContext.ModuleMasters
+        List<ListModulesResult> allModules = await dbContext.ModuleMasters
             .Where(mm => mm.IsActive)
             .OrderBy(mm => mm.SortOrder)
             .Select(mm => new ListModulesResult
@@ -33,9 +35,23 @@ public sealed class ListModulesQueryHandler(IRegistrationCommandDbContext dbCont
                 ModuleName = mm.ModuleName,
                 Description = mm.Description,
                 SortOrder = mm.SortOrder,
+                ParentModuleMasterId = mm.ParentModuleMasterId,
             })
             .ToListAsync(cancellationToken);
 
-        return Result<List<ListModulesResult>>.Success(modules);
+        List<ListModulesResult> parents = allModules
+            .Where(m => m.ParentModuleMasterId == null)
+            .ToList();
+
+        List<ListModulesResult> result = new();
+        foreach (ListModulesResult parent in parents)
+        {
+            List<ListModulesResult> children = allModules
+                .Where(m => m.ParentModuleMasterId == parent.ModuleMasterId)
+                .ToList();
+            result.Add(parent with { Children = children });
+        }
+
+        return Result<List<ListModulesResult>>.Success(result);
     }
 }

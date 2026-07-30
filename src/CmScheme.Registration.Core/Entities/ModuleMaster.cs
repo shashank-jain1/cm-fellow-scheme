@@ -22,5 +22,11 @@ public class ModuleMaster
 
     public bool IsActive { get; set; } = true;
 
+    public int? ParentModuleMasterId { get; set; }
+
+    public ModuleMaster? ParentModule { get; set; }
+
+    public ICollection<ModuleMaster> Children { get; set; } = new List<ModuleMaster>();
+
     public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
 }
