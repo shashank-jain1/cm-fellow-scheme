@@ -78,7 +78,7 @@ builder.Services.AddAuthorization(options =>
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
-builder.Services.AddSingleton<IAuthorizationHandler, ModuleAuthorizationHandler>();
+builder.Services.AddScoped<IAuthorizationHandler, ModuleAuthorizationHandler>();
 
 builder.Services.AddMediator(options => options.ServiceLifetime = ServiceLifetime.Scoped);
 
@@ -165,6 +165,7 @@ await SeedAdminUser(app);
 await SeedLookupMasters(app);
 await SeedModuleMaster(app);
 await SeedAdminModuleAccess(app);
+await SeedAdminUserRole(app);
 await LocationSeedData.SeedAsync(app.Services.CreateScope().ServiceProvider.GetRequiredService<IMastersCommandDbContext>());
 
 app.Run();
@@ -369,5 +370,39 @@ static async Task SeedAdminModuleAccess(WebApplication app)
     }).ToList();
 
     dbContext.UserModuleAccesses.AddRange(adminAccess);
+    await dbContext.SaveChangesAsync();
+}
+
+static async Task SeedAdminUserRole(WebApplication app)
+{
+    using IServiceScope scope = app.Services.CreateScope();
+    IRegistrationCommandDbContext dbContext = scope.ServiceProvider
+        .GetRequiredService<IRegistrationCommandDbContext>();
+
+    UserAccount? admin = await dbContext.UserAccounts
+        .FirstOrDefaultAsync(ua => ua.Username == "admin");
+
+    if (admin == null)
+    {
+        return;
+    }
+
+    bool roleExists = await dbContext.UserRoles
+        .AnyAsync(ur => ur.UserAccountId == admin.UserAccountId);
+
+    if (roleExists)
+    {
+        return;
+    }
+
+    dbContext.UserRoles.Add(new UserRole
+    {
+        UserAccountId = admin.UserAccountId,
+        RoleLookupId = 1,
+        IsActive = true,
+        CreatedOn = DateTime.UtcNow,
+        CreatedBy = admin.UserAccountId,
+    });
+
     await dbContext.SaveChangesAsync();
 }

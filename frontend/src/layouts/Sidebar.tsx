@@ -1,14 +1,14 @@
 import { useEffect, useState, useCallback } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useAuth } from '../features/auth';
+import { useAuth, useRoleAccess } from '../features/auth';
 
 const navItems = [
-  { path: '/dashboard', label: 'Dashboard', icon: 'pi pi-home' },
-  { path: '/registration', label: 'Registration', icon: 'pi pi-user-plus' },
-  { path: '/training', label: 'Training', icon: 'pi pi-calendar' },
-  { path: '/work-allocation', label: 'Work Allocation', icon: 'pi pi-briefcase' },
-  { path: '/performance', label: 'Performance', icon: 'pi pi-chart-bar' },
-  { path: '/help-desk', label: 'Help Desk', icon: 'pi pi-question-circle' },
+  { path: '/dashboard', label: 'Dashboard', icon: 'pi pi-home', moduleCode: 'DASHBOARD' },
+  { path: '/registration', label: 'Registration', icon: 'pi pi-user-plus', moduleCode: 'REGISTRATION' },
+  { path: '/training', label: 'Training', icon: 'pi pi-calendar', moduleCode: 'TRAINING' },
+  { path: '/work-allocation', label: 'Work Allocation', icon: 'pi pi-briefcase', moduleCode: 'WORK_ALLOCATION' },
+  { path: '/performance', label: 'Performance', icon: 'pi pi-chart-bar', moduleCode: 'PERFORMANCE' },
+  { path: '/help-desk', label: 'Help Desk', icon: 'pi pi-question-circle', moduleCode: 'HELP_DESK' },
 ];
 
 const attendanceSubItems = [
@@ -21,10 +21,11 @@ const attendanceSubItems = [
 ];
 
 const adminNavItems = [
-  { path: '/admin/users', label: 'User Management', icon: 'pi pi-users' },
-  { path: '/admin/access', label: 'User Access Management', icon: 'pi pi-key' },
-  { path: '/admin/documents', label: 'Document Verification', icon: 'pi pi-file-check' },
-  { path: '/admin/seed', label: 'Seed Data', icon: 'pi pi-database' },
+  { path: '/admin/users', label: 'User Management', icon: 'pi pi-users', moduleCode: 'REGISTRATION' },
+  { path: '/admin/access', label: 'User Access Management', icon: 'pi pi-key', moduleCode: 'ADMINISTRATION' },
+  { path: '/admin/access/audit', label: 'Access Audit Log', icon: 'pi pi-history', moduleCode: 'ADMINISTRATION' },
+  { path: '/admin/documents', label: 'Document Verification', icon: 'pi pi-file-check', moduleCode: 'REGISTRATION' },
+  { path: '/admin/seed', label: 'Seed Data', icon: 'pi pi-database', moduleCode: 'ADMINISTRATION' },
 ];
 
 const certificateSubItems = [
@@ -117,6 +118,15 @@ export default function Sidebar({ collapsed, onToggleCollapsed, width = 260, onW
   /** Exact-match active check for sub-items */
   const isExactActive = (itemPath: string) => location.pathname === itemPath;
 
+  /** Check if user can see a module (Admin sees all) */
+  const canSeeModule = (moduleCode: string) => {
+    if (user?.role === 'Admin') return true;
+    const access = user?.modules?.[moduleCode];
+    return access != null && access.canRead;
+  };
+
+  const visibleNavItems = navItems.filter(item => canSeeModule(item.moduleCode));
+
   return (
     <aside
       className={`sidebar ${collapsed ? 'sidebar--collapsed' : ''}`}
@@ -157,7 +167,7 @@ export default function Sidebar({ collapsed, onToggleCollapsed, width = 260, onW
       </div>
 
       <nav className="sidebar-nav">
-        {navItems.map((item) => {
+        {visibleNavItems.map((item) => {
           const isActive = location.pathname === item.path || (item.path !== '/dashboard' && location.pathname.startsWith(item.path));
           return (
             <Link

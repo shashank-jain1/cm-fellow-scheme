@@ -2,6 +2,16 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { moduleAccessApi } from './api';
 import type { BulkUpdateRequest, GrantAccessRequest } from './types';
 
+export function useAuditLogQuery(params?: { userAccountId?: number; moduleMasterId?: number; pageNumber?: number; pageSize?: number }) {
+  return useQuery({
+    queryKey: ['audit-logs', params],
+    queryFn: async () => {
+      const res = await moduleAccessApi.fetchAuditLogs({ ...params, pageSize: params?.pageSize ?? 50, pageNumber: params?.pageNumber ?? 1 });
+      return res.data ?? [];
+    },
+  });
+}
+
 export function useAllModuleAccessQuery() {
   return useQuery({
     queryKey: ['moduleAccess', 'all'],

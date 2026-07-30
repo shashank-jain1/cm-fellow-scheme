@@ -63,3 +63,21 @@ export interface GrantAccessRequest {
   districtId?: number;
   blockId?: number;
 }
+
+export interface AuditLogEntry {
+  moduleAccessAuditLogId: number;
+  userModuleAccessId: number;
+  userAccountId: number;
+  username: string;
+  fullName: string;
+  moduleMasterId: number;
+  moduleCode: string;
+  moduleName: string;
+  action: string;
+  oldValues?: string;
+  newValues?: string;
+  performedBy: number;
+  performerName: string;
+  performedOn: string;
+  reason?: string;
+}

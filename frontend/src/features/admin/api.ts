@@ -26,4 +26,14 @@ export const moduleAccessApi = {
 
   fetchModules: () =>
     ApiService.get<ModuleMasterDto[]>(MODULE_MASTER_URL),
+
+  fetchAuditLogs: (params?: { userAccountId?: number; moduleMasterId?: number; pageSize?: number; pageNumber?: number }) => {
+    const queryString = new URLSearchParams();
+    if (params?.userAccountId) queryString.set('userAccountId', String(params.userAccountId));
+    if (params?.moduleMasterId) queryString.set('moduleMasterId', String(params.moduleMasterId));
+    if (params?.pageSize) queryString.set('pageSize', String(params.pageSize));
+    if (params?.pageNumber) queryString.set('pageNumber', String(params.pageNumber));
+    const qs = queryString.toString();
+    return ApiService.get(`${USER_MODULE_ACCESS_URL}/audit-logs${qs ? '?' + qs : ''}`);
+  },
 };

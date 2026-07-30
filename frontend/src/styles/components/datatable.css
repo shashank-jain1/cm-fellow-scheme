@@ -80,3 +80,58 @@
 .p-datatable .p-datatable-tbody > tr.p-datatable-emptymessage {
   background: transparent !important;
 }
+
+/* Sort icons — compact inline arrows via CSS */
+.p-datatable .p-datatable-thead > tr > th.p-sortable-column {
+  cursor: pointer !important;
+  user-select: none;
+}
+
+.p-datatable .p-datatable-thead > tr > th.p-sortable-column:hover {
+  background: var(--carbon-100) !important;
+}
+
+/* Nuke ALL PrimeReact sort SVGs/icons in header */
+.p-datatable .p-datatable-thead > tr > th svg,
+.p-datatable .p-datatable-thead > tr > th span[class*="sort"],
+.p-datatable .p-datatable-thead > tr > th span[class*="icon"] {
+  display: none !important;
+  visibility: hidden !important;
+  width: 0 !important;
+  height: 0 !important;
+  overflow: hidden !important;
+}
+
+/* Sort arrows — same line as text, inline-block */
+.p-datatable .p-datatable-thead > tr > th.p-sortable-column {
+  display: table-cell !important;
+  white-space: nowrap !important;
+  vertical-align: middle !important;
+}
+
+/* Sort arrows — on same line as text */
+.p-datatable .p-datatable-thead > tr > th.p-sortable-column .p-column-title {
+  display: inline !important;
+}
+
+.p-datatable .p-datatable-thead > tr > th.p-sortable-column .p-column-title::after {
+  content: ' ⇅' !important;
+  font-size: 11px !important;
+  color: var(--text-muted) !important;
+  opacity: 0.6 !important;
+  margin-left: 4px !important;
+  vertical-align: middle !important;
+  line-height: 1 !important;
+}
+
+.p-datatable .p-datatable-thead > tr > th.p-sortable-column.p-highlight .p-column-title::after {
+  content: ' ↑' !important;
+  color: var(--accent) !important;
+  opacity: 1 !important;
+}
+
+.p-datatable .p-datatable-thead > tr > th.p-sortable-column[aria-sort="descending"] .p-column-title::after {
+  content: ' ↓' !important;
+  color: var(--accent) !important;
+  opacity: 1 !important;
+}

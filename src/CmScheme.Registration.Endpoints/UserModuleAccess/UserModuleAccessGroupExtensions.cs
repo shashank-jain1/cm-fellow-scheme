@@ -33,6 +33,18 @@ public static class UserModuleAccessGroupExtensions
             .WithName("RevokeModuleAccess")
             .WithDisplayName("Revoke module access");
 
+        RouteGroupBuilder moduleGroup = builder.MapGroup("/module-master")
+            .WithTags("Module Master")
+            .RequireAuthorization();
+
+        moduleGroup.MapGet("/", ListModulesEndpoint.Handle)
+            .WithName("ListModules")
+            .WithDisplayName("List all active modules");
+
+        group.MapGet("/audit-logs", GetAuditLogEndpoint.Handle)
+            .WithName("GetAuditLogs")
+            .WithDisplayName("Get access audit logs");
+
         return builder;
     }
 }
