@@ -10,6 +10,8 @@ public interface ITrainingCommandDbContext
     DbSet<TrainingSchedule> TrainingSchedules { get; }
     DbSet<TrainingParticipant> TrainingParticipants { get; }
     DbSet<MeetingParticipant> MeetingParticipants { get; }
+    DbSet<TrainingMaterial> TrainingMaterials { get; }
+    DbSet<TrainingMaterialUpload> TrainingMaterialUploads { get; }
     int SaveChanges();
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

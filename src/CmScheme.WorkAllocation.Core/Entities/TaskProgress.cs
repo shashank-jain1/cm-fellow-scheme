@@ -13,4 +13,9 @@ public class TaskProgress
     public DateTime? CompletionDate { get; set; }
     public string WorkStatus { get; set; } = null!;
     public decimal CompletionPercentage { get; set; }
+    public int? UserAccountId { get; set; }
+    public string? ProgressNotes { get; set; }
+    public int? ProgressPercentage { get; set; }
+    public string? FellowProgressStatus { get; set; }
+    public DateTime? CreatedOn { get; set; }
 }

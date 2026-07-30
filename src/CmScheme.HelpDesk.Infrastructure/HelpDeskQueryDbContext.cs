@@ -15,4 +15,7 @@ public class HelpDeskQueryDbContext : IHelpDeskQueryDbContext
 
     public IQueryable<Ticket> Tickets => _dbContext.Tickets;
     public IQueryable<TicketActionLog> TicketActionLogs => _dbContext.TicketActionLogs;
+    public IQueryable<SlaPolicy> SlaPolicies => _dbContext.SlaPolicies;
+    public IQueryable<SlaEscalationLog> SlaEscalationLogs => _dbContext.SlaEscalationLogs;
+    public IQueryable<TicketSatisfactionSurvey> TicketSatisfactionSurveys => _dbContext.TicketSatisfactionSurveys;
 }

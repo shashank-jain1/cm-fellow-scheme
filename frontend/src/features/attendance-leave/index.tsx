@@ -10,6 +10,7 @@ export { default as AttendanceStatusBadge } from './components/AttendanceStatusB
 export { default as ApplyLeaveForm } from './components/ApplyLeaveForm';
 export { default as LeaveApprovalQueue } from './components/LeaveApprovalQueue';
 export { default as LeaveBalanceCard } from './components/LeaveBalanceCard';
+export { default as CheckOutButton } from './components/CheckOutButton';
 export { useApplyLeaveForm } from './components/form.hook';
 
 export {
@@ -23,6 +24,8 @@ export {
   useCreateHoliday,
   useUpdateHoliday,
   useDeleteHoliday,
+  useCheckOutMutation,
+  useMonthlyReport,
 } from './queries';
 
 export type {

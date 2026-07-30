@@ -119,5 +119,6 @@ public static class Statuses
         public const string High = "High";
         public const string Medium = "Medium";
         public const string Low = "Low";
+        public const string Critical = "Critical";
     }
 }

@@ -1,6 +1,8 @@
 using Ardalis.Result;
 using Mediator;
 using Microsoft.EntityFrameworkCore;
+using CmScheme.Common.Core;
+using CmScheme.Common.Core.Services;
 using CmScheme.Registration.Core.Data;
 using CmScheme.Registration.Core.Entities;
 
@@ -23,7 +25,9 @@ public sealed record ApplyLeaveResult
     public string ApplicationNumber { get; init; } = null!;
 }
 
-public sealed class ApplyLeaveCommandHandler(IRegistrationCommandDbContext dbContext)
+public sealed class ApplyLeaveCommandHandler(
+    IRegistrationCommandDbContext dbContext,
+    INotificationService notificationService)
     : ICommandHandler<ApplyLeaveCommand, Result<ApplyLeaveResult>>
 {
     public async ValueTask<Result<ApplyLeaveResult>> Handle(
@@ -57,6 +61,18 @@ public sealed class ApplyLeaveCommandHandler(IRegistrationCommandDbContext dbCon
         if (balance.RemainingDays < numberOfDays)
             return Result<ApplyLeaveResult>.Invalid(new ValidationError($"Insufficient leave balance. Remaining: {balance.RemainingDays}, Requested: {numberOfDays}."));
 
+        bool hasConflict = await dbContext.LeaveApplications
+            .AnyAsync(la =>
+                la.UserAccountId == request.UserAccountId &&
+                la.Status != "Cancelled" &&
+                la.Status != "Rejected" &&
+                la.FromDate <= request.ToDate &&
+                la.ToDate >= request.FromDate,
+                cancellationToken);
+
+        if (hasConflict)
+            return Result<ApplyLeaveResult>.Invalid(new ValidationError("Leave overlaps with an existing approved or pending leave application."));
+
         string applicationNumber = await GenerateApplicationNumberAsync(cancellationToken);
 
         LeaveApplication application = new()
@@ -77,6 +93,32 @@ public sealed class ApplyLeaveCommandHandler(IRegistrationCommandDbContext dbCon
 
         dbContext.LeaveApplications.Add(application);
         await dbContext.SaveChangesAsync(cancellationToken);
+
+        LeaveType? appliedLeaveType = await dbContext.LeaveTypes
+            .FirstOrDefaultAsync(lt => lt.LeaveTypeId == request.LeaveTypeId, cancellationToken);
+
+        string leaveTypeName = appliedLeaveType?.TypeName ?? "Leave";
+
+        List<Core.Entities.UserAccount> coordinators = await dbContext.UserAccounts
+            .Include(ua => ua.Applicant)
+            .Where(ua => ua.Role == Statuses.ReviewLevel.Coordinator && ua.IsActive)
+            .ToListAsync(cancellationToken);
+
+        string subject = "New Leave Application Submitted";
+        string body = $"A new {leaveTypeName} leave application ({application.ApplicationNumber}) " +
+            $"has been submitted by User #{application.UserAccountId} " +
+            $"from {application.FromDate:dd/MM/yyyy} to {application.ToDate:dd/MM/yyyy} " +
+            $"({application.NumberOfDays} day(s)).\n\n" +
+            $"Please review and approve/reject this application.";
+
+        foreach (Core.Entities.UserAccount coordinator in coordinators)
+        {
+            string? email = coordinator.Applicant?.EmailId;
+            if (!string.IsNullOrWhiteSpace(email))
+            {
+                await notificationService.SendEmailAsync(email, subject, body, cancellationToken);
+            }
+        }
 
         return Result<ApplyLeaveResult>.Success(new ApplyLeaveResult
         {

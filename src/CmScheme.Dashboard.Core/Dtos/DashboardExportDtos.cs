@@ -1,0 +1,35 @@
+namespace CmScheme.Dashboard.Core.Dtos;
+
+public sealed class DashboardWidgetDto
+{
+    public int WidgetId { get; init; }
+    public string WidgetName { get; init; } = null!;
+    public string WidgetType { get; init; } = null!;
+    public string RoleAccess { get; init; } = null!;
+    public int SortOrder { get; init; }
+    public string? LatestData { get; init; }
+}
+
+public sealed class RoleDashboardDto
+{
+    public string Role { get; init; } = null!;
+    public List<DashboardWidgetDto> Widgets { get; init; } = [];
+}
+
+public sealed class FellowDashboardDto
+{
+    public int TotalTickets { get; init; }
+    public int OpenTickets { get; init; }
+    public decimal AttendancePercentage { get; init; }
+    public int PendingTasks { get; init; }
+    public int CompletedTasks { get; init; }
+    public decimal PerformanceScore { get; init; }
+}
+
+public sealed class DashboardExportDto
+{
+    public string Format { get; init; } = null!;
+    public byte[] FileContents { get; init; } = [];
+    public string FileName { get; init; } = null!;
+    public string ContentType { get; init; } = null!;
+}

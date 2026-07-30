@@ -18,6 +18,9 @@ public static class CertificateGroupExtensions
         group.MapGet("/status", GetStatus.Handle);
         group.MapPost("/{certificateId:int}/generate", Generate.Handle);
         group.MapGet("/{certificateId:int}/download", Download.Handle);
+        group.MapPost("/{applicantId:int}/completion-certificate", GenerateCompletionCertificate.Handle);
+        group.MapPost("/{applicantId:int}/experience-letter", GenerateExperienceLetter.Handle);
+        group.MapGet("/verify/{certificateNumber}", VerifyCertificate.Handle);
 
         return builder;
     }

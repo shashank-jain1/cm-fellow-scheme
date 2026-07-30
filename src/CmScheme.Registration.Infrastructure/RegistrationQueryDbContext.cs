@@ -14,4 +14,6 @@ public sealed class RegistrationQueryDbContext : RegistrationDbContext, IRegistr
     IQueryable<Applicant> IRegistrationQueryDbContext.Applicants => Applicants;
 
     IQueryable<UserAccount> IRegistrationQueryDbContext.UserAccounts => UserAccounts;
+
+    IQueryable<ExitInterview> IRegistrationQueryDbContext.ExitInterviews => ExitInterviews;
 }

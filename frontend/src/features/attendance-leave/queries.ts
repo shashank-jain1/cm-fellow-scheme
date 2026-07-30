@@ -6,6 +6,7 @@ import type {
   ApproveLeaveCommand,
   CreateHolidayCommand,
   UpdateHolidayCommand,
+  CheckOutAttendanceCommand,
 } from './types';
 
 export function useMarkAttendance() {
@@ -95,6 +96,25 @@ export function useDeleteHoliday() {
   return useMutation({
     mutationFn: (holidayId: number) => attendanceLeaveApi.deleteHoliday(holidayId),
     onSuccess: () => qc.invalidateQueries({ queryKey: ['holidays'] }),
+  });
+}
+
+export function useCheckOutMutation() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (data: CheckOutAttendanceCommand) => attendanceLeaveApi.checkOutAttendance(data),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['attendance'] }),
+  });
+}
+
+export function useMonthlyReport(month: number, year: number) {
+  return useQuery({
+    queryKey: ['attendance', 'monthlyReport', month, year],
+    queryFn: async () => {
+      const res = await attendanceLeaveApi.getMonthlyReport(month, year);
+      return res.data ?? null;
+    },
+    enabled: !!month && !!year,
   });
 }
 

@@ -9,5 +9,8 @@ public interface IWorkAllocationCommandDbContext
     DbSet<WorkAllocationEntity> WorkAllocations { get; }
     DbSet<TaskProgress> TaskProgresses { get; }
     DbSet<SurveyRecord> SurveyRecords { get; }
+    DbSet<TaskVerification> TaskVerifications { get; }
+    DbSet<TaskAttachment> TaskAttachments { get; }
+    DbSet<TaskDeadline> TaskDeadlines { get; }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

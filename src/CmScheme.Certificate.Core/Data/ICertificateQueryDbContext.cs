@@ -7,4 +7,5 @@ public interface ICertificateQueryDbContext
 {
     IQueryable<CertificateApplication> CertificateApplications { get; }
     IQueryable<ExitRecord> ExitRecords { get; }
+    IQueryable<CertificateVerification> CertificateVerifications { get; }
 }

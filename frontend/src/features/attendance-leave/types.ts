@@ -86,6 +86,18 @@ export interface UpdateHolidayCommand {
   isOptional: boolean;
 }
 
+export interface CheckOutAttendanceCommand {
+  applicantId: number;
+  attendanceDate: string;
+}
+
+export interface MonthlyAttendanceReportDto {
+  attendanceDays: number;
+  totalHours: number;
+  absentDays: number;
+  leaveDays: number;
+}
+
 export interface PayrollSummaryDto {
   payrollAttendanceSummaryId: number;
   applicantId: number;

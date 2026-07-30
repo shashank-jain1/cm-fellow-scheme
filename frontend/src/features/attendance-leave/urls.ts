@@ -7,5 +7,6 @@ export const ATTENDANCE_LEAVE_URLS = {
   APPROVE_LEAVE: 'leave/approve',
   HOLIDAYS: 'holidays',
   CHECKOUT: 'attendance/checkout',
+  ATTENDANCE_REPORT_MONTHLY: 'attendance/report/monthly',
   PAYROLL_SUMMARY: 'attendance/payroll-summary',
 };

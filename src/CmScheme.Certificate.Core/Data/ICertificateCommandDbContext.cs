@@ -7,5 +7,6 @@ public interface ICertificateCommandDbContext
 {
     DbSet<CertificateApplication> CertificateApplications { get; }
     DbSet<ExitRecord> ExitRecords { get; }
+    DbSet<CertificateVerification> CertificateVerifications { get; }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

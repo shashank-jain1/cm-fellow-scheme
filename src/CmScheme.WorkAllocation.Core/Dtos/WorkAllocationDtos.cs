@@ -53,3 +53,47 @@ public sealed class SurveyRecordDto
     public decimal? Latitude { get; init; }
     public decimal? Longitude { get; init; }
 }
+
+public sealed class TaskVerificationDto
+{
+    public int TaskVerificationId { get; init; }
+    public int WorkAllocationId { get; init; }
+    public int VerifiedBy { get; init; }
+    public string VerificationStatus { get; init; } = null!;
+    public string? Comments { get; init; }
+    public DateTime? VerifiedOn { get; init; }
+}
+
+public sealed class TaskAttachmentDto
+{
+    public int TaskAttachmentId { get; init; }
+    public int WorkAllocationId { get; init; }
+    public int UserAccountId { get; init; }
+    public string FileName { get; init; } = null!;
+    public string FilePath { get; init; } = null!;
+    public long FileSize { get; init; }
+    public string ContentType { get; init; } = null!;
+    public DateTime CreatedOn { get; init; }
+}
+
+public sealed class TaskDeadlineDto
+{
+    public int TaskDeadlineId { get; init; }
+    public int WorkAllocationId { get; init; }
+    public DateTime DeadlineDate { get; init; }
+    public int ReminderDaysBefore { get; init; }
+    public bool IsOverdue { get; init; }
+    public DateTime? LastReminderSentOn { get; init; }
+    public DateTime CreatedOn { get; init; }
+}
+
+public sealed class FellowTaskProgressDto
+{
+    public int TaskProgressId { get; init; }
+    public int WorkAllocationId { get; init; }
+    public int? UserAccountId { get; init; }
+    public string? ProgressNotes { get; init; }
+    public int? ProgressPercentage { get; init; }
+    public string? FellowProgressStatus { get; init; }
+    public DateTime? CreatedOn { get; init; }
+}

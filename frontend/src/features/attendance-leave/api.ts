@@ -12,6 +12,8 @@ import type {
   CreateHolidayCommand,
   UpdateHolidayCommand,
   PayrollSummaryDto,
+  CheckOutAttendanceCommand,
+  MonthlyAttendanceReportDto,
 } from './types';
 
 export const attendanceLeaveApi = {
@@ -44,6 +46,14 @@ export const attendanceLeaveApi = {
 
   deleteHoliday: (holidayId: number) =>
     ApiService.delete<void>(`${ATTENDANCE_LEAVE_URLS.HOLIDAYS}/${holidayId}`),
+
+  checkOutAttendance: (data: CheckOutAttendanceCommand) =>
+    ApiService.put<void>(ATTENDANCE_LEAVE_URLS.CHECKOUT, data),
+
+  getMonthlyReport: (month: number, year: number) =>
+    ApiService.get<MonthlyAttendanceReportDto>(
+      `${ATTENDANCE_LEAVE_URLS.ATTENDANCE_REPORT_MONTHLY}?month=${month}&year=${year}`
+    ),
 
   getPayrollSummary: (payrollMonth?: string, applicantId?: number) => {
     const params = new URLSearchParams();

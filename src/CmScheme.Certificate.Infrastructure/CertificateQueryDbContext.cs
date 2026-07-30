@@ -15,4 +15,5 @@ public class CertificateQueryDbContext : ICertificateQueryDbContext
 
     public IQueryable<CertificateApplication> CertificateApplications => _dbContext.CertificateApplications;
     public IQueryable<ExitRecord> ExitRecords => _dbContext.ExitRecords;
+    public IQueryable<CertificateVerification> CertificateVerifications => _dbContext.CertificateVerifications;
 }

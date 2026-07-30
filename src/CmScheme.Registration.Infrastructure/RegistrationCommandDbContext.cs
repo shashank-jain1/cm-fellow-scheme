@@ -35,6 +35,8 @@ public sealed class RegistrationCommandDbContext : RegistrationDbContext, IRegis
 
     DbSet<TicketCategory> IRegistrationCommandDbContext.TicketCategories => TicketCategories;
 
+    DbSet<ExitInterview> IRegistrationCommandDbContext.ExitInterviews => ExitInterviews;
+
     async Task<int> IRegistrationCommandDbContext.SaveChangesAsync(CancellationToken cancellationToken)
     {
         return await base.SaveChangesAsync(cancellationToken);

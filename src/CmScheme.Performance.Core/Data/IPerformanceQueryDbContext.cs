@@ -7,4 +7,6 @@ public interface IPerformanceQueryDbContext
 {
     IQueryable<PerformanceEvaluation> PerformanceEvaluations { get; }
     IQueryable<PerformanceReviewHistory> PerformanceReviewHistories { get; }
+    IQueryable<SelfAssessment> SelfAssessments { get; }
+    IQueryable<PerformanceReviewCycle> PerformanceReviewCycles { get; }
 }

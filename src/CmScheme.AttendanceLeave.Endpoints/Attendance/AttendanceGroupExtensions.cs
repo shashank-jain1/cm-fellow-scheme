@@ -15,6 +15,7 @@ public static class AttendanceGroupExtensions
         group.MapPost("/", Mark.Handle);
         group.MapPut("/checkout", CheckOut.Handle);
         group.MapGet("/history", GetHistory.Handle);
+        group.MapGet("/report/monthly", GetMonthlyReport.Handle);
         group.MapGet("/payroll-summary", GetPayrollSummary.Handle);
 
         return builder;

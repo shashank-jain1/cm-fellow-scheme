@@ -35,6 +35,8 @@ public abstract class RegistrationDbContext : BaseDbContext
 
     public DbSet<TicketCategory> TicketCategories => Set<TicketCategory>();
 
+    public DbSet<ExitInterview> ExitInterviews => Set<ExitInterview>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -50,5 +52,6 @@ public abstract class RegistrationDbContext : BaseDbContext
         modelBuilder.ApplyConfiguration(new AuditLogConfiguration());
         modelBuilder.ApplyConfiguration(new TrainingEnrollmentConfiguration());
         modelBuilder.ApplyConfiguration(new TicketCategoryConfiguration());
+        modelBuilder.ApplyConfiguration(new ExitInterviewConfiguration());
     }
 }

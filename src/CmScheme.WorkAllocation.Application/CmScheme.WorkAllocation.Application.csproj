@@ -5,6 +5,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\CmScheme.WorkAllocation.Core\CmScheme.WorkAllocation.Core.csproj" />
     <ProjectReference Include="..\CmScheme.Common.Core\CmScheme.Common.Core.csproj" />
   </ItemGroup>

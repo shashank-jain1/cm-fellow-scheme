@@ -9,4 +9,5 @@ public interface ITrainingQueryDbContext
     DatabaseFacade Database { get; }
     DbSet<TrainingSchedule> TrainingSchedules { get; }
     DbSet<TrainingParticipant> TrainingParticipants { get; }
+    DbSet<TrainingMaterial> TrainingMaterials { get; }
 }

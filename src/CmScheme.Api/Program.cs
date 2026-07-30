@@ -105,7 +105,7 @@ builder.Services
     .AddPerformanceApis().AddPerformanceServices(connectionString).AddPerformanceInfrastructure(connectionString)
     .AddCertificateApis().AddCertificateServices(connectionString).AddCertificateInfrastructure(connectionString)
     .AddHelpDeskApis().AddHelpDeskServices(connectionString).AddHelpDeskInfrastructure(connectionString)
-    .AddDashboardApis().AddDashboardServices(connectionString).AddDashboardInfrastructure();
+    .AddDashboardApis().AddDashboardServices(connectionString).AddDashboardInfrastructure(connectionString);
 
 builder.Services.Configure<FileStorageOptions>(builder.Configuration.GetSection("FileStorage"));
 builder.Services.AddScoped<IFileUploadService, LocalFileUploadService>();

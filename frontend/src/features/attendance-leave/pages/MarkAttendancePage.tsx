@@ -1,6 +1,7 @@
 import { useAuth } from '../../auth/useAuth';
 import FaceCaptureWidget from '../components/FaceCaptureWidget';
 import AttendanceStatusBadge from '../components/AttendanceStatusBadge';
+import CheckOutButton from '../components/CheckOutButton';
 import { useMarkAttendance, useAttendanceHistory } from '../queries';
 
 export default function MarkAttendancePage() {
@@ -106,6 +107,15 @@ export default function MarkAttendancePage() {
                   {lastRecord.latitude.toFixed(4)}, {lastRecord.longitude.toFixed(4)}
                 </span>
               </div>
+              {!lastRecord.checkOutTime && (
+                <div style={{ marginTop: 8 }}>
+                  <CheckOutButton
+                    applicantId={user?.userAccountId ?? 0}
+                    attendanceDate={new Date().toISOString().split('T')[0]}
+                    disabled={markAttendance.isPending}
+                  />
+                </div>
+              )}
             </div>
           ) : (
             <div className="empty-state">

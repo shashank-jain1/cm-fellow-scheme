@@ -10,6 +10,7 @@ public class CertificateDbContext : BaseDbContext, ICertificateCommandDbContext,
 {
     public DbSet<CertificateApplication> CertificateApplications => Set<CertificateApplication>();
     public DbSet<ExitRecord> ExitRecords => Set<ExitRecord>();
+    public DbSet<CertificateVerification> CertificateVerifications => Set<CertificateVerification>();
 
     public CertificateDbContext(DbContextOptions<CertificateDbContext> options)
         : base(options)
@@ -21,8 +22,10 @@ public class CertificateDbContext : BaseDbContext, ICertificateCommandDbContext,
         base.OnModelCreating(modelBuilder);
         modelBuilder.ApplyConfiguration(new CertificateApplicationConfiguration());
         modelBuilder.ApplyConfiguration(new ExitRecordConfiguration());
+        modelBuilder.ApplyConfiguration(new CertificateVerificationConfiguration());
     }
 
     IQueryable<CertificateApplication> ICertificateQueryDbContext.CertificateApplications => CertificateApplications;
     IQueryable<ExitRecord> ICertificateQueryDbContext.ExitRecords => ExitRecords;
+    IQueryable<CertificateVerification> ICertificateQueryDbContext.CertificateVerifications => CertificateVerifications;
 }

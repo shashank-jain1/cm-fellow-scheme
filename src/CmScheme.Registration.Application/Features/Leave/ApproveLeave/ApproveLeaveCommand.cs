@@ -1,6 +1,7 @@
 using Ardalis.Result;
 using Mediator;
 using Microsoft.EntityFrameworkCore;
+using CmScheme.Common.Core.Services;
 using CmScheme.Registration.Core.Data;
 using CmScheme.Registration.Core.Entities;
 
@@ -14,7 +15,9 @@ public sealed record ApproveLeaveCommand : ICommand<Result<bool>>
     public string? Remarks { get; init; }
 }
 
-public sealed class ApproveLeaveCommandHandler(IRegistrationCommandDbContext dbContext)
+public sealed class ApproveLeaveCommandHandler(
+    IRegistrationCommandDbContext dbContext,
+    INotificationService notificationService)
     : ICommandHandler<ApproveLeaveCommand, Result<bool>>
 {
     public async ValueTask<Result<bool>> Handle(
@@ -25,6 +28,9 @@ public sealed class ApproveLeaveCommandHandler(IRegistrationCommandDbContext dbC
             return Result<bool>.Invalid(new ValidationError("Action must be 'Approved' or 'Rejected'."));
 
         LeaveApplication? application = await dbContext.LeaveApplications
+            .Include(la => la.UserAccount)
+                .ThenInclude(ua => ua!.Applicant)
+            .Include(la => la.LeaveType)
             .FirstOrDefaultAsync(la => la.LeaveApplicationId == request.LeaveApplicationId, cancellationToken);
 
         if (application is null)
@@ -32,6 +38,13 @@ public sealed class ApproveLeaveCommandHandler(IRegistrationCommandDbContext dbC
 
         if (application.Status != "Pending")
             return Result<bool>.Invalid(new ValidationError($"Leave application is already {application.Status}."));
+
+        Core.Entities.UserAccount? approver = await dbContext.UserAccounts
+            .FirstOrDefaultAsync(ua => ua.UserAccountId == request.ApprovedBy, cancellationToken);
+
+        string approverName = approver?.Username ?? "Approver";
+        string leaveTypeName = application.LeaveType?.TypeName ?? "Leave";
+        string fellowName = application.UserAccount?.Username ?? "Fellow";
 
         application.Status = request.Action;
         application.ApprovedBy = request.ApprovedBy;
@@ -56,6 +69,19 @@ public sealed class ApproveLeaveCommandHandler(IRegistrationCommandDbContext dbC
         }
 
         await dbContext.SaveChangesAsync(cancellationToken);
+
+        string subject = $"Leave {request.Action}";
+        string body = $"Dear {fellowName},\n\n" +
+            $"Your {leaveTypeName} leave from {application.FromDate:dd/MM/yyyy} to {application.ToDate:dd/MM/yyyy} " +
+            $"has been {request.Action.ToLower()} by {approverName}.\n\n" +
+            $"Remarks: {request.Remarks ?? "None"}\n\n" +
+            $"Thank you.";
+
+        string? fellowEmail = application.UserAccount?.Applicant?.EmailId;
+        if (!string.IsNullOrWhiteSpace(fellowEmail))
+        {
+            await notificationService.SendEmailAsync(fellowEmail, subject, body, cancellationToken);
+        }
 
         return Result<bool>.Success(true);
     }

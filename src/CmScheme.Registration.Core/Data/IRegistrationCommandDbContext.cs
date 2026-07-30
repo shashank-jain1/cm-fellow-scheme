@@ -29,5 +29,7 @@ public interface IRegistrationCommandDbContext
 
     DbSet<TicketCategory> TicketCategories { get; }
 
+    DbSet<ExitInterview> ExitInterviews { get; }
+
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

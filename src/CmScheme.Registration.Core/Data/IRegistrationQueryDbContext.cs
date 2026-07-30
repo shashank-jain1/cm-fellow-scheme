@@ -8,4 +8,6 @@ public interface IRegistrationQueryDbContext
     IQueryable<Applicant> Applicants { get; }
 
     IQueryable<UserAccount> UserAccounts { get; }
+
+    IQueryable<ExitInterview> ExitInterviews { get; }
 }
