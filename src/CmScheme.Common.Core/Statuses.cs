@@ -111,6 +111,7 @@ public static class Statuses
         public const string Absent = "Absent";
         public const string Verified = "Verified";
         public const string NotVerified = "Not Verified";
+        public const string CheckedOut = "CheckedOut";
     }
 
     public static class Priority

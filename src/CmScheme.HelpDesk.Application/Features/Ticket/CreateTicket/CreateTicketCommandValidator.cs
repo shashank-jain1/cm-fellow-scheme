@@ -22,7 +22,8 @@ public sealed class CreateTicketCommandValidator : AbstractValidator<CreateTicke
             .NotEmpty().WithMessage("IssueDescription is required.")
             .MaximumLength(2000).WithMessage("IssueDescription must not exceed 2000 characters.");
         RuleFor(x => x.Priority)
-            .NotEmpty().WithMessage("Priority is required.")
             .MaximumLength(20).WithMessage("Priority must not exceed 20 characters.");
+        RuleFor(x => x.CategoryId)
+            .GreaterThan(0).When(x => x.CategoryId.HasValue).WithMessage("CategoryId must be greater than 0 when provided.");
     }
 }

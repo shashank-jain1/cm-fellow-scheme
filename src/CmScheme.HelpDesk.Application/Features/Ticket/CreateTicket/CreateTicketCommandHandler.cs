@@ -2,24 +2,51 @@ using Ardalis.Result;
 using CmScheme.Common.Core;
 using CmScheme.HelpDesk.Core.Data;
 using CmScheme.HelpDesk.Core.Entities;
+using CmScheme.Registration.Core.Data;
 using Mediator;
+using Microsoft.EntityFrameworkCore;
 using TicketEntity = CmScheme.HelpDesk.Core.Entities.Ticket;
 
 namespace CmScheme.HelpDesk.Application.Features.Ticket.CreateTicket;
 
-public sealed class CreateTicketCommandHandler(IHelpDeskCommandDbContext dbContext)
+public sealed class CreateTicketCommandHandler(
+    IHelpDeskCommandDbContext helpDeskDbContext,
+    IRegistrationCommandDbContext registrationDbContext)
     : ICommandHandler<CreateTicketCommand, Result<int>>
 {
     public async ValueTask<Result<int>> Handle(CreateTicketCommand request, CancellationToken cancellationToken)
     {
         DateTime now = DateTime.UtcNow;
-        TimeSpan slaWindow = request.Priority switch
+
+        string priority = request.Priority ?? Statuses.Priority.Medium;
+
+        if (request.CategoryId.HasValue)
+        {
+            var category = await registrationDbContext.TicketCategories
+                .FirstOrDefaultAsync(tc => tc.TicketCategoryId == request.CategoryId.Value && tc.IsActive, cancellationToken);
+
+            if (category != null && string.IsNullOrEmpty(request.Priority))
+            {
+                priority = category.DefaultPriority;
+            }
+        }
+
+        TimeSpan slaWindow = priority switch
         {
             "High" => TimeSpan.FromHours(24),
             "Medium" => TimeSpan.FromHours(72),
             "Low" => TimeSpan.FromHours(168),
             _ => TimeSpan.FromHours(72),
         };
+
+        int? assignedTo = null;
+        var adminUser = await registrationDbContext.UserAccounts
+            .FirstOrDefaultAsync(ua => ua.Role == "Admin" && ua.IsActive, cancellationToken);
+
+        if (adminUser != null)
+        {
+            assignedTo = adminUser.UserAccountId;
+        }
 
         TicketEntity ticket = new TicketEntity
         {
@@ -28,15 +55,17 @@ public sealed class CreateTicketCommandHandler(IHelpDeskCommandDbContext dbConte
             Mobile = request.Mobile,
             IssueCategory = request.IssueCategory,
             IssueDescription = request.IssueDescription,
-            Priority = request.Priority,
+            Priority = priority,
             Status = Statuses.Ticket.Open,
+            CategoryId = request.CategoryId,
+            AssignedTo = assignedTo,
             SLADeadline = now.Add(slaWindow),
             SLABreached = false,
             CreatedOn = now
         };
 
-        dbContext.Tickets.Add(ticket);
-        await dbContext.SaveChangesAsync(cancellationToken);
+        helpDeskDbContext.Tickets.Add(ticket);
+        await helpDeskDbContext.SaveChangesAsync(cancellationToken);
 
         TicketActionLog actionLog = new TicketActionLog
         {
@@ -47,8 +76,8 @@ public sealed class CreateTicketCommandHandler(IHelpDeskCommandDbContext dbConte
             CreatedOn = DateTime.UtcNow
         };
 
-        dbContext.TicketActionLogs.Add(actionLog);
-        await dbContext.SaveChangesAsync(cancellationToken);
+        helpDeskDbContext.TicketActionLogs.Add(actionLog);
+        await helpDeskDbContext.SaveChangesAsync(cancellationToken);
 
         return Result<int>.Success(ticket.TicketId);
     }

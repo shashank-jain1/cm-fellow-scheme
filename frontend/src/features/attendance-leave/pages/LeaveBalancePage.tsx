@@ -1,19 +1,19 @@
 import { useLeaveBalance } from '../queries';
+import { useAuth } from '../../auth';
 import LeaveBalanceCard from '../components/LeaveBalanceCard';
+import PageHeader from '../../../shared/components/ui/PageHeader';
 
 export default function LeaveBalancePage() {
-  const { data: balances, isLoading } = useLeaveBalance();
+  const { user } = useAuth();
+  const currentYear = new Date().getFullYear();
+  const { data: balances, isLoading } = useLeaveBalance(user?.userAccountId ?? 0, currentYear);
 
   return (
     <div>
-      <div className="page-header">
-        <div>
-          <h1>Leave Balance</h1>
-          <p style={{ color: 'var(--text-secondary)', marginTop: 4 }}>
-            View your leave balance by type
-          </p>
-        </div>
-      </div>
+      <PageHeader
+        title="Leave Balance"
+        subtitle={`View your leave balance for ${currentYear}`}
+      />
 
       {isLoading ? (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 16 }}>
@@ -24,7 +24,7 @@ export default function LeaveBalancePage() {
       ) : balances && balances.length > 0 ? (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 16 }}>
           {balances.map((balance) => (
-            <LeaveBalanceCard key={balance.leaveType} balance={balance} />
+            <LeaveBalanceCard key={balance.leaveBalanceId} balance={balance} />
           ))}
         </div>
       ) : (

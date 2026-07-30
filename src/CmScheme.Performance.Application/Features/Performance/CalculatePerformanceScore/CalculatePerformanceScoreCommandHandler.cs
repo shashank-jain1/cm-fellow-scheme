@@ -21,24 +21,44 @@ public sealed class CalculatePerformanceScoreCommandHandler(IPerformanceCommandD
             return Result.NotFound("Performance evaluation not found.");
         }
 
-        decimal completionScore = evaluation.TotalSurveysAssigned > 0
-            ? (decimal)evaluation.SurveysCompleted / evaluation.TotalSurveysAssigned * 40
+        // Survey completion rate (40%): completed / assigned
+        decimal surveyCompletionRate = evaluation.TotalSurveysAssigned > 0
+            ? (decimal)evaluation.SurveysCompleted / evaluation.TotalSurveysAssigned
             : 0;
+        decimal surveyCompletionScore = surveyCompletionRate * 40;
 
-        decimal attendanceScore = evaluation.WorkingDays > 0
-            ? (decimal)evaluation.AttendanceDays / evaluation.WorkingDays * 30
+        // Attendance percentage (30%): attendance days / working days
+        decimal attendanceRate = evaluation.WorkingDays > 0
+            ? (decimal)evaluation.AttendanceDays / evaluation.WorkingDays
             : 0;
+        decimal attendanceScore = attendanceRate * 30;
 
-        decimal qualityScore = evaluation.ApprovedSurveys > 0
-            ? (decimal)evaluation.ApprovedSurveys / (evaluation.ApprovedSurveys + evaluation.RejectedSurveys) * 30
+        // Quality score (20%): approved surveys / total surveys
+        int totalSurveys = evaluation.ApprovedSurveys + evaluation.RejectedSurveys;
+        decimal qualityRate = totalSurveys > 0
+            ? (decimal)evaluation.ApprovedSurveys / totalSurveys
             : 0;
+        decimal qualityScore = qualityRate * 20;
 
-        evaluation.PerformanceScore = Math.Round(completionScore + attendanceScore + qualityScore, 2);
-        evaluation.QualityScore = Math.Round(qualityScore * 100 / 30, 2);
-        evaluation.CompletionPercentage = evaluation.TotalSurveysAssigned > 0
-            ? Math.Round((decimal)evaluation.SurveysCompleted / evaluation.TotalSurveysAssigned * 100, 2)
-            : 0;
+        // Supervisor rating (10%): rating 1-5 scaled to 100
+        decimal supervisorScore = 0;
+        if (evaluation.SupervisorRating.HasValue && evaluation.SupervisorRating > 0)
+        {
+            decimal scaledRating = Math.Clamp(evaluation.SupervisorRating.Value, 1, 5);
+            supervisorScore = (scaledRating / 5) * 100 * 0.10m;
+        }
 
+        // Compute final score (0-100)
+        evaluation.PerformanceScore = Math.Round(
+            surveyCompletionScore + attendanceScore + qualityScore + supervisorScore, 2);
+
+        // Store quality score as percentage (0-100)
+        evaluation.QualityScore = Math.Round(qualityRate * 100, 2);
+
+        // Store completion percentage (0-100)
+        evaluation.CompletionPercentage = Math.Round(surveyCompletionRate * 100, 2);
+
+        // Assign grade
         evaluation.PerformanceGrade = evaluation.PerformanceScore switch
         {
             >= 90 => "A+",
@@ -49,6 +69,7 @@ public sealed class CalculatePerformanceScoreCommandHandler(IPerformanceCommandD
             _ => "D"
         };
 
+        // Assign status
         evaluation.PerformanceStatus = evaluation.PerformanceScore switch
         {
             >= 80 => "Excellent",

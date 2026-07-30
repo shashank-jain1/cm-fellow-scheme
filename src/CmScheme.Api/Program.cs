@@ -34,6 +34,7 @@ using CmScheme.Dashboard.Endpoints;
 using CmScheme.Dashboard.Infrastructure;
 
 using CmScheme.Common.Core.Services;
+using CmScheme.Common.Infrastructure.Services;
 using CmScheme.Api.Authorization;
 using CmScheme.Api.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -106,7 +107,12 @@ builder.Services
     .AddHelpDeskApis().AddHelpDeskServices(connectionString).AddHelpDeskInfrastructure(connectionString)
     .AddDashboardApis().AddDashboardServices(connectionString).AddDashboardInfrastructure();
 
-builder.Services.AddScoped<INotificationService, StubNotificationService>();
+builder.Services.Configure<FileStorageOptions>(builder.Configuration.GetSection("FileStorage"));
+builder.Services.AddScoped<IFileUploadService, LocalFileUploadService>();
+
+builder.Services.AddScoped<IAuditService, AuditService>();
+builder.Services.AddScoped<INotificationService, SmtpNotificationService>();
+builder.Services.AddScoped<IOtpService, InMemoryOtpService>();
 builder.Services.AddSingleton<IBusinessKeyGenerator, BusinessKeyGenerator>();
 
 WebApplication app = builder.Build();
@@ -157,6 +163,8 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseMiddleware<CmScheme.Api.Middleware.AuditMiddleware>();
+
 app.UseStaticFiles();
 
 app.MapApiEndpoints("/api/v1");
@@ -166,6 +174,8 @@ await SeedLookupMasters(app);
 await SeedModuleMaster(app);
 await SeedAdminModuleAccess(app);
 await SeedAdminUserRole(app);
+await SeedLeaveTypes(app);
+await SeedTicketCategories(app);
 await LocationSeedData.SeedAsync(app.Services.CreateScope().ServiceProvider.GetRequiredService<IMastersCommandDbContext>());
 
 app.Run();
@@ -504,5 +514,55 @@ static async Task SeedAdminUserRole(WebApplication app)
         CreatedBy = admin.UserAccountId,
     });
 
+    await dbContext.SaveChangesAsync();
+}
+
+static async Task SeedLeaveTypes(WebApplication app)
+{
+    using IServiceScope scope = app.Services.CreateScope();
+    IRegistrationCommandDbContext dbContext = scope.ServiceProvider
+        .GetRequiredService<IRegistrationCommandDbContext>();
+
+    bool anyExists = await dbContext.LeaveTypes.AnyAsync();
+    if (anyExists)
+    {
+        return;
+    }
+
+    List<LeaveType> leaveTypes =
+    [
+        new() { TypeName = "Casual Leave", Code = "CL", DefaultDays = 8, IsActive = true, SortOrder = 1, CreatedOn = DateTime.UtcNow },
+        new() { TypeName = "Medical Leave", Code = "ML", DefaultDays = 12, IsActive = true, SortOrder = 2, CreatedOn = DateTime.UtcNow },
+        new() { TypeName = "Earned Leave", Code = "EL", DefaultDays = 15, IsActive = true, SortOrder = 3, CreatedOn = DateTime.UtcNow },
+        new() { TypeName = "Leave Without Pay", Code = "LWP", DefaultDays = 0, IsActive = true, SortOrder = 4, CreatedOn = DateTime.UtcNow },
+    ];
+
+    dbContext.LeaveTypes.AddRange(leaveTypes);
+    await dbContext.SaveChangesAsync();
+}
+
+static async Task SeedTicketCategories(WebApplication app)
+{
+    using IServiceScope scope = app.Services.CreateScope();
+    IRegistrationCommandDbContext dbContext = scope.ServiceProvider
+        .GetRequiredService<IRegistrationCommandDbContext>();
+
+    bool anyExists = await dbContext.TicketCategories.AnyAsync();
+    if (anyExists)
+    {
+        return;
+    }
+
+    List<TicketCategory> categories =
+    [
+        new() { CategoryName = "Login Issue", Description = "Problems related to login and authentication", DefaultPriority = "High", IsActive = true, SortOrder = 1, CreatedOn = DateTime.UtcNow },
+        new() { CategoryName = "Attendance Issue", Description = "Problems related to attendance marking or records", DefaultPriority = "Medium", IsActive = true, SortOrder = 2, CreatedOn = DateTime.UtcNow },
+        new() { CategoryName = "Survey Issue", Description = "Problems related to survey forms or submissions", DefaultPriority = "Medium", IsActive = true, SortOrder = 3, CreatedOn = DateTime.UtcNow },
+        new() { CategoryName = "Technical Issue", Description = "General technical problems or bugs", DefaultPriority = "Medium", IsActive = true, SortOrder = 4, CreatedOn = DateTime.UtcNow },
+        new() { CategoryName = "Payment Issue", Description = "Problems related to payments or financial transactions", DefaultPriority = "High", IsActive = true, SortOrder = 5, CreatedOn = DateTime.UtcNow },
+        new() { CategoryName = "Other", Description = "Any other issues not covered above", DefaultPriority = "Low", IsActive = true, SortOrder = 6, CreatedOn = DateTime.UtcNow },
+    ];
+
+    dbContext.TicketCategories.AddRange(categories);
     await dbContext.SaveChangesAsync();
 }

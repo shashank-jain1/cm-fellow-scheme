@@ -2,7 +2,8 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { attendanceLeaveApi } from './api';
 import type {
   MarkAttendanceCommand,
-  LeaveApplicationFormData,
+  ApplyLeaveCommand,
+  ApproveLeaveCommand,
   CreateHolidayCommand,
   UpdateHolidayCommand,
 } from './types';
@@ -28,36 +29,37 @@ export function useAttendanceHistory() {
 export function useApplyLeave() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: (data: LeaveApplicationFormData) => attendanceLeaveApi.applyLeave(data),
+    mutationFn: (data: ApplyLeaveCommand) => attendanceLeaveApi.applyLeave(data),
     onSuccess: () => qc.invalidateQueries({ queryKey: ['leaveStatus'] }),
   });
 }
 
-export function useLeaveStatus() {
+export function useLeaveStatus(userAccountId: number) {
   return useQuery({
-    queryKey: ['leaveStatus'],
+    queryKey: ['leaveStatus', userAccountId],
     queryFn: async () => {
-      const res = await attendanceLeaveApi.getLeaveStatus();
+      const res = await attendanceLeaveApi.getLeaveStatus(userAccountId);
       return res.data ?? [];
     },
+    enabled: !!userAccountId,
   });
 }
 
-export function useLeaveBalance() {
+export function useLeaveBalance(userAccountId: number, year: number) {
   return useQuery({
-    queryKey: ['leaveBalance'],
+    queryKey: ['leaveBalance', userAccountId, year],
     queryFn: async () => {
-      const res = await attendanceLeaveApi.getLeaveBalance();
+      const res = await attendanceLeaveApi.getLeaveBalance(userAccountId, year);
       return res.data ?? [];
     },
+    enabled: !!userAccountId && !!year,
   });
 }
 
 export function useApproveLeave() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: (command: { LeaveApplicationNo: string; ApprovalStatus: string; Remarks?: string }) =>
-      attendanceLeaveApi.approveLeave(command),
+    mutationFn: (command: ApproveLeaveCommand) => attendanceLeaveApi.approveLeave(command),
     onSuccess: () => qc.invalidateQueries({ queryKey: ['leaveStatus'] }),
   });
 }

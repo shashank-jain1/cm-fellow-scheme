@@ -1,31 +1,37 @@
 import { useState } from 'react';
-import { Button } from 'primereact/button';
 import { AppTextarea } from '../../../shared/components/forms';
+import AppButton from '../../../shared/components/ui/AppButton';
 import { useLeaveStatus, useApproveLeave } from '../queries';
-import AttendanceStatusBadge from './AttendanceStatusBadge';
+import StatusTag from '../../../shared/components/ui/StatusTag';
+import { useAuth } from '../../auth';
 
 export default function LeaveApprovalQueue() {
-  const { data: leaveStatuses, isLoading } = useLeaveStatus();
+  const { user } = useAuth();
+  const { data: leaveStatuses, isLoading } = useLeaveStatus(user?.userAccountId ?? 0);
   const approveMutation = useApproveLeave();
-  const [remarksMap, setRemarksMap] = useState<Record<string, string>>({});
+  const [remarksMap, setRemarksMap] = useState<Record<number, string>>({});
 
   const pendingLeaves = (leaveStatuses ?? []).filter(
-    (l) => l.approvalStatus === 'pending' || l.approvalStatus === 'Pending'
+    (l) => l.status === 'Pending'
   );
 
-  const handleApprove = (applicationNo: string) => {
+  const handleApprove = (leaveApplicationId: number) => {
+    if (!user) return;
     approveMutation.mutate({
-      LeaveApplicationNo: applicationNo,
-      ApprovalStatus: 'Approved',
-      Remarks: remarksMap[applicationNo],
+      leaveApplicationId,
+      approvedBy: user.userAccountId,
+      action: 'Approved',
+      remarks: remarksMap[leaveApplicationId],
     });
   };
 
-  const handleReject = (applicationNo: string) => {
+  const handleReject = (leaveApplicationId: number) => {
+    if (!user) return;
     approveMutation.mutate({
-      LeaveApplicationNo: applicationNo,
-      ApprovalStatus: 'Rejected',
-      Remarks: remarksMap[applicationNo],
+      leaveApplicationId,
+      approvedBy: user.userAccountId,
+      action: 'Rejected',
+      remarks: remarksMap[leaveApplicationId],
     });
   };
 
@@ -57,7 +63,7 @@ export default function LeaveApprovalQueue() {
     <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
       {pendingLeaves.map((request) => (
         <div
-          key={request.leaveApplicationNo}
+          key={request.leaveApplicationId}
           style={{
             padding: 20,
             border: '1px solid var(--border-color)',
@@ -68,19 +74,24 @@ export default function LeaveApprovalQueue() {
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12 }}>
             <div>
               <div style={{ fontSize: 15, fontWeight: 600, color: 'var(--text-primary)' }}>
-                {request.employeeName}
+                {request.applicationNumber}
               </div>
               <div style={{ fontSize: 13, color: 'var(--text-secondary)', marginTop: 4 }}>
-                {request.leaveType} — {request.leavePeriod} ({request.numberOfDays} day{request.numberOfDays > 1 ? 's' : ''})
+                {request.leaveTypeName} — {request.fromDate} to {request.toDate} ({request.numberOfDays} day{request.numberOfDays > 1 ? 's' : ''})
               </div>
+              {request.reason && (
+                <div style={{ fontSize: 13, color: 'var(--text-muted)', marginTop: 4 }}>
+                  Reason: {request.reason}
+                </div>
+              )}
             </div>
-            <AttendanceStatusBadge status={request.approvalStatus} />
+            <StatusTag value={request.status} />
           </div>
 
           <AppTextarea
-            value={remarksMap[request.leaveApplicationNo] || ''}
+            value={remarksMap[request.leaveApplicationId] || ''}
             onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-              setRemarksMap((prev) => ({ ...prev, [request.leaveApplicationNo]: e.target.value }))
+              setRemarksMap((prev) => ({ ...prev, [request.leaveApplicationId]: e.target.value }))
             }
             placeholder="Add remarks (optional)"
             rows={2}
@@ -88,20 +99,21 @@ export default function LeaveApprovalQueue() {
           />
 
           <div style={{ display: 'flex', gap: 12 }}>
-            <Button
-              label="Approve"
+            <AppButton
+              loading={approveMutation.isPending}
+              onClick={() => handleApprove(request.leaveApplicationId)}
               icon="pi pi-check"
-              className="btn btn-primary"
+            >
+              Approve
+            </AppButton>
+            <AppButton
+              variant="danger"
               loading={approveMutation.isPending}
-              onClick={() => handleApprove(request.leaveApplicationNo)}
-            />
-            <Button
-              label="Reject"
+              onClick={() => handleReject(request.leaveApplicationId)}
               icon="pi pi-times"
-              className="btn btn-danger"
-              loading={approveMutation.isPending}
-              onClick={() => handleReject(request.leaveApplicationNo)}
-            />
+            >
+              Reject
+            </AppButton>
           </div>
         </div>
       ))}

@@ -10,5 +10,6 @@ public sealed record CreateTicketCommand : ICommand<Result<int>>
     public string Mobile { get; init; } = null!;
     public string IssueCategory { get; init; } = null!;
     public string IssueDescription { get; init; } = null!;
-    public string Priority { get; init; } = null!;
+    public string? Priority { get; init; }
+    public int? CategoryId { get; init; }
 }

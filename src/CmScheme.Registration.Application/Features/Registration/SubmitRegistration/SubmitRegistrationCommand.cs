@@ -1,5 +1,6 @@
 using Ardalis.Result;
 using Mediator;
+using Microsoft.AspNetCore.Http;
 
 namespace CmScheme.Registration.Application.Features.Registration.SubmitRegistration;
 
@@ -29,8 +30,8 @@ public sealed record SubmitRegistrationCommand : ICommand<Result<int>>
     public int PassingYear { get; init; }
     public decimal PercentageCGPA { get; init; }
     public string? ExperienceDetails { get; init; }
-    public string? PhotographPath { get; init; }
-    public string? IdentityProofPath { get; init; }
-    public string? EducationalCertificatePath { get; init; }
+    public IFormFile? Photograph { get; init; }
+    public IFormFile? IdentityProof { get; init; }
+    public IFormFile? EducationalCertificate { get; init; }
     public bool DeclarationAccepted { get; init; }
 }

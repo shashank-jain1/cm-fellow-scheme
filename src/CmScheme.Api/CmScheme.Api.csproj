@@ -23,6 +23,7 @@
     <ProjectReference Include="..\CmScheme.HelpDesk.Infrastructure\CmScheme.HelpDesk.Infrastructure.csproj" />
     <ProjectReference Include="..\CmScheme.Dashboard.Endpoints\CmScheme.Dashboard.Endpoints.csproj" />
     <ProjectReference Include="..\CmScheme.Dashboard.Infrastructure\CmScheme.Dashboard.Infrastructure.csproj" />
+    <ProjectReference Include="..\CmScheme.Common.Infrastructure\CmScheme.Common.Infrastructure.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Mediator.Abstractions" Version="3.0.2" />

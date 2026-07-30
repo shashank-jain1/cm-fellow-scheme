@@ -17,5 +17,17 @@ public interface IRegistrationCommandDbContext
 
     DbSet<ModuleAccessAuditLog> ModuleAccessAuditLogs { get; }
 
+    DbSet<LeaveType> LeaveTypes { get; }
+
+    DbSet<LeaveBalance> LeaveBalances { get; }
+
+    DbSet<LeaveApplication> LeaveApplications { get; }
+
+    DbSet<AuditLog> AuditLogs { get; }
+
+    DbSet<TrainingEnrollment> TrainingEnrollments { get; }
+
+    DbSet<TicketCategory> TicketCategories { get; }
+
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

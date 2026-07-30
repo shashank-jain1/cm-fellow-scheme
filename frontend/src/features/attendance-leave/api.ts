@@ -3,7 +3,9 @@ import { ATTENDANCE_LEAVE_URLS } from './urls';
 import type {
   MarkAttendanceCommand,
   AttendanceDto,
-  LeaveApplicationFormData,
+  ApplyLeaveCommand,
+  ApplyLeaveResult,
+  ApproveLeaveCommand,
   LeaveStatusDto,
   LeaveBalanceDto,
   HolidayDto,
@@ -19,17 +21,17 @@ export const attendanceLeaveApi = {
   getAttendanceHistory: () =>
     ApiService.get<AttendanceDto[]>(ATTENDANCE_LEAVE_URLS.ATTENDANCE_HISTORY),
 
-  applyLeave: (data: LeaveApplicationFormData) =>
-    ApiService.post<void>(ATTENDANCE_LEAVE_URLS.APPLY_LEAVE, data),
+  applyLeave: (data: ApplyLeaveCommand) =>
+    ApiService.post<ApplyLeaveResult>(ATTENDANCE_LEAVE_URLS.APPLY_LEAVE, data),
 
-  getLeaveStatus: () =>
-    ApiService.get<LeaveStatusDto[]>(ATTENDANCE_LEAVE_URLS.LEAVE_STATUS),
+  getLeaveStatus: (userAccountId: number) =>
+    ApiService.get<LeaveStatusDto[]>(`${ATTENDANCE_LEAVE_URLS.LEAVE_STATUS}?UserAccountId=${userAccountId}`),
 
-  getLeaveBalance: () =>
-    ApiService.get<LeaveBalanceDto[]>(ATTENDANCE_LEAVE_URLS.LEAVE_BALANCE),
+  getLeaveBalance: (userAccountId: number, year: number) =>
+    ApiService.get<LeaveBalanceDto[]>(`${ATTENDANCE_LEAVE_URLS.LEAVE_BALANCE}?UserAccountId=${userAccountId}&Year=${year}`),
 
-  approveLeave: (command: { LeaveApplicationNo: string; ApprovalStatus: string; Remarks?: string }) =>
-    ApiService.put<void>(ATTENDANCE_LEAVE_URLS.APPROVE_LEAVE, command),
+  approveLeave: (command: ApproveLeaveCommand) =>
+    ApiService.put<boolean>(ATTENDANCE_LEAVE_URLS.APPROVE_LEAVE, command),
 
   getHolidays: (year?: number) =>
     ApiService.get<HolidayDto[]>(`${ATTENDANCE_LEAVE_URLS.HOLIDAYS}${year ? `?year=${year}` : ''}`),

@@ -3,6 +3,7 @@ using CmScheme.Endpoints.Abstractions.Extensions;
 using Mediator;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using CmScheme.Registration.Application.Features.Registration.SubmitRegistration;
 
@@ -13,7 +14,7 @@ public static class Submit
     public static IEndpointRouteBuilder MapSubmitEndpoint(this IEndpointRouteBuilder builder)
     {
         builder.MapPost("/", async (
-            SubmitRegistrationCommand command,
+            [FromForm] SubmitRegistrationCommand command,
             ISender sender,
             CancellationToken cancellationToken) =>
         {
@@ -21,6 +22,7 @@ public static class Submit
             return await result.ToApiResultAsync();
         })
         .WithName("SubmitRegistration")
+        .DisableAntiforgery()
         .Produces<int>(StatusCodes.Status200OK)
         .ProducesValidationProblem()
         .ProducesProblem(StatusCodes.Status500InternalServerError);

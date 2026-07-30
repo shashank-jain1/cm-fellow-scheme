@@ -162,6 +162,209 @@ namespace CmScheme.Registration.Infrastructure.Migrations.Command
                     b.ToTable("Applicant", (string)null);
                 });
 
+            modelBuilder.Entity("CmScheme.Registration.Core.Entities.AuditLog", b =>
+                {
+                    b.Property<long>("AuditLogId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("AuditLogId"));
+
+                    b.Property<string>("Action")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("EntityId")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("EntityName")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("IpAddress")
+                        .HasMaxLength(45)
+                        .HasColumnType("nvarchar(45)");
+
+                    b.Property<string>("NewValues")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OldValues")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserAgent")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("AuditLogId");
+
+                    b.HasIndex("CreatedOn");
+
+                    b.HasIndex("EntityName");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AuditLog", (string)null);
+                });
+
+            modelBuilder.Entity("CmScheme.Registration.Core.Entities.LeaveApplication", b =>
+                {
+                    b.Property<int>("LeaveApplicationId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LeaveApplicationId"));
+
+                    b.Property<string>("ApplicationNumber")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<DateTime?>("ApprovalDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ApprovalRemarks")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int?>("ApprovedBy")
+                        .HasColumnType("int");
+
+                    b.Property<string>("AttachmentPath")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("FromDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsHalfDay")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("LeaveTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("NumberOfDays")
+                        .HasColumnType("decimal(5,2)");
+
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<DateTime>("ToDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserAccountId")
+                        .HasColumnType("int");
+
+                    b.HasKey("LeaveApplicationId");
+
+                    b.HasIndex("ApplicationNumber")
+                        .IsUnique();
+
+                    b.HasIndex("ApprovedBy");
+
+                    b.HasIndex("LeaveTypeId");
+
+                    b.HasIndex("UserAccountId");
+
+                    b.ToTable("LeaveApplication", (string)null);
+                });
+
+            modelBuilder.Entity("CmScheme.Registration.Core.Entities.LeaveBalance", b =>
+                {
+                    b.Property<int>("LeaveBalanceId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LeaveBalanceId"));
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("LeaveTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("RemainingDays")
+                        .HasColumnType("decimal(5,2)");
+
+                    b.Property<decimal>("TotalDays")
+                        .HasColumnType("decimal(5,2)");
+
+                    b.Property<decimal>("UsedDays")
+                        .HasColumnType("decimal(5,2)");
+
+                    b.Property<int>("UserAccountId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Year")
+                        .HasColumnType("int");
+
+                    b.HasKey("LeaveBalanceId");
+
+                    b.HasIndex("LeaveTypeId");
+
+                    b.HasIndex("UserAccountId", "LeaveTypeId", "Year")
+                        .IsUnique();
+
+                    b.ToTable("LeaveBalance", (string)null);
+                });
+
+            modelBuilder.Entity("CmScheme.Registration.Core.Entities.LeaveType", b =>
+                {
+                    b.Property<int>("LeaveTypeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LeaveTypeId"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("DefaultDays")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("SortOrder")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TypeName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("LeaveTypeId");
+
+                    b.HasIndex("Code")
+                        .IsUnique();
+
+                    b.ToTable("LeaveType", (string)null);
+                });
+
             modelBuilder.Entity("CmScheme.Registration.Core.Entities.ModuleAccessAuditLog", b =>
                 {
                     b.Property<int>("ModuleAccessAuditLogId")
@@ -257,6 +460,86 @@ namespace CmScheme.Registration.Infrastructure.Migrations.Command
                     b.HasIndex("ParentModuleMasterId");
 
                     b.ToTable("ModuleMaster", (string)null);
+                });
+
+            modelBuilder.Entity("CmScheme.Registration.Core.Entities.TicketCategory", b =>
+                {
+                    b.Property<int>("TicketCategoryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TicketCategoryId"));
+
+                    b.Property<string>("CategoryName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DefaultPriority")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
+                    b.Property<int>("SortOrder")
+                        .HasColumnType("int");
+
+                    b.HasKey("TicketCategoryId");
+
+                    b.ToTable("TicketCategories", (string)null);
+                });
+
+            modelBuilder.Entity("CmScheme.Registration.Core.Entities.TrainingEnrollment", b =>
+                {
+                    b.Property<int>("TrainingEnrollmentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TrainingEnrollmentId"));
+
+                    b.Property<bool>("AttendanceMarked")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("CertificateIssued")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("CompletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("EnrolledOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<int>("TrainingScheduleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserAccountId")
+                        .HasColumnType("int");
+
+                    b.HasKey("TrainingEnrollmentId");
+
+                    b.HasIndex("TrainingScheduleId", "UserAccountId")
+                        .IsUnique();
+
+                    b.ToTable("TrainingEnrollment", (string)null);
                 });
 
             modelBuilder.Entity("CmScheme.Registration.Core.Entities.UserAccount", b =>
@@ -385,6 +668,51 @@ namespace CmScheme.Registration.Infrastructure.Migrations.Command
                         .IsUnique();
 
                     b.ToTable("UserRole", (string)null);
+                });
+
+            modelBuilder.Entity("CmScheme.Registration.Core.Entities.LeaveApplication", b =>
+                {
+                    b.HasOne("CmScheme.Registration.Core.Entities.UserAccount", "ApprovedByUser")
+                        .WithMany()
+                        .HasForeignKey("ApprovedBy")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("CmScheme.Registration.Core.Entities.LeaveType", "LeaveType")
+                        .WithMany()
+                        .HasForeignKey("LeaveTypeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CmScheme.Registration.Core.Entities.UserAccount", "UserAccount")
+                        .WithMany()
+                        .HasForeignKey("UserAccountId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("ApprovedByUser");
+
+                    b.Navigation("LeaveType");
+
+                    b.Navigation("UserAccount");
+                });
+
+            modelBuilder.Entity("CmScheme.Registration.Core.Entities.LeaveBalance", b =>
+                {
+                    b.HasOne("CmScheme.Registration.Core.Entities.LeaveType", "LeaveType")
+                        .WithMany()
+                        .HasForeignKey("LeaveTypeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CmScheme.Registration.Core.Entities.UserAccount", "UserAccount")
+                        .WithMany()
+                        .HasForeignKey("UserAccountId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("LeaveType");
+
+                    b.Navigation("UserAccount");
                 });
 
             modelBuilder.Entity("CmScheme.Registration.Core.Entities.ModuleAccessAuditLog", b =>

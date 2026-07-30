@@ -5,8 +5,8 @@ interface LeaveBalanceCardProps {
 }
 
 export default function LeaveBalanceCard({ balance }: LeaveBalanceCardProps) {
-  const percentage = balance.openingBalance > 0
-    ? Math.round((balance.availedLeave / balance.openingBalance) * 100)
+  const percentage = balance.totalDays > 0
+    ? Math.round((balance.usedDays / balance.totalDays) * 100)
     : 0;
 
   return (
@@ -22,25 +22,21 @@ export default function LeaveBalanceCard({ balance }: LeaveBalanceCardProps) {
       }}
     >
       <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-primary)' }}>
-        {balance.leaveType}
+        {balance.leaveTypeName}
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, fontSize: 13 }}>
         <div>
-          <div style={{ color: 'var(--text-secondary)' }}>Opening</div>
-          <div style={{ fontWeight: 600, color: 'var(--text-primary)' }}>{balance.openingBalance}</div>
+          <div style={{ color: 'var(--text-secondary)' }}>Total</div>
+          <div style={{ fontWeight: 600, color: 'var(--text-primary)' }}>{balance.totalDays}</div>
         </div>
         <div>
-          <div style={{ color: 'var(--text-secondary)' }}>Availed</div>
-          <div style={{ fontWeight: 600, color: 'var(--red-600)' }}>{balance.availedLeave}</div>
+          <div style={{ color: 'var(--text-secondary)' }}>Used</div>
+          <div style={{ fontWeight: 600, color: 'var(--red-600)' }}>{balance.usedDays}</div>
         </div>
         <div>
-          <div style={{ color: 'var(--text-secondary)' }}>Pending</div>
-          <div style={{ fontWeight: 600, color: 'var(--amber-600)' }}>{balance.pendingApprovalLeave}</div>
-        </div>
-        <div>
-          <div style={{ color: 'var(--text-secondary)' }}>Available</div>
-          <div style={{ fontWeight: 600, color: 'var(--emerald-600)' }}>{balance.availableBalance}</div>
+          <div style={{ color: 'var(--text-secondary)' }}>Remaining</div>
+          <div style={{ fontWeight: 600, color: 'var(--emerald-600)' }}>{balance.remainingDays}</div>
         </div>
       </div>
 

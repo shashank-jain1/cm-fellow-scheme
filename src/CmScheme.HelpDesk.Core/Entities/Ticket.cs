@@ -11,6 +11,8 @@ public class Ticket
     public string Priority { get; set; } = null!;
     public string Status { get; set; } = null!;
     public string? ResolutionRemarks { get; set; }
+    public int? CategoryId { get; set; }
+    public int? AssignedTo { get; set; }
     public DateTime? SLADeadline { get; set; }
     public bool SLABreached { get; set; }
     public DateTime CreatedOn { get; set; }

@@ -16,35 +16,50 @@ export interface AttendanceDto {
   longitude: number;
 }
 
-export interface LeaveApplicationFormData {
-  leaveType: string;
+export interface ApplyLeaveCommand {
+  userAccountId: number;
+  leaveTypeId: number;
   fromDate: string;
   toDate: string;
-  halfDayFullDay: boolean;
-  leaveReason: string;
-  reportingManagerName: string;
-  attachmentFile?: File;
+  isHalfDay: boolean;
+  reason: string;
+  attachmentPath?: string;
 }
 
-export interface LeaveStatusDto {
-  leaveApplicationNo: string;
-  employeeName: string;
-  leaveType: string;
-  leavePeriod: string;
-  numberOfDays: number;
-  approvalStatus: string;
-  approvedBy?: string;
-  approvalDate?: string;
+export interface ApplyLeaveResult {
+  leaveApplicationId: number;
+  applicationNumber: string;
+}
+
+export interface ApproveLeaveCommand {
+  leaveApplicationId: number;
+  approvedBy: number;
+  action: 'Approved' | 'Rejected';
   remarks?: string;
 }
 
+export interface LeaveStatusDto {
+  leaveApplicationId: number;
+  applicationNumber: string;
+  leaveTypeName: string;
+  fromDate: string;
+  toDate: string;
+  numberOfDays: number;
+  isHalfDay: boolean;
+  reason: string;
+  status: string;
+  approvalRemarks?: string;
+  approvalDate?: string;
+  createdOn: string;
+}
+
 export interface LeaveBalanceDto {
-  employeeName: string;
-  leaveType: string;
-  openingBalance: number;
-  availedLeave: number;
-  pendingApprovalLeave: number;
-  availableBalance: number;
+  leaveBalanceId: number;
+  leaveTypeName: string;
+  leaveTypeCode: string;
+  totalDays: number;
+  usedDays: number;
+  remainingDays: number;
 }
 
 export interface HolidayDto {

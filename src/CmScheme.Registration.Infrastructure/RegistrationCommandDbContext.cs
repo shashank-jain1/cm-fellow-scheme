@@ -23,6 +23,18 @@ public sealed class RegistrationCommandDbContext : RegistrationDbContext, IRegis
 
     DbSet<ModuleAccessAuditLog> IRegistrationCommandDbContext.ModuleAccessAuditLogs => ModuleAccessAuditLogs;
 
+    DbSet<LeaveType> IRegistrationCommandDbContext.LeaveTypes => LeaveTypes;
+
+    DbSet<LeaveBalance> IRegistrationCommandDbContext.LeaveBalances => LeaveBalances;
+
+    DbSet<LeaveApplication> IRegistrationCommandDbContext.LeaveApplications => LeaveApplications;
+
+    DbSet<AuditLog> IRegistrationCommandDbContext.AuditLogs => AuditLogs;
+
+    DbSet<TrainingEnrollment> IRegistrationCommandDbContext.TrainingEnrollments => TrainingEnrollments;
+
+    DbSet<TicketCategory> IRegistrationCommandDbContext.TicketCategories => TicketCategories;
+
     async Task<int> IRegistrationCommandDbContext.SaveChangesAsync(CancellationToken cancellationToken)
     {
         return await base.SaveChangesAsync(cancellationToken);

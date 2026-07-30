@@ -17,6 +17,8 @@ public class TicketConfiguration : IEntityTypeConfiguration<Ticket>
         builder.Property(e => e.Priority).HasMaxLength(20);
         builder.Property(e => e.Status).HasMaxLength(50);
         builder.Property(e => e.ResolutionRemarks).HasMaxLength(2000);
+        builder.Property(e => e.CategoryId).IsRequired(false);
+        builder.Property(e => e.AssignedTo).IsRequired(false);
         builder.Property(e => e.SLADeadline).IsRequired(false);
         builder.Property(e => e.SLABreached).HasDefaultValue(false);
     }

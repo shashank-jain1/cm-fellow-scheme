@@ -23,6 +23,18 @@ public abstract class RegistrationDbContext : BaseDbContext
 
     public DbSet<ModuleAccessAuditLog> ModuleAccessAuditLogs => Set<ModuleAccessAuditLog>();
 
+    public DbSet<LeaveType> LeaveTypes => Set<LeaveType>();
+
+    public DbSet<LeaveBalance> LeaveBalances => Set<LeaveBalance>();
+
+    public DbSet<LeaveApplication> LeaveApplications => Set<LeaveApplication>();
+
+    public DbSet<AuditLog> AuditLogs => Set<AuditLog>();
+
+    public DbSet<TrainingEnrollment> TrainingEnrollments => Set<TrainingEnrollment>();
+
+    public DbSet<TicketCategory> TicketCategories => Set<TicketCategory>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -32,5 +44,11 @@ public abstract class RegistrationDbContext : BaseDbContext
         modelBuilder.ApplyConfiguration(new ModuleMasterConfiguration());
         modelBuilder.ApplyConfiguration(new UserModuleAccessConfiguration());
         modelBuilder.ApplyConfiguration(new ModuleAccessAuditLogConfiguration());
+        modelBuilder.ApplyConfiguration(new LeaveTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new LeaveBalanceConfiguration());
+        modelBuilder.ApplyConfiguration(new LeaveApplicationConfiguration());
+        modelBuilder.ApplyConfiguration(new AuditLogConfiguration());
+        modelBuilder.ApplyConfiguration(new TrainingEnrollmentConfiguration());
+        modelBuilder.ApplyConfiguration(new TicketCategoryConfiguration());
     }
 }

@@ -1,31 +1,21 @@
-import ApplyLeaveForm from '../components/ApplyLeaveForm';
 import { useNavigate } from 'react-router-dom';
+import ApplyLeaveForm from '../components/ApplyLeaveForm';
+import PageHeader from '../../../shared/components/ui/PageHeader';
+import Card from '../../../shared/components/ui/Card';
 
 export default function ApplyLeavePage() {
   const navigate = useNavigate();
 
   return (
     <div>
-      <div className="page-header">
-        <div>
-          <h1>Apply for Leave</h1>
-          <p style={{ color: 'var(--text-secondary)', marginTop: 4 }}>
-            Submit a new leave application
-          </p>
-        </div>
-      </div>
+      <PageHeader
+        title="Apply for Leave"
+        subtitle="Submit a new leave application"
+      />
 
-      <div
-        style={{
-          maxWidth: 640,
-          padding: 24,
-          border: '1px solid var(--border-color)',
-          borderRadius: 12,
-          background: 'var(--surface-card)',
-        }}
-      >
+      <Card style={{ maxWidth: 640, padding: 24 }}>
         <ApplyLeaveForm onSuccess={() => navigate('/leave/status')} />
-      </div>
+      </Card>
     </div>
   );
 }

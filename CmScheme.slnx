@@ -14,6 +14,7 @@
     <Project Path="src/CmScheme.Certificate.Endpoints/CmScheme.Certificate.Endpoints.csproj" />
     <Project Path="src/CmScheme.Certificate.Infrastructure/CmScheme.Certificate.Infrastructure.csproj" />
     <Project Path="src/CmScheme.Common.Core/CmScheme.Common.Core.csproj" />
+    <Project Path="src/CmScheme.Common.Infrastructure/CmScheme.Common.Infrastructure.csproj" />
     <Project Path="src/CmScheme.Dashboard.Application/CmScheme.Dashboard.Application.csproj" />
     <Project Path="src/CmScheme.Dashboard.Core/CmScheme.Dashboard.Core.csproj" />
     <Project Path="src/CmScheme.Dashboard.Endpoints/CmScheme.Dashboard.Endpoints.csproj" />

@@ -10,6 +10,7 @@
   <ItemGroup>
     <ProjectReference Include="..\CmScheme.AttendanceLeave.Core\CmScheme.AttendanceLeave.Core.csproj" />
     <ProjectReference Include="..\CmScheme.AttendanceLeave.Application\CmScheme.AttendanceLeave.Application.csproj" />
+    <ProjectReference Include="..\CmScheme.Registration.Application\CmScheme.Registration.Application.csproj" />
     <ProjectReference Include="..\CmScheme.Endpoints.Abstractions\CmScheme.Endpoints.Abstractions.csproj" />
   </ItemGroup>
   <ItemGroup>

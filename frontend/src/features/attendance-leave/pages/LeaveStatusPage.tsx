@@ -1,17 +1,18 @@
 import { useLeaveStatus } from '../queries';
-import AttendanceStatusBadge from '../components/AttendanceStatusBadge';
+import { useAuth } from '../../auth';
+import PageHeader from '../../../shared/components/ui/PageHeader';
+import StatusTag from '../../../shared/components/ui/StatusTag';
 
 export default function LeaveStatusPage() {
-  const { data: leaveRecords, isLoading } = useLeaveStatus();
+  const { user } = useAuth();
+  const { data: leaveRecords, isLoading } = useLeaveStatus(user?.userAccountId ?? 0);
 
   return (
     <div>
-      <div className="page-header">
-        <div>
-          <h1>Leave Status</h1>
-          <p>Track your leave application status</p>
-        </div>
-      </div>
+      <PageHeader
+        title="Leave Status"
+        subtitle="Track your leave application status"
+      />
 
       <div className="table-wrapper">
         {isLoading ? (
@@ -29,7 +30,7 @@ export default function LeaveStatusPage() {
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
               <tr style={{ background: 'var(--bg-primary)' }}>
-                {['Application No', 'Leave Type', 'Period', 'Days', 'Status', 'Approved By', 'Date'].map((h) => (
+                {['Application No', 'Leave Type', 'From', 'To', 'Days', 'Status', 'Reason'].map((h) => (
                   <th
                     key={h}
                     style={{
@@ -50,23 +51,23 @@ export default function LeaveStatusPage() {
             </thead>
             <tbody>
               {leaveRecords.map((record) => (
-                <tr key={record.leaveApplicationNo} style={{ borderBottom: '1px solid var(--border-light)' }}>
+                <tr key={record.leaveApplicationId} style={{ borderBottom: '1px solid var(--border-light)' }}>
                   <td style={{ padding: '14px 16px', fontSize: 13, fontWeight: 600, color: 'var(--text-primary)' }}>
-                    {record.leaveApplicationNo}
+                    {record.applicationNumber}
                   </td>
-                  <td style={{ padding: '14px 16px', fontSize: 13, color: 'var(--text-primary)' }}>{record.leaveType}</td>
+                  <td style={{ padding: '14px 16px', fontSize: 13, color: 'var(--text-primary)' }}>{record.leaveTypeName}</td>
                   <td style={{ padding: '14px 16px', fontSize: 13, color: 'var(--text-muted)' }}>
-                    {record.leavePeriod}
+                    {record.fromDate}
+                  </td>
+                  <td style={{ padding: '14px 16px', fontSize: 13, color: 'var(--text-muted)' }}>
+                    {record.toDate}
                   </td>
                   <td style={{ padding: '14px 16px', fontSize: 13, fontWeight: 600 }}>{record.numberOfDays}</td>
                   <td style={{ padding: '14px 16px' }}>
-                    <AttendanceStatusBadge status={record.approvalStatus} />
+                    <StatusTag value={record.status} />
                   </td>
-                  <td style={{ padding: '14px 16px', fontSize: 13, color: 'var(--text-muted)' }}>
-                    {record.approvedBy || '—'}
-                  </td>
-                  <td style={{ padding: '14px 16px', fontSize: 13, color: 'var(--text-muted)' }}>
-                    {record.approvalDate || '—'}
+                  <td style={{ padding: '14px 16px', fontSize: 13, color: 'var(--text-muted)', maxWidth: 200, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    {record.reason || '—'}
                   </td>
                 </tr>
               ))}

@@ -2,6 +2,7 @@ using Ardalis.Result;
 using Mediator;
 using Microsoft.EntityFrameworkCore;
 using CmScheme.AttendanceLeave.Core.Data;
+using CmScheme.Common.Core;
 
 namespace CmScheme.AttendanceLeave.Application.Features.Attendance.CheckOutAttendance;
 
@@ -29,6 +30,7 @@ public sealed class CheckOutAttendanceCommandHandler(IAttendanceLeaveCommandDbCo
         }
 
         attendance.CheckOutTime = TimeOnly.FromDateTime(DateTime.UtcNow);
+        attendance.AttendanceStatus = Statuses.Attendance.CheckedOut;
 
         await dbContext.SaveChangesAsync(cancellationToken);
 
