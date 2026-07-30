@@ -20,6 +20,9 @@ public static class RegistrationGroupExtensions
         group.MapApproveEndpoint();
         group.MapRejectEndpoint();
         group.MapVerifyOtpEndpoint();
+        group.MapUpdateProfileEndpoint();
+        group.MapBulkApproveEndpoint();
+        group.MapSendOtpEndpoint();
 
         return builder;
     }

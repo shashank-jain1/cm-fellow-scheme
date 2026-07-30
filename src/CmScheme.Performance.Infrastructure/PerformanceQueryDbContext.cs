@@ -17,4 +17,7 @@ public class PerformanceQueryDbContext : IPerformanceQueryDbContext
     public IQueryable<PerformanceReviewHistory> PerformanceReviewHistories => _dbContext.PerformanceReviewHistories;
     public IQueryable<SelfAssessment> SelfAssessments => _dbContext.SelfAssessments;
     public IQueryable<PerformanceReviewCycle> PerformanceReviewCycles => _dbContext.PerformanceReviewCycles;
+    public IQueryable<PerformanceGoal> PerformanceGoals => _dbContext.PerformanceGoals;
+    public IQueryable<ImprovementPlan> ImprovementPlans => _dbContext.ImprovementPlans;
+    public IQueryable<PeerFeedback> PeerFeedbacks => _dbContext.PeerFeedbacks;
 }

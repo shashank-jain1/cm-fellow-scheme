@@ -13,6 +13,7 @@ public class HelpDeskDbContext : BaseDbContext, IHelpDeskCommandDbContext, IHelp
     public DbSet<SlaPolicy> SlaPolicies => Set<SlaPolicy>();
     public DbSet<SlaEscalationLog> SlaEscalationLogs => Set<SlaEscalationLog>();
     public DbSet<TicketSatisfactionSurvey> TicketSatisfactionSurveys => Set<TicketSatisfactionSurvey>();
+    public DbSet<KnowledgeBaseArticle> KnowledgeBaseArticles => Set<KnowledgeBaseArticle>();
 
     public HelpDeskDbContext(DbContextOptions<HelpDeskDbContext> options)
         : base(options)
@@ -27,6 +28,7 @@ public class HelpDeskDbContext : BaseDbContext, IHelpDeskCommandDbContext, IHelp
         modelBuilder.ApplyConfiguration(new SlaPolicyConfiguration());
         modelBuilder.ApplyConfiguration(new SlaEscalationLogConfiguration());
         modelBuilder.ApplyConfiguration(new TicketSatisfactionSurveyConfiguration());
+        modelBuilder.ApplyConfiguration(new KnowledgeBaseArticleConfiguration());
     }
 
     IQueryable<Ticket> IHelpDeskQueryDbContext.Tickets => Tickets;
@@ -34,4 +36,5 @@ public class HelpDeskDbContext : BaseDbContext, IHelpDeskCommandDbContext, IHelp
     IQueryable<SlaPolicy> IHelpDeskQueryDbContext.SlaPolicies => SlaPolicies;
     IQueryable<SlaEscalationLog> IHelpDeskQueryDbContext.SlaEscalationLogs => SlaEscalationLogs;
     IQueryable<TicketSatisfactionSurvey> IHelpDeskQueryDbContext.TicketSatisfactionSurveys => TicketSatisfactionSurveys;
+    IQueryable<KnowledgeBaseArticle> IHelpDeskQueryDbContext.KnowledgeBaseArticles => KnowledgeBaseArticles;
 }

@@ -79,6 +79,107 @@ namespace CmScheme.WorkAllocation.Infrastructure.Migrations
                     b.ToTable("SurveyRecords", (string)null);
                 });
 
+            modelBuilder.Entity("CmScheme.WorkAllocation.Core.Entities.TaskAttachment", b =>
+                {
+                    b.Property<int>("TaskAttachmentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TaskAttachmentId"));
+
+                    b.Property<string>("ContentType")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("FilePath")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<long>("FileSize")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("UserAccountId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("WorkAllocationId")
+                        .HasColumnType("int");
+
+                    b.HasKey("TaskAttachmentId");
+
+                    b.ToTable("TaskAttachments", (string)null);
+                });
+
+            modelBuilder.Entity("CmScheme.WorkAllocation.Core.Entities.TaskDeadline", b =>
+                {
+                    b.Property<int>("TaskDeadlineId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TaskDeadlineId"));
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DeadlineDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsOverdue")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<DateTime?>("LastReminderSentOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ReminderDaysBefore")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(3);
+
+                    b.Property<int>("WorkAllocationId")
+                        .HasColumnType("int");
+
+                    b.HasKey("TaskDeadlineId");
+
+                    b.ToTable("TaskDeadlines", (string)null);
+                });
+
+            modelBuilder.Entity("CmScheme.WorkAllocation.Core.Entities.TaskDependency", b =>
+                {
+                    b.Property<int>("TaskDependencyId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TaskDependencyId"));
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("DependsOnWorkAllocationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("WorkAllocationId")
+                        .HasColumnType("int");
+
+                    b.HasKey("TaskDependencyId");
+
+                    b.HasIndex("DependsOnWorkAllocationId");
+
+                    b.HasIndex("WorkAllocationId");
+
+                    b.ToTable("TaskDependencies", (string)null);
+                });
+
             modelBuilder.Entity("CmScheme.WorkAllocation.Core.Entities.TaskProgress", b =>
                 {
                     b.Property<int>("TaskProgressId")
@@ -97,6 +198,13 @@ namespace CmScheme.WorkAllocation.Infrastructure.Migrations
                         .HasPrecision(5, 2)
                         .HasColumnType("decimal(5,2)");
 
+                    b.Property<DateTime?>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FellowProgressStatus")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.Property<int>("NumberOfSurveys")
                         .HasColumnType("int");
 
@@ -105,10 +213,20 @@ namespace CmScheme.WorkAllocation.Infrastructure.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
+                    b.Property<string>("ProgressNotes")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int?>("ProgressPercentage")
+                        .HasColumnType("int");
+
                     b.Property<string>("ProjectName")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
+
+                    b.Property<int?>("UserAccountId")
+                        .HasColumnType("int");
 
                     b.Property<int>("WorkAllocationId")
                         .HasColumnType("int");
@@ -131,6 +249,37 @@ namespace CmScheme.WorkAllocation.Infrastructure.Migrations
                     b.HasKey("TaskProgressId");
 
                     b.ToTable("TaskProgresses", (string)null);
+                });
+
+            modelBuilder.Entity("CmScheme.WorkAllocation.Core.Entities.TaskVerification", b =>
+                {
+                    b.Property<int>("TaskVerificationId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TaskVerificationId"));
+
+                    b.Property<string>("Comments")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("VerificationStatus")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("VerifiedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("VerifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("WorkAllocationId")
+                        .HasColumnType("int");
+
+                    b.HasKey("TaskVerificationId");
+
+                    b.ToTable("TaskVerifications", (string)null);
                 });
 
             modelBuilder.Entity("CmScheme.WorkAllocation.Core.Entities.WorkAllocation", b =>
@@ -209,6 +358,21 @@ namespace CmScheme.WorkAllocation.Infrastructure.Migrations
                     b.HasKey("WorkAllocationId");
 
                     b.ToTable("WorkAllocations", (string)null);
+                });
+
+            modelBuilder.Entity("CmScheme.WorkAllocation.Core.Entities.TaskDependency", b =>
+                {
+                    b.HasOne("CmScheme.WorkAllocation.Core.Entities.WorkAllocation", null)
+                        .WithMany()
+                        .HasForeignKey("DependsOnWorkAllocationId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CmScheme.WorkAllocation.Core.Entities.WorkAllocation", null)
+                        .WithMany()
+                        .HasForeignKey("WorkAllocationId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

@@ -4,6 +4,8 @@ using Mediator;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using System.Threading.RateLimiting;
+using Serilog;
 using CmScheme.Common.Core.Behaviours;
 using CmScheme.Common.Core.Data;
 using CmScheme.Endpoints.Abstractions;
@@ -31,15 +33,29 @@ using CmScheme.Certificate.Infrastructure;
 using CmScheme.HelpDesk.Endpoints;
 using CmScheme.HelpDesk.Infrastructure;
 using CmScheme.Dashboard.Endpoints;
+using CmScheme.Administration.Endpoints;
 using CmScheme.Dashboard.Infrastructure;
 
 using CmScheme.Common.Core.Services;
 using CmScheme.Common.Infrastructure.Services;
 using CmScheme.Api.Authorization;
+using CmScheme.Api.Middleware;
 using CmScheme.Api.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+
+try
+{
+    Log.Information("Starting CmScheme API host");
+
+Log.Logger = new LoggerConfiguration()
+    .Enrich.FromLogContext()
+    .WriteTo.Console()
+    .WriteTo.File("logs/cmscheme-.log", rollingInterval: RollingInterval.Day, retainedFileCountLimit: 30)
+    .CreateLogger();
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+builder.Host.UseSerilog();
 
 string connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
     ?? "Server=localhost;Database=CmSchemeDb;Trusted_Connection=True;TrustServerCertificate=True;MultipleActiveResultSets=true";
@@ -80,6 +96,7 @@ builder.Services.AddAuthorization(options =>
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 builder.Services.AddScoped<IAuthorizationHandler, ModuleAuthorizationHandler>();
+builder.Services.AddSingleton<GlobalExceptionHandler>();
 
 builder.Services.AddMediator(options => options.ServiceLifetime = ServiceLifetime.Scoped);
 
@@ -96,6 +113,46 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.AddOutputCache();
+
+builder.Services.AddHealthChecks()
+    .AddSqlServer(connectionString, name: "sqlserver");
+
+builder.Services.AddRateLimiter(options =>
+{
+    options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+
+    options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(context =>
+        RateLimitPartition.GetFixedWindowLimiter(
+            partitionKey: "global",
+            factory: _ => new FixedWindowRateLimiterOptions
+            {
+                PermitLimit = 100,
+                Window = TimeSpan.FromMinutes(1),
+                QueueLimit = 0,
+            }));
+
+    options.OnRejected = async (context, cancellationToken) =>
+    {
+        context.HttpContext.Response.ContentType = "application/problem+json";
+
+        int retryAfter = context.Lease.TryGetMetadata(MetadataName.RetryAfter, out TimeSpan window)
+            ? (int)window.TotalSeconds
+            : 60;
+
+        Microsoft.AspNetCore.Mvc.ProblemDetails problemDetails = new()
+        {
+            Status = StatusCodes.Status429TooManyRequests,
+            Title = "Rate limit exceeded",
+            Detail = $"Too many requests. Retry after {retryAfter} seconds.",
+            Type = "https://httpstatuses.com/429",
+        };
+        problemDetails.Extensions["retryAfter"] = retryAfter;
+
+        await context.HttpContext.Response.WriteAsJsonAsync(problemDetails, cancellationToken);
+    };
+});
+
 builder.Services
     .AddMastersApis().AddMastersServices(connectionString).AddMastersInfrastructure(connectionString)
     .AddRegistrationApis().AddRegistrationServices(connectionString).AddRegistrationInfrastructure(connectionString)
@@ -105,7 +162,8 @@ builder.Services
     .AddPerformanceApis().AddPerformanceServices(connectionString).AddPerformanceInfrastructure(connectionString)
     .AddCertificateApis().AddCertificateServices(connectionString).AddCertificateInfrastructure(connectionString)
     .AddHelpDeskApis().AddHelpDeskServices(connectionString).AddHelpDeskInfrastructure(connectionString)
-    .AddDashboardApis().AddDashboardServices(connectionString).AddDashboardInfrastructure(connectionString);
+    .AddDashboardApis().AddDashboardServices(connectionString).AddDashboardInfrastructure(connectionString)
+    .AddAdministrationApis();
 
 builder.Services.Configure<FileStorageOptions>(builder.Configuration.GetSection("FileStorage"));
 builder.Services.AddScoped<IFileUploadService, LocalFileUploadService>();
@@ -114,8 +172,15 @@ builder.Services.AddScoped<IAuditService, AuditService>();
 builder.Services.AddScoped<INotificationService, SmtpNotificationService>();
 builder.Services.AddScoped<IOtpService, InMemoryOtpService>();
 builder.Services.AddSingleton<IBusinessKeyGenerator, BusinessKeyGenerator>();
+builder.Services.AddScoped<IBulkImportService, BulkImportService>();
+builder.Services.AddScoped<IDatabaseBackupService, DatabaseBackupService>();
+builder.Services.AddScoped<ICertificateTemplateService, CertificateTemplateService>();
+builder.Services.AddScoped<IReportService, ReportService>();
 
 WebApplication app = builder.Build();
+
+app.UseExceptionHandler();
+app.UseSerilogRequestLogging();
 
 if (app.Environment.IsDevelopment())
 {
@@ -162,12 +227,35 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseRateLimiter();
 
 app.UseMiddleware<CmScheme.Api.Middleware.AuditMiddleware>();
 
 app.UseStaticFiles();
+app.UseOutputCache();
 
 app.MapApiEndpoints("/api/v1");
+
+app.MapHealthChecks("/health", new HealthCheckOptions
+{
+    ResponseWriter = async (context, report) =>
+    {
+        context.Response.ContentType = "application/json";
+        Dictionary<string, object> result = new Dictionary<string, object>
+        {
+            ["status"] = report.Status.ToString(),
+            ["checks"] = report.Entries.Select(entry => new Dictionary<string, object>
+            {
+                ["name"] = entry.Key,
+                ["status"] = entry.Value.Status.ToString(),
+                ["duration"] = entry.Value.Duration.ToString(),
+                ["description"] = entry.Value.Description ?? "",
+                ["exception"] = entry.Value.Exception?.Message ?? "",
+            }).ToArray(),
+        };
+        await context.Response.WriteAsJsonAsync(result);
+    },
+});
 
 await SeedAdminUser(app);
 await SeedLookupMasters(app);
@@ -179,6 +267,15 @@ await SeedTicketCategories(app);
 await LocationSeedData.SeedAsync(app.Services.CreateScope().ServiceProvider.GetRequiredService<IMastersCommandDbContext>());
 
 app.Run();
+}
+catch (Exception ex)
+{
+    Log.Fatal(ex, "CmScheme API terminated unexpectedly");
+}
+finally
+{
+    Log.CloseAndFlush();
+}
 
 static async Task SeedAdminUser(WebApplication app)
 {

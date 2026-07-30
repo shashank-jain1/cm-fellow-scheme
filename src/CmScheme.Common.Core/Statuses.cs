@@ -55,6 +55,32 @@ public static class Statuses
         public const string Meeting = "Meeting";
     }
 
+    public static class TrainingCompletion
+    {
+        public const string InProgress = "InProgress";
+        public const string Completed = "Completed";
+        public const string Failed = "Failed";
+    }
+
+    public static class TaskDependency
+    {
+    }
+
+    public static class PerformanceGoal
+    {
+        public const string NotStarted = "NotStarted";
+        public const string InProgress = "InProgress";
+        public const string Completed = "Completed";
+        public const string Missed = "Missed";
+    }
+
+    public static class ImprovementPlan
+    {
+        public const string Active = "Active";
+        public const string Completed = "Completed";
+        public const string Cancelled = "Cancelled";
+    }
+
     public static class Survey
     {
         public const string Submitted = "Submitted";

@@ -10,4 +10,5 @@ public interface ITrainingQueryDbContext
     DbSet<TrainingSchedule> TrainingSchedules { get; }
     DbSet<TrainingParticipant> TrainingParticipants { get; }
     DbSet<TrainingMaterial> TrainingMaterials { get; }
+    DbSet<TrainingCompletion> TrainingCompletions { get; }
 }

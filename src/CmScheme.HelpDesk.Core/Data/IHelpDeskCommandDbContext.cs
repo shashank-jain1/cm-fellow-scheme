@@ -10,5 +10,6 @@ public interface IHelpDeskCommandDbContext
     DbSet<SlaPolicy> SlaPolicies { get; }
     DbSet<SlaEscalationLog> SlaEscalationLogs { get; }
     DbSet<TicketSatisfactionSurvey> TicketSatisfactionSurveys { get; }
+    DbSet<KnowledgeBaseArticle> KnowledgeBaseArticles { get; }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

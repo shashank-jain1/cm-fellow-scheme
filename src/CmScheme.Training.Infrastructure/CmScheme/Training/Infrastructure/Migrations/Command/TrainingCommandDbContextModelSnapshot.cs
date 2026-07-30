@@ -48,6 +48,122 @@ namespace CmScheme.Training.Infrastructure.Migrations.Command
                     b.ToTable("MeetingParticipants");
                 });
 
+            modelBuilder.Entity("CmScheme.Training.Core.Entities.TrainingCompletion", b =>
+                {
+                    b.Property<int>("TrainingCompletionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TrainingCompletionId"));
+
+                    b.Property<bool>("CertificateIssued")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("CompletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FeedbackComments")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.Property<int?>("FeedbackRating")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<int>("TrainingScheduleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserAccountId")
+                        .HasColumnType("int");
+
+                    b.HasKey("TrainingCompletionId");
+
+                    b.HasIndex("TrainingScheduleId");
+
+                    b.ToTable("TrainingCompletions", (string)null);
+                });
+
+            modelBuilder.Entity("CmScheme.Training.Core.Entities.TrainingMaterial", b =>
+                {
+                    b.Property<int>("TrainingMaterialId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TrainingMaterialId"));
+
+                    b.Property<string>("ContentType")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("FilePath")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<long>("FileSize")
+                        .HasColumnType("bigint");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("MaterialName")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("TrainingScheduleId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UploadedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("TrainingMaterialId");
+
+                    b.ToTable("TrainingMaterials");
+                });
+
+            modelBuilder.Entity("CmScheme.Training.Core.Entities.TrainingMaterialUpload", b =>
+                {
+                    b.Property<int>("TrainingMaterialUploadId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TrainingMaterialUploadId"));
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("FilePath")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<long>("FileSize")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("TrainingScheduleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UploadedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UploadedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("TrainingMaterialUploadId");
+
+                    b.ToTable("TrainingMaterialUploads");
+                });
+
             modelBuilder.Entity("CmScheme.Training.Core.Entities.TrainingParticipant", b =>
                 {
                     b.Property<int>("TrainingParticipantId")
@@ -203,6 +319,15 @@ namespace CmScheme.Training.Infrastructure.Migrations.Command
                     b.HasKey("TrainingScheduleId");
 
                     b.ToTable("TrainingSchedules");
+                });
+
+            modelBuilder.Entity("CmScheme.Training.Core.Entities.TrainingCompletion", b =>
+                {
+                    b.HasOne("CmScheme.Training.Core.Entities.TrainingSchedule", null)
+                        .WithMany()
+                        .HasForeignKey("TrainingScheduleId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

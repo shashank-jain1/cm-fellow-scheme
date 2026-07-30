@@ -10,4 +10,5 @@ public interface IHelpDeskQueryDbContext
     IQueryable<SlaPolicy> SlaPolicies { get; }
     IQueryable<SlaEscalationLog> SlaEscalationLogs { get; }
     IQueryable<TicketSatisfactionSurvey> TicketSatisfactionSurveys { get; }
+    IQueryable<KnowledgeBaseArticle> KnowledgeBaseArticles { get; }
 }

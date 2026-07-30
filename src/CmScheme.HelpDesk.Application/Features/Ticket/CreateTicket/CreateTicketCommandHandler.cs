@@ -3,6 +3,7 @@ using CmScheme.Common.Core;
 using CmScheme.HelpDesk.Core.Data;
 using CmScheme.HelpDesk.Core.Entities;
 using CmScheme.Registration.Core.Data;
+using CmScheme.Registration.Core.Entities;
 using Mediator;
 using Microsoft.EntityFrameworkCore;
 using TicketEntity = CmScheme.HelpDesk.Core.Entities.Ticket;
@@ -22,7 +23,7 @@ public sealed class CreateTicketCommandHandler(
 
         if (request.CategoryId.HasValue)
         {
-            var category = await registrationDbContext.TicketCategories
+            TicketCategory? category = await registrationDbContext.TicketCategories
                 .FirstOrDefaultAsync(tc => tc.TicketCategoryId == request.CategoryId.Value && tc.IsActive, cancellationToken);
 
             if (category != null && string.IsNullOrEmpty(request.Priority))
@@ -40,7 +41,7 @@ public sealed class CreateTicketCommandHandler(
         };
 
         int? assignedTo = null;
-        var adminUser = await registrationDbContext.UserAccounts
+        UserAccount? adminUser = await registrationDbContext.UserAccounts
             .FirstOrDefaultAsync(ua => ua.Role == "Admin" && ua.IsActive, cancellationToken);
 
         if (adminUser != null)

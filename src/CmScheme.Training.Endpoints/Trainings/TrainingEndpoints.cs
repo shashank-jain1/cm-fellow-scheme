@@ -1,9 +1,11 @@
 using Mediator;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using CmScheme.Endpoints.Abstractions;
 using CmScheme.Training.Application.Features.Training.UpdateTrainingStatus;
+using CmScheme.Training.Application.Features.Training.TrainingMaterial.GetTrainingMaterials;
 using CmScheme.Endpoints.Abstractions.Extensions;
 
 namespace CmScheme.Training.Endpoints.Trainings;
@@ -44,6 +46,27 @@ public sealed class TrainingEndpoints : IApiEndpoint
         .Produces(StatusCodes.Status204NoContent)
         .ProducesValidationProblem()
         .ProducesProblem(StatusCodes.Status404NotFound);
+
+        group.MapPost("/{trainingScheduleId:int}/materials", UploadMaterial.Handle)
+            .WithName("UploadTrainingMaterial")
+            .WithDisplayName("Upload training material")
+            .WithTags("Training Materials")
+            .DisableAntiforgery()
+            .Produces<int>()
+            .ProducesValidationProblem();
+
+        group.MapGet("/{trainingScheduleId:int}/materials", ListMaterials.Handle)
+            .WithName("GetTrainingMaterials")
+            .WithDisplayName("List training materials")
+            .WithTags("Training Materials")
+            .Produces<List<TrainingMaterialDto>>();
+
+        group.MapGet("/materials/{trainingMaterialId:int}/download", DownloadMaterial.Handle)
+            .WithName("DownloadTrainingMaterial")
+            .WithDisplayName("Download training material")
+            .WithTags("Training Materials")
+            .Produces<FileResult>()
+            .ProducesProblem(StatusCodes.Status404NotFound);
     }
 }
 

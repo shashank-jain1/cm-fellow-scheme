@@ -18,6 +18,7 @@ public class HelpDeskCommandDbContext : IHelpDeskCommandDbContext
     public DbSet<SlaPolicy> SlaPolicies => _dbContext.SlaPolicies;
     public DbSet<SlaEscalationLog> SlaEscalationLogs => _dbContext.SlaEscalationLogs;
     public DbSet<TicketSatisfactionSurvey> TicketSatisfactionSurveys => _dbContext.TicketSatisfactionSurveys;
+    public DbSet<KnowledgeBaseArticle> KnowledgeBaseArticles => _dbContext.KnowledgeBaseArticles;
 
     public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {

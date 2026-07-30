@@ -213,6 +213,48 @@ namespace CmScheme.Registration.Infrastructure.Migrations.Command
                     b.ToTable("AuditLog", (string)null);
                 });
 
+            modelBuilder.Entity("CmScheme.Registration.Core.Entities.ExitInterview", b =>
+                {
+                    b.Property<int>("ExitInterviewId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ExitInterviewId"));
+
+                    b.Property<string>("ImprovementSuggestions")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<int>("LearningOpportunities")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OverallExperience")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("SubmittedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("TeamCollaboration")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserAccountId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("WhatWorkedWell")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<int>("WorkEnvironment")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("WouldRecommend")
+                        .HasColumnType("bit");
+
+                    b.HasKey("ExitInterviewId");
+
+                    b.ToTable("ExitInterviews", (string)null);
+                });
+
             modelBuilder.Entity("CmScheme.Registration.Core.Entities.LeaveApplication", b =>
                 {
                     b.Property<int>("LeaveApplicationId")

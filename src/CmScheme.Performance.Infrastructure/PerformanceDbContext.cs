@@ -12,6 +12,9 @@ public class PerformanceDbContext : BaseDbContext, IPerformanceCommandDbContext,
     public DbSet<PerformanceReviewHistory> PerformanceReviewHistories => Set<PerformanceReviewHistory>();
     public DbSet<SelfAssessment> SelfAssessments => Set<SelfAssessment>();
     public DbSet<PerformanceReviewCycle> PerformanceReviewCycles => Set<PerformanceReviewCycle>();
+    public DbSet<PerformanceGoal> PerformanceGoals => Set<PerformanceGoal>();
+    public DbSet<ImprovementPlan> ImprovementPlans => Set<ImprovementPlan>();
+    public DbSet<PeerFeedback> PeerFeedbacks => Set<PeerFeedback>();
 
     public PerformanceDbContext(DbContextOptions<PerformanceDbContext> options)
         : base(options)
@@ -25,10 +28,16 @@ public class PerformanceDbContext : BaseDbContext, IPerformanceCommandDbContext,
         modelBuilder.ApplyConfiguration(new PerformanceReviewHistoryConfiguration());
         modelBuilder.ApplyConfiguration(new SelfAssessmentConfiguration());
         modelBuilder.ApplyConfiguration(new PerformanceReviewCycleConfiguration());
+        modelBuilder.ApplyConfiguration(new PerformanceGoalConfiguration());
+        modelBuilder.ApplyConfiguration(new ImprovementPlanConfiguration());
+        modelBuilder.ApplyConfiguration(new PeerFeedbackConfiguration());
     }
 
     IQueryable<PerformanceEvaluation> IPerformanceQueryDbContext.PerformanceEvaluations => PerformanceEvaluations;
     IQueryable<PerformanceReviewHistory> IPerformanceQueryDbContext.PerformanceReviewHistories => PerformanceReviewHistories;
     IQueryable<SelfAssessment> IPerformanceQueryDbContext.SelfAssessments => SelfAssessments;
     IQueryable<PerformanceReviewCycle> IPerformanceQueryDbContext.PerformanceReviewCycles => PerformanceReviewCycles;
+    IQueryable<PerformanceGoal> IPerformanceQueryDbContext.PerformanceGoals => PerformanceGoals;
+    IQueryable<ImprovementPlan> IPerformanceQueryDbContext.ImprovementPlans => ImprovementPlans;
+    IQueryable<PeerFeedback> IPerformanceQueryDbContext.PeerFeedbacks => PeerFeedbacks;
 }

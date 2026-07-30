@@ -9,4 +9,7 @@ public interface IPerformanceQueryDbContext
     IQueryable<PerformanceReviewHistory> PerformanceReviewHistories { get; }
     IQueryable<SelfAssessment> SelfAssessments { get; }
     IQueryable<PerformanceReviewCycle> PerformanceReviewCycles { get; }
+    IQueryable<PerformanceGoal> PerformanceGoals { get; }
+    IQueryable<ImprovementPlan> ImprovementPlans { get; }
+    IQueryable<PeerFeedback> PeerFeedbacks { get; }
 }

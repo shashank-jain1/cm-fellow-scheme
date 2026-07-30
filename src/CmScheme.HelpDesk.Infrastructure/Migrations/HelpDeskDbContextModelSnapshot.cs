@@ -22,6 +22,136 @@ namespace CmScheme.HelpDesk.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("CmScheme.HelpDesk.Core.Entities.KnowledgeBaseArticle", b =>
+                {
+                    b.Property<int>("KnowledgeBaseArticleId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("KnowledgeBaseArticleId"));
+
+                    b.Property<int>("AuthorId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("AuthorName")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasMaxLength(5000)
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
+                    b.Property<bool>("IsPublished")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Tags")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int>("ViewCount")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
+
+                    b.HasKey("KnowledgeBaseArticleId");
+
+                    b.ToTable("KnowledgeBaseArticles", (string)null);
+                });
+
+            modelBuilder.Entity("CmScheme.HelpDesk.Core.Entities.SlaEscalationLog", b =>
+                {
+                    b.Property<int>("EscalationLogId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EscalationLogId"));
+
+                    b.Property<DateTime>("EscalatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("EscalatedTo")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("EscalationLevel")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int>("TicketId")
+                        .HasColumnType("int");
+
+                    b.HasKey("EscalationLogId");
+
+                    b.ToTable("SlaEscalationLogs", (string)null);
+                });
+
+            modelBuilder.Entity("CmScheme.HelpDesk.Core.Entities.SlaPolicy", b =>
+                {
+                    b.Property<int>("SlaPolicyId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SlaPolicyId"));
+
+                    b.Property<string>("EscalationEmails")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
+                    b.Property<string>("PriorityLevel")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<int>("ResolutionTimeHours")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ResponseTimeHours")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TicketCategoryId")
+                        .HasColumnType("int");
+
+                    b.HasKey("SlaPolicyId");
+
+                    b.ToTable("SlaPolicies", (string)null);
+                });
+
             modelBuilder.Entity("CmScheme.HelpDesk.Core.Entities.Ticket", b =>
                 {
                     b.Property<int>("TicketId")
@@ -31,6 +161,12 @@ namespace CmScheme.HelpDesk.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TicketId"));
 
                     b.Property<int>("ApplicantId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("AssignedTo")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("ClosedOn")
@@ -117,6 +253,35 @@ namespace CmScheme.HelpDesk.Infrastructure.Migrations
                     b.HasKey("TicketActionLogId");
 
                     b.ToTable("TicketActionLogs", (string)null);
+                });
+
+            modelBuilder.Entity("CmScheme.HelpDesk.Core.Entities.TicketSatisfactionSurvey", b =>
+                {
+                    b.Property<int>("SurveyId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SurveyId"));
+
+                    b.Property<string>("Comments")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("SubmittedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("TicketId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserAccountId")
+                        .HasColumnType("int");
+
+                    b.HasKey("SurveyId");
+
+                    b.ToTable("TicketSatisfactionSurveys", (string)null);
                 });
 #pragma warning restore 612, 618
         }

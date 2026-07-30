@@ -7,6 +7,8 @@ using CmScheme.Endpoints.Abstractions.Authorization;
 using CmScheme.Endpoints.Abstractions.Extensions;
 using CmScheme.Performance.Application.Features.Performance.SubmitPerformanceReview;
 using CmScheme.Performance.Application.Features.Performance.GetReviewHistory;
+using CmScheme.Performance.Application.Features.Performance.SelfAssessment.GetSelfAssessment;
+using CmScheme.Performance.Application.Features.Performance.ReviewCycle.GetActiveReviewCycle;
 
 namespace CmScheme.Performance.Endpoints.Performance;
 
@@ -64,6 +66,41 @@ public static class PerformanceGroupExtensions
         .WithTags("Performance")
         .Produces<List<ReviewHistoryDto>>()
         .ProducesProblem(StatusCodes.Status404NotFound);
+
+        group.MapPost("/self-assessment", SubmitSelfAssessment.Handle)
+            .WithName("SubmitSelfAssessment")
+            .WithDisplayName("Submit self-assessment")
+            .WithTags("Self-Assessment")
+            .Produces(StatusCodes.Status204NoContent)
+            .ProducesValidationProblem();
+
+        group.MapGet("/self-assessment", GetSelfAssessment.Handle)
+            .WithName("GetSelfAssessment")
+            .WithDisplayName("Get self-assessment")
+            .WithTags("Self-Assessment")
+            .Produces<SelfAssessmentDto>()
+            .ProducesProblem(StatusCodes.Status404NotFound);
+
+        group.MapPost("/review-cycle", CreateReviewCycle.Handle)
+            .WithName("CreateReviewCycle")
+            .WithDisplayName("Create review cycle")
+            .WithTags("Review Cycle")
+            .Produces<int>()
+            .ProducesValidationProblem();
+
+        group.MapGet("/review-cycle/active", GetActiveReviewCycle.Handle)
+            .WithName("GetActiveReviewCycle")
+            .WithDisplayName("Get active review cycle")
+            .WithTags("Review Cycle")
+            .Produces<ReviewCycleDto>()
+            .ProducesProblem(StatusCodes.Status404NotFound);
+
+        group.MapPut("/review-cycle/{reviewCycleId:int}/close", CloseReviewCycle.Handle)
+            .WithName("CloseReviewCycle")
+            .WithDisplayName("Close review cycle")
+            .WithTags("Review Cycle")
+            .Produces(StatusCodes.Status204NoContent)
+            .ProducesProblem(StatusCodes.Status404NotFound);
 
         return builder;
     }

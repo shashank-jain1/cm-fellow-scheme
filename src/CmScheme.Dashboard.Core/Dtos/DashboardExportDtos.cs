@@ -21,6 +21,7 @@ public sealed class FellowDashboardDto
     public int TotalTickets { get; init; }
     public int OpenTickets { get; init; }
     public decimal AttendancePercentage { get; init; }
+    public int LeaveBalanceDays { get; init; }
     public int PendingTasks { get; init; }
     public int CompletedTasks { get; init; }
     public decimal PerformanceScore { get; init; }

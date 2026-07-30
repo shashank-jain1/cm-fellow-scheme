@@ -20,6 +20,7 @@ public class WorkAllocationDbContext : BaseDbContext, IWorkAllocationCommandDbCo
     public DbSet<TaskVerificationEntity> TaskVerifications => Set<TaskVerificationEntity>();
     public DbSet<TaskAttachmentEntity> TaskAttachments => Set<TaskAttachmentEntity>();
     public DbSet<TaskDeadlineEntity> TaskDeadlines => Set<TaskDeadlineEntity>();
+    public DbSet<TaskDependency> TaskDependencies => Set<TaskDependency>();
 
     public WorkAllocationDbContext(DbContextOptions<WorkAllocationDbContext> options)
         : base(options)
@@ -35,6 +36,7 @@ public class WorkAllocationDbContext : BaseDbContext, IWorkAllocationCommandDbCo
         modelBuilder.ApplyConfiguration(new TaskVerificationConfiguration());
         modelBuilder.ApplyConfiguration(new TaskAttachmentConfiguration());
         modelBuilder.ApplyConfiguration(new TaskDeadlineConfiguration());
+        modelBuilder.ApplyConfiguration(new TaskDependencyConfiguration());
     }
 
     IQueryable<WorkAllocationEntity> IWorkAllocationQueryDbContext.WorkAllocations => WorkAllocations;
@@ -43,4 +45,5 @@ public class WorkAllocationDbContext : BaseDbContext, IWorkAllocationCommandDbCo
     IQueryable<TaskVerificationEntity> IWorkAllocationQueryDbContext.TaskVerifications => TaskVerifications;
     IQueryable<TaskAttachmentEntity> IWorkAllocationQueryDbContext.TaskAttachments => TaskAttachments;
     IQueryable<TaskDeadlineEntity> IWorkAllocationQueryDbContext.TaskDeadlines => TaskDeadlines;
+    IQueryable<TaskDependency> IWorkAllocationQueryDbContext.TaskDependencies => TaskDependencies;
 }

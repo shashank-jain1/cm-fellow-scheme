@@ -1,12 +1,15 @@
 using Ardalis.Result;
 using Mediator;
 using Microsoft.EntityFrameworkCore;
+using CmScheme.Common.Core.Services;
 using CmScheme.Registration.Core.Data;
 using CmScheme.Registration.Core.Entities;
 
 namespace CmScheme.Registration.Application.Features.Registration.VerifyMobileOtp;
 
-public sealed class VerifyMobileOtpCommandHandler(IRegistrationCommandDbContext dbContext)
+public sealed class VerifyMobileOtpCommandHandler(
+    IRegistrationCommandDbContext dbContext,
+    IOtpService otpService)
     : ICommandHandler<VerifyMobileOtpCommand, Result>
 {
     public async ValueTask<Result> Handle(
@@ -23,9 +26,11 @@ public sealed class VerifyMobileOtpCommandHandler(IRegistrationCommandDbContext 
             return Result.NotFound("Applicant not found.");
         }
 
-        if (string.IsNullOrEmpty(request.OtpCode) || request.OtpCode.Length != 6)
+        bool isValid = await otpService.VerifyOtpAsync(request.MobileNumber, request.OtpCode, cancellationToken);
+
+        if (!isValid)
         {
-            return Result.Invalid(new ValidationError("Invalid OTP code. Must be 6 digits."));
+            return Result.Invalid(new ValidationError("Invalid or expired OTP code."));
         }
 
         applicant.ModifiedOn = DateTime.UtcNow;

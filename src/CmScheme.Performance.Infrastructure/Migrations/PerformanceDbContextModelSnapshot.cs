@@ -22,6 +22,128 @@ namespace CmScheme.Performance.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("CmScheme.Performance.Core.Entities.ImprovementPlan", b =>
+                {
+                    b.Property<int>("ImprovementPlanId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ImprovementPlanId"));
+
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PlanTitle")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<int>("UserAccountId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ImprovementPlanId");
+
+                    b.ToTable("ImprovementPlans", (string)null);
+                });
+
+            modelBuilder.Entity("CmScheme.Performance.Core.Entities.PeerFeedback", b =>
+                {
+                    b.Property<int>("PeerFeedbackId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PeerFeedbackId"));
+
+                    b.Property<string>("AdditionalComments")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.Property<string>("AreasForImprovement")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.Property<decimal>("CommunicationRating")
+                        .HasColumnType("decimal(5,2)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsAnonymized")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<decimal>("LeadershipRating")
+                        .HasColumnType("decimal(5,2)");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("OverallRating")
+                        .HasColumnType("decimal(5,2)");
+
+                    b.Property<int>("PerformanceEvaluationId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("ProblemSolvingRating")
+                        .HasColumnType("decimal(5,2)");
+
+                    b.Property<int>("RevieweeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("RevieweeName")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("ReviewerId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ReviewerName")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasDefaultValue("Submitted");
+
+                    b.Property<string>("Strengths")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.Property<decimal>("TeamworkRating")
+                        .HasColumnType("decimal(5,2)");
+
+                    b.Property<decimal>("TechnicalSkillsRating")
+                        .HasColumnType("decimal(5,2)");
+
+                    b.HasKey("PeerFeedbackId");
+
+                    b.ToTable("PeerFeedbacks", (string)null);
+                });
+
             modelBuilder.Entity("CmScheme.Performance.Core.Entities.PerformanceEvaluation", b =>
                 {
                     b.Property<int>("PerformanceEvaluationId")
@@ -153,6 +275,77 @@ namespace CmScheme.Performance.Infrastructure.Migrations
                     b.ToTable("PerformanceEvaluations", (string)null);
                 });
 
+            modelBuilder.Entity("CmScheme.Performance.Core.Entities.PerformanceGoal", b =>
+                {
+                    b.Property<int>("PerformanceGoalId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PerformanceGoalId"));
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<string>("GoalTitle")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int?>("ReviewCycleId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<DateTime>("TargetDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserAccountId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PerformanceGoalId");
+
+                    b.ToTable("PerformanceGoals", (string)null);
+                });
+
+            modelBuilder.Entity("CmScheme.Performance.Core.Entities.PerformanceReviewCycle", b =>
+                {
+                    b.Property<int>("ReviewCycleId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReviewCycleId"));
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CycleName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("ReviewCycleId");
+
+                    b.ToTable("PerformanceReviewCycles", (string)null);
+                });
+
             modelBuilder.Entity("CmScheme.Performance.Core.Entities.PerformanceReviewHistory", b =>
                 {
                     b.Property<int>("PerformanceReviewHistoryId")
@@ -205,6 +398,58 @@ namespace CmScheme.Performance.Infrastructure.Migrations
                     b.HasIndex("PerformanceEvaluationId");
 
                     b.ToTable("PerformanceReviewHistories", (string)null);
+                });
+
+            modelBuilder.Entity("CmScheme.Performance.Core.Entities.SelfAssessment", b =>
+                {
+                    b.Property<int>("SelfAssessmentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SelfAssessmentId"));
+
+                    b.Property<string>("GoalsAchieved")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<string>("GoalsMissed")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<string>("Improvements")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<int>("OverallRating")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ReviewCycleId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)")
+                        .HasDefaultValue("Draft");
+
+                    b.Property<string>("Strengths")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<DateTime>("SubmittedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("TrainingFeedback")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<int>("UserAccountId")
+                        .HasColumnType("int");
+
+                    b.HasKey("SelfAssessmentId");
+
+                    b.ToTable("SelfAssessments", (string)null);
                 });
 
             modelBuilder.Entity("CmScheme.Performance.Core.Entities.PerformanceReviewHistory", b =>
