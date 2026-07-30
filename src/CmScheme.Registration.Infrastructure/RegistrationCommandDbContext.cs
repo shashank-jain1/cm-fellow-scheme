@@ -15,6 +15,14 @@ public sealed class RegistrationCommandDbContext : RegistrationDbContext, IRegis
 
     DbSet<UserAccount> IRegistrationCommandDbContext.UserAccounts => UserAccounts;
 
+    DbSet<UserRole> IRegistrationCommandDbContext.UserRoles => UserRoles;
+
+    DbSet<ModuleMaster> IRegistrationCommandDbContext.ModuleMasters => ModuleMasters;
+
+    DbSet<UserModuleAccess> IRegistrationCommandDbContext.UserModuleAccesses => UserModuleAccesses;
+
+    DbSet<ModuleAccessAuditLog> IRegistrationCommandDbContext.ModuleAccessAuditLogs => ModuleAccessAuditLogs;
+
     async Task<int> IRegistrationCommandDbContext.SaveChangesAsync(CancellationToken cancellationToken)
     {
         return await base.SaveChangesAsync(cancellationToken);

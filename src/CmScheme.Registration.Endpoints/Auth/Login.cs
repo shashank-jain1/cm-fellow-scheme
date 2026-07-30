@@ -4,9 +4,11 @@ using System.Text;
 using Ardalis.Result;
 using Mediator;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using CmScheme.Registration.Application.Features.UserAccount.Login;
+using CmScheme.Registration.Core.Data;
 using CmScheme.Endpoints.Abstractions.Extensions;
 using IResult = Microsoft.AspNetCore.Http.IResult;
 
@@ -18,12 +20,13 @@ public sealed class LoginRequest
     public string Password { get; set; } = null!;
 }
 
-public sealed class Login(IConfiguration configuration)
+public sealed class Login
 {
     public static async Task<IResult> Handle(
         LoginRequest request,
         ISender sender,
         IConfiguration config,
+        IRegistrationCommandDbContext dbContext,
         CancellationToken cancellationToken)
     {
         ValueTask<Result<LoginResult>> result = sender.Send(
@@ -42,7 +45,33 @@ public sealed class Login(IConfiguration configuration)
         }
 
         LoginResult user = loginResult.Value;
-        string token = GenerateJwtToken(user, config);
+
+        var moduleAccess = await dbContext.UserModuleAccesses
+            .Where(uma => uma.UserAccountId == user.UserAccountId && uma.IsActive)
+            .Join(dbContext.ModuleMasters,
+                uma => uma.ModuleMasterId,
+                mm => mm.ModuleMasterId,
+                (uma, mm) => new ModuleAccessEntry
+                {
+                    ModuleCode = mm.ModuleCode,
+                    CanRead = uma.CanRead,
+                    CanWrite = uma.CanWrite,
+                    CanApprove = uma.CanApprove,
+                    CanExport = uma.CanExport,
+                })
+            .ToListAsync(cancellationToken);
+
+        string token = GenerateJwtToken(user, config, moduleAccess);
+
+        var modules = moduleAccess.ToDictionary(
+            x => x.ModuleCode,
+            x => new
+            {
+                canRead = x.CanRead,
+                canWrite = x.CanWrite,
+                canApprove = x.CanApprove,
+                canExport = x.CanExport,
+            });
 
         return Results.Ok(new
         {
@@ -50,10 +79,12 @@ public sealed class Login(IConfiguration configuration)
             userAccountId = user.UserAccountId,
             username = user.Username,
             role = user.Role,
+            modules,
         });
     }
 
-    private static string GenerateJwtToken(LoginResult user, IConfiguration config)
+    private static string GenerateJwtToken(LoginResult user, IConfiguration config,
+        List<ModuleAccessEntry> moduleAccess)
     {
         string jwtKey = config["Jwt:Key"]
             ?? "CmScheme@2025!SecretKey#ForJwtTokenGeneration$VeryLong32Chars+";
@@ -72,6 +103,19 @@ public sealed class Login(IConfiguration configuration)
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
         ];
 
+        foreach (var access in moduleAccess)
+        {
+            string permissions = string.Join(",",
+                new[] { access.CanRead, access.CanWrite, access.CanApprove, access.CanExport }
+                    .Select((v, i) => v ? new[] { "R", "W", "A", "E" }[i] : "")
+                    .Where(s => !string.IsNullOrEmpty(s)));
+
+            if (!string.IsNullOrEmpty(permissions))
+            {
+                claims.Add(new Claim($"module:{access.ModuleCode}", permissions));
+            }
+        }
+
         int expiryMinutes = int.TryParse(jwtExpiryMinutes, out int parsed) ? parsed : 480;
 
         JwtSecurityToken token = new JwtSecurityToken(
@@ -83,4 +127,13 @@ public sealed class Login(IConfiguration configuration)
 
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
+}
+
+public sealed class ModuleAccessEntry
+{
+    public string ModuleCode { get; set; } = null!;
+    public bool CanRead { get; set; }
+    public bool CanWrite { get; set; }
+    public bool CanApprove { get; set; }
+    public bool CanExport { get; set; }
 }

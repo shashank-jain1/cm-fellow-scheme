@@ -4,6 +4,7 @@ using CmScheme.Endpoints.Abstractions;
 using CmScheme.Registration.Endpoints.Auth;
 using CmScheme.Registration.Endpoints.Registrations;
 using CmScheme.Registration.Endpoints.UserAccounts;
+using CmScheme.Registration.Endpoints.UserModuleAccess;
 
 namespace CmScheme.Registration.Endpoints;
 
@@ -14,5 +15,6 @@ public sealed class RegistrationEndpoints : IApiEndpoint
         builder.MapAuthEndpoints();
         builder.MapRegistrationEndpoints();
         builder.MapUserAccountEndpoints();
+        builder.MapUserModuleAccessEndpoints();
     }
 }

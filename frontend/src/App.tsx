@@ -28,6 +28,7 @@ import DocumentVerificationPage from './features/registration/pages/DocumentVeri
 import ForgotPasswordPage from './features/registration/pages/ForgotPasswordPage';
 import ResetPasswordPage from './features/registration/pages/ResetPasswordPage';
 import { SeedDataPage } from './features/seed';
+import { UserAccessPage } from './features/admin';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -56,6 +57,7 @@ export default function App() {
                 <Route path="admin/users" element={<UserManagementPage />} />
                 <Route path="admin/documents" element={<DocumentVerificationPage />} />
                 <Route path="admin/seed" element={<SeedDataPage />} />
+                <Route path="admin/access" element={<UserAccessPage />} />
                 <Route path="training" element={<ActivityCalendar />} />
                 <Route path="training/new" element={<CreateActivityForm />} />
                 <Route path="work-allocation" element={<WorkAllocationPage />} />

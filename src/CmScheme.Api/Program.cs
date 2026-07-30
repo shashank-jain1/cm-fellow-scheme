@@ -34,6 +34,9 @@ using CmScheme.Dashboard.Endpoints;
 using CmScheme.Dashboard.Infrastructure;
 
 using CmScheme.Common.Core.Services;
+using CmScheme.Api.Authorization;
+using CmScheme.Api.Services;
+using Microsoft.AspNetCore.Authorization;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -69,7 +72,13 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("AdminPolicy", policy => policy.RequireRole("Admin"));
     options.AddPolicy("FellowPolicy", policy => policy.RequireRole("Admin", "Fellow"));
     options.AddPolicy("GuidePolicy", policy => policy.RequireRole("Admin", "Guide"));
+    options.AddPolicy("ModuleAccess", policy =>
+        policy.RequireAuthenticatedUser());
 });
+
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
+builder.Services.AddSingleton<IAuthorizationHandler, ModuleAuthorizationHandler>();
 
 builder.Services.AddMediator(options => options.ServiceLifetime = ServiceLifetime.Scoped);
 
@@ -154,6 +163,8 @@ app.MapApiEndpoints("/api/v1");
 
 await SeedAdminUser(app);
 await SeedLookupMasters(app);
+await SeedModuleMaster(app);
+await SeedAdminModuleAccess(app);
 await LocationSeedData.SeedAsync(app.Services.CreateScope().ServiceProvider.GetRequiredService<IMastersCommandDbContext>());
 
 app.Run();
@@ -285,5 +296,78 @@ static async Task SeedLookupMasters(WebApplication app)
     ];
 
     dbContext.LookupMasters.AddRange(masters);
+    await dbContext.SaveChangesAsync();
+}
+
+static async Task SeedModuleMaster(WebApplication app)
+{
+    using IServiceScope scope = app.Services.CreateScope();
+    IRegistrationCommandDbContext dbContext = scope.ServiceProvider
+        .GetRequiredService<IRegistrationCommandDbContext>();
+
+    bool anyExists = await dbContext.ModuleMasters.AnyAsync();
+    if (anyExists)
+    {
+        return;
+    }
+
+    List<ModuleMaster> modules =
+    [
+        new() { ModuleCode = "REGISTRATION", ModuleName = "User Registration & Authentication", SortOrder = 1, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { ModuleCode = "TRAINING", ModuleName = "Training Management System", SortOrder = 2, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { ModuleCode = "WORK_ALLOCATION", ModuleName = "Work Allocation & Task Management", SortOrder = 3, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { ModuleCode = "ATTENDANCE", ModuleName = "Attendance & Leave Management", SortOrder = 4, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { ModuleCode = "PERFORMANCE", ModuleName = "Monitoring, Evaluation & Performance", SortOrder = 5, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { ModuleCode = "CERTIFICATE", ModuleName = "Certificate & Exit Management", SortOrder = 6, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { ModuleCode = "HELP_DESK", ModuleName = "Communication & Help Desk", SortOrder = 7, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { ModuleCode = "MASTERS", ModuleName = "Master Data Management", SortOrder = 8, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { ModuleCode = "DASHBOARD", ModuleName = "Dashboard & Analytics", SortOrder = 9, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { ModuleCode = "ADMINISTRATION", ModuleName = "System Administration", SortOrder = 10, IsActive = true, CreatedOn = DateTime.UtcNow },
+    ];
+
+    dbContext.ModuleMasters.AddRange(modules);
+    await dbContext.SaveChangesAsync();
+}
+
+static async Task SeedAdminModuleAccess(WebApplication app)
+{
+    using IServiceScope scope = app.Services.CreateScope();
+    IRegistrationCommandDbContext dbContext = scope.ServiceProvider
+        .GetRequiredService<IRegistrationCommandDbContext>();
+
+    UserAccount? admin = await dbContext.UserAccounts
+        .FirstOrDefaultAsync(ua => ua.Username == "admin");
+
+    if (admin == null)
+    {
+        return;
+    }
+
+    bool accessExists = await dbContext.UserModuleAccesses
+        .AnyAsync(uma => uma.UserAccountId == admin.UserAccountId);
+
+    if (accessExists)
+    {
+        return;
+    }
+
+    List<ModuleMaster> modules = await dbContext.ModuleMasters
+        .Where(mm => mm.IsActive)
+        .ToListAsync();
+
+    List<UserModuleAccess> adminAccess = modules.Select(mm => new UserModuleAccess
+    {
+        UserAccountId = admin.UserAccountId,
+        ModuleMasterId = mm.ModuleMasterId,
+        CanRead = true,
+        CanWrite = true,
+        CanApprove = true,
+        CanExport = true,
+        IsActive = true,
+        CreatedOn = DateTime.UtcNow,
+        CreatedBy = admin.UserAccountId,
+    }).ToList();
+
+    dbContext.UserModuleAccesses.AddRange(adminAccess);
     await dbContext.SaveChangesAsync();
 }

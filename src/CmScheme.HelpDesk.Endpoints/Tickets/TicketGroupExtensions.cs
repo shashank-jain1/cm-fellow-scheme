@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
+using CmScheme.Endpoints.Abstractions.Authorization;
 
 namespace CmScheme.HelpDesk.Endpoints.Tickets;
 
@@ -8,7 +9,8 @@ public static class TicketGroupExtensions
     public static IEndpointRouteBuilder MapTicketEndpoints(this IEndpointRouteBuilder builder)
     {
         RouteGroupBuilder group = builder.MapGroup("tickets")
-            .RequireAuthorization();
+            .RequireAuthorization()
+            .RequireModule(ModuleCodes.HelpDesk, "Read", requireScope: false);
 
         group.MapPost("/", Create.Handle);
         group.MapPut("/escalate", Escalate.Handle)

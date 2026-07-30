@@ -3,6 +3,7 @@ using Mediator;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
+using CmScheme.Endpoints.Abstractions.Authorization;
 using CmScheme.Endpoints.Abstractions.Extensions;
 using CmScheme.Performance.Application.Features.Performance.SubmitPerformanceReview;
 using CmScheme.Performance.Application.Features.Performance.GetReviewHistory;
@@ -13,7 +14,9 @@ public static class PerformanceGroupExtensions
 {
     public static IEndpointRouteBuilder MapPerformanceEndpoints(this IEndpointRouteBuilder builder)
     {
-        RouteGroupBuilder group = builder.MapGroup("performance");
+        RouteGroupBuilder group = builder.MapGroup("performance")
+            .RequireAuthorization()
+            .RequireModule(ModuleCodes.Performance, "Read", requireScope: false);
 
         group.MapGet("/summary", GetSummary.Handle);
         group.MapPut("/rating", RecordRating.Handle);

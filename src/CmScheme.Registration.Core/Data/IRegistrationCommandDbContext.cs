@@ -9,5 +9,13 @@ public interface IRegistrationCommandDbContext
 
     DbSet<UserAccount> UserAccounts { get; }
 
+    DbSet<UserRole> UserRoles { get; }
+
+    DbSet<ModuleMaster> ModuleMasters { get; }
+
+    DbSet<UserModuleAccess> UserModuleAccesses { get; }
+
+    DbSet<ModuleAccessAuditLog> ModuleAccessAuditLogs { get; }
+
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

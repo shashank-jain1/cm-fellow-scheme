@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
+using CmScheme.Endpoints.Abstractions.Authorization;
 
 namespace CmScheme.Training.Endpoints.Meetings;
 
@@ -10,7 +11,9 @@ public static class MeetingGroupExtensions
     {
         RouteGroupBuilder group = builder.MapGroup("training/meetings")
             .WithDisplayName("Meetings")
-            .WithTags("Meetings");
+            .WithTags("Meetings")
+            .RequireAuthorization()
+            .RequireModule(ModuleCodes.Training, "Read", requireScope: false);
 
         group.MapGet("/", ListMeetings.List);
         group.MapGet("/{trainingScheduleId:int}", GetMeeting.GetById);

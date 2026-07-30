@@ -43,6 +43,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       userAccountId: response.userAccountId,
       username: response.username,
       role: response.role,
+      modules: response.modules,
     });
   }, []);
 
