@@ -1,6 +1,6 @@
 import ApiService from '../../services/ApiService';
 import helpDeskUrls from './urls';
-import type { TicketDto, TicketFormData } from './types';
+import type { TicketDto, TicketFormData, SubmitSurveyCommand, SatisfactionSurveyDto, KnowledgeBaseArticleDto } from './types';
 
 export async function fetchTickets(role?: string, applicantId?: number): Promise<TicketDto[]> {
   let url = helpDeskUrls.tickets();
@@ -41,4 +41,23 @@ export async function escalateTicket(id: number): Promise<void> {
 
 export async function closeTicket(id: number, resolutionRemarks: string): Promise<void> {
   await ApiService.put(helpDeskUrls.close(), { ticketId: id, resolutionRemarks });
+}
+
+export async function submitSurvey(command: SubmitSurveyCommand): Promise<SatisfactionSurveyDto> {
+  const res = await ApiService.post<SatisfactionSurveyDto>(helpDeskUrls.surveys(), command);
+  return res.data!;
+}
+
+export async function searchKnowledgeBase(query?: string, category?: string): Promise<KnowledgeBaseArticleDto[]> {
+  const params: string[] = [];
+  if (query) params.push(`query=${encodeURIComponent(query)}`);
+  if (category) params.push(`category=${encodeURIComponent(category)}`);
+  const qs = params.length > 0 ? `?${params.join('&')}` : '';
+  const res = await ApiService.get<KnowledgeBaseArticleDto[]>(`${helpDeskUrls.knowledgeBaseSearch()}${qs}`);
+  return res.data ?? [];
+}
+
+export async function fetchKnowledgeBaseArticle(id: number): Promise<KnowledgeBaseArticleDto> {
+  const res = await ApiService.get<KnowledgeBaseArticleDto>(helpDeskUrls.knowledgeBaseArticle(id));
+  return res.data!;
 }

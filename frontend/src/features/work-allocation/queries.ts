@@ -1,7 +1,8 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { workAllocationApi, taskProgressApi, surveyDetailApi } from './api';
+import { workAllocationApi, taskProgressApi, surveyDetailApi, taskDependencyApi, taskAttachmentApi } from './api';
 import type { WorkAllocationFormData } from './types';
 import type { RecordSurveyPayload } from './api';
+import type { TaskDependencyFormData } from './types';
 
 export const useWorkAllocations = () => {
   return useQuery({
@@ -117,5 +118,48 @@ export const useSurveyDetails = (taskProgressId: number) => {
       return res.data ?? [];
     },
     enabled: !!taskProgressId,
+  });
+};
+
+export const useTaskDependenciesByWorkAllocation = (workAllocationId: number) => {
+  return useQuery({
+    queryKey: ['task-dependencies', 'work-allocation', workAllocationId],
+    queryFn: async () => {
+      const res = await taskDependencyApi.getByWorkAllocationId(workAllocationId);
+      return res.data ?? [];
+    },
+    enabled: !!workAllocationId,
+  });
+};
+
+export const useCreateTaskDependency = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data: TaskDependencyFormData) => taskDependencyApi.create(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['task-dependencies'] });
+    },
+  });
+};
+
+export const useTaskAttachments = (taskProgressId: number) => {
+  return useQuery({
+    queryKey: ['task-attachments', taskProgressId],
+    queryFn: async () => {
+      const res = await taskAttachmentApi.getByTaskProgressId(taskProgressId);
+      return res.data ?? [];
+    },
+    enabled: !!taskProgressId,
+  });
+};
+
+export const useUploadTaskAttachment = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ taskProgressId, file }: { taskProgressId: number; file: File }) =>
+      taskAttachmentApi.upload(taskProgressId, file),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['task-attachments'] });
+    },
   });
 };

@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { fetchCertificates, fetchCertificateDetail, applyForCertificate, approveCertificate, rejectCertificate, submitExitReadiness, generateCertificate, closeAndArchiveRecord } from './api';
+import { fetchCertificates, fetchCertificateDetail, applyForCertificate, approveCertificate, rejectCertificate, submitExitReadiness, generateCertificate, closeAndArchiveRecord, submitExitInterview } from './api';
 import type { CertificateFormData } from './types';
-import type { ExitReadinessPayload } from './types';
+import type { ExitReadinessPayload, SubmitExitInterviewCommand } from './types';
 
 export function useCertificates() {
   return useQuery({
@@ -75,6 +75,16 @@ export function useCloseAndArchiveRecord() {
       closeAndArchiveRecord(exitRecordId, approvedBy),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['certificates'] });
+    },
+  });
+}
+
+export function useSubmitExitInterview() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (command: SubmitExitInterviewCommand) => submitExitInterview(command),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['exit-interview'] });
     },
   });
 }

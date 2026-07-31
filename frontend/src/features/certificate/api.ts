@@ -1,6 +1,6 @@
 import ApiService from '../../services/ApiService';
 import certificateUrls from './urls';
-import type { CertificateApplicationDto, CertificateFormData, ExitReadinessPayload } from './types';
+import type { CertificateApplicationDto, CertificateFormData, ExitReadinessPayload, SubmitExitInterviewCommand } from './types';
 
 export async function fetchCertificates(): Promise<CertificateApplicationDto[]> {
   const res = await ApiService.get<CertificateApplicationDto[]>(certificateUrls.list());
@@ -49,4 +49,8 @@ export async function submitExitReadiness(payload: ExitReadinessPayload): Promis
 
 export async function closeAndArchiveRecord(exitRecordId: number, approvedBy: number): Promise<void> {
   await ApiService.put(certificateUrls.exitCloseArchive(exitRecordId), { approvedBy });
+}
+
+export async function submitExitInterview(command: SubmitExitInterviewCommand): Promise<void> {
+  await ApiService.post(certificateUrls.exitInterview(), command);
 }

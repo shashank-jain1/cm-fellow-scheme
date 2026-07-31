@@ -23,3 +23,15 @@ export interface CoordinatorDashboardDto {
   pendingSurveys: number;
   teamAttendancePercentage: number;
 }
+
+export type ExportFormat = 'pdf' | 'excel';
+
+export interface DashboardExportCommand {
+  format: ExportFormat;
+  filters?: DashboardFilters;
+}
+
+export interface DashboardExportDto {
+  fileUrl: string;
+  fileName: string;
+}

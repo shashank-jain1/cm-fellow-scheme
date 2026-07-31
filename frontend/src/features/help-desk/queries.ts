@@ -1,6 +1,17 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { fetchTickets, fetchTicketDetail, raiseTicket, resolveTicket, escalateTicket, closeTicket, listTicketsByRole } from './api';
-import type { TicketFormData } from './types';
+import {
+  fetchTickets,
+  fetchTicketDetail,
+  raiseTicket,
+  resolveTicket,
+  escalateTicket,
+  closeTicket,
+  listTicketsByRole,
+  submitSurvey,
+  searchKnowledgeBase,
+  fetchKnowledgeBaseArticle,
+} from './api';
+import type { TicketFormData, SubmitSurveyCommand } from './types';
 
 export function useTickets(role?: string, applicantId?: number) {
   return useQuery({
@@ -66,5 +77,30 @@ export function useCloseTicket() {
       queryClient.invalidateQueries({ queryKey: ['helpdesk-tickets'] });
       queryClient.invalidateQueries({ queryKey: ['helpdesk-ticket'] });
     },
+  });
+}
+
+export function useSubmitSurvey() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (command: SubmitSurveyCommand) => submitSurvey(command),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['helpdesk-survey'] });
+    },
+  });
+}
+
+export function useKnowledgeBaseSearch(query?: string, category?: string) {
+  return useQuery({
+    queryKey: ['helpdesk-knowledge-base', query, category],
+    queryFn: () => searchKnowledgeBase(query, category),
+  });
+}
+
+export function useKnowledgeBaseArticle(id: number) {
+  return useQuery({
+    queryKey: ['helpdesk-knowledge-base', id],
+    queryFn: () => fetchKnowledgeBaseArticle(id),
+    enabled: !!id,
   });
 }

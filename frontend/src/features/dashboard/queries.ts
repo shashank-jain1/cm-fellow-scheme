@@ -1,5 +1,5 @@
-import { useQuery } from '@tanstack/react-query';
-import { fetchAdminDashboard, fetchCoordinatorDashboard } from './api';
+import { useQuery, useMutation } from '@tanstack/react-query';
+import { fetchAdminDashboard, fetchCoordinatorDashboard, exportDashboardPdf, exportDashboardExcel } from './api';
 import type { DashboardFilters } from './types';
 
 export function useAdminDashboard(filters?: DashboardFilters) {
@@ -14,5 +14,17 @@ export function useCoordinatorDashboard(coordinatorId: number, filters?: Dashboa
     queryKey: ['dashboard', 'coordinator', coordinatorId, filters],
     queryFn: () => fetchCoordinatorDashboard(coordinatorId, filters),
     enabled: !!coordinatorId,
+  });
+}
+
+export function useExportDashboardPdf() {
+  return useMutation({
+    mutationFn: (filters?: DashboardFilters) => exportDashboardPdf(filters),
+  });
+}
+
+export function useExportDashboardExcel() {
+  return useMutation({
+    mutationFn: (filters?: DashboardFilters) => exportDashboardExcel(filters),
   });
 }

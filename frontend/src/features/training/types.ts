@@ -43,6 +43,35 @@ export interface TrainingScheduleDto {
   status: string;
 }
 
+export interface TrainingCompletion {
+  completionId: number;
+  trainingScheduleId: number;
+  trainingTitle: string;
+  fellowId: number;
+  fellowName: string;
+  completedAt: string;
+  rating: number;
+  comments: string;
+  status: string;
+}
+
+export interface TrainingCompletionFormData {
+  trainingScheduleId: number;
+  fellowId: number;
+  rating: number;
+  comments: string;
+}
+
+export interface TrainingMaterial {
+  materialId: number;
+  trainingScheduleId: number;
+  fileName: string;
+  fileUrl: string;
+  uploadedBy: number;
+  uploadedByName: string;
+  uploadedAt: string;
+}
+
 export interface UserOption {
   applicantId: number;
   firstName: string;

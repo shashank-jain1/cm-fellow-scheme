@@ -1,5 +1,5 @@
 import ApiService from '../../services/ApiService';
-import type { WorkAllocationFormData, WorkAllocationDto, TaskProgressDto, SurveyDetailDto } from './types';
+import type { WorkAllocationFormData, WorkAllocationDto, TaskProgressDto, SurveyDetailDto, TaskDependency, TaskDependencyFormData, TaskAttachment } from './types';
 
 export interface RecordSurveyPayload {
   applicantId: number;
@@ -35,4 +35,22 @@ export const taskProgressApi = {
 export const surveyDetailApi = {
   getByTaskProgressId: (taskProgressId: number) =>
     ApiService.get<SurveyDetailDto[]>(`survey-records/by-task-progress/${taskProgressId}`),
+};
+
+export const taskDependencyApi = {
+  getByWorkAllocationId: (workAllocationId: number) =>
+    ApiService.get<TaskDependency[]>(`task-dependencies/by-work-allocation/${workAllocationId}`),
+  create: (data: TaskDependencyFormData) =>
+    ApiService.post<TaskDependency>('task-dependencies', data),
+};
+
+export const taskAttachmentApi = {
+  getByTaskProgressId: (taskProgressId: number) =>
+    ApiService.get<TaskAttachment[]>(`tasks/attachments/${taskProgressId}`),
+  upload: (taskProgressId: number, file: File) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('taskProgressId', String(taskProgressId));
+    return ApiService.postFormData<TaskAttachment>(`tasks/attachments`, formData);
+  },
 };

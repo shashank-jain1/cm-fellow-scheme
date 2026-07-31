@@ -1,6 +1,6 @@
 import ApiService from '../../services/ApiService';
 import trainingUrls from './urls';
-import type { ActivityFormData, TrainingScheduleDto } from './types';
+import type { ActivityFormData, TrainingScheduleDto, TrainingCompletion, TrainingCompletionFormData, TrainingMaterial } from './types';
 
 export async function fetchTrainingSessions(): Promise<TrainingScheduleDto[]> {
   const res = await ApiService.get<TrainingScheduleDto[]>(trainingUrls.sessions());
@@ -45,4 +45,27 @@ export async function uploadMom(trainingScheduleId: number, file: File): Promise
 
 export async function updateTrainingStatus(trainingScheduleId: number, newStatus: string): Promise<void> {
   await ApiService.put<void>(`training/sessions/${trainingScheduleId}/status`, { newStatus });
+}
+
+export async function fetchTrainingCompletions(): Promise<TrainingCompletion[]> {
+  const res = await ApiService.get<TrainingCompletion[]>(trainingUrls.completions());
+  return res.data ?? [];
+}
+
+export async function createTrainingCompletion(command: TrainingCompletionFormData): Promise<TrainingCompletion> {
+  const res = await ApiService.post<TrainingCompletion>(trainingUrls.createCompletion(), command);
+  return res.data!;
+}
+
+export async function fetchTrainingMaterial(materialId: number): Promise<TrainingMaterial> {
+  const res = await ApiService.get<TrainingMaterial>(trainingUrls.material(materialId));
+  return res.data!;
+}
+
+export async function uploadTrainingMaterialFile(trainingScheduleId: number, file: File): Promise<TrainingMaterial> {
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('trainingScheduleId', String(trainingScheduleId));
+  const res = await ApiService.postFormData<TrainingMaterial>(trainingUrls.uploadMaterial(), formData);
+  return res.data!;
 }

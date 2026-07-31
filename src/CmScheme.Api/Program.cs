@@ -96,7 +96,8 @@ builder.Services.AddAuthorization(options =>
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 builder.Services.AddScoped<IAuthorizationHandler, ModuleAuthorizationHandler>();
-builder.Services.AddSingleton<GlobalExceptionHandler>();
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
 
 builder.Services.AddMediator(options => options.ServiceLifetime = ServiceLifetime.Scoped);
 

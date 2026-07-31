@@ -54,3 +54,27 @@ export interface AssignWorkAllocationCommand {
   workAllocationId: number;
   assignedToUserId: number;
 }
+
+export interface TaskDependency {
+  dependencyId: number;
+  taskProgressId: number;
+  prerequisiteTaskProgressId: number;
+  prerequisiteTaskName: string;
+  createdAt: string;
+}
+
+export interface TaskDependencyFormData {
+  taskProgressId: number;
+  prerequisiteTaskProgressId: number;
+}
+
+export interface TaskAttachment {
+  attachmentId: number;
+  taskProgressId: number;
+  fileName: string;
+  fileUrl: string;
+  fileSize: number;
+  uploadedBy: number;
+  uploadedByName: string;
+  uploadedAt: string;
+}

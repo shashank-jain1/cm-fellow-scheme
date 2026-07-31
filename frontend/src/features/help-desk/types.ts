@@ -19,3 +19,29 @@ export interface TicketDto {
   createdOn: string;
   closedOn?: string;
 }
+
+export type SlaStatus = 'On Track' | 'At Risk' | 'Breached';
+
+export interface SatisfactionSurveyDto {
+  surveyId: number;
+  ticketId: number;
+  rating: number;
+  comments: string;
+  createdOn: string;
+}
+
+export interface SubmitSurveyCommand {
+  ticketId: number;
+  rating: number;
+  comments: string;
+}
+
+export interface KnowledgeBaseArticleDto {
+  articleId: number;
+  title: string;
+  category: string;
+  content: string;
+  published: boolean;
+  authorName?: string;
+  createdOn: string;
+}

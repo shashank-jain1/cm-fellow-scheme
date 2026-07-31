@@ -1,6 +1,21 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { fetchPerformanceSummary, fetchPerformanceDetail, recordSupervisorRating, recordEvaluationRemarks, calculatePerformanceScore, submitReview, fetchReviewHistory } from './api';
-import type { SubmitReviewRequest } from './types';
+import {
+  fetchPerformanceSummary,
+  fetchPerformanceDetail,
+  recordSupervisorRating,
+  recordEvaluationRemarks,
+  calculatePerformanceScore,
+  submitReview,
+  fetchReviewHistory,
+  createGoal,
+  fetchGoalsByUser,
+  updateGoalStatus,
+  createImprovementPlan,
+  fetchImprovementPlansByUser,
+  submitPeerFeedback,
+  submitSelfAssessment,
+} from './api';
+import type { SubmitReviewRequest, CreateGoalCommand, UpdateGoalStatusCommand, CreateImprovementPlanCommand, SubmitPeerFeedbackCommand, SubmitSelfAssessmentCommand } from './types';
 
 export function usePerformanceSummary() {
   return useQuery({
@@ -62,5 +77,72 @@ export function useReviewHistory(id: number) {
     queryKey: ['performance', 'review-history', id],
     queryFn: () => fetchReviewHistory(id),
     enabled: !!id,
+  });
+}
+
+export function useGoalsByUser(userId: number) {
+  return useQuery({
+    queryKey: ['performance', 'goals', userId],
+    queryFn: () => fetchGoalsByUser(userId),
+    enabled: !!userId,
+  });
+}
+
+export function useCreateGoal() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (command: CreateGoalCommand) => createGoal(command),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['performance', 'goals'] });
+    },
+  });
+}
+
+export function useUpdateGoalStatus() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ goalId, command }: { goalId: number; command: UpdateGoalStatusCommand }) =>
+      updateGoalStatus(goalId, command),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['performance', 'goals'] });
+    },
+  });
+}
+
+export function useImprovementPlansByUser(userId: number) {
+  return useQuery({
+    queryKey: ['performance', 'improvement-plans', userId],
+    queryFn: () => fetchImprovementPlansByUser(userId),
+    enabled: !!userId,
+  });
+}
+
+export function useCreateImprovementPlan() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (command: CreateImprovementPlanCommand) => createImprovementPlan(command),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['performance', 'improvement-plans'] });
+    },
+  });
+}
+
+export function useSubmitPeerFeedback() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (command: SubmitPeerFeedbackCommand) => submitPeerFeedback(command),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['performance', 'peer-feedback'] });
+    },
+  });
+}
+
+export function useSubmitSelfAssessment() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (command: SubmitSelfAssessmentCommand) => submitSelfAssessment(command),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['performance', 'self-assessment'] });
+    },
   });
 }

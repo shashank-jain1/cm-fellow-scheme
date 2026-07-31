@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { registrationApi } from './api';
 import type { SubmitRegistrationPayload, VerifyOtpPayload } from './api';
+import type { ProfileUpdatePayload, BulkApprovalPayload } from './types';
 
 export function useSubmitRegistrationMutation() {
   const qc = useQueryClient();
@@ -92,6 +93,23 @@ export function useResetPasswordMutation() {
   return useMutation({
     mutationFn: ({ email, newPassword }: { email: string; newPassword: string }) =>
       registrationApi.resetPassword(email, newPassword),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['registrations'] }),
+  });
+}
+
+export function useUpdateProfileMutation() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ applicantId, data }: { applicantId: number; data: ProfileUpdatePayload }) =>
+      registrationApi.updateProfile(applicantId, data),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['registrations'] }),
+  });
+}
+
+export function useBulkApprovalMutation() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (data: BulkApprovalPayload) => registrationApi.bulkApprove(data),
     onSuccess: () => qc.invalidateQueries({ queryKey: ['registrations'] }),
   });
 }

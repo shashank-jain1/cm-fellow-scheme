@@ -1,6 +1,6 @@
 import ApiService from '../../services/ApiService';
 import { REGISTRATION_URLS } from './urls';
-import type { Fellow, Division, District, Block, Project } from './types';
+import type { Fellow, Division, District, Block, Project, ProfileUpdatePayload, BulkApprovalPayload } from './types';
 
 export interface SubmitRegistrationPayload {
   firstName: string;
@@ -85,4 +85,10 @@ export const registrationApi = {
 
   resetPassword: (email: string, newPassword: string) =>
     ApiService.post<void>(REGISTRATION_URLS.RESET_PASSWORD, { email, newPassword }),
+
+  updateProfile: (applicantId: number, data: ProfileUpdatePayload) =>
+    ApiService.put<void>(`${REGISTRATION_URLS.FELLOWS}/${applicantId}/profile`, data),
+
+  bulkApprove: (data: BulkApprovalPayload) =>
+    ApiService.post<void>(`${REGISTRATION_URLS.FELLOWS}/bulk-approve`, data),
 };

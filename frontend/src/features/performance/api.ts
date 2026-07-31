@@ -1,6 +1,19 @@
 import ApiService from '../../services/ApiService';
 import performanceUrls from './urls';
-import type { PerformanceSummaryDto, RecordSupervisorRatingCommand, RecordEvaluationRemarksCommand, SubmitReviewRequest, ReviewHistoryDto } from './types';
+import type {
+  PerformanceSummaryDto,
+  RecordSupervisorRatingCommand,
+  RecordEvaluationRemarksCommand,
+  SubmitReviewRequest,
+  ReviewHistoryDto,
+  CreateGoalCommand,
+  UpdateGoalStatusCommand,
+  PerformanceGoalDto,
+  CreateImprovementPlanCommand,
+  ImprovementPlanDto,
+  SubmitPeerFeedbackCommand,
+  SubmitSelfAssessmentCommand,
+} from './types';
 
 export async function fetchPerformanceSummary(): Promise<PerformanceSummaryDto[]> {
   const res = await ApiService.get<PerformanceSummaryDto[]>(performanceUrls.summary());
@@ -31,4 +44,36 @@ export async function submitReview(id: number, command: SubmitReviewRequest): Pr
 export async function fetchReviewHistory(id: number): Promise<ReviewHistoryDto[]> {
   const res = await ApiService.get<ReviewHistoryDto[]>(performanceUrls.reviewHistory(id));
   return res.data ?? [];
+}
+
+export async function createGoal(command: CreateGoalCommand): Promise<PerformanceGoalDto> {
+  const res = await ApiService.post<PerformanceGoalDto>(performanceUrls.goals(), command);
+  return res.data!;
+}
+
+export async function fetchGoalsByUser(userId: number): Promise<PerformanceGoalDto[]> {
+  const res = await ApiService.get<PerformanceGoalDto[]>(performanceUrls.goalsByUser(userId));
+  return res.data ?? [];
+}
+
+export async function updateGoalStatus(goalId: number, command: UpdateGoalStatusCommand): Promise<void> {
+  await ApiService.put(performanceUrls.goalStatus(goalId), command);
+}
+
+export async function createImprovementPlan(command: CreateImprovementPlanCommand): Promise<ImprovementPlanDto> {
+  const res = await ApiService.post<ImprovementPlanDto>(performanceUrls.improvementPlans(), command);
+  return res.data!;
+}
+
+export async function fetchImprovementPlansByUser(userId: number): Promise<ImprovementPlanDto[]> {
+  const res = await ApiService.get<ImprovementPlanDto[]>(performanceUrls.improvementPlansByUser(userId));
+  return res.data ?? [];
+}
+
+export async function submitPeerFeedback(command: SubmitPeerFeedbackCommand): Promise<void> {
+  await ApiService.post(performanceUrls.peerFeedback(), command);
+}
+
+export async function submitSelfAssessment(command: SubmitSelfAssessmentCommand): Promise<void> {
+  await ApiService.post(performanceUrls.selfAssessment(), command);
 }

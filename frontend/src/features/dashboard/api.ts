@@ -1,6 +1,6 @@
 import ApiService from '../../services/ApiService';
 import dashboardUrls from './urls';
-import type { AdminDashboardDto, CoordinatorDashboardDto, DashboardFilters } from './types';
+import type { AdminDashboardDto, CoordinatorDashboardDto, DashboardFilters, DashboardExportDto } from './types';
 
 function buildQueryString(filters: DashboardFilters): string {
   const params = new URLSearchParams();
@@ -21,5 +21,15 @@ export async function fetchAdminDashboard(filters?: DashboardFilters): Promise<A
 export async function fetchCoordinatorDashboard(coordinatorId: number, filters?: DashboardFilters): Promise<CoordinatorDashboardDto> {
   const qs = buildQueryString(filters ?? {});
   const res = await ApiService.get<CoordinatorDashboardDto>(`${dashboardUrls.coordinator(coordinatorId)}${qs}`);
+  return res.data!;
+}
+
+export async function exportDashboardPdf(filters?: DashboardFilters): Promise<DashboardExportDto> {
+  const res = await ApiService.post<DashboardExportDto>(dashboardUrls.exportPdf(), filters ?? {});
+  return res.data!;
+}
+
+export async function exportDashboardExcel(filters?: DashboardFilters): Promise<DashboardExportDto> {
+  const res = await ApiService.post<DashboardExportDto>(dashboardUrls.exportExcel(), filters ?? {});
   return res.data!;
 }
