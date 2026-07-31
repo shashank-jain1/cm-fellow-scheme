@@ -11,13 +11,3 @@ public sealed record ApplicantDto(
     DateTime DateOfBirth,
     string Status,
     string? FullName);
-
-public sealed record RegistrationListItem(
-    int ApplicantId,
-    string FirstName,
-    string LastName,
-    string MobileNumber,
-    string EmailId,
-    DateTime DateOfBirth,
-    string Status,
-    DateTime CreatedOn);

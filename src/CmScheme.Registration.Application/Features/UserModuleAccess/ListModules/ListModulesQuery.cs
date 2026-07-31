@@ -1,6 +1,6 @@
 using Ardalis.Result;
 using Mediator;
-using CmScheme.Registration.Application.Features.UserModuleAccess.Dtos;
+using CmScheme.Registration.Core.Dtos;
 
 namespace CmScheme.Registration.Application.Features.UserModuleAccess.ListModules;
 

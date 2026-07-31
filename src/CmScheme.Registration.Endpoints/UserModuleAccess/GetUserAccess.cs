@@ -1,7 +1,7 @@
 using Ardalis.Result;
 using Mediator;
 using Microsoft.AspNetCore.Http;
-using CmScheme.Registration.Application.Features.UserModuleAccess.Dtos;
+using CmScheme.Registration.Core.Dtos;
 using CmScheme.Registration.Application.Features.UserModuleAccess.GetUserModuleAccess;
 using CmScheme.Endpoints.Abstractions.Extensions;
 using IResult = Microsoft.AspNetCore.Http.IResult;

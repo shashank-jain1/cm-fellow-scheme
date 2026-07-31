@@ -1,7 +1,7 @@
 using Ardalis.Result;
 using Mediator;
 using Microsoft.EntityFrameworkCore;
-using CmScheme.Registration.Application.Features.UserModuleAccess.Dtos;
+using CmScheme.Registration.Core.Dtos;
 using CmScheme.Registration.Core.Data;
 
 namespace CmScheme.Registration.Application.Features.UserModuleAccess.GetAllModuleAccess;
