@@ -18,6 +18,8 @@ import type {
   CreateTrainingScheduleCommand,
   UpdateTrainingScheduleCommand,
   UpdateWorkCommand,
+  DepartmentDto,
+  CreateDepartmentCommand,
 } from './types';
 import { MASTER_URLS } from './urls';
 
@@ -65,4 +67,8 @@ export const mastersApi = {
     ApiService.post<number>(MASTER_URLS.trainingSchedules, data),
   updateTrainingSchedule: (id: number, data: UpdateTrainingScheduleCommand) =>
     ApiService.put<void>(`${MASTER_URLS.trainingSchedules}/${id}`, { ...data, trainingScheduleId: id }),
+
+  getDepartments: () => ApiService.get<DepartmentDto[]>(MASTER_URLS.departments),
+  createDepartment: (data: CreateDepartmentCommand) =>
+    ApiService.post<number>(MASTER_URLS.departments, data),
 };

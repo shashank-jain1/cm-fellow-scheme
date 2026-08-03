@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { userManagementApi } from '../api/user-management';
+import { registrationApi } from '../api';
 import type { CreateUserAccountRequest, AssignRoleRequest } from '../types/user-management';
 
 export function useListUserAccounts(role?: string, isActive?: boolean) {
@@ -37,5 +38,12 @@ export function useDeactivateUserAccount() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['user-accounts'] });
     },
+  });
+}
+
+export function useResetPassword() {
+  return useMutation({
+    mutationFn: ({ email, newPassword }: { email: string; newPassword: string }) =>
+      registrationApi.resetPassword(email, newPassword),
   });
 }

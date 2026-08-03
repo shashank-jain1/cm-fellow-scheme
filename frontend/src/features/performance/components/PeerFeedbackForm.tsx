@@ -30,7 +30,7 @@ export default function PeerFeedbackForm({
   onSuccess,
 }: PeerFeedbackFormProps) {
   const submitFeedback = useSubmitPeerFeedback();
-  const { data: existingFeedback } = usePeerFeedback(userId ?? 0);
+  const { data: existingFeedback } = usePeerFeedback(performanceEvaluationId);
   const [ratings, setRatings] = useState<RatingField[]>(INITIAL_RATINGS);
   const [comments, setComments] = useState('');
   const [isAnonymous, setIsAnonymous] = useState(false);

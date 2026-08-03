@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { AppTextarea } from '../../../shared/components/forms';
 import { Button } from 'primereact/button';
-import { useResolveTicket, useEscalateTicket } from '../queries';
+import { useResolveTicket, useEscalateTicket, useCloseTicket } from '../queries';
 
 interface TicketResolutionFormProps {
   ticketId: number;
@@ -13,6 +13,13 @@ export default function TicketResolutionForm({ ticketId, currentStatus, onResolv
   const [remarks, setRemarks] = useState('');
   const resolveMutation = useResolveTicket();
   const escalateMutation = useEscalateTicket();
+  const closeMutation = useCloseTicket();
+
+  const handleClose = async () => {
+    await closeMutation.mutateAsync({ id: ticketId, resolutionRemarks: remarks });
+    setRemarks('');
+    onResolved?.();
+  };
 
   const handleResolve = async () => {
     await resolveMutation.mutateAsync({ id: ticketId, resolutionRemarks: remarks });
@@ -59,6 +66,14 @@ export default function TicketResolutionForm({ ticketId, currentStatus, onResolv
           onClick={handleEscalate}
           disabled={escalateMutation.isPending}
           loading={escalateMutation.isPending}
+        />
+        <Button
+          label="Close"
+          icon="pi pi-times"
+          className="btn btn-secondary"
+          onClick={handleClose}
+          disabled={closeMutation.isPending}
+          loading={closeMutation.isPending}
         />
         <Button
           label="Mark Resolved"

@@ -9,9 +9,10 @@ interface UserTableProps {
   isLoading: boolean;
   onChangeRole: (user: UserAccountListItem) => void;
   onDeactivate: (user: UserAccountListItem) => void;
+  onResetPassword: (user: UserAccountListItem) => void;
 }
 
-export default function UserTable({ users, isLoading, onChangeRole, onDeactivate }: UserTableProps) {
+export default function UserTable({ users, isLoading, onChangeRole, onDeactivate, onResetPassword }: UserTableProps) {
   const { user: currentUser } = useAuth();
 
   return (
@@ -51,6 +52,13 @@ export default function UserTable({ users, isLoading, onChangeRole, onDeactivate
                 </td>
                 <td style={{ padding: '12px 16px', textAlign: 'right' }}>
                   <div style={{ display: 'flex', gap: 6, justifyContent: 'flex-end' }}>
+                    <Button
+                      icon="pi pi-key"
+                      className="btn btn-ghost btn-sm"
+                      title="Reset Password"
+                      onClick={() => onResetPassword(u)}
+                      size="small"
+                    />
                     <Button
                       icon="pi pi-user-edit"
                       className="btn btn-ghost btn-sm"

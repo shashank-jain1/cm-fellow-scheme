@@ -7,6 +7,7 @@ import ProjectProgressChart from '../components/ProjectProgressChart';
 import TrainingSurveyChart from '../components/TrainingSurveyChart';
 import PerformanceWidget from '../components/PerformanceWidget';
 import DashboardFilterBar from '../components/DashboardFilterBar';
+import DashboardExport from '../components/DashboardExport';
 
 export default function AdminDashboardPage() {
   const [filters, setFilters] = useState<DashboardFilters>({});
@@ -20,6 +21,8 @@ export default function AdminDashboardPage() {
           <p>System-wide overview and management</p>
         </div>
       </div>
+
+      <DashboardExport filters={filters} />
 
       <DashboardFilterBar filters={filters} onChange={setFilters} />
 

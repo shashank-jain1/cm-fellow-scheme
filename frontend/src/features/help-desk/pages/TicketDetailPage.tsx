@@ -4,6 +4,7 @@ import TicketStatusBadge from '../components/TicketStatusBadge';
 import TicketResolutionForm from '../components/TicketResolutionForm';
 import TicketDetailInfo from '../components/TicketDetailInfo';
 import TicketDetailDescription from '../components/TicketDetailDescription';
+import SatisfactionSurvey from '../components/SatisfactionSurvey';
 import { SkeletonTable } from '../../../shared/components/ui';
 
 export default function TicketDetailPage() {
@@ -42,6 +43,10 @@ export default function TicketDetailPage() {
       <div style={{ marginTop: 24 }}>
         <TicketResolutionForm ticketId={ticket.ticketId} currentStatus={ticket.status} />
       </div>
+
+      {(ticket.status === 'Resolved' || ticket.status === 'Closed') && (
+        <SatisfactionSurvey ticketId={ticket.ticketId} />
+      )}
     </div>
   );
 }

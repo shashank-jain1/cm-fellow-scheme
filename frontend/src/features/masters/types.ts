@@ -24,3 +24,8 @@ export {
   type CreateTrainingScheduleCommand,
   type UpdateTrainingScheduleCommand,
 } from './trainingScheduleTypes';
+
+export {
+  type DepartmentDto,
+  type CreateDepartmentCommand,
+} from './departmentTypes';

@@ -69,3 +69,27 @@ export async function uploadTrainingMaterialFile(trainingScheduleId: number, fil
   const res = await ApiService.postFormData<TrainingMaterial>(trainingUrls.uploadMaterial(), formData);
   return res.data!;
 }
+
+export async function getMeeting(id: number): Promise<TrainingScheduleDto> {
+  const res = await ApiService.get<TrainingScheduleDto>(`training/meetings/${id}`);
+  return res.data!;
+}
+
+export async function updateMeeting(id: number, data: Partial<ActivityFormData>): Promise<void> {
+  await ApiService.put<void>(`training/meetings/${id}`, data);
+}
+
+export async function downloadMaterial(id: number): Promise<Blob> {
+  const headers: Record<string, string> = {};
+  const token = localStorage.getItem('token');
+  if (token) headers['Authorization'] = `Bearer ${token}`;
+
+  const response = await fetch(`${import.meta.env.VITE_API_URL || '/api/v1'}/training/materials/${id}/download`, { headers });
+  if (!response.ok) throw new Error(`Download failed: ${response.statusText}`);
+  return response.blob();
+}
+
+export async function getSessionMaterials(sessionId: number): Promise<TrainingMaterial[]> {
+  const res = await ApiService.get<TrainingMaterial[]>(`training/sessions/${sessionId}/materials`);
+  return res.data ?? [];
+}

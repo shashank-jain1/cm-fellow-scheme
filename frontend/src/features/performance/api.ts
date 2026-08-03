@@ -82,8 +82,8 @@ export async function submitSelfAssessment(command: SubmitSelfAssessmentCommand)
   await ApiService.post(performanceUrls.selfAssessment(), command);
 }
 
-export async function getPeerFeedback(userId: number): Promise<PeerFeedbackDto[]> {
-  const res = await ApiService.get<PeerFeedbackDto[]>(performanceUrls.peerFeedbackByUser(userId));
+export async function getPeerFeedback(evaluationId: number): Promise<PeerFeedbackDto[]> {
+  const res = await ApiService.get<PeerFeedbackDto[]>(performanceUrls.peerFeedbackByEvaluation(evaluationId));
   return res.data ?? [];
 }
 

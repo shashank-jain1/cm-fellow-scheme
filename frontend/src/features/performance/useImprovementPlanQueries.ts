@@ -51,11 +51,11 @@ export function useSubmitSelfAssessment() {
   });
 }
 
-export function usePeerFeedback(userId: number) {
+export function usePeerFeedback(evaluationId: number) {
   return useQuery({
-    queryKey: ['performance', 'peer-feedback', userId],
-    queryFn: () => getPeerFeedback(userId),
-    enabled: !!userId,
+    queryKey: ['performance', 'peer-feedback', evaluationId],
+    queryFn: () => getPeerFeedback(evaluationId),
+    enabled: !!evaluationId,
   });
 }
 

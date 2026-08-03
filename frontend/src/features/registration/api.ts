@@ -98,6 +98,6 @@ export const registrationApi = {
   bulkImportUsers: (file: File) => {
     const formData = new FormData();
     formData.append('file', file);
-    return ApiService.postFormData<{ imported: number; errors: string[] }>('registrations/bulk-import', formData);
+    return ApiService.postFormData<{ imported: number; errors: string[] }>('admin/import/users', formData);
   },
 };

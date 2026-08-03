@@ -8,11 +8,12 @@ import { ThemeProvider } from './theme/ThemeContext';
 import { AuthProvider, ProtectedRoute, ModuleProtectedRoute } from './features/auth';
 import AppLayout from './layouts/AppLayout';
 import LoginPage from './features/registration/pages/LoginPage';
-import { AdminDashboardPage, FellowDashboardPage } from './features/dashboard';
+import { AdminDashboardPage, FellowDashboardPage, CoordinatorFellowDashboardPage } from './features/dashboard';
 import RegistrationWizard from './features/registration/pages/RegistrationWizard';
 import UserManagementPage from './features/registration/pages/UserManagementPage';
 import { ActivityCalendar, CreateActivityForm, TrainingCompletionPage } from './features/training';
 import WorkAllocationPage from './features/work-allocation/pages/WorkAllocationPage';
+import TaskProgressPage from './features/work-allocation/pages/TaskProgressPage';
 import MarkAttendancePage from './features/attendance-leave/pages/MarkAttendancePage';
 import ApplyLeavePage from './features/attendance-leave/pages/ApplyLeavePage';
 import LeaveApprovalPage from './features/attendance-leave/pages/LeaveApprovalPage';
@@ -22,9 +23,10 @@ import HolidayCalendarPage from './features/attendance-leave/pages/HolidayCalend
 import PayrollSummaryPage from './features/attendance-leave/pages/PayrollSummaryPage';
 import { PerformanceReviewGrid, PerformanceDetailPage, SelfAssessmentForm, ReviewCyclePage } from './features/performance';
 import { PerformanceGoalsPage, ImprovementPlansPage } from './features/performance';
+import PeerFeedbackPage from './features/performance/pages/PeerFeedbackPage';
 import { ApplyCertificatePage, CertificateApprovalPage, CertificateVerifyPage, ExitManagementPage, ExitInterviewForm } from './features/certificate';
-import { RaiseTicketPage, TicketQueuePage, TicketDetailPage, KnowledgeBasePage } from './features/help-desk';
-import { LocationsPage, ProjectsPage, WorksPage, TrainingSchedulePage } from './features/masters';
+import { RaiseTicketPage, TicketQueuePage, TicketDetailPage, KnowledgeBasePage, SatisfactionSurvey } from './features/help-desk';
+import { LocationsPage, ProjectsPage, WorksPage, TrainingSchedulePage, DepartmentPage } from './features/masters';
 import DocumentVerificationPage from './features/registration/pages/DocumentVerificationPage';
 import ForgotPasswordPage from './features/registration/pages/ForgotPasswordPage';
 import ResetPasswordPage from './features/registration/pages/ResetPasswordPage';
@@ -66,10 +68,12 @@ export default function App() {
                 <Route path="admin/import" element={<ModuleProtectedRoute moduleCode="ADMINISTRATION" permission="Write"><BulkImportPage /></ModuleProtectedRoute>} />
                 <Route path="admin/backup" element={<ModuleProtectedRoute moduleCode="ADMINISTRATION" permission="Write"><BackupPage /></ModuleProtectedRoute>} />
                 <Route path="dashboard/fellow" element={<ModuleProtectedRoute moduleCode="DASHBOARD"><FellowDashboardPage /></ModuleProtectedRoute>} />
+                <Route path="dashboard/coordinator" element={<ModuleProtectedRoute moduleCode="DASHBOARD"><CoordinatorFellowDashboardPage /></ModuleProtectedRoute>} />
                 <Route path="training" element={<ModuleProtectedRoute moduleCode="TRAINING"><ActivityCalendar /></ModuleProtectedRoute>} />
                 <Route path="training/new" element={<ModuleProtectedRoute moduleCode="TRAINING" permission="Write"><CreateActivityForm /></ModuleProtectedRoute>} />
                 <Route path="training/completions" element={<ModuleProtectedRoute moduleCode="TRAINING"><TrainingCompletionPage /></ModuleProtectedRoute>} />
                 <Route path="work-allocation" element={<ModuleProtectedRoute moduleCode="WORK_ALLOCATION"><WorkAllocationPage /></ModuleProtectedRoute>} />
+                <Route path="work-allocation/progress" element={<ModuleProtectedRoute moduleCode="WORK_ALLOCATION"><TaskProgressPage /></ModuleProtectedRoute>} />
                 <Route path="attendance" element={<ModuleProtectedRoute moduleCode="ATTENDANCE"><MarkAttendancePage /></ModuleProtectedRoute>} />
                 <Route path="attendance/report" element={<ModuleProtectedRoute moduleCode="ATTENDANCE"><AttendanceReportPage /></ModuleProtectedRoute>} />
                 <Route path="attendance/apply-leave" element={<ModuleProtectedRoute moduleCode="ATTENDANCE" permission="Write"><ApplyLeavePage /></ModuleProtectedRoute>} />
@@ -82,6 +86,7 @@ export default function App() {
                 <Route path="performance/goals" element={<ModuleProtectedRoute moduleCode="PERFORMANCE"><PerformanceGoalsPage /></ModuleProtectedRoute>} />
                 <Route path="performance/improvement-plans" element={<ModuleProtectedRoute moduleCode="PERFORMANCE"><ImprovementPlansPage /></ModuleProtectedRoute>} />
                 <Route path="performance/self-assessment" element={<ModuleProtectedRoute moduleCode="PERFORMANCE"><SelfAssessmentForm /></ModuleProtectedRoute>} />
+                <Route path="performance/peer-feedback/:id" element={<ModuleProtectedRoute moduleCode="PERFORMANCE"><PeerFeedbackPage /></ModuleProtectedRoute>} />
                 <Route path="performance/review-cycle" element={<ModuleProtectedRoute moduleCode="PERFORMANCE"><ReviewCyclePage /></ModuleProtectedRoute>} />
                 <Route path="performance/:id" element={<ModuleProtectedRoute moduleCode="PERFORMANCE"><PerformanceDetailPage /></ModuleProtectedRoute>} />
                 <Route path="certificate/apply" element={<ModuleProtectedRoute moduleCode="CERTIFICATE" permission="Write"><ApplyCertificatePage /></ModuleProtectedRoute>} />
@@ -98,6 +103,7 @@ export default function App() {
                 <Route path="masters/projects" element={<ModuleProtectedRoute moduleCode="MASTERS"><ProjectsPage /></ModuleProtectedRoute>} />
                 <Route path="masters/works" element={<ModuleProtectedRoute moduleCode="MASTERS"><WorksPage /></ModuleProtectedRoute>} />
                 <Route path="masters/training-schedules" element={<ModuleProtectedRoute moduleCode="MASTERS"><TrainingSchedulePage /></ModuleProtectedRoute>} />
+                <Route path="masters/departments" element={<ModuleProtectedRoute moduleCode="MASTERS"><DepartmentPage /></ModuleProtectedRoute>} />
                 <Route path="unauthorized" element={<div style={{ padding: 40, textAlign: 'center' }}><h2>Unauthorized</h2><p>You don't have access to this page.</p></div>} />
               </Route>
             </Routes>

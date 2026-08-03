@@ -8,4 +8,5 @@ export const MASTER_URLS = {
   works: 'masters/works',
   lookups: 'masters/lookup',
   trainingSchedules: 'masters/training-schedules',
+  departments: 'masters/departments',
 } as const;

@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { useAuth } from '../../auth/useAuth';
-import { useTickets } from '../queries';
+import { useTickets, useExportTickets } from '../queries';
 import TicketKpiCards from '../components/TicketKpiCards';
 import TicketFilters from '../components/TicketFilters';
 import TicketTable from '../components/TicketTable';
+import { Button } from 'primereact/button';
 import { SkeletonTable } from '../../../shared/components/ui';
 
 export default function TicketQueuePage() {
@@ -12,6 +13,14 @@ export default function TicketQueuePage() {
   const [statusFilter, setStatusFilter] = useState('');
   const [priorityFilter, setPriorityFilter] = useState('');
   const { data: tickets, isLoading } = useTickets(user?.role, user?.userAccountId);
+  const exportMutation = useExportTickets();
+
+  const handleExportCsv = async () => {
+    const url = await exportMutation.mutateAsync('csv');
+    if (url) {
+      window.open(url, '_blank');
+    }
+  };
 
   const filtered = (tickets ?? []).filter((t) => {
     const matchSearch =
@@ -29,6 +38,13 @@ export default function TicketQueuePage() {
           <h1>Ticket Queue</h1>
           <p>View and manage support tickets</p>
         </div>
+        <Button
+          label="Export CSV"
+          icon="pi pi-download"
+          onClick={handleExportCsv}
+          loading={exportMutation.isPending}
+          disabled={exportMutation.isPending}
+        />
       </div>
 
       <TicketKpiCards tickets={tickets ?? []} />

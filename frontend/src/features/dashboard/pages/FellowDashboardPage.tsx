@@ -2,6 +2,7 @@ import { useAuth } from '../../auth/useAuth';
 import { useFellowDashboard } from '../queries';
 import KpiCard from '../components/KpiCard';
 import TrainingSurveyChart from '../components/TrainingSurveyChart';
+import DashboardExport from '../components/DashboardExport';
 
 export default function FellowDashboardPage() {
   const { user } = useAuth();
@@ -15,6 +16,8 @@ export default function FellowDashboardPage() {
           <p>Your assigned tasks and progress</p>
         </div>
       </div>
+
+      <DashboardExport />
 
       <div className="metric-bar" style={{ marginBottom: 'var(--space-6)' }}>
         <KpiCard label="Projects" value={stats?.totalAssignedProjects ?? 0} icon="pi pi-briefcase" accent="accent" isLoading={isLoading} />
