@@ -6,14 +6,14 @@ const certificateUrls = {
   review: () => 'certificates/review',
   generate: (id: number) => `certificates/${id}/generate`,
   download: (id: number) => `certificates/${id}/download`,
-  generateCompletion: () => 'certificates/generate-completion',
-  generateExperience: () => 'certificates/generate-experience',
-  verify: () => 'certificates/verify',
+  generateCompletion: (applicantId: number) => `certificates/${applicantId}/completion-certificate`,
+  generateExperience: (applicantId: number) => `certificates/${applicantId}/experience-letter`,
+  verify: (certNumber: string) => `certificates/verify/${encodeURIComponent(certNumber)}`,
   exitReadiness: () => 'exit/readiness',
-  exitCompliance: (id: number) => `exit/${id}/compliance`,
+  exitCompliance: () => 'exit/compliance',
   exitCloseArchive: (id: number) => `exit/${id}/close-archive`,
-  exitInterview: () => 'registration/exit-interview',
-  exitInterviewByUser: (userId: number) => `registration/exit-interview?userAccountId=${userId}`,
+  exitInterview: () => 'exit-interview',
+  exitInterviewByUser: (userId: number) => `exit-interview?userAccountId=${userId}`,
 };
 
 export default certificateUrls;

@@ -64,22 +64,22 @@ export async function submitExitInterview(command: SubmitExitInterviewCommand): 
 }
 
 export async function generateCompletionCertificate(applicantId: number): Promise<string> {
-  const res = await ApiService.post<string>(certificateUrls.generateCompletion(), { applicantId });
+  const res = await ApiService.post<string>(certificateUrls.generateCompletion(applicantId), {});
   return res.data ?? '';
 }
 
 export async function generateExperienceLetter(applicantId: number): Promise<string> {
-  const res = await ApiService.post<string>(certificateUrls.generateExperience(), { applicantId });
+  const res = await ApiService.post<string>(certificateUrls.generateExperience(applicantId), {});
   return res.data ?? '';
 }
 
 export async function verifyCertificate(certNumber: string): Promise<CertificateVerifyResult> {
-  const res = await ApiService.get<CertificateVerifyResult>(`${certificateUrls.verify()}?certificateNumber=${encodeURIComponent(certNumber)}`);
+  const res = await ApiService.get<CertificateVerifyResult>(certificateUrls.verify(certNumber));
   return res.data!;
 }
 
-export async function verifyCompliance(exitRecordId: number): Promise<ComplianceCheckResult> {
-  const res = await ApiService.get<ComplianceCheckResult>(certificateUrls.exitCompliance(exitRecordId));
+export async function verifyCompliance(): Promise<ComplianceCheckResult> {
+  const res = await ApiService.put<ComplianceCheckResult>(certificateUrls.exitCompliance(), {});
   return res.data!;
 }
 

@@ -25,7 +25,7 @@ export async function createTrainingMeeting(command: ActivityFormData): Promise<
 export async function uploadTrainingMaterial(trainingScheduleId: number, file: File): Promise<string> {
   const formData = new FormData();
   formData.append('file', file);
-  const res = await ApiService.postFormData<string>(`training/sessions/${trainingScheduleId}/material`, formData);
+  const res = await ApiService.postFormData<string>(`training/sessions/${trainingScheduleId}/materials`, formData);
   return res.data ?? '';
 }
 

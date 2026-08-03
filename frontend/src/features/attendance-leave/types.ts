@@ -4,7 +4,7 @@ export type {
   CheckOutAttendanceCommand,
   MonthlyAttendanceReportDto,
   WeeklyAttendanceReportDto,
-  WeeklyDayReportDto,
+  DailyAttendanceRecordDto,
   PayrollSummaryDto,
 } from './attendanceTypes';
 export type {

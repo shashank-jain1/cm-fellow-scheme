@@ -81,7 +81,7 @@ export async function getSurvey(ticketId: number): Promise<SatisfactionSurveyDto
 }
 
 export async function checkSlaOverdue(): Promise<SlaOverdueResult> {
-  const res = await ApiService.get<SlaOverdueResult>(helpDeskUrls.slaCheck());
+  const res = await ApiService.post<SlaOverdueResult>(helpDeskUrls.slaCheck(), {});
   return res.data!;
 }
 

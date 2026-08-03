@@ -15,4 +15,5 @@ public interface IMastersQueryDbContext
     DbSet<Project> Projects { get; }
     DbSet<Work> Works { get; }
     DbSet<LookupMaster> LookupMasters { get; }
+    DbSet<Department> Departments { get; }
 }

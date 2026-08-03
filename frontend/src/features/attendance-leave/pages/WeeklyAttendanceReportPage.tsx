@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
 import { useWeeklyReport } from '../queries';
 import { PageHeader } from '../../../shared/components/ui';
-import type { WeeklyDayReportDto } from '../types';
+import type { DailyAttendanceRecordDto } from '../types';
 
 function getMonday(date: Date): string {
   const d = new Date(date);
@@ -18,16 +18,16 @@ const statusColor: Record<string, string> = {
   Holiday: 'var(--purple-500)',
 };
 
-function DayCard({ day }: { day: WeeklyDayReportDto }) {
-  const color = statusColor[day.status] ?? 'var(--text-secondary)';
+function DayCard({ record }: { record: DailyAttendanceRecordDto }) {
+  const color = statusColor[record.attendanceStatus] ?? 'var(--text-secondary)';
+  const dateLabel = new Date(record.attendanceDate).toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' });
   return (
     <div style={{ border: '1px solid var(--surface-border)', borderRadius: 8, padding: 16, flex: 1, minWidth: 140, textAlign: 'center' }}>
-      <div style={{ fontWeight: 600, marginBottom: 4 }}>{day.dayLabel}</div>
-      <div style={{ fontSize: 12, color: 'var(--text-secondary)', marginBottom: 8 }}>{day.date}</div>
-      <div style={{ fontWeight: 700, color, fontSize: 14, marginBottom: 4 }}>{day.status}</div>
-      {day.checkInTime && <div style={{ fontSize: 12, color: 'var(--text-secondary)' }}>In: {day.checkInTime}</div>}
-      {day.checkOutTime && <div style={{ fontSize: 12, color: 'var(--text-secondary)' }}>Out: {day.checkOutTime}</div>}
-      <div style={{ fontSize: 12, color: 'var(--text-secondary)' }}>{day.hoursWorked.toFixed(1)}h</div>
+      <div style={{ fontWeight: 600, marginBottom: 4 }}>{dateLabel}</div>
+      <div style={{ fontWeight: 700, color, fontSize: 14, marginBottom: 4 }}>{record.attendanceStatus}</div>
+      {record.checkInTime && <div style={{ fontSize: 12, color: 'var(--text-secondary)' }}>In: {record.checkInTime}</div>}
+      {record.checkOutTime && <div style={{ fontSize: 12, color: 'var(--text-secondary)' }}>Out: {record.checkOutTime}</div>}
+      <div style={{ fontSize: 12, color: 'var(--text-secondary)' }}>{record.hoursWorked.toFixed(1)}h</div>
     </div>
   );
 }
@@ -63,14 +63,12 @@ export default function WeeklyAttendanceReportPage() {
       ) : report ? (
         <>
           <div style={{ display: 'flex', gap: 12, marginBottom: 24, flexWrap: 'wrap' }}>
-            <div style={{ padding: '8px 16px', borderRadius: 6, background: 'var(--emerald-100)', color: 'var(--emerald-700)' }}>Present: {report.totalPresent}</div>
-            <div style={{ padding: '8px 16px', borderRadius: 6, background: 'var(--red-100)', color: 'var(--red-700)' }}>Absent: {report.totalAbsent}</div>
-            <div style={{ padding: '8px 16px', borderRadius: 6, background: 'var(--blue-100)', color: 'var(--blue-700)' }}>Leave: {report.totalLeave}</div>
+            <div style={{ padding: '8px 16px', borderRadius: 6, background: 'var(--emerald-100)', color: 'var(--emerald-700)' }}>Present: {report.totalAttendanceDays}</div>
             <div style={{ padding: '8px 16px', borderRadius: 6, background: 'var(--amber-100)', color: 'var(--amber-700)' }}>Hours: {report.totalHours.toFixed(1)}</div>
           </div>
           <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-            {report.days.map((d) => (
-              <DayCard key={d.date} day={d} />
+            {report.dailyRecords.map((rec) => (
+              <DayCard key={rec.attendanceDate} record={rec} />
             ))}
           </div>
         </>

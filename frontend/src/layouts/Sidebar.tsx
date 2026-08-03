@@ -6,18 +6,18 @@ const navItems = [
   { path: '/dashboard', label: 'Dashboard', icon: 'pi pi-home', moduleCode: 'DASHBOARD' },
   { path: '/registration', label: 'Registration', icon: 'pi pi-user-plus', moduleCode: 'REGISTRATION' },
   { path: '/training', label: 'Training', icon: 'pi pi-calendar', moduleCode: 'TRAINING' },
-  { path: '/work-allocation', label: 'Work Allocation', icon: 'pi pi-briefcase', moduleCode: 'WORK_ALLOCATION' },
-  { path: '/performance', label: 'Performance', icon: 'pi pi-chart-bar', moduleCode: 'PERFORMANCE' },
-  { path: '/help-desk', label: 'Help Desk', icon: 'pi pi-question-circle', moduleCode: 'HELP_DESK' },
 ];
 
 const attendanceSubItems = [
   { path: '/attendance', label: 'Mark Attendance', icon: 'pi pi-clock' },
+  { path: '/attendance/report', label: 'Monthly Report', icon: 'pi pi-chart-line' },
+  { path: '/attendance/weekly-report', label: 'Weekly Report', icon: 'pi pi-calendar' },
   { path: '/attendance/holidays', label: 'Holiday Calendar', icon: 'pi pi-calendar-plus' },
   { path: '/attendance/payroll-summary', label: 'Payroll Summary', icon: 'pi pi-money-bill' },
   { path: '/attendance/apply-leave', label: 'Apply Leave', icon: 'pi pi-send' },
   { path: '/attendance/leave-status', label: 'Leave Status', icon: 'pi pi-list' },
   { path: '/attendance/leave-balance', label: 'Leave Balance', icon: 'pi pi-wallet' },
+  { path: '/attendance/leave-approval', label: 'Leave Approval', icon: 'pi pi-check-circle' },
 ];
 
 const adminNavItems = [
@@ -25,13 +25,17 @@ const adminNavItems = [
   { path: '/admin/access', label: 'User Access Management', icon: 'pi pi-key', moduleCode: 'ADMINISTRATION' },
   { path: '/admin/access/audit', label: 'Access Audit Log', icon: 'pi pi-history', moduleCode: 'ADMINISTRATION' },
   { path: '/admin/documents', label: 'Document Verification', icon: 'pi pi-file-check', moduleCode: 'REGISTRATION' },
+  { path: '/admin/import', label: 'Bulk Import', icon: 'pi pi-upload', moduleCode: 'ADMINISTRATION' },
+  { path: '/admin/backup', label: 'Database Backup', icon: 'pi pi-download', moduleCode: 'ADMINISTRATION' },
   { path: '/admin/seed', label: 'Seed Data', icon: 'pi pi-database', moduleCode: 'ADMINISTRATION' },
 ];
 
 const certificateSubItems = [
   { path: '/certificate', label: 'Certificate Queue', icon: 'pi pi-list' },
   { path: '/certificate/apply', label: 'Apply for Certificate', icon: 'pi pi-send' },
+  { path: '/certificate/verify', label: 'Verify Certificate', icon: 'pi pi-verified' },
   { path: '/certificate/exit', label: 'Exit Management', icon: 'pi pi-sign-out' },
+  { path: '/certificate/exit-interview', label: 'Exit Interview', icon: 'pi pi-user-minus' },
 ];
 
 const masterSubItems = [
@@ -39,6 +43,26 @@ const masterSubItems = [
   { path: '/masters/projects', label: 'Projects', icon: 'pi pi-briefcase' },
   { path: '/masters/works', label: 'Works', icon: 'pi pi-file-edit' },
   { path: '/masters/training-schedules', label: 'Training Schedule', icon: 'pi pi-calendar' },
+  { path: '/masters/departments', label: 'Departments', icon: 'pi pi-building' },
+];
+
+const workAllocationSubItems = [
+  { path: '/work-allocation', label: 'All Allocations', icon: 'pi pi-list' },
+  { path: '/work-allocation/progress', label: 'Task Progress', icon: 'pi pi-chart-bar' },
+];
+
+const performanceSubItems = [
+  { path: '/performance', label: 'Performance Reviews', icon: 'pi pi-chart-bar' },
+  { path: '/performance/goals', label: 'Goals', icon: 'pi pi-star' },
+  { path: '/performance/improvement-plans', label: 'Improvement Plans', icon: 'pi pi-arrow-up' },
+  { path: '/performance/self-assessment', label: 'Self Assessment', icon: 'pi pi-user' },
+  { path: '/performance/review-cycle', label: 'Review Cycles', icon: 'pi pi-sync' },
+];
+
+const helpDeskSubItems = [
+  { path: '/help-desk', label: 'Ticket Queue', icon: 'pi pi-list' },
+  { path: '/help-desk/new', label: 'Raise Ticket', icon: 'pi pi-plus-circle' },
+  { path: '/help-desk/knowledge-base', label: 'Knowledge Base', icon: 'pi pi-book' },
 ];
 
 interface SidebarProps {
@@ -57,10 +81,16 @@ export default function Sidebar({ collapsed, onToggleCollapsed, width = 260, onW
   const [mastersExpanded, setMastersExpanded] = useState(() => location.pathname.startsWith('/masters'));
   const [attendanceExpanded, setAttendanceExpanded] = useState(() => location.pathname.startsWith('/attendance'));
   const [certificateExpanded, setCertificateExpanded] = useState(() => location.pathname.startsWith('/certificate'));
+  const [workAllocationExpanded, setWorkAllocationExpanded] = useState(() => location.pathname.startsWith('/work-allocation'));
+  const [performanceExpanded, setPerformanceExpanded] = useState(() => location.pathname.startsWith('/performance'));
+  const [helpDeskExpanded, setHelpDeskExpanded] = useState(() => location.pathname.startsWith('/help-desk'));
 
   const isAttendanceActive = location.pathname.startsWith('/attendance');
   const isMastersActive = location.pathname.startsWith('/masters');
   const isCertificateActive = location.pathname.startsWith('/certificate');
+  const isWorkAllocationActive = location.pathname.startsWith('/work-allocation');
+  const isPerformanceActive = location.pathname.startsWith('/performance');
+  const isHelpDeskActive = location.pathname.startsWith('/help-desk');
 
   useEffect(() => {
     if (isAttendanceActive) {
@@ -79,6 +109,24 @@ export default function Sidebar({ collapsed, onToggleCollapsed, width = 260, onW
       setCertificateExpanded(true);
     }
   }, [isCertificateActive]);
+
+  useEffect(() => {
+    if (isWorkAllocationActive) {
+      setWorkAllocationExpanded(true);
+    }
+  }, [isWorkAllocationActive]);
+
+  useEffect(() => {
+    if (isPerformanceActive) {
+      setPerformanceExpanded(true);
+    }
+  }, [isPerformanceActive]);
+
+  useEffect(() => {
+    if (isHelpDeskActive) {
+      setHelpDeskExpanded(true);
+    }
+  }, [isHelpDeskActive]);
 
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
@@ -185,6 +233,147 @@ export default function Sidebar({ collapsed, onToggleCollapsed, width = 260, onW
             </Link>
           );
         })}
+
+        {canSeeModule('WORK_ALLOCATION') && (
+          <button
+            type="button"
+            className={`sidebar-link sidebar-link--group ${workAllocationExpanded ? 'expanded' : ''}`}
+            onClick={() => setWorkAllocationExpanded(!workAllocationExpanded)}
+            title={collapsed ? 'Work Allocation' : undefined}
+            aria-expanded={workAllocationExpanded}
+            aria-controls="work-allocation-submenu"
+            style={{ width: '100%', border: 'none', background: 'none', cursor: 'pointer', textAlign: 'left' }}
+          >
+            <div className="sidebar-link-icon">
+              <i className="pi pi-briefcase" />
+            </div>
+            {!collapsed && (
+              <>
+                <span className="sidebar-link-label" style={{ flex: 1 }}>Work Allocation</span>
+                <i
+                  className={`pi ${workAllocationExpanded ? 'pi-chevron-down' : 'pi-chevron-right'}`}
+                  style={{ fontSize: 10, color: 'var(--text-muted)', transition: 'transform 0.15s' }}
+                />
+              </>
+            )}
+          </button>
+        )}
+        {!collapsed && workAllocationExpanded && (
+          <div id="work-allocation-submenu" style={{ paddingLeft: 18, flexShrink: 0 }}>
+            {workAllocationSubItems.map((item) => {
+              const isActive = isExactActive(item.path);
+              return (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className={`sidebar-link ${isActive ? 'active' : ''}`}
+                  style={{ paddingLeft: 12, fontSize: 13 }}
+                >
+                  <div className="sidebar-link-icon" style={{ width: 20, height: 20 }}>
+                    <i className={item.icon} style={{ fontSize: 12 }} />
+                    {isActive && <div className="sidebar-active-dot" />}
+                  </div>
+                  <span className="sidebar-link-label">{item.label}</span>
+                  {isActive && <div className="sidebar-active-indicator" />}
+                </Link>
+              );
+            })}
+          </div>
+        )}
+
+        {canSeeModule('PERFORMANCE') && (
+          <button
+            type="button"
+            className={`sidebar-link sidebar-link--group ${performanceExpanded ? 'expanded' : ''}`}
+            onClick={() => setPerformanceExpanded(!performanceExpanded)}
+            title={collapsed ? 'Performance' : undefined}
+            aria-expanded={performanceExpanded}
+            aria-controls="performance-submenu"
+            style={{ width: '100%', border: 'none', background: 'none', cursor: 'pointer', textAlign: 'left' }}
+          >
+            <div className="sidebar-link-icon">
+              <i className="pi pi-chart-bar" />
+            </div>
+            {!collapsed && (
+              <>
+                <span className="sidebar-link-label" style={{ flex: 1 }}>Performance</span>
+                <i
+                  className={`pi ${performanceExpanded ? 'pi-chevron-down' : 'pi-chevron-right'}`}
+                  style={{ fontSize: 10, color: 'var(--text-muted)', transition: 'transform 0.15s' }}
+                />
+              </>
+            )}
+          </button>
+        )}
+        {!collapsed && performanceExpanded && (
+          <div id="performance-submenu" style={{ paddingLeft: 18, flexShrink: 0 }}>
+            {performanceSubItems.map((item) => {
+              const isActive = isExactActive(item.path);
+              return (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className={`sidebar-link ${isActive ? 'active' : ''}`}
+                  style={{ paddingLeft: 12, fontSize: 13 }}
+                >
+                  <div className="sidebar-link-icon" style={{ width: 20, height: 20 }}>
+                    <i className={item.icon} style={{ fontSize: 12 }} />
+                    {isActive && <div className="sidebar-active-dot" />}
+                  </div>
+                  <span className="sidebar-link-label">{item.label}</span>
+                  {isActive && <div className="sidebar-active-indicator" />}
+                </Link>
+              );
+            })}
+          </div>
+        )}
+
+        {canSeeModule('HELP_DESK') && (
+          <button
+            type="button"
+            className={`sidebar-link sidebar-link--group ${helpDeskExpanded ? 'expanded' : ''}`}
+            onClick={() => setHelpDeskExpanded(!helpDeskExpanded)}
+            title={collapsed ? 'Help Desk' : undefined}
+            aria-expanded={helpDeskExpanded}
+            aria-controls="help-desk-submenu"
+            style={{ width: '100%', border: 'none', background: 'none', cursor: 'pointer', textAlign: 'left' }}
+          >
+            <div className="sidebar-link-icon">
+              <i className="pi pi-question-circle" />
+            </div>
+            {!collapsed && (
+              <>
+                <span className="sidebar-link-label" style={{ flex: 1 }}>Help Desk</span>
+                <i
+                  className={`pi ${helpDeskExpanded ? 'pi-chevron-down' : 'pi-chevron-right'}`}
+                  style={{ fontSize: 10, color: 'var(--text-muted)', transition: 'transform 0.15s' }}
+                />
+              </>
+            )}
+          </button>
+        )}
+        {!collapsed && helpDeskExpanded && (
+          <div id="help-desk-submenu" style={{ paddingLeft: 18, flexShrink: 0 }}>
+            {helpDeskSubItems.map((item) => {
+              const isActive = isExactActive(item.path);
+              return (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className={`sidebar-link ${isActive ? 'active' : ''}`}
+                  style={{ paddingLeft: 12, fontSize: 13 }}
+                >
+                  <div className="sidebar-link-icon" style={{ width: 20, height: 20 }}>
+                    <i className={item.icon} style={{ fontSize: 12 }} />
+                    {isActive && <div className="sidebar-active-dot" />}
+                  </div>
+                  <span className="sidebar-link-label">{item.label}</span>
+                  {isActive && <div className="sidebar-active-indicator" />}
+                </Link>
+              );
+            })}
+          </div>
+        )}
 
         <button
           type="button"

@@ -37,11 +37,11 @@ export const workAllocationApi = {
       assignedToUserId,
     }),
   updateProgress: (workAllocationId: number, data: UpdateProgressCommand) =>
-    ApiService.put<void>(`work-allocations/${workAllocationId}/progress`, data),
+    ApiService.put<void>(`task-management/progress/${workAllocationId}`, data),
   verifyTask: (workAllocationId: number, command: VerifyTaskCommand) =>
-    ApiService.put<void>(`work-allocations/${workAllocationId}/verify`, command),
+    ApiService.post<void>(`task-management/verify/${workAllocationId}`, command),
   checkOverdue: () =>
-    ApiService.get<OverdueTaskDto[]>('work-allocations/overdue'),
+    ApiService.post<OverdueTaskDto[]>('task-management/check-overdue', {}),
 };
 
 export const taskProgressApi = {
@@ -66,11 +66,11 @@ export const taskDependencyApi = {
 
 export const taskAttachmentApi = {
   getByTaskProgressId: (taskProgressId: number) =>
-    ApiService.get<TaskAttachment[]>(`tasks/attachments/${taskProgressId}`),
+    ApiService.get<TaskAttachment[]>(`task-management/attachments/${taskProgressId}`),
   upload: (taskProgressId: number, file: File) => {
     const formData = new FormData();
     formData.append('file', file);
     formData.append('taskProgressId', String(taskProgressId));
-    return ApiService.postFormData<TaskAttachment>(`tasks/attachments`, formData);
+    return ApiService.postFormData<TaskAttachment>(`task-management/attachments/${taskProgressId}`, formData);
   },
 };
