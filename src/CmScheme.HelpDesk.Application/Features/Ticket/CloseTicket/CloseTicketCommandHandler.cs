@@ -33,7 +33,17 @@ public sealed class CloseTicketCommandHandler(IHelpDeskCommandDbContext dbContex
             CreatedOn = DateTime.UtcNow
         };
 
+        TicketSatisfactionSurvey survey = new TicketSatisfactionSurvey
+        {
+            TicketId = request.TicketId,
+            UserAccountId = ticket.ApplicantId,
+            Rating = 0,
+            Comments = "Pending",
+            SubmittedOn = DateTime.UtcNow
+        };
+
         dbContext.TicketActionLogs.Add(actionLog);
+        dbContext.TicketSatisfactionSurveys.Add(survey);
         await dbContext.SaveChangesAsync(cancellationToken);
 
         return Result.Success();

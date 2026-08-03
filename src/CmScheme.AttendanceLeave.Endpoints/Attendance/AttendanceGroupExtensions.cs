@@ -17,6 +17,7 @@ public static class AttendanceGroupExtensions
         group.MapGet("/history", GetHistory.Handle);
         group.MapGet("/report/monthly", GetMonthlyReport.Handle);
         group.MapGet("/payroll-summary", GetPayrollSummary.Handle);
+        group.MapGet("/report/weekly", GetWeeklyReport.Handle);
 
         return builder;
     }

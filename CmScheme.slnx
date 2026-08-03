@@ -45,4 +45,7 @@
     <Project Path="src/CmScheme.WorkAllocation.Endpoints/CmScheme.WorkAllocation.Endpoints.csproj" />
     <Project Path="src/CmScheme.WorkAllocation.Infrastructure/CmScheme.WorkAllocation.Infrastructure.csproj" />
   </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/CmScheme.Tests/CmScheme.Tests.csproj" />
+  </Folder>
 </Solution>
