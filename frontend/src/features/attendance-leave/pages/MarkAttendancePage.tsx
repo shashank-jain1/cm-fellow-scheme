@@ -1,22 +1,12 @@
 import { useAuth } from '../../auth/useAuth';
-import FaceCaptureWidget from '../components/FaceCaptureWidget';
-import AttendanceStatusBadge from '../components/AttendanceStatusBadge';
-import CheckOutButton from '../components/CheckOutButton';
 import { useMarkAttendance, useAttendanceHistory } from '../queries';
+import AttendanceCheckIn from './AttendanceCheckIn';
+import AttendanceStatusCard from './AttendanceStatusCard';
 
 export default function MarkAttendancePage() {
   const { user } = useAuth();
   const markAttendance = useMarkAttendance();
   const { data: todayRecords } = useAttendanceHistory();
-
-  const handleCapture = (imageBase64: string, latitude: number, longitude: number) => {
-    markAttendance.mutate({
-      applicantId: user?.userAccountId ?? 0,
-      latitude,
-      longitude,
-      faceImageBase64: imageBase64,
-    });
-  };
 
   const hasCheckedIn = todayRecords && todayRecords.length > 0;
   const lastRecord = todayRecords?.[todayRecords.length - 1];
@@ -65,12 +55,7 @@ export default function MarkAttendancePage() {
       )}
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
-        <div>
-          <h2 style={{ fontSize: 16, fontWeight: 600, marginBottom: 16, color: 'var(--text-primary)' }}>
-            Face Capture & GPS
-          </h2>
-          <FaceCaptureWidget onCapture={handleCapture} disabled={markAttendance.isPending} />
-        </div>
+        <AttendanceCheckIn userId={user?.userAccountId ?? 0} />
 
         <div>
           <h2 style={{ fontSize: 16, fontWeight: 600, marginBottom: 16, color: 'var(--text-primary)' }}>
@@ -78,45 +63,11 @@ export default function MarkAttendancePage() {
           </h2>
 
           {hasCheckedIn && lastRecord ? (
-            <div
-              style={{
-                padding: 20,
-                border: '1px solid var(--border-color)',
-                borderRadius: 12,
-                background: 'var(--surface-card)',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 12,
-              }}
-            >
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ fontSize: 13, color: 'var(--text-secondary)' }}>Status</span>
-                <AttendanceStatusBadge status={lastRecord.attendanceStatus} />
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span style={{ fontSize: 13, color: 'var(--text-secondary)' }}>Check In</span>
-                <span style={{ fontSize: 14, fontWeight: 500 }}>{lastRecord.checkInTime || '—'}</span>
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span style={{ fontSize: 13, color: 'var(--text-secondary)' }}>Check Out</span>
-                <span style={{ fontSize: 14, fontWeight: 500 }}>{lastRecord.checkOutTime || '—'}</span>
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span style={{ fontSize: 13, color: 'var(--text-secondary)' }}>Location</span>
-                <span style={{ fontSize: 13 }}>
-                  {lastRecord.latitude.toFixed(4)}, {lastRecord.longitude.toFixed(4)}
-                </span>
-              </div>
-              {!lastRecord.checkOutTime && (
-                <div style={{ marginTop: 8 }}>
-                  <CheckOutButton
-                    applicantId={user?.userAccountId ?? 0}
-                    attendanceDate={new Date().toISOString().split('T')[0]}
-                    disabled={markAttendance.isPending}
-                  />
-                </div>
-              )}
-            </div>
+            <AttendanceStatusCard
+              record={lastRecord}
+              userId={user?.userAccountId ?? 0}
+              isPending={markAttendance.isPending}
+            />
           ) : (
             <div className="empty-state">
               <i className="pi pi-clock" />

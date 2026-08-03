@@ -1,18 +1,15 @@
 import { useState } from 'react';
 import { Button } from 'primereact/button';
-import { AppInput, AppTextarea, AppSelect, AppCalendar } from '../../../../shared/components/forms';
 import { useCreateTrainingSchedule, useUpdateTrainingSchedule, useProjects, useWorks, useDivisions, useDistricts, useBlocks } from '../../queries';
+import ScheduleBasicFields from './ScheduleBasicFields';
+import ScheduleDateFields from './ScheduleDateFields';
+import ScheduleVenueFields from './ScheduleVenueFields';
 import type { TrainingScheduleDto } from '../../types';
 
 interface Props {
   initialData: TrainingScheduleDto | null;
   onDone: () => void;
 }
-
-const YEAR_OPTIONS = Array.from({ length: 5 }, (_, i) => {
-  const year = new Date().getFullYear() + i - 1;
-  return { label: `${year}-${(year + 1).toString().slice(-2)}`, value: `${year}-${(year + 1).toString().slice(-2)}` };
-});
 
 export default function TrainingScheduleForm({ initialData, onDone }: Props) {
   const [calendarYear, setCalendarYear] = useState<string>(initialData?.calendarYear ?? '');
@@ -32,7 +29,6 @@ export default function TrainingScheduleForm({ initialData, onDone }: Props) {
   const { data: divisions = [] } = useDivisions();
   const { data: districts = [] } = useDistricts(divisionId ?? undefined);
   const { data: blocks = [] } = useBlocks(districtId ?? undefined);
-
   const createMutation = useCreateTrainingSchedule();
   const updateMutation = useUpdateTrainingSchedule();
 
@@ -44,19 +40,12 @@ export default function TrainingScheduleForm({ initialData, onDone }: Props) {
 
   const handleSubmit = async () => {
     if (!calendarYear || !projectId || !trainingDate) return;
-
     const payload = {
-      calendarYear,
-      projectId,
-      workId: workId ?? undefined,
-      divisionId: divisionId ?? undefined,
-      districtId: districtId ?? undefined,
-      blockId: blockId ?? undefined,
-      trainingDate: trainingDate.toISOString(),
-      venueName: venueName || undefined,
-      trainingDescription: trainingDescription || undefined,
+      calendarYear, projectId, workId: workId ?? undefined,
+      divisionId: divisionId ?? undefined, districtId: districtId ?? undefined,
+      blockId: blockId ?? undefined, trainingDate: trainingDate.toISOString(),
+      venueName: venueName || undefined, trainingDescription: trainingDescription || undefined,
     };
-
     if (initialData) {
       await updateMutation.mutateAsync({ id: initialData.trainingScheduleId, data: { ...payload, trainingScheduleId: initialData.trainingScheduleId } });
     } else {
@@ -67,119 +56,20 @@ export default function TrainingScheduleForm({ initialData, onDone }: Props) {
 
   return (
     <div className="form-grid">
-      <div className="form-field">
-        <label>Calendar Year *</label>
-        <AppSelect
-          value={calendarYear}
-          options={YEAR_OPTIONS}
-          onChange={(val) => setCalendarYear(val as string)}
-          placeholder="Select Year"
-          className="w-full"
-        />
-      </div>
-
-      <div className="form-field">
-        <label>Project *</label>
-        <AppSelect
-          value={projectId}
-          options={projectOptions}
-          onChange={(val) => { setProjectId(val as number); setWorkId(null); }}
-          placeholder="Select Project"
-          className="w-full"
-        />
-      </div>
-
-      <div className="form-field">
-        <label>Work</label>
-        <AppSelect
-          value={workId}
-          options={workOptions}
-          onChange={(val) => setWorkId(val as number)}
-          placeholder="Select Work"
-          disabled={!projectId}
-          className="w-full"
-        />
-      </div>
-
-      <div className="form-field">
-        <label>Division</label>
-        <AppSelect
-          value={divisionId}
-          options={divisionOptions}
-          onChange={(val) => { setDivisionId(val as number); setDistrictId(null); setBlockId(null); }}
-          placeholder="Select Division"
-          showClear
-          className="w-full"
-        />
-      </div>
-
-      <div className="form-field">
-        <label>District</label>
-        <AppSelect
-          value={districtId}
-          options={districtOptions}
-          onChange={(val) => { setDistrictId(val as number); setBlockId(null); }}
-          placeholder="Select District"
-          disabled={!divisionId}
-          showClear
-          className="w-full"
-        />
-      </div>
-
-      <div className="form-field">
-        <label>Block</label>
-        <AppSelect
-          value={blockId}
-          options={blockOptions}
-          onChange={(val) => setBlockId(val as number)}
-          placeholder="Select Block"
-          disabled={!districtId}
-          showClear
-          className="w-full"
-        />
-      </div>
-
-      <div className="form-field">
-        <label>Training Date *</label>
-        <AppCalendar
-          value={trainingDate}
-          onChange={(e) => setTrainingDate(e.value as Date)}
-          dateFormat="dd/mm/yy"
-          placeholder="Select Date"
-          className="w-full"
-          showIcon
-        />
-      </div>
-
-      <div className="form-field">
-        <label>Venue Name</label>
-        <AppInput
-          value={venueName}
-          onChange={(e) => setVenueName(e.target.value)}
-          placeholder="Enter venue name"
-          className="w-full"
-        />
-      </div>
-
-      <div className="form-field col-span-full">
-        <label>Training Description</label>
-        <AppTextarea
-          value={trainingDescription}
-          onChange={(e) => setTrainingDescription(e.target.value)}
-          rows={3}
-          placeholder="Enter training description"
-          className="w-full"
-        />
-      </div>
-
+      <ScheduleBasicFields calendarYear={calendarYear} projectId={projectId} workId={workId}
+        projectOptions={projectOptions} workOptions={workOptions}
+        onCalendarYearChange={setCalendarYear} onProjectChange={(v) => { setProjectId(v); setWorkId(null); }}
+        onWorkChange={setWorkId} />
+      <ScheduleVenueFields divisionId={divisionId} districtId={districtId} blockId={blockId}
+        divisionOptions={divisionOptions} districtOptions={districtOptions} blockOptions={blockOptions}
+        onDivisionChange={(v) => { setDivisionId(v); setDistrictId(null); setBlockId(null); }}
+        onDistrictChange={(v) => { setDistrictId(v); setBlockId(null); }} onBlockChange={setBlockId} />
+      <ScheduleDateFields trainingDate={trainingDate} venueName={venueName} trainingDescription={trainingDescription}
+        onTrainingDateChange={setTrainingDate} onVenueNameChange={setVenueName} onTrainingDescriptionChange={setTrainingDescription} />
       <div className="form-field col-span-full" style={{ display: 'flex', justifyContent: 'flex-end', gap: 12, marginTop: 8 }}>
         <Button label="Cancel" severity="secondary" text onClick={onDone} />
-        <Button
-          label={initialData ? 'Update' : 'Create'}
-          onClick={handleSubmit}
-          loading={createMutation.isPending || updateMutation.isPending}
-          disabled={!calendarYear || !projectId || !trainingDate}
-        />
+        <Button label={initialData ? 'Update' : 'Create'} onClick={handleSubmit}
+          loading={createMutation.isPending || updateMutation.isPending} disabled={!calendarYear || !projectId || !trainingDate} />
       </div>
     </div>
   );

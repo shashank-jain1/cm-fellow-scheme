@@ -1,9 +1,8 @@
 import { useState } from 'react';
-import { AppTextarea } from '../../../shared/components/forms';
-import AppButton from '../../../shared/components/ui/AppButton';
 import { useLeaveStatus, useApproveLeave } from '../queries';
-import StatusTag from '../../../shared/components/ui/StatusTag';
 import { useAuth } from '../../auth';
+import LeaveApprovalTable from './LeaveApprovalTable';
+import LeaveApprovalActions from './LeaveApprovalActions';
 
 export default function LeaveApprovalQueue() {
   const { user } = useAuth();
@@ -49,73 +48,21 @@ export default function LeaveApprovalQueue() {
     );
   }
 
-  if (pendingLeaves.length === 0) {
-    return (
-      <div className="empty-state">
-        <i className="pi pi-inbox" />
-        <h3>No pending requests</h3>
-        <p>There are no leave requests awaiting approval.</p>
-      </div>
-    );
-  }
-
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+      <LeaveApprovalTable leaves={pendingLeaves} />
       {pendingLeaves.map((request) => (
-        <div
+        <LeaveApprovalActions
           key={request.leaveApplicationId}
-          style={{
-            padding: 20,
-            border: '1px solid var(--border-color)',
-            borderRadius: 12,
-            background: 'var(--surface-card)',
-          }}
-        >
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12 }}>
-            <div>
-              <div style={{ fontSize: 15, fontWeight: 600, color: 'var(--text-primary)' }}>
-                {request.applicationNumber}
-              </div>
-              <div style={{ fontSize: 13, color: 'var(--text-secondary)', marginTop: 4 }}>
-                {request.leaveTypeName} — {request.fromDate} to {request.toDate} ({request.numberOfDays} day{request.numberOfDays > 1 ? 's' : ''})
-              </div>
-              {request.reason && (
-                <div style={{ fontSize: 13, color: 'var(--text-muted)', marginTop: 4 }}>
-                  Reason: {request.reason}
-                </div>
-              )}
-            </div>
-            <StatusTag value={request.status} />
-          </div>
-
-          <AppTextarea
-            value={remarksMap[request.leaveApplicationId] || ''}
-            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-              setRemarksMap((prev) => ({ ...prev, [request.leaveApplicationId]: e.target.value }))
-            }
-            placeholder="Add remarks (optional)"
-            rows={2}
-            style={{ width: '100%', marginBottom: 12 }}
-          />
-
-          <div style={{ display: 'flex', gap: 12 }}>
-            <AppButton
-              loading={approveMutation.isPending}
-              onClick={() => handleApprove(request.leaveApplicationId)}
-              icon="pi pi-check"
-            >
-              Approve
-            </AppButton>
-            <AppButton
-              variant="danger"
-              loading={approveMutation.isPending}
-              onClick={() => handleReject(request.leaveApplicationId)}
-              icon="pi pi-times"
-            >
-              Reject
-            </AppButton>
-          </div>
-        </div>
+          leaveApplicationId={request.leaveApplicationId}
+          remarks={remarksMap[request.leaveApplicationId] || ''}
+          onRemarksChange={(value) =>
+            setRemarksMap((prev) => ({ ...prev, [request.leaveApplicationId]: value }))
+          }
+          onApprove={handleApprove}
+          onReject={handleReject}
+          isPending={approveMutation.isPending}
+        />
       ))}
     </div>
   );

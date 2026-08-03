@@ -1,11 +1,9 @@
 import { useState, useRef } from 'react';
-import { DataTable } from 'primereact/datatable';
-import { Column } from 'primereact/column';
-import { Tag } from 'primereact/tag';
 import { Toast } from 'primereact/toast';
-import { AppDialog, AppInput, AppSwitch, AppCalendar } from '../../../shared/components/forms';
 import { useHolidays, useCreateHoliday, useUpdateHoliday, useDeleteHoliday } from '../queries';
-import { PageHeader, EmptyState, ConfirmDialog, AppButton, SkeletonTable } from '../../../shared/components/ui';
+import { PageHeader, ConfirmDialog, AppButton } from '../../../shared/components/ui';
+import HolidayTable from './HolidayTable';
+import HolidayForm from './HolidayForm';
 import type { HolidayDto } from '../types';
 
 export default function HolidayCalendarPage() {
@@ -19,52 +17,34 @@ export default function HolidayCalendarPage() {
   const [isOptional, setIsOptional] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState<HolidayDto | null>(null);
   const toast = useRef<Toast>(null);
-
   const { data: holidays = [], isLoading } = useHolidays(selectedYear);
   const createHoliday = useCreateHoliday();
   const updateHoliday = useUpdateHoliday();
   const deleteHoliday = useDeleteHoliday();
+  const yearOptions = Array.from({ length: 5 }, (_, i) => currentYear - 2 + i);
 
-  const openNew = () => {
-    setEditingHoliday(null);
-    setHolidayName('');
-    setHolidayDate(null);
-    setDescription('');
-    setIsOptional(false);
-    setDialogVisible(true);
+  const resetForm = () => {
+    setEditingHoliday(null); setHolidayName(''); setHolidayDate(null);
+    setDescription(''); setIsOptional(false);
   };
 
-  const openEdit = (holiday: HolidayDto) => {
-    setEditingHoliday(holiday);
-    setHolidayName(holiday.holidayName);
-    setHolidayDate(new Date(holiday.holidayDate));
-    setDescription(holiday.description ?? '');
-    setIsOptional(holiday.isOptional);
-    setDialogVisible(true);
+  const openNew = () => { resetForm(); setDialogVisible(true); };
+  const openEdit = (h: HolidayDto) => {
+    setEditingHoliday(h); setHolidayName(h.holidayName); setHolidayDate(new Date(h.holidayDate));
+    setDescription(h.description ?? ''); setIsOptional(h.isOptional); setDialogVisible(true);
   };
 
   const saveHoliday = async () => {
     if (!holidayName || !holidayDate) return;
-
     if (editingHoliday) {
-      await updateHoliday.mutateAsync({
-        holidayId: editingHoliday.holidayId,
-        holidayName,
-        holidayDate: holidayDate.toISOString(),
-        description: description || undefined,
-        isOptional,
-      });
+      await updateHoliday.mutateAsync({ holidayId: editingHoliday.holidayId, holidayName,
+        holidayDate: holidayDate.toISOString(), description: description || undefined, isOptional });
       toast.current?.show({ severity: 'success', summary: 'Updated', detail: 'Holiday updated' });
     } else {
-      await createHoliday.mutateAsync({
-        holidayName,
-        holidayDate: holidayDate.toISOString(),
-        description: description || undefined,
-        isOptional,
-      });
+      await createHoliday.mutateAsync({ holidayName, holidayDate: holidayDate.toISOString(),
+        description: description || undefined, isOptional });
       toast.current?.show({ severity: 'success', summary: 'Created', detail: 'Holiday created' });
     }
-
     setDialogVisible(false);
   };
 
@@ -75,106 +55,29 @@ export default function HolidayCalendarPage() {
     setDeleteTarget(null);
   };
 
-  const yearOptions = Array.from({ length: 5 }, (_, i) => currentYear - 2 + i);
-
   return (
     <div>
       <Toast ref={toast} />
-      <PageHeader
-        title="Holiday Calendar"
-        subtitle="Manage company holidays for the year"
+      <PageHeader title="Holiday Calendar" subtitle="Manage company holidays for the year"
         action={
           <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-            <select
-              value={selectedYear}
-              onChange={(e) => setSelectedYear(Number(e.target.value))}
-              className="form-input"
-              style={{ width: 120 }}
-            >
-              {yearOptions.map((y) => (
-                <option key={y} value={y}>{y}</option>
-              ))}
+            <select value={selectedYear} onChange={(e) => setSelectedYear(Number(e.target.value))}
+              className="form-input" style={{ width: 120 }}>
+              {yearOptions.map((y) => <option key={y} value={y}>{y}</option>)}
             </select>
-            <AppButton icon="pi pi-plus" onClick={openNew}>
-              Add Holiday
-            </AppButton>
+            <AppButton icon="pi pi-plus" onClick={openNew}>Add Holiday</AppButton>
           </div>
-        }
-      />
-
-      <div className="table-wrapper">
-        {isLoading ? (
-          <SkeletonTable columns={5} />
-        ) : holidays.length > 0 ? (
-          <DataTable value={holidays} rows={10} paginator emptyMessage=" ">
-            <Column field="holidayName" header="Holiday Name" />
-            <Column
-              field="holidayDate"
-              header="Date"
-              body={(row: HolidayDto) => new Date(row.holidayDate).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}
-            />
-            <Column field="description" header="Description" />
-            <Column
-              field="isOptional"
-              header="Type"
-              body={(row: HolidayDto) => (
-                <Tag value={row.isOptional ? 'Optional' : 'Compulsory'} severity={row.isOptional ? 'info' : 'success'} />
-              )}
-            />
-            <Column
-              header="Actions"
-              body={(row: HolidayDto) => (
-                <div style={{ display: 'flex', gap: 4 }}>
-                  <AppButton variant="ghost" size="sm" icon="pi pi-pencil" onClick={() => openEdit(row)} title="Edit" />
-                  <AppButton variant="ghost" size="sm" icon="pi pi-trash" onClick={() => setDeleteTarget(row)} title="Delete" />
-                </div>
-              )}
-            />
-          </DataTable>
-        ) : (
-          <EmptyState icon="pi pi-calendar" title="No holidays for this year" description="Click 'Add Holiday' to add holidays for this year" />
-        )}
-      </div>
-
-      <AppDialog
-        header={editingHoliday ? 'Edit Holiday' : 'Add Holiday'}
-        visible={dialogVisible}
-        style={{ width: '480px' }}
-        modal
-        onHide={() => setDialogVisible(false)}
-      >
-        <div className="form-grid" style={{ marginTop: 16 }}>
-          <div className="form-field full-width">
-            <label>Holiday Name *</label>
-            <AppInput value={holidayName} onChange={(e) => setHolidayName(e.target.value)} style={{ width: '100%' }} />
-          </div>
-          <div className="form-field">
-            <label>Date *</label>
-            <AppCalendar value={holidayDate} onChange={(e) => setHolidayDate(e.value as Date)} dateFormat="dd/mm/yy" style={{ width: '100%' }} showIcon />
-          </div>
-          <div className="form-field">
-            <label>Optional Holiday</label>
-            <AppSwitch checked={isOptional} onChange={(e) => setIsOptional(Boolean(e.value))} />
-          </div>
-          <div className="form-field full-width">
-            <label>Description</label>
-            <AppInput value={description} onChange={(e) => setDescription(e.target.value)} style={{ width: '100%' }} />
-          </div>
-        </div>
-        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8, marginTop: 16 }}>
-          <AppButton variant="secondary" onClick={() => setDialogVisible(false)}>Cancel</AppButton>
-          <AppButton onClick={saveHoliday} loading={createHoliday.isPending || updateHoliday.isPending}>Save</AppButton>
-        </div>
-      </AppDialog>
-
-      <ConfirmDialog
-        visible={!!deleteTarget}
-        header="Delete Holiday"
+        } />
+      <HolidayTable holidays={holidays} isLoading={isLoading} onEdit={openEdit} onDelete={setDeleteTarget} />
+      <HolidayForm visible={dialogVisible} isEditing={!!editingHoliday} holidayName={holidayName}
+        holidayDate={holidayDate} description={description} isOptional={isOptional}
+        isSaving={createHoliday.isPending || updateHoliday.isPending}
+        onHolidayNameChange={setHolidayName} onHolidayDateChange={setHolidayDate}
+        onDescriptionChange={setDescription} onIsOptionalChange={setIsOptional}
+        onSave={saveHoliday} onHide={() => setDialogVisible(false)} />
+      <ConfirmDialog visible={!!deleteTarget} header="Delete Holiday"
         message={`Are you sure you want to delete "${deleteTarget?.holidayName}"?`}
-        onConfirm={handleDelete}
-        onCancel={() => setDeleteTarget(null)}
-        loading={deleteHoliday.isPending}
-      />
+        onConfirm={handleDelete} onCancel={() => setDeleteTarget(null)} loading={deleteHoliday.isPending} />
     </div>
   );
 }

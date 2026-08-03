@@ -1,9 +1,9 @@
-import { useState } from 'react';
-import { AppInput } from '../../../shared/components/forms';
+import { useState, useRef } from 'react';
 import { Toast } from 'primereact/toast';
-import { useRef } from 'react';
+import { AppInput } from '../../../shared/components/forms';
 import { useVerifyMobileOtpMutation } from '../queries';
 import type { StepProps } from '../components/form.hook';
+import OtpInput from './OtpInput';
 
 export default function OtpVerificationStep({ formData, update }: StepProps) {
   const [otp, setOtp] = useState('');
@@ -26,7 +26,6 @@ export default function OtpVerificationStep({ formData, update }: StepProps) {
       toast.current?.show({ severity: 'warn', summary: 'Invalid', detail: 'OTP must be 6 digits' });
       return;
     }
-
     try {
       await verifyMutation.mutateAsync({
         applicantId: 0,
@@ -47,25 +46,18 @@ export default function OtpVerificationStep({ formData, update }: StepProps) {
       <p style={{ color: 'var(--text-secondary)', marginBottom: 24, fontSize: 14 }}>
         Verify your mobile number to proceed with registration
       </p>
-
       <div className="form-grid">
         <div className="form-field">
           <label>Mobile Number *</label>
           <AppInput
             value={formData.mobileNumber}
-            onChange={(e) => {
-              update('mobileNumber' as any, e.target.value);
-              setVerified(false);
-              setOtpSent(false);
-              setOtp('');
-            }}
+            onChange={(e) => { update('mobileNumber' as any, e.target.value); setVerified(false); setOtpSent(false); setOtp(''); }}
             placeholder="10-digit mobile number"
             maxLength={10}
             disabled={verified}
             style={{ width: '100%' }}
           />
         </div>
-
         <div className="form-field" style={{ display: 'flex', alignItems: 'flex-end' }}>
           {!verified && (
             <button
@@ -83,28 +75,8 @@ export default function OtpVerificationStep({ formData, update }: StepProps) {
             </span>
           )}
         </div>
-
         {otpSent && !verified && (
-          <div className="form-field full-width">
-            <label>Enter OTP *</label>
-            <div style={{ display: 'flex', gap: 12, alignItems: 'flex-end' }}>
-              <AppInput
-                value={otp}
-                onChange={(e) => setOtp(e.target.value.replace(/\D/g, '').slice(0, 6))}
-                placeholder="6-digit OTP"
-                maxLength={6}
-                style={{ width: 200 }}
-              />
-              <button
-                type="button"
-                className="btn btn-primary"
-                onClick={handleVerify}
-                disabled={otp.length !== 6 || verifyMutation.isPending}
-              >
-                {verifyMutation.isPending ? 'Verifying...' : 'Verify'}
-              </button>
-            </div>
-          </div>
+          <OtpInput otp={otp} setOtp={setOtp} onVerify={handleVerify} isPending={verifyMutation.isPending} />
         )}
       </div>
     </div>
