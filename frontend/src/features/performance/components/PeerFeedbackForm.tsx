@@ -1,11 +1,12 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { AppTextarea, AppSwitch } from '../../../shared/components/forms';
 import { AppButton } from '../../../shared/components/ui';
-import { useSubmitPeerFeedback } from '../queries';
+import { useSubmitPeerFeedback, usePeerFeedback } from '../queries';
 import PeerRatingInputs from './PeerRatingInputs';
 
 interface PeerFeedbackFormProps {
   performanceEvaluationId: number;
+  userId?: number;
   onSuccess?: () => void;
 }
 
@@ -25,12 +26,29 @@ const INITIAL_RATINGS: RatingField[] = [
 
 export default function PeerFeedbackForm({
   performanceEvaluationId,
+  userId,
   onSuccess,
 }: PeerFeedbackFormProps) {
   const submitFeedback = useSubmitPeerFeedback();
+  const { data: existingFeedback } = usePeerFeedback(userId ?? 0);
   const [ratings, setRatings] = useState<RatingField[]>(INITIAL_RATINGS);
   const [comments, setComments] = useState('');
   const [isAnonymous, setIsAnonymous] = useState(false);
+
+  useEffect(() => {
+    if (existingFeedback && existingFeedback.length > 0) {
+      const fb = existingFeedback[0];
+      setRatings([
+        { key: 'technical', label: 'Technical Skills', value: fb.technicalRating },
+        { key: 'communication', label: 'Communication', value: fb.communicationRating },
+        { key: 'teamwork', label: 'Teamwork', value: fb.teamworkRating },
+        { key: 'leadership', label: 'Leadership', value: fb.leadershipRating },
+        { key: 'overall', label: 'Overall', value: fb.overallRating },
+      ]);
+      setComments(fb.comments ?? '');
+      setIsAnonymous(fb.isAnonymous);
+    }
+  }, [existingFeedback]);
 
   const updateRating = (key: string, value: number | null) => {
     setRatings((prev) => prev.map((r) => (r.key === key ? { ...r, value } : r)));
@@ -53,9 +71,6 @@ export default function PeerFeedbackForm({
       comments: comments.trim(),
       isAnonymous,
     });
-    setRatings(INITIAL_RATINGS.map((r) => ({ ...r, value: null })));
-    setComments('');
-    setIsAnonymous(false);
     onSuccess?.();
   };
 
@@ -83,7 +98,7 @@ export default function PeerFeedbackForm({
           loading={submitFeedback.isPending}
           disabled={!allRated || submitFeedback.isPending}
         >
-          Submit Feedback
+          {existingFeedback && existingFeedback.length > 0 ? 'Update Feedback' : 'Submit Feedback'}
         </AppButton>
       </div>
     </div>

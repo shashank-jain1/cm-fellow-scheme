@@ -78,3 +78,22 @@ export interface TaskAttachment {
   uploadedByName: string;
   uploadedAt: string;
 }
+
+export interface UpdateProgressCommand {
+  completedSurveys: number;
+  status: string;
+  remarks?: string;
+}
+
+export interface VerifyTaskCommand {
+  status: 'Approved' | 'Rejected';
+  comments: string;
+}
+
+export interface OverdueTaskDto {
+  workAllocationId: number;
+  workDescription: string;
+  endDate: string;
+  assignedToUserId?: number;
+  daysOverdue: number;
+}

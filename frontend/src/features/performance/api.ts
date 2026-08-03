@@ -13,6 +13,10 @@ import type {
   ImprovementPlanDto,
   SubmitPeerFeedbackCommand,
   SubmitSelfAssessmentCommand,
+  ReviewCycleDto,
+  CreateReviewCycleCommand,
+  PeerFeedbackDto,
+  SelfAssessmentDto,
 } from './types';
 
 export async function fetchPerformanceSummary(): Promise<PerformanceSummaryDto[]> {
@@ -76,4 +80,28 @@ export async function submitPeerFeedback(command: SubmitPeerFeedbackCommand): Pr
 
 export async function submitSelfAssessment(command: SubmitSelfAssessmentCommand): Promise<void> {
   await ApiService.post(performanceUrls.selfAssessment(), command);
+}
+
+export async function getPeerFeedback(userId: number): Promise<PeerFeedbackDto[]> {
+  const res = await ApiService.get<PeerFeedbackDto[]>(performanceUrls.peerFeedbackByUser(userId));
+  return res.data ?? [];
+}
+
+export async function getSelfAssessment(): Promise<SelfAssessmentDto | null> {
+  const res = await ApiService.get<SelfAssessmentDto>(performanceUrls.selfAssessmentByUser());
+  return res.data ?? null;
+}
+
+export async function createReviewCycle(command: CreateReviewCycleCommand): Promise<ReviewCycleDto> {
+  const res = await ApiService.post<ReviewCycleDto>(performanceUrls.reviewCycles(), command);
+  return res.data!;
+}
+
+export async function getActiveReviewCycle(): Promise<ReviewCycleDto | null> {
+  const res = await ApiService.get<ReviewCycleDto>(performanceUrls.activeReviewCycle());
+  return res.data ?? null;
+}
+
+export async function closeReviewCycle(id: number): Promise<void> {
+  await ApiService.put(performanceUrls.closeReviewCycle(id), {});
 }

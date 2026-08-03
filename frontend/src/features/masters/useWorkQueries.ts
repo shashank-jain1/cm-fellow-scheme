@@ -36,3 +36,23 @@ export function useCreateWork() {
     onSuccess: () => qc.invalidateQueries({ queryKey: ['masters', 'works'] }),
   });
 }
+
+export function useGetWork(id: number) {
+  return useQuery({
+    queryKey: ['masters', 'works', id],
+    queryFn: async () => {
+      const res = await mastersApi.getWork(id);
+      return res.data!;
+    },
+    enabled: !!id,
+  });
+}
+
+export function useUpdateWork() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, data }: { id: number; data: Parameters<typeof mastersApi.updateWork>[1] }) =>
+      mastersApi.updateWork(id, data),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['masters', 'works'] }),
+  });
+}

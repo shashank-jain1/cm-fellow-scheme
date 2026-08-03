@@ -3,9 +3,11 @@ export {
   useWorkAllocation,
   useCreateWorkAllocation,
   useUpdateWorkAllocation,
-  useDeleteWorkAllocation,
-  useAssignWorkAllocation,
   useDeactivateWorkAllocation,
+  useAssignWorkAllocation,
+  useUpdateProgress,
+  useVerifyTask,
+  useCheckOverdueTasks,
 } from './useWorkAllocationQueries';
 
 export {

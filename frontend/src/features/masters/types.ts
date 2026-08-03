@@ -16,6 +16,7 @@ export {
   type CreateProjectCommand,
   type WorkDto,
   type CreateWorkCommand,
+  type UpdateWorkCommand,
 } from './projectTypes';
 
 export {

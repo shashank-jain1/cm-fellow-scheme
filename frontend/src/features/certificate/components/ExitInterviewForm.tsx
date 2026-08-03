@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { AppTextarea, AppSwitch } from '../../../shared/components/forms';
 import { AppButton } from '../../../shared/components/ui';
 import { ToastService } from '../../../shared/utils/toast';
-import { useSubmitExitInterview } from '../queries';
+import { useSubmitExitInterview, useExitInterview } from '../queries';
 import ExitInterviewRatingList from './ExitInterviewRatingList';
 
 interface RatingField {
@@ -21,11 +22,29 @@ const initialRatings: RatingField[] = [
 const ratingKeys = ['overallExperience', 'workEnvironment', 'learningOpportunities', 'teamCollaboration'] as const;
 
 export default function ExitInterviewForm() {
+  const [searchParams] = useSearchParams();
+  const userAccountId = Number(searchParams.get('userId') ?? 0);
+  const { data: existing } = useExitInterview(userAccountId);
   const submitMutation = useSubmitExitInterview();
   const [ratings, setRatings] = useState<RatingField[]>(initialRatings);
   const [improvementSuggestions, setImprovementSuggestions] = useState('');
   const [whatWorkedWell, setWhatWorkedWell] = useState('');
   const [wouldRecommend, setWouldRecommend] = useState(false);
+
+  useEffect(() => {
+    if (existing) {
+      setRatings((prev) =>
+        prev.map((r) => {
+          const key = r.key as keyof typeof existing;
+          return { ...r, value: (existing[key] as number) ?? null };
+        })
+      );
+      setImprovementSuggestions(existing.improvementSuggestions ?? '');
+      setWhatWorkedWell(existing.whatWorkedWell ?? '');
+      setWouldRecommend(existing.wouldRecommend ?? false);
+    }
+  }, [existing]);
+
   const updateRating = (key: string, value: number | null) => {
     setRatings((prev) => prev.map((r) => (r.key === key ? { ...r, value } : r)));
   };

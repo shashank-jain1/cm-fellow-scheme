@@ -8,7 +8,7 @@ import { ThemeProvider } from './theme/ThemeContext';
 import { AuthProvider, ProtectedRoute, ModuleProtectedRoute } from './features/auth';
 import AppLayout from './layouts/AppLayout';
 import LoginPage from './features/registration/pages/LoginPage';
-import { AdminDashboardPage } from './features/dashboard';
+import { AdminDashboardPage, FellowDashboardPage } from './features/dashboard';
 import RegistrationWizard from './features/registration/pages/RegistrationWizard';
 import UserManagementPage from './features/registration/pages/UserManagementPage';
 import { ActivityCalendar, CreateActivityForm, TrainingCompletionPage } from './features/training';
@@ -20,9 +20,9 @@ import LeaveStatusPage from './features/attendance-leave/pages/LeaveStatusPage';
 import LeaveBalancePage from './features/attendance-leave/pages/LeaveBalancePage';
 import HolidayCalendarPage from './features/attendance-leave/pages/HolidayCalendarPage';
 import PayrollSummaryPage from './features/attendance-leave/pages/PayrollSummaryPage';
-import { PerformanceReviewGrid, PerformanceDetailPage, SelfAssessmentForm } from './features/performance';
+import { PerformanceReviewGrid, PerformanceDetailPage, SelfAssessmentForm, ReviewCyclePage } from './features/performance';
 import { PerformanceGoalsPage, ImprovementPlansPage } from './features/performance';
-import { ApplyCertificatePage, CertificateApprovalPage, ExitManagementPage, ExitInterviewForm } from './features/certificate';
+import { ApplyCertificatePage, CertificateApprovalPage, CertificateVerifyPage, ExitManagementPage, ExitInterviewForm } from './features/certificate';
 import { RaiseTicketPage, TicketQueuePage, TicketDetailPage, KnowledgeBasePage } from './features/help-desk';
 import { LocationsPage, ProjectsPage, WorksPage, TrainingSchedulePage } from './features/masters';
 import DocumentVerificationPage from './features/registration/pages/DocumentVerificationPage';
@@ -31,7 +31,7 @@ import ResetPasswordPage from './features/registration/pages/ResetPasswordPage';
 import ProfileEditPage from './features/registration/pages/ProfileEditPage';
 import AttendanceReportPage from './features/attendance-leave/pages/AttendanceReportPage';
 import { SeedDataPage } from './features/seed';
-import { UserAccessPage, AuditLogPage } from './features/admin';
+import { UserAccessPage, AuditLogPage, BulkImportPage, BackupPage } from './features/admin';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -63,6 +63,9 @@ export default function App() {
                 <Route path="admin/seed" element={<ModuleProtectedRoute moduleCode="ADMINISTRATION" permission="Write"><SeedDataPage /></ModuleProtectedRoute>} />
                 <Route path="admin/access" element={<ModuleProtectedRoute moduleCode="ADMINISTRATION" permission="Write"><UserAccessPage /></ModuleProtectedRoute>} />
                 <Route path="admin/access/audit" element={<ModuleProtectedRoute moduleCode="ADMINISTRATION"><AuditLogPage /></ModuleProtectedRoute>} />
+                <Route path="admin/import" element={<ModuleProtectedRoute moduleCode="ADMINISTRATION" permission="Write"><BulkImportPage /></ModuleProtectedRoute>} />
+                <Route path="admin/backup" element={<ModuleProtectedRoute moduleCode="ADMINISTRATION" permission="Write"><BackupPage /></ModuleProtectedRoute>} />
+                <Route path="dashboard/fellow" element={<ModuleProtectedRoute moduleCode="DASHBOARD"><FellowDashboardPage /></ModuleProtectedRoute>} />
                 <Route path="training" element={<ModuleProtectedRoute moduleCode="TRAINING"><ActivityCalendar /></ModuleProtectedRoute>} />
                 <Route path="training/new" element={<ModuleProtectedRoute moduleCode="TRAINING" permission="Write"><CreateActivityForm /></ModuleProtectedRoute>} />
                 <Route path="training/completions" element={<ModuleProtectedRoute moduleCode="TRAINING"><TrainingCompletionPage /></ModuleProtectedRoute>} />
@@ -79,11 +82,13 @@ export default function App() {
                 <Route path="performance/goals" element={<ModuleProtectedRoute moduleCode="PERFORMANCE"><PerformanceGoalsPage /></ModuleProtectedRoute>} />
                 <Route path="performance/improvement-plans" element={<ModuleProtectedRoute moduleCode="PERFORMANCE"><ImprovementPlansPage /></ModuleProtectedRoute>} />
                 <Route path="performance/self-assessment" element={<ModuleProtectedRoute moduleCode="PERFORMANCE"><SelfAssessmentForm /></ModuleProtectedRoute>} />
+                <Route path="performance/review-cycle" element={<ModuleProtectedRoute moduleCode="PERFORMANCE"><ReviewCyclePage /></ModuleProtectedRoute>} />
                 <Route path="performance/:id" element={<ModuleProtectedRoute moduleCode="PERFORMANCE"><PerformanceDetailPage /></ModuleProtectedRoute>} />
                 <Route path="certificate/apply" element={<ModuleProtectedRoute moduleCode="CERTIFICATE" permission="Write"><ApplyCertificatePage /></ModuleProtectedRoute>} />
                 <Route path="certificate/approvals" element={<ModuleProtectedRoute moduleCode="CERTIFICATE" permission="Approve"><CertificateApprovalPage /></ModuleProtectedRoute>} />
                 <Route path="certificate/exit" element={<ModuleProtectedRoute moduleCode="CERTIFICATE" permission="Approve"><ExitManagementPage /></ModuleProtectedRoute>} />
                 <Route path="certificate/exit-interview" element={<ModuleProtectedRoute moduleCode="CERTIFICATE"><ExitInterviewForm /></ModuleProtectedRoute>} />
+                <Route path="certificate/verify" element={<ModuleProtectedRoute moduleCode="CERTIFICATE"><CertificateVerifyPage /></ModuleProtectedRoute>} />
                 <Route path="certificate" element={<ModuleProtectedRoute moduleCode="CERTIFICATE" permission="Approve"><CertificateApprovalPage /></ModuleProtectedRoute>} />
                 <Route path="help-desk" element={<ModuleProtectedRoute moduleCode="HELP_DESK"><TicketQueuePage /></ModuleProtectedRoute>} />
                 <Route path="help-desk/new" element={<ModuleProtectedRoute moduleCode="HELP_DESK" permission="Write"><RaiseTicketPage /></ModuleProtectedRoute>} />

@@ -45,3 +45,13 @@ export interface CreateWorkCommand {
   assignedTo: string;
   remarks?: string;
 }
+
+export interface UpdateWorkCommand {
+  workName: string;
+  workDescription?: string;
+  priority: string;
+  startDate: string;
+  endDate: string;
+  assignedTo: string;
+  remarks?: string;
+}

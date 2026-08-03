@@ -5,12 +5,14 @@ import { useListRegistrationsQuery, useApproveRegistrationMutation, useRejectReg
 import { PageHeader, AppButton } from '../../../shared/components/ui';
 import DocumentVerificationTable from './DocumentVerificationTable';
 import DocumentVerificationFilters from './DocumentVerificationFilters';
+import BulkApprovalToolbar from '../components/BulkApprovalToolbar';
 
 export default function DocumentVerificationPage() {
   const [search, setSearch] = useState('');
   const [rejectDialogVisible, setRejectDialogVisible] = useState(false);
   const [rejectTarget, setRejectTarget] = useState<{ id: number; name: string } | null>(null);
   const [rejectReason, setRejectReason] = useState('');
+  const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const toast = useRef<Toast>(null);
   const { data: result, isLoading } = useListRegistrationsQuery();
   const registrations = result?.items ?? [];
@@ -40,8 +42,11 @@ export default function DocumentVerificationPage() {
     <div>
       <Toast ref={toast} />
       <PageHeader title="Document Verification" subtitle="Review and verify applicant documents" />
+      <BulkApprovalToolbar selectedIds={selectedIds} onClearSelection={() => setSelectedIds([])} />
       <DocumentVerificationFilters search={search} onSearchChange={setSearch} />
       <DocumentVerificationTable data={pendingDocs} isLoading={isLoading}
+        selectedIds={selectedIds}
+        onSelectionChange={setSelectedIds}
         onApprove={handleApprove}
         onReject={(id, name) => { setRejectTarget({ id, name }); setRejectDialogVisible(true); }} />
       <AppDialog header="Reject Registration" visible={rejectDialogVisible}

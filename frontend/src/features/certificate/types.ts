@@ -38,3 +38,27 @@ export interface SubmitExitInterviewCommand {
   whatWorkedWell: string;
   wouldRecommend: boolean;
 }
+
+export interface ExitInterviewDto {
+  overallExperience: number;
+  workEnvironment: number;
+  learningOpportunities: number;
+  teamCollaboration: number;
+  improvementSuggestions: string;
+  whatWorkedWell: string;
+  wouldRecommend: boolean;
+}
+
+export interface ComplianceCheckResult {
+  isCompliant: boolean;
+  flags: string;
+}
+
+export interface CertificateVerifyResult {
+  isValid: boolean;
+  certificateId: number;
+  applicantName: string;
+  programName: string;
+  issuedOn: string;
+  message: string;
+}

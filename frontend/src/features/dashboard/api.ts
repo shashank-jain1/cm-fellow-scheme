@@ -1,6 +1,6 @@
 import ApiService from '../../services/ApiService';
 import dashboardUrls from './urls';
-import type { AdminDashboardDto, CoordinatorDashboardDto, DashboardFilters, DashboardExportDto } from './types';
+import type { AdminDashboardDto, CoordinatorDashboardDto, FellowDashboardDto, RoleBasedDashboardDto, ProjectProgressDto, DashboardFilters, DashboardExportDto } from './types';
 
 function buildQueryString(filters: DashboardFilters): string {
   const params = new URLSearchParams();
@@ -32,4 +32,19 @@ export async function exportDashboardPdf(filters?: DashboardFilters): Promise<Da
 export async function exportDashboardExcel(filters?: DashboardFilters): Promise<DashboardExportDto> {
   const res = await ApiService.post<DashboardExportDto>(dashboardUrls.exportExcel(), filters ?? {});
   return res.data!;
+}
+
+export async function fetchFellowDashboard(userId: number): Promise<FellowDashboardDto> {
+  const res = await ApiService.get<FellowDashboardDto>(dashboardUrls.fellow(userId));
+  return res.data!;
+}
+
+export async function fetchDashboardByRole(role: string): Promise<RoleBasedDashboardDto> {
+  const res = await ApiService.get<RoleBasedDashboardDto>(dashboardUrls.byRole(role));
+  return res.data!;
+}
+
+export async function fetchProjectProgress(): Promise<ProjectProgressDto[]> {
+  const res = await ApiService.get<ProjectProgressDto[]>(dashboardUrls.projectProgress());
+  return res.data ?? [];
 }

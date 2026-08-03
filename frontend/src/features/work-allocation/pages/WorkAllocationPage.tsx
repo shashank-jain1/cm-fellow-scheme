@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { AppButton } from '../../../shared/components/ui';
 import WorkAllocationForm from '../components/WorkAllocationForm';
 import { useWorkAllocationForm } from '../components/form.hook';
-import { useWorkAllocations, useCreateWorkAllocation, useUpdateWorkAllocation, useDeleteWorkAllocation } from '../queries';
+import { useWorkAllocations, useCreateWorkAllocation, useUpdateWorkAllocation, useDeactivateWorkAllocation } from '../queries';
 import type { WorkAllocationDto } from '../types';
 import WorkAllocationFilters from './WorkAllocationFilters';
 import WorkAllocationTable from './WorkAllocationTable';
@@ -17,7 +17,7 @@ export default function WorkAllocationPage() {
   const { data: allocations, isLoading } = useWorkAllocations();
   const createMutation = useCreateWorkAllocation();
   const updateMutation = useUpdateWorkAllocation();
-  const deleteMutation = useDeleteWorkAllocation();
+  const deactivateMutation = useDeactivateWorkAllocation();
   const { formData, errors, handleChange, validate, resetForm, setFormDataForEdit } = useWorkAllocationForm();
 
   const filtered = (allocations ?? []).filter((a) => {
@@ -33,7 +33,10 @@ export default function WorkAllocationPage() {
     setEditingAllocation(allocation); setShowForm(true);
   };
 
-  const handleDeleteAllocation = async (id: number) => { if (window.confirm('Are you sure you want to delete this allocation?')) await deleteMutation.mutateAsync(id); };
+  const handleDeactivateAllocation = async (id: number) => {
+    if (window.confirm('Are you sure you want to deactivate this allocation?'))
+      await deactivateMutation.mutateAsync(id);
+  };
 
   const handleSubmit = async () => {
     if (!validate()) return;
@@ -58,7 +61,7 @@ export default function WorkAllocationPage() {
       )}
       <WorkAllocationStats allocations={allocations ?? []} completedCount={(allocations ?? []).filter(a => a.status === 'completed').length} totalCount={(allocations ?? []).length} />
       <WorkAllocationFilters search={search} statusFilter={statusFilter} onSearchChange={setSearch} onStatusChange={setStatusFilter} />
-      <div className="table-wrapper"><WorkAllocationTable allocations={filtered} isLoading={isLoading} onEdit={handleEditAllocation} onDelete={handleDeleteAllocation} /></div>
+      <div className="table-wrapper"><WorkAllocationTable allocations={filtered} isLoading={isLoading} onEdit={handleEditAllocation} onDelete={handleDeactivateAllocation} /></div>
     </div>
   );
 }

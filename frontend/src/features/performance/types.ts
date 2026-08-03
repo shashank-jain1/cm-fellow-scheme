@@ -15,4 +15,10 @@ export type {
   ImprovementPlanDto,
   CreateImprovementPlanCommand,
 } from './goalTypes';
-export type { PeerFeedbackDto, SubmitPeerFeedbackCommand } from './peerFeedbackTypes';
+export type {
+  PeerFeedbackDto,
+  SubmitPeerFeedbackCommand,
+  ReviewCycleDto,
+  CreateReviewCycleCommand,
+  SelfAssessmentDto,
+} from './peerFeedbackTypes';

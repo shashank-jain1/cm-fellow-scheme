@@ -1,18 +1,30 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { AppButton } from '../../../shared/components/ui';
 import { ToastService } from '../../../shared/utils/toast';
-import { useSubmitSelfAssessment } from '../queries';
+import { useSubmitSelfAssessment, useSelfAssessment } from '../queries';
 import SelfAssessmentRatingInput from './SelfAssessmentRatingInput';
 import SelfAssessmentTextArea from './SelfAssessmentTextArea';
 
 export default function SelfAssessmentForm() {
   const submitMutation = useSubmitSelfAssessment();
+  const { data: existing } = useSelfAssessment();
   const [strengths, setStrengths] = useState('');
   const [improvements, setImprovements] = useState('');
   const [goalsAchieved, setGoalsAchieved] = useState('');
   const [goalsMissed, setGoalsMissed] = useState('');
   const [trainingFeedback, setTrainingFeedback] = useState('');
   const [overallRating, setOverallRating] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (existing) {
+      setStrengths(existing.strengths ?? '');
+      setImprovements(existing.improvements ?? '');
+      setGoalsAchieved(existing.goalsAchieved ?? '');
+      setGoalsMissed(existing.goalsMissed ?? '');
+      setTrainingFeedback(existing.trainingFeedback ?? '');
+      setOverallRating(existing.overallRating ?? null);
+    }
+  }, [existing]);
 
   const isValid = overallRating !== null && overallRating > 0;
 
@@ -28,12 +40,6 @@ export default function SelfAssessmentForm() {
         overallRating,
       });
       ToastService.success('Self-assessment submitted successfully!');
-      setStrengths('');
-      setImprovements('');
-      setGoalsAchieved('');
-      setGoalsMissed('');
-      setTrainingFeedback('');
-      setOverallRating(null);
     } catch {
       ToastService.error('Failed to submit self-assessment');
     }
@@ -57,7 +63,7 @@ export default function SelfAssessmentForm() {
           loading={submitMutation.isPending}
           disabled={!isValid || submitMutation.isPending}
         >
-          Submit Self-Assessment
+          {existing ? 'Update Self-Assessment' : 'Submit Self-Assessment'}
         </AppButton>
       </div>
     </div>

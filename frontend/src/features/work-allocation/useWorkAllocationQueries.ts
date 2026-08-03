@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { workAllocationApi } from './api';
-import type { WorkAllocationFormData } from './types';
+import type { WorkAllocationFormData, UpdateProgressCommand, VerifyTaskCommand } from './types';
 
 export const useWorkAllocations = () => {
   return useQuery({
@@ -44,10 +44,10 @@ export const useUpdateWorkAllocation = () => {
   });
 };
 
-export const useDeleteWorkAllocation = () => {
+export const useDeactivateWorkAllocation = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (id: number) => workAllocationApi.delete(id),
+    mutationFn: (id: number) => workAllocationApi.deactivate(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['work-allocations'] });
     },
@@ -65,12 +65,36 @@ export const useAssignWorkAllocation = () => {
   });
 };
 
-export const useDeactivateWorkAllocation = () => {
+export const useUpdateProgress = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (id: number) => workAllocationApi.deactivate(id),
+    mutationFn: ({ workAllocationId, data }: { workAllocationId: number; data: UpdateProgressCommand }) =>
+      workAllocationApi.updateProgress(workAllocationId, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['work-allocations'] });
+      queryClient.invalidateQueries({ queryKey: ['task-progress'] });
+    },
+  });
+};
+
+export const useVerifyTask = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ workAllocationId, command }: { workAllocationId: number; command: VerifyTaskCommand }) =>
+      workAllocationApi.verifyTask(workAllocationId, command),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['work-allocations'] });
+      queryClient.invalidateQueries({ queryKey: ['task-progress'] });
+    },
+  });
+};
+
+export const useCheckOverdueTasks = () => {
+  return useQuery({
+    queryKey: ['work-allocations', 'overdue'],
+    queryFn: async () => {
+      const res = await workAllocationApi.checkOverdue();
+      return res.data ?? [];
     },
   });
 };

@@ -5,6 +5,7 @@ export { default as TaskProgressGrid } from './components/TaskProgressGrid';
 export { default as SurveyDetailsDrilldownGrid } from './components/SurveyDetailsDrilldownGrid';
 export { default as TaskDependencyPanel } from './components/TaskDependencyPanel';
 export { default as TaskAttachments } from './components/TaskAttachments';
+export { default as TaskVerificationPanel } from './components/TaskVerificationPanel';
 export { useWorkAllocationForm } from './components/form.hook';
 
 export * from './types';

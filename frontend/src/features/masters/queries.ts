@@ -19,6 +19,8 @@ export {
   useWorks,
   useCreateProject,
   useCreateWork,
+  useGetWork,
+  useUpdateWork,
 } from './useWorkQueries';
 
 export {

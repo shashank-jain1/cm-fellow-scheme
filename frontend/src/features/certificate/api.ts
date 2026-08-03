@@ -1,6 +1,14 @@
 import ApiService from '../../services/ApiService';
 import certificateUrls from './urls';
-import type { CertificateApplicationDto, CertificateFormData, ExitReadinessPayload, SubmitExitInterviewCommand } from './types';
+import type {
+  CertificateApplicationDto,
+  CertificateFormData,
+  CertificateVerifyResult,
+  ComplianceCheckResult,
+  ExitInterviewDto,
+  ExitReadinessPayload,
+  SubmitExitInterviewCommand,
+} from './types';
 
 export async function fetchCertificates(): Promise<CertificateApplicationDto[]> {
   const res = await ApiService.get<CertificateApplicationDto[]>(certificateUrls.list());
@@ -53,4 +61,29 @@ export async function closeAndArchiveRecord(exitRecordId: number, approvedBy: nu
 
 export async function submitExitInterview(command: SubmitExitInterviewCommand): Promise<void> {
   await ApiService.post(certificateUrls.exitInterview(), command);
+}
+
+export async function generateCompletionCertificate(applicantId: number): Promise<string> {
+  const res = await ApiService.post<string>(certificateUrls.generateCompletion(), { applicantId });
+  return res.data ?? '';
+}
+
+export async function generateExperienceLetter(applicantId: number): Promise<string> {
+  const res = await ApiService.post<string>(certificateUrls.generateExperience(), { applicantId });
+  return res.data ?? '';
+}
+
+export async function verifyCertificate(certNumber: string): Promise<CertificateVerifyResult> {
+  const res = await ApiService.get<CertificateVerifyResult>(`${certificateUrls.verify()}?certificateNumber=${encodeURIComponent(certNumber)}`);
+  return res.data!;
+}
+
+export async function verifyCompliance(exitRecordId: number): Promise<ComplianceCheckResult> {
+  const res = await ApiService.get<ComplianceCheckResult>(certificateUrls.exitCompliance(exitRecordId));
+  return res.data!;
+}
+
+export async function getExitInterview(userAccountId: number): Promise<ExitInterviewDto | null> {
+  const res = await ApiService.get<ExitInterviewDto | null>(certificateUrls.exitInterviewByUser(userAccountId));
+  return res.data ?? null;
 }

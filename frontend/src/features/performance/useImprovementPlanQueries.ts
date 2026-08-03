@@ -4,6 +4,8 @@ import {
   createImprovementPlan,
   submitPeerFeedback,
   submitSelfAssessment,
+  getPeerFeedback,
+  getSelfAssessment,
 } from './api';
 import type {
   CreateImprovementPlanCommand,
@@ -46,5 +48,20 @@ export function useSubmitSelfAssessment() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['performance', 'self-assessment'] });
     },
+  });
+}
+
+export function usePeerFeedback(userId: number) {
+  return useQuery({
+    queryKey: ['performance', 'peer-feedback', userId],
+    queryFn: () => getPeerFeedback(userId),
+    enabled: !!userId,
+  });
+}
+
+export function useSelfAssessment() {
+  return useQuery({
+    queryKey: ['performance', 'self-assessment', 'current'],
+    queryFn: getSelfAssessment,
   });
 }

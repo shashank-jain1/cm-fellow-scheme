@@ -45,3 +45,15 @@ export interface KnowledgeBaseArticleDto {
   authorName?: string;
   createdOn: string;
 }
+
+export interface CreateKBArticleCommand {
+  title: string;
+  category: string;
+  content: string;
+  published?: boolean;
+}
+
+export interface SlaOverdueResult {
+  overdueCount: number;
+  tickets: TicketDto[];
+}

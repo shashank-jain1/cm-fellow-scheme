@@ -1,13 +1,16 @@
 import { useState } from 'react';
 import { AppInput } from '../../../shared/components/forms';
+import { AppButton } from '../../../shared/components/ui';
 import { ToastService } from '../../../shared/utils/toast';
-import { useSubmitExitReadiness } from '../queries';
+import { useSubmitExitReadiness, useVerifyCompliance } from '../queries';
 import { useAuth } from '../../auth';
 import ExitReadinessChecklist from '../components/ExitReadinessChecklist';
 
 export default function ExitManagementPage() {
   const [applicantId, setApplicantId] = useState<number | null>(null);
+  const [exitRecordId, setExitRecordId] = useState<number | null>(null);
   const submitExit = useSubmitExitReadiness();
+  const verifyCompliance = useVerifyCompliance();
   const { user } = useAuth();
 
   const handleSubmit = async (completionStatus: string, verificationFlags: string) => {
@@ -22,6 +25,20 @@ export default function ExitManagementPage() {
       ToastService.success('Exit readiness submitted successfully!');
     } catch {
       ToastService.error('Failed to submit exit readiness');
+    }
+  };
+
+  const handleVerifyCompliance = async () => {
+    if (!exitRecordId) return;
+    try {
+      const result = await verifyCompliance.mutateAsync(exitRecordId);
+      if (result.isCompliant) {
+        ToastService.success('All clearances compliant');
+      } else {
+        ToastService.warn(`Compliance issues: ${result.flags}`);
+      }
+    } catch {
+      ToastService.error('Failed to verify compliance');
     }
   };
 
@@ -59,6 +76,31 @@ export default function ExitManagementPage() {
           isSubmitting={submitExit.isPending}
         />
       )}
+
+      <div className="card" style={{ padding: 24, marginTop: 24, maxWidth: 400 }}>
+        <label className="form-label">Verify Compliance</label>
+        <div style={{ display: 'flex', gap: 12 }}>
+          <AppInput
+            type="number"
+            value={exitRecordId?.toString() ?? ''}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              const val = e.target.value;
+              setExitRecordId(val ? Number(val) : null);
+            }}
+            placeholder="Exit record ID"
+            style={{ flex: 1 }}
+          />
+          <AppButton
+            variant="primary"
+            icon="pi pi-check"
+            onClick={handleVerifyCompliance}
+            loading={verifyCompliance.isPending}
+            disabled={!exitRecordId || verifyCompliance.isPending}
+          >
+            Check
+          </AppButton>
+        </div>
+      </div>
     </div>
   );
 }

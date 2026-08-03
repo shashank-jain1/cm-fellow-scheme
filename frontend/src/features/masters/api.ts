@@ -17,6 +17,7 @@ import type {
   CreateWorkCommand,
   CreateTrainingScheduleCommand,
   UpdateTrainingScheduleCommand,
+  UpdateWorkCommand,
 } from './types';
 import { MASTER_URLS } from './urls';
 
@@ -45,7 +46,10 @@ export const mastersApi = {
 
   getWorks: (projectId?: number) =>
     ApiService.get<WorkDto[]>(`${MASTER_URLS.works}${projectId ? `?projectId=${projectId}` : ''}`),
+  getWork: (id: number) => ApiService.get<WorkDto>(`${MASTER_URLS.works}/${id}`),
   createWork: (data: CreateWorkCommand) => ApiService.post<number>(MASTER_URLS.works, data),
+  updateWork: (id: number, data: UpdateWorkCommand) =>
+    ApiService.put<void>(`${MASTER_URLS.works}/${id}`, { ...data, workId: id }),
 
   getTrainingSchedules: (filters?: { calendarYear?: string; projectId?: number; divisionId?: number }) => {
     const params = new URLSearchParams();

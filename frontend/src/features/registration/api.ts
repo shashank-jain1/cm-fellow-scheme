@@ -89,6 +89,15 @@ export const registrationApi = {
   updateProfile: (applicantId: number, data: ProfileUpdatePayload) =>
     ApiService.put<void>(`${REGISTRATION_URLS.FELLOWS}/${applicantId}/profile`, data),
 
+  sendOtp: (applicantId: number) =>
+    ApiService.post<void>(`${REGISTRATION_URLS.FELLOWS}/${applicantId}/send-otp`, {}),
+
   bulkApprove: (data: BulkApprovalPayload) =>
     ApiService.post<void>(`${REGISTRATION_URLS.FELLOWS}/bulk-approve`, data),
+
+  bulkImportUsers: (file: File) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    return ApiService.postFormData<{ imported: number; errors: string[] }>('registrations/bulk-import', formData);
+  },
 };

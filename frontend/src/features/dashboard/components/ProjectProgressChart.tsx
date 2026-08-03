@@ -1,21 +1,7 @@
-import { useQuery } from '@tanstack/react-query';
-import ApiService from '../../../services/ApiService';
-
-interface ProjectProgress {
-  projectName: string;
-  completionPercentage: number;
-  totalSurveys: number;
-  completedSurveys: number;
-}
+import { useProjectProgress } from '../queries';
 
 export default function ProjectProgressChart() {
-  const { data: projects, isLoading } = useQuery<ProjectProgress[]>({
-    queryKey: ['project-progress'],
-    queryFn: async () => {
-      const res = await ApiService.get<ProjectProgress[]>('dashboards/project-progress');
-      return res.data ?? [];
-    },
-  });
+  const { data: projects, isLoading } = useProjectProgress();
 
   if (isLoading) {
     return (

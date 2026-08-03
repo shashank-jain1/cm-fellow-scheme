@@ -2,6 +2,12 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { registrationApi } from './api';
 import type { VerifyOtpPayload } from './api';
 
+export function useSendOtpMutation() {
+  return useMutation({
+    mutationFn: (applicantId: number) => registrationApi.sendOtp(applicantId),
+  });
+}
+
 export function useVerifyMobileOtpMutation() {
   const qc = useQueryClient();
   return useMutation({

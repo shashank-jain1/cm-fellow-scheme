@@ -1,7 +1,21 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { fetchCertificates, fetchCertificateDetail, applyForCertificate, approveCertificate, rejectCertificate, submitExitReadiness, generateCertificate, closeAndArchiveRecord, submitExitInterview } from './api';
-import type { CertificateFormData } from './types';
-import type { ExitReadinessPayload, SubmitExitInterviewCommand } from './types';
+import {
+  fetchCertificates,
+  fetchCertificateDetail,
+  applyForCertificate,
+  approveCertificate,
+  rejectCertificate,
+  submitExitReadiness,
+  generateCertificate,
+  closeAndArchiveRecord,
+  submitExitInterview,
+  generateCompletionCertificate,
+  generateExperienceLetter,
+  verifyCertificate,
+  verifyCompliance,
+  getExitInterview,
+} from './api';
+import type { CertificateFormData, ExitReadinessPayload, SubmitExitInterviewCommand } from './types';
 
 export function useCertificates() {
   return useQuery({
@@ -86,5 +100,45 @@ export function useSubmitExitInterview() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['exit-interview'] });
     },
+  });
+}
+
+export function useGenerateCompletionCertificate() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (applicantId: number) => generateCompletionCertificate(applicantId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['certificates'] });
+    },
+  });
+}
+
+export function useGenerateExperienceLetter() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (applicantId: number) => generateExperienceLetter(applicantId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['certificates'] });
+    },
+  });
+}
+
+export function useVerifyCertificate() {
+  return useMutation({
+    mutationFn: (certNumber: string) => verifyCertificate(certNumber),
+  });
+}
+
+export function useVerifyCompliance() {
+  return useMutation({
+    mutationFn: (exitRecordId: number) => verifyCompliance(exitRecordId),
+  });
+}
+
+export function useExitInterview(userAccountId: number) {
+  return useQuery({
+    queryKey: ['exit-interview', userAccountId],
+    queryFn: () => getExitInterview(userAccountId),
+    enabled: !!userAccountId,
   });
 }

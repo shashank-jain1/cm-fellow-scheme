@@ -6,6 +6,11 @@ export {
   useResolveTicket,
   useEscalateTicket,
   useCloseTicket,
+  useExportTickets,
 } from './useTicketQueries';
-export { useSubmitSurvey } from './useSurveyQueries';
-export { useKnowledgeBaseSearch, useKnowledgeBaseArticle } from './useKnowledgeBaseQueries';
+export { useSubmitSurvey, useGetSurvey } from './useSurveyQueries';
+export {
+  useKnowledgeBaseSearch,
+  useKnowledgeBaseArticle,
+  useCreateKBArticle,
+} from './useKnowledgeBaseQueries';

@@ -1,5 +1,16 @@
 import ApiService from '../../services/ApiService';
-import type { WorkAllocationFormData, WorkAllocationDto, TaskProgressDto, SurveyDetailDto, TaskDependency, TaskDependencyFormData, TaskAttachment } from './types';
+import type {
+  WorkAllocationFormData,
+  WorkAllocationDto,
+  TaskProgressDto,
+  SurveyDetailDto,
+  TaskDependency,
+  TaskDependencyFormData,
+  TaskAttachment,
+  UpdateProgressCommand,
+  VerifyTaskCommand,
+  OverdueTaskDto,
+} from './types';
 
 export interface RecordSurveyPayload {
   applicantId: number;
@@ -14,14 +25,23 @@ export interface RecordSurveyPayload {
 export const workAllocationApi = {
   getAll: () => ApiService.get<WorkAllocationDto[]>('work-allocations/list'),
   getById: (id: number) => ApiService.get<WorkAllocationDto>(`work-allocations/${id}`),
-  create: (data: WorkAllocationFormData) => ApiService.post<WorkAllocationDto>('work-allocations', data),
+  create: (data: WorkAllocationFormData) =>
+    ApiService.post<WorkAllocationDto>('work-allocations', data),
   update: (id: number, data: WorkAllocationFormData) =>
     ApiService.put<WorkAllocationDto>(`work-allocations/${id}`, data),
-  delete: (id: number) => ApiService.delete(`work-allocations/${id}`),
-  assign: (id: number, assignedToUserId: number) =>
-    ApiService.put<void>(`work-allocations/${id}/assign`, { workAllocationId: id, assignedToUserId }),
   deactivate: (id: number) =>
     ApiService.put<void>(`work-allocations/${id}/deactivate`, {}),
+  assign: (id: number, assignedToUserId: number) =>
+    ApiService.put<void>(`work-allocations/${id}/assign`, {
+      workAllocationId: id,
+      assignedToUserId,
+    }),
+  updateProgress: (workAllocationId: number, data: UpdateProgressCommand) =>
+    ApiService.put<void>(`work-allocations/${workAllocationId}/progress`, data),
+  verifyTask: (workAllocationId: number, command: VerifyTaskCommand) =>
+    ApiService.put<void>(`work-allocations/${workAllocationId}/verify`, command),
+  checkOverdue: () =>
+    ApiService.get<OverdueTaskDto[]>('work-allocations/overdue'),
 };
 
 export const taskProgressApi = {

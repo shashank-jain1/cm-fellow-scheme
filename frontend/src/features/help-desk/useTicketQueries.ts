@@ -7,6 +7,7 @@ import {
   escalateTicket,
   closeTicket,
   listTicketsByRole,
+  exportTickets,
 } from './api';
 import type { TicketFormData } from './types';
 
@@ -74,5 +75,11 @@ export function useCloseTicket() {
       queryClient.invalidateQueries({ queryKey: ['helpdesk-tickets'] });
       queryClient.invalidateQueries({ queryKey: ['helpdesk-ticket'] });
     },
+  });
+}
+
+export function useExportTickets() {
+  return useMutation({
+    mutationFn: (format: string) => exportTickets(format),
   });
 }

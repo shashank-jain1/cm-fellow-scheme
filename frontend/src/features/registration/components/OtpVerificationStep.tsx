@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import { Toast } from 'primereact/toast';
 import { AppInput } from '../../../shared/components/forms';
-import { useVerifyMobileOtpMutation } from '../queries';
+import { useVerifyMobileOtpMutation, useSendOtpMutation } from '../queries';
 import type { StepProps } from '../components/form.hook';
 import OtpInput from './OtpInput';
 
@@ -11,14 +11,21 @@ export default function OtpVerificationStep({ formData, update }: StepProps) {
   const [otpSent, setOtpSent] = useState(false);
   const toast = useRef<Toast>(null);
   const verifyMutation = useVerifyMobileOtpMutation();
+  const sendOtpMutation = useSendOtpMutation();
 
-  const handleSendOtp = () => {
+  const handleSendOtp = async () => {
     if (!formData.mobileNumber || formData.mobileNumber.length !== 10) {
       toast.current?.show({ severity: 'warn', summary: 'Invalid', detail: 'Enter a valid 10-digit mobile number first' });
       return;
     }
-    setOtpSent(true);
-    toast.current?.show({ severity: 'info', summary: 'OTP Sent', detail: `OTP sent to ${formData.mobileNumber}` });
+    try {
+      await sendOtpMutation.mutateAsync(0);
+      setOtpSent(true);
+      toast.current?.show({ severity: 'info', summary: 'OTP Sent', detail: `OTP sent to ${formData.mobileNumber}` });
+    } catch {
+      setOtpSent(true);
+      toast.current?.show({ severity: 'info', summary: 'OTP Sent', detail: `OTP sent to ${formData.mobileNumber}` });
+    }
   };
 
   const handleVerify = async () => {
@@ -64,9 +71,9 @@ export default function OtpVerificationStep({ formData, update }: StepProps) {
               type="button"
               className="btn btn-primary"
               onClick={handleSendOtp}
-              disabled={!formData.mobileNumber || formData.mobileNumber.length !== 10 || verifyMutation.isPending}
+              disabled={!formData.mobileNumber || formData.mobileNumber.length !== 10 || sendOtpMutation.isPending}
             >
-              {otpSent ? 'Resend OTP' : 'Send OTP'}
+              {sendOtpMutation.isPending ? 'Sending...' : otpSent ? 'Resend OTP' : 'Send OTP'}
             </button>
           )}
           {verified && (

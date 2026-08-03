@@ -19,4 +19,12 @@ export {
   useCreateImprovementPlan,
   useSubmitPeerFeedback,
   useSubmitSelfAssessment,
+  usePeerFeedback,
+  useSelfAssessment,
 } from './useImprovementPlanQueries';
+
+export {
+  useActiveReviewCycle,
+  useCreateReviewCycle,
+  useCloseReviewCycle,
+} from './useReviewCycleQueries';

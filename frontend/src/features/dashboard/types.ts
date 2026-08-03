@@ -35,3 +35,27 @@ export interface DashboardExportDto {
   fileUrl: string;
   fileName: string;
 }
+
+export interface FellowDashboardDto {
+  totalAssignedProjects: number;
+  completedSurveys: number;
+  pendingSurveys: number;
+  attendancePercentage: number;
+  upcomingTraining: number;
+  recentActivity: string;
+}
+
+export interface ProjectProgressDto {
+  projectName: string;
+  completionPercentage: number;
+  totalSurveys: number;
+  completedSurveys: number;
+}
+
+export interface RoleBasedDashboardDto {
+  role: string;
+  totalUsers: number;
+  activeProjects: number;
+  pendingApprovals: number;
+  completedTasks: number;
+}

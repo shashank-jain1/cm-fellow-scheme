@@ -6,6 +6,8 @@ import { AppButton, EmptyState, SkeletonTable } from '../../../shared/components
 interface Props {
   data: any[];
   isLoading: boolean;
+  selectedIds: number[];
+  onSelectionChange: (ids: number[]) => void;
   onApprove: (id: number) => void;
   onReject: (id: number, name: string) => void;
 }
@@ -24,13 +26,22 @@ const docLink = (path: string | null, label: string) =>
     <span style={{ color: 'var(--text-muted)', fontSize: 13 }}>Not uploaded</span>
   );
 
-export default function DocumentVerificationTable({ data, isLoading, onApprove, onReject }: Props) {
+export default function DocumentVerificationTable({ data, isLoading, selectedIds, onSelectionChange, onApprove, onReject }: Props) {
   return (
     <div className="table-wrapper">
       {isLoading ? (
         <SkeletonTable columns={4} />
       ) : data.length > 0 ? (
-        <DataTable value={data} rows={10} paginator emptyMessage=" ">
+        <DataTable
+          value={data}
+          rows={10}
+          paginator
+          emptyMessage=" "
+          selection={data.filter((r) => selectedIds.includes(r.applicantId))}
+          onSelectionChange={(e) => onSelectionChange(e.value.map((r: any) => r.applicantId))}
+          selectionMode="multiple"
+          dataKey="applicantId"
+        >
           <Column field="firstName" header="Applicant"
             body={(row: any) => (
               <div>

@@ -1,6 +1,14 @@
 import ApiService from '../../services/ApiService';
 import helpDeskUrls from './urls';
-import type { TicketDto, TicketFormData, SubmitSurveyCommand, SatisfactionSurveyDto, KnowledgeBaseArticleDto } from './types';
+import type {
+  TicketDto,
+  TicketFormData,
+  SubmitSurveyCommand,
+  SatisfactionSurveyDto,
+  KnowledgeBaseArticleDto,
+  CreateKBArticleCommand,
+  SlaOverdueResult,
+} from './types';
 
 export async function fetchTickets(role?: string, applicantId?: number): Promise<TicketDto[]> {
   let url = helpDeskUrls.tickets();
@@ -59,5 +67,25 @@ export async function searchKnowledgeBase(query?: string, category?: string): Pr
 
 export async function fetchKnowledgeBaseArticle(id: number): Promise<KnowledgeBaseArticleDto> {
   const res = await ApiService.get<KnowledgeBaseArticleDto>(helpDeskUrls.knowledgeBaseArticle(id));
+  return res.data!;
+}
+
+export async function exportTickets(format: string): Promise<string> {
+  const API_BASE = import.meta.env.VITE_API_URL || '/api/v1';
+  return `${API_BASE}/${helpDeskUrls.exportTickets(format)}`;
+}
+
+export async function getSurvey(ticketId: number): Promise<SatisfactionSurveyDto | null> {
+  const res = await ApiService.get<SatisfactionSurveyDto | null>(helpDeskUrls.surveyByTicket(ticketId));
+  return res.data ?? null;
+}
+
+export async function checkSlaOverdue(): Promise<SlaOverdueResult> {
+  const res = await ApiService.get<SlaOverdueResult>(helpDeskUrls.slaCheck());
+  return res.data!;
+}
+
+export async function createArticle(data: CreateKBArticleCommand): Promise<KnowledgeBaseArticleDto> {
+  const res = await ApiService.post<KnowledgeBaseArticleDto>(helpDeskUrls.knowledgeBaseCreate(), data);
   return res.data!;
 }
