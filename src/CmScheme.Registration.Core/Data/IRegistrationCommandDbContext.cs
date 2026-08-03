@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using CmScheme.Common.Core.Entities;
 using CmScheme.Registration.Core.Entities;
 
 namespace CmScheme.Registration.Core.Data;
@@ -30,6 +31,8 @@ public interface IRegistrationCommandDbContext
     DbSet<TicketCategory> TicketCategories { get; }
 
     DbSet<ExitInterview> ExitInterviews { get; }
+
+    DbSet<Notification> Notifications { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

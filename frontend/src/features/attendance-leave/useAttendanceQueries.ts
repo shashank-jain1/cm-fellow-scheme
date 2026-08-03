@@ -42,6 +42,17 @@ export function useMonthlyReport(month: number, year: number) {
   });
 }
 
+export function useWeeklyReport(weekStart: string) {
+  return useQuery({
+    queryKey: ['attendance', 'weeklyReport', weekStart],
+    queryFn: async () => {
+      const res = await attendanceLeaveApi.getWeeklyReport(weekStart);
+      return res.data ?? null;
+    },
+    enabled: !!weekStart,
+  });
+}
+
 export function usePayrollSummary(payrollMonth?: string, applicantId?: number) {
   return useQuery({
     queryKey: ['payrollSummary', payrollMonth, applicantId],

@@ -20,6 +20,7 @@ import LeaveApprovalPage from './features/attendance-leave/pages/LeaveApprovalPa
 import LeaveStatusPage from './features/attendance-leave/pages/LeaveStatusPage';
 import LeaveBalancePage from './features/attendance-leave/pages/LeaveBalancePage';
 import HolidayCalendarPage from './features/attendance-leave/pages/HolidayCalendarPage';
+import WeeklyAttendanceReportPage from './features/attendance-leave/pages/WeeklyAttendanceReportPage';
 import PayrollSummaryPage from './features/attendance-leave/pages/PayrollSummaryPage';
 import { PerformanceReviewGrid, PerformanceDetailPage, SelfAssessmentForm, ReviewCyclePage } from './features/performance';
 import { PerformanceGoalsPage, ImprovementPlansPage } from './features/performance';
@@ -76,6 +77,7 @@ export default function App() {
                 <Route path="work-allocation/progress" element={<ModuleProtectedRoute moduleCode="WORK_ALLOCATION"><TaskProgressPage /></ModuleProtectedRoute>} />
                 <Route path="attendance" element={<ModuleProtectedRoute moduleCode="ATTENDANCE"><MarkAttendancePage /></ModuleProtectedRoute>} />
                 <Route path="attendance/report" element={<ModuleProtectedRoute moduleCode="ATTENDANCE"><AttendanceReportPage /></ModuleProtectedRoute>} />
+                <Route path="attendance/weekly-report" element={<ModuleProtectedRoute moduleCode="ATTENDANCE"><WeeklyAttendanceReportPage /></ModuleProtectedRoute>} />
                 <Route path="attendance/apply-leave" element={<ModuleProtectedRoute moduleCode="ATTENDANCE" permission="Write"><ApplyLeavePage /></ModuleProtectedRoute>} />
                 <Route path="attendance/leave-approval" element={<ModuleProtectedRoute moduleCode="ATTENDANCE" permission="Approve"><LeaveApprovalPage /></ModuleProtectedRoute>} />
                 <Route path="attendance/leave-status" element={<ModuleProtectedRoute moduleCode="ATTENDANCE"><LeaveStatusPage /></ModuleProtectedRoute>} />

@@ -28,6 +28,25 @@ export interface MonthlyAttendanceReportDto {
   leaveDays: number;
 }
 
+export interface WeeklyDayReportDto {
+  dayLabel: string;
+  date: string;
+  status: string;
+  checkInTime?: string;
+  checkOutTime?: string;
+  hoursWorked: number;
+}
+
+export interface WeeklyAttendanceReportDto {
+  weekStart: string;
+  weekEnd: string;
+  totalPresent: number;
+  totalAbsent: number;
+  totalLeave: number;
+  totalHours: number;
+  days: WeeklyDayReportDto[];
+}
+
 export interface PayrollSummaryDto {
   payrollAttendanceSummaryId: number;
   applicantId: number;

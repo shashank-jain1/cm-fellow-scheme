@@ -1,14 +1,17 @@
 using System.Net;
 using System.Net.Mail;
+using CmScheme.Common.Core.Entities;
+using CmScheme.Common.Core.Services;
+using CmScheme.Registration.Core.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using CmScheme.Common.Core.Services;
 
 namespace CmScheme.Common.Infrastructure.Services;
 
 public sealed class SmtpNotificationService(
     IConfiguration configuration,
-    ILogger<SmtpNotificationService> logger) : INotificationService
+    ILogger<SmtpNotificationService> logger,
+    IRegistrationCommandDbContext registrationDbContext) : INotificationService
 {
     public async Task SendEmailAsync(string to, string subject, string body, CancellationToken ct = default)
     {
@@ -30,9 +33,45 @@ public sealed class SmtpNotificationService(
             IsBodyHtml = true,
         };
 
-        await client.SendMailAsync(message, ct);
+        try
+        {
+            await client.SendMailAsync(message, ct);
 
-        logger.LogInformation("Email sent to {To} with subject {Subject}", to, subject);
+            logger.LogInformation("Email sent to {To} with subject {Subject}", to, subject);
+
+            Notification notification = new Notification
+            {
+                Channel = "Email",
+                Recipient = to,
+                Subject = subject,
+                Body = body,
+                Status = "Sent",
+                SentOn = DateTime.UtcNow
+            };
+
+            registrationDbContext.Notifications.Add(notification);
+            await registrationDbContext.SaveChangesAsync(ct);
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Failed to send email to {To} with subject {Subject}", to, subject);
+
+            Notification notification = new Notification
+            {
+                Channel = "Email",
+                Recipient = to,
+                Subject = subject,
+                Body = body,
+                Status = "Failed",
+                ErrorMessage = ex.Message,
+                SentOn = DateTime.UtcNow
+            };
+
+            registrationDbContext.Notifications.Add(notification);
+            await registrationDbContext.SaveChangesAsync(ct);
+
+            throw;
+        }
     }
 
     public Task SendSmsAsync(string mobileNumber, string message, CancellationToken ct = default)

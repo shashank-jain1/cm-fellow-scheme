@@ -15,4 +15,5 @@ public sealed record MarkAttendanceCommand : ICommand<Result<int>>
     public decimal? Latitude { get; init; }
     public decimal? Longitude { get; init; }
     public string AttendanceStatus { get; init; } = string.Empty;
+    public string? DistrictName { get; init; }
 }

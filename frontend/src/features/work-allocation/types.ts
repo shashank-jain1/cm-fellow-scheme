@@ -28,6 +28,7 @@ export interface WorkAllocationDto {
 
 export interface TaskProgressDto {
   taskProgressId: number;
+  workAllocationId: number;
   projectName: string;
   workProject: string;
   numberOfSurveys: number;

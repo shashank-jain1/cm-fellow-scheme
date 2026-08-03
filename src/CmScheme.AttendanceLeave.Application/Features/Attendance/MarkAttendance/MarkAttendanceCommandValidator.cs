@@ -4,6 +4,22 @@ namespace CmScheme.AttendanceLeave.Application.Features.Attendance.MarkAttendanc
 
 public sealed class MarkAttendanceCommandValidator : AbstractValidator<MarkAttendanceCommand>
 {
+    private static readonly Dictionary<string, (double Latitude, double Longitude)> DistrictCoordinates = new(StringComparer.OrdinalIgnoreCase)
+    {
+        ["Bhopal"] = (23.2599, 77.4126),
+        ["Indore"] = (22.7196, 75.8577),
+        ["Jabalpur"] = (23.1815, 79.9864),
+        ["Gwalior"] = (26.2183, 78.1828),
+        ["Ujjain"] = (23.1793, 75.7849),
+        ["Sagar"] = (23.8388, 78.7378),
+        ["Satna"] = (24.5807, 80.8324),
+        ["Rewa"] = (24.5360, 81.3000),
+        ["Vidisha"] = (23.5241, 77.8071),
+        ["Sehore"] = (23.1976, 77.0819),
+    };
+
+    private static readonly (double Latitude, double Longitude) DefaultCenter = (23.2599, 77.4126);
+
     public MarkAttendanceCommandValidator()
     {
         RuleFor(x => x.ApplicantId)
@@ -37,11 +53,21 @@ public sealed class MarkAttendanceCommandValidator : AbstractValidator<MarkAtten
                 {
                     return true;
                 }
+
+                (double centerLat, double centerLon) = DefaultCenter;
+
+                if (!string.IsNullOrWhiteSpace(x.DistrictName) &&
+                    DistrictCoordinates.TryGetValue(x.DistrictName.Trim(), out var coords))
+                {
+                    centerLat = coords.Latitude;
+                    centerLon = coords.Longitude;
+                }
+
                 double distance = CalculateDistance(
                     (double)x.Latitude.Value,
                     (double)x.Longitude.Value,
-                    23.2599,
-                    77.4126);
+                    centerLat,
+                    centerLon);
                 return distance <= 5000;
             })
             .When(x => x.Latitude.HasValue && x.Longitude.HasValue)

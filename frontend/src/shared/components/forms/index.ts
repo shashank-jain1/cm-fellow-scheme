@@ -7,3 +7,4 @@ export { default as AppSwitch } from './AppSwitch';
 export { default as AppInputNumber } from './AppInputNumber';
 export { default as AppRadio } from './AppRadio';
 export { default as AppDialog } from './AppDialog';
+export { default as AppSlider } from './AppSlider';

@@ -3,6 +3,7 @@ export {
   useAttendanceHistory,
   useCheckOutMutation,
   useMonthlyReport,
+  useWeeklyReport,
   usePayrollSummary,
 } from './useAttendanceQueries';
 

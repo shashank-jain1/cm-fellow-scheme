@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using CmScheme.Common.Core.Data;
+using CmScheme.Common.Core.Entities;
 using CmScheme.Registration.Core.Entities;
 using CmScheme.Registration.Core.Data.Configurations;
 
@@ -36,6 +37,12 @@ public abstract class RegistrationDbContext : BaseDbContext
     public DbSet<TicketCategory> TicketCategories => Set<TicketCategory>();
 
     public DbSet<ExitInterview> ExitInterviews => Set<ExitInterview>();
+
+    public DbSet<TrainingAttendance> TrainingAttendances => Set<TrainingAttendance>();
+
+    public DbSet<Notification> Notifications => Set<Notification>();
+
+    public DbSet<SystemConfig> SystemConfigs => Set<SystemConfig>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

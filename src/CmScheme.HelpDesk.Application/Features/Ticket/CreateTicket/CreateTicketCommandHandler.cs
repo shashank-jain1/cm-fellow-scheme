@@ -41,12 +41,35 @@ public sealed class CreateTicketCommandHandler(
         };
 
         int? assignedTo = null;
-        UserAccount? adminUser = await registrationDbContext.UserAccounts
-            .FirstOrDefaultAsync(ua => ua.Role == "Admin" && ua.IsActive, cancellationToken);
 
-        if (adminUser != null)
+        List<UserAccount> adminUsers = await registrationDbContext.UserAccounts
+            .Where(ua => ua.Role == "Admin" && ua.IsActive)
+            .OrderBy(ua => ua.UserAccountId)
+            .ToListAsync(cancellationToken);
+
+        if (adminUsers.Count > 0)
         {
-            assignedTo = adminUser.UserAccountId;
+            TicketEntity? lastTicket = await helpDeskDbContext.Tickets
+                .OrderByDescending(t => t.TicketId)
+                .FirstOrDefaultAsync(cancellationToken);
+
+            if (lastTicket?.AssignedTo.HasValue != true)
+            {
+                assignedTo = adminUsers[0].UserAccountId;
+            }
+            else
+            {
+                int lastIndex = adminUsers.FindIndex(u => u.UserAccountId == lastTicket.AssignedTo.Value);
+
+                if (lastIndex < 0 || lastIndex >= adminUsers.Count - 1)
+                {
+                    assignedTo = adminUsers[0].UserAccountId;
+                }
+                else
+                {
+                    assignedTo = adminUsers[lastIndex + 1].UserAccountId;
+                }
+            }
         }
 
         TicketEntity ticket = new TicketEntity

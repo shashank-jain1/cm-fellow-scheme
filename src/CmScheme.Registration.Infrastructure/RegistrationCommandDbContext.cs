@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using CmScheme.Common.Core.Entities;
 using CmScheme.Registration.Core.Data;
 using CmScheme.Registration.Core.Entities;
 
@@ -36,6 +37,8 @@ public sealed class RegistrationCommandDbContext : RegistrationDbContext, IRegis
     DbSet<TicketCategory> IRegistrationCommandDbContext.TicketCategories => TicketCategories;
 
     DbSet<ExitInterview> IRegistrationCommandDbContext.ExitInterviews => ExitInterviews;
+
+    DbSet<Notification> IRegistrationCommandDbContext.Notifications => Notifications;
 
     async Task<int> IRegistrationCommandDbContext.SaveChangesAsync(CancellationToken cancellationToken)
     {

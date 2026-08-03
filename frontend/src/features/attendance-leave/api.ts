@@ -14,6 +14,7 @@ import type {
   PayrollSummaryDto,
   CheckOutAttendanceCommand,
   MonthlyAttendanceReportDto,
+  WeeklyAttendanceReportDto,
 } from './types';
 
 export const attendanceLeaveApi = {
@@ -53,6 +54,11 @@ export const attendanceLeaveApi = {
   getMonthlyReport: (month: number, year: number) =>
     ApiService.get<MonthlyAttendanceReportDto>(
       `${ATTENDANCE_LEAVE_URLS.ATTENDANCE_REPORT_MONTHLY}?month=${month}&year=${year}`
+    ),
+
+  getWeeklyReport: (weekStart: string) =>
+    ApiService.get<WeeklyAttendanceReportDto>(
+      `${ATTENDANCE_LEAVE_URLS.ATTENDANCE_REPORT_WEEKLY}?weekStart=${weekStart}`
     ),
 
   getPayrollSummary: (payrollMonth?: string, applicantId?: number) => {

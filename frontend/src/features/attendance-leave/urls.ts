@@ -8,5 +8,6 @@ export const ATTENDANCE_LEAVE_URLS = {
   HOLIDAYS: 'holidays',
   CHECKOUT: 'attendance/checkout',
   ATTENDANCE_REPORT_MONTHLY: 'attendance/report/monthly',
+  ATTENDANCE_REPORT_WEEKLY: 'attendance/report/weekly',
   PAYROLL_SUMMARY: 'attendance/payroll-summary',
 };

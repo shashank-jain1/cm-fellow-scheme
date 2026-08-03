@@ -9,6 +9,7 @@ using SurveyRecordEntity = CmScheme.WorkAllocation.Core.Entities.SurveyRecord;
 using TaskVerificationEntity = CmScheme.WorkAllocation.Core.Entities.TaskVerification;
 using TaskAttachmentEntity = CmScheme.WorkAllocation.Core.Entities.TaskAttachment;
 using TaskDeadlineEntity = CmScheme.WorkAllocation.Core.Entities.TaskDeadline;
+using TaskAssignmentEntity = CmScheme.WorkAllocation.Core.Entities.TaskAssignment;
 
 namespace CmScheme.WorkAllocation.Infrastructure;
 
@@ -21,6 +22,7 @@ public class WorkAllocationDbContext : BaseDbContext, IWorkAllocationCommandDbCo
     public DbSet<TaskAttachmentEntity> TaskAttachments => Set<TaskAttachmentEntity>();
     public DbSet<TaskDeadlineEntity> TaskDeadlines => Set<TaskDeadlineEntity>();
     public DbSet<TaskDependency> TaskDependencies => Set<TaskDependency>();
+    public DbSet<TaskAssignmentEntity> TaskAssignments => Set<TaskAssignmentEntity>();
 
     public WorkAllocationDbContext(DbContextOptions<WorkAllocationDbContext> options)
         : base(options)

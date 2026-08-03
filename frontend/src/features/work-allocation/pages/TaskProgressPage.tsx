@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Button } from 'primereact/button';
 import TaskProgressGrid from '../components/TaskProgressGrid';
+import TaskProgressUpdateForm from '../components/TaskProgressUpdateForm';
 import SurveyDetailsDrilldownGrid from '../components/SurveyDetailsDrilldownGrid';
 import { useTaskProgress, useSurveyDetails } from '../queries';
 import type { TaskProgressDto } from '../types';
@@ -37,11 +38,20 @@ export default function TaskProgressPage() {
       </div>
 
       {selectedTask ? (
-        <SurveyDetailsDrilldownGrid
-          data={surveyDetails ?? []}
-          isLoading={isLoadingSurveys}
-          workProject={selectedTask.workProject}
-        />
+        <>
+          <TaskProgressUpdateForm
+            workAllocationId={selectedTask.workAllocationId}
+            currentProgress={selectedTask.completionPercentage}
+            currentStatus={selectedTask.workStatus}
+          />
+          <div style={{ marginTop: 20 }}>
+            <SurveyDetailsDrilldownGrid
+              data={surveyDetails ?? []}
+              isLoading={isLoadingSurveys}
+              workProject={selectedTask.workProject}
+            />
+          </div>
+        </>
       ) : (
         <TaskProgressGrid
           data={taskProgress ?? []}

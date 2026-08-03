@@ -4,6 +4,7 @@ export { default as LeaveApprovalPage } from './pages/LeaveApprovalPage';
 export { default as LeaveStatusPage } from './pages/LeaveStatusPage';
 export { default as LeaveBalancePage } from './pages/LeaveBalancePage';
 export { default as HolidayCalendarPage } from './pages/HolidayCalendarPage';
+export { default as WeeklyAttendanceReportPage } from './pages/WeeklyAttendanceReportPage';
 
 export { default as FaceCaptureWidget } from './components/FaceCaptureWidget';
 export { default as AttendanceStatusBadge } from './components/AttendanceStatusBadge';
@@ -26,6 +27,7 @@ export {
   useDeleteHoliday,
   useCheckOutMutation,
   useMonthlyReport,
+  useWeeklyReport,
 } from './queries';
 
 export type {
@@ -37,4 +39,6 @@ export type {
   HolidayDto,
   CreateHolidayCommand,
   UpdateHolidayCommand,
+  WeeklyAttendanceReportDto,
+  WeeklyDayReportDto,
 } from './types';
