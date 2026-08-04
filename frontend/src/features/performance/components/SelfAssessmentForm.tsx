@@ -46,25 +46,32 @@ export default function SelfAssessmentForm() {
   };
 
   return (
-    <div className="card" style={{ padding: 24, maxWidth: 640 }}>
-      <h3 style={{ fontSize: 16, fontWeight: 600, marginBottom: 20 }}>Self-Assessment</h3>
-      <div style={{ display: 'grid', gap: 20 }}>
-        <SelfAssessmentTextArea label="Strengths" value={strengths} onChange={setStrengths} />
-        <SelfAssessmentTextArea label="Areas for Improvement" value={improvements} onChange={setImprovements} />
-        <SelfAssessmentTextArea label="Goals Achieved" value={goalsAchieved} onChange={setGoalsAchieved} />
-        <SelfAssessmentTextArea label="Goals Missed" value={goalsMissed} onChange={setGoalsMissed} />
-        <SelfAssessmentTextArea label="Training Feedback" value={trainingFeedback} onChange={setTrainingFeedback} />
-        <SelfAssessmentRatingInput value={overallRating} onChange={setOverallRating} />
+    <div>
+      <div className="page-header">
+        <div>
+          <h1>Self-Assessment</h1>
+          <p style={{ color: 'var(--text-secondary)', marginTop: 4 }}>Evaluate your performance this period</p>
+        </div>
       </div>
-      <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 24 }}>
-        <AppButton
-          variant="primary"
-          onClick={handleSubmit}
-          loading={submitMutation.isPending}
-          disabled={!isValid || submitMutation.isPending}
-        >
-          {existing ? 'Update Self-Assessment' : 'Submit Self-Assessment'}
-        </AppButton>
+      <div className="glass-card fade-in" style={{ padding: 24, maxWidth: 640 }}>
+        <div style={{ display: 'grid', gap: 20 }}>
+          <SelfAssessmentTextArea label="Strengths" value={strengths} onChange={setStrengths} placeholder="What did you do well?" />
+          <SelfAssessmentTextArea label="Areas for Improvement" value={improvements} onChange={setImprovements} placeholder="What could be improved?" />
+          <SelfAssessmentTextArea label="Goals Achieved" value={goalsAchieved} onChange={setGoalsAchieved} placeholder="Which goals were met?" />
+          <SelfAssessmentTextArea label="Goals Missed" value={goalsMissed} onChange={setGoalsMissed} placeholder="Which goals were missed?" />
+          <SelfAssessmentTextArea label="Training Feedback" value={trainingFeedback} onChange={setTrainingFeedback} placeholder="Feedback on training received" />
+          <SelfAssessmentRatingInput value={overallRating} onChange={setOverallRating} />
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 24 }}>
+          <AppButton
+            variant="primary"
+            onClick={handleSubmit}
+            loading={submitMutation.isPending}
+            disabled={!isValid || submitMutation.isPending}
+          >
+            {existing ? 'Update Self-Assessment' : 'Submit Self-Assessment'}
+          </AppButton>
+        </div>
       </div>
     </div>
   );

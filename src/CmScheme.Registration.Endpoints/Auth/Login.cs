@@ -98,6 +98,7 @@ public sealed class Login
         List<Claim> claims =
         [
             new Claim(JwtRegisteredClaimNames.Sub, user.UserAccountId.ToString()),
+            new Claim("UserAccountId", user.UserAccountId.ToString()),
             new Claim(JwtRegisteredClaimNames.UniqueName, user.Username),
             new Claim(ClaimTypes.Role, user.Role),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
