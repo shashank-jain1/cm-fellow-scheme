@@ -4,7 +4,7 @@ import MeetingFieldsCard from '../components/MeetingFieldsCard';
 interface ActivityDetailsFieldsProps {
   activityType: string;
   formData: Record<string, unknown>;
-  updateField: (field: string, value: unknown) => void;
+  updateField: (field: any, value: any) => void;
 }
 
 export default function ActivityDetailsFields({
@@ -18,7 +18,7 @@ export default function ActivityDetailsFields({
         trainingTitle={(formData.trainingTitle as string) ?? ''}
         trainingCategory={(formData.trainingCategory as string) ?? ''}
         trainingDescription={(formData.trainingDescription as string) ?? ''}
-        targetUserTypes={formData.targetUserTypes as number[]}
+        targetUserTypes={(formData.targetUserTypes as string[]) ?? []}
         trainerName={(formData.trainerName as string) ?? ''}
         trainerMobile={(formData.trainerMobile as string) ?? ''}
         attendanceRequired={(formData.attendanceRequired as boolean) ?? false}

@@ -20,4 +20,9 @@ public class PerformanceQueryDbContext : IPerformanceQueryDbContext
     public IQueryable<PerformanceGoal> PerformanceGoals => _dbContext.PerformanceGoals;
     public IQueryable<ImprovementPlan> ImprovementPlans => _dbContext.ImprovementPlans;
     public IQueryable<PeerFeedback> PeerFeedbacks => _dbContext.PeerFeedbacks;
+
+    public IQueryable<CmScheme.Performance.Core.Views.AttendanceView> AttendanceViews => _dbContext.AttendanceViews;
+    public IQueryable<CmScheme.Performance.Core.Views.LeaveApplicationView> LeaveApplicationViews => _dbContext.LeaveApplicationViews;
+    public IQueryable<CmScheme.Performance.Core.Views.TaskProgressView> TaskProgressViews => _dbContext.TaskProgressViews;
+    public IQueryable<CmScheme.Performance.Core.Views.WorkAllocationView> WorkAllocationViews => _dbContext.WorkAllocationViews;
 }

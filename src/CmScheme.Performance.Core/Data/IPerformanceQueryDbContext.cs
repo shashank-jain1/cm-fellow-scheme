@@ -12,4 +12,9 @@ public interface IPerformanceQueryDbContext
     IQueryable<PerformanceGoal> PerformanceGoals { get; }
     IQueryable<ImprovementPlan> ImprovementPlans { get; }
     IQueryable<PeerFeedback> PeerFeedbacks { get; }
+
+    IQueryable<CmScheme.Performance.Core.Views.AttendanceView> AttendanceViews { get; }
+    IQueryable<CmScheme.Performance.Core.Views.LeaveApplicationView> LeaveApplicationViews { get; }
+    IQueryable<CmScheme.Performance.Core.Views.TaskProgressView> TaskProgressViews { get; }
+    IQueryable<CmScheme.Performance.Core.Views.WorkAllocationView> WorkAllocationViews { get; }
 }

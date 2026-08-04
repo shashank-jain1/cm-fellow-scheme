@@ -28,7 +28,13 @@ public sealed class SubmitRegistrationCommandValidator : AbstractValidator<Submi
             .MaximumLength(150).WithMessage("Email must not exceed 150 characters.");
 
         RuleFor(x => x.DateOfBirth)
-            .NotEmpty().WithMessage("Date of birth is required.");
+            .NotEmpty().WithMessage("Date of birth is required.")
+            .Must(dob => dob <= DateTime.UtcNow.AddYears(-18))
+            .WithMessage("Applicant must be at least 18 years old.");
+
+        RuleFor(x => x)
+            .Must(x => !string.IsNullOrWhiteSpace(x.AadhaarNumber) || !string.IsNullOrWhiteSpace(x.PanNumber))
+            .WithMessage("At least one identity proof (Aadhaar number or PAN number) must be provided.");
 
         RuleFor(x => x.PermanentAddress)
             .NotEmpty().WithMessage("Address is required.")

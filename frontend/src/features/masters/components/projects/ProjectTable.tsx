@@ -3,9 +3,11 @@ import type { ProjectDto } from '../../types';
 interface ProjectTableProps {
   projects: ProjectDto[];
   isLoading: boolean;
+  onEdit?: (project: ProjectDto) => void;
+  onDelete?: (projectId: number) => void;
 }
 
-export default function ProjectTable({ projects, isLoading }: ProjectTableProps) {
+export default function ProjectTable({ projects, isLoading, onEdit, onDelete }: ProjectTableProps) {
   if (isLoading) {
     return (
       <div style={{ padding: 20 }}>
@@ -30,12 +32,12 @@ export default function ProjectTable({ projects, isLoading }: ProjectTableProps)
     <table style={{ width: '100%', borderCollapse: 'collapse' }}>
       <thead>
         <tr style={{ background: 'var(--bg-primary)' }}>
-          {['Code', 'Name', 'Department', 'Incharge', 'Duration', 'Budget', 'Status'].map((h) => (
+          {['Code', 'Name', 'Department', 'Incharge', 'Duration', 'Budget', 'Status', 'Actions'].map((h) => (
             <th
               key={h}
               style={{
                 padding: '12px 16px',
-                textAlign: 'left',
+                textAlign: h === 'Actions' ? 'center' : 'left',
                 fontSize: 12,
                 fontWeight: 700,
                 color: 'var(--text-secondary)',
@@ -84,6 +86,20 @@ export default function ProjectTable({ projects, isLoading }: ProjectTableProps)
               >
                 {p.isActive ? 'Active' : 'Inactive'}
               </span>
+            </td>
+            <td style={{ padding: '12px 16px', textAlign: 'center' }}>
+              <div style={{ display: 'flex', gap: 6, justifyContent: 'center' }}>
+                {onEdit && (
+                  <button className="btn btn-secondary btn-icon" onClick={() => onEdit(p)} title="Edit Project">
+                    <i className="pi pi-pencil" style={{ fontSize: 12 }} />
+                  </button>
+                )}
+                {onDelete && (
+                  <button className="btn btn-danger btn-icon" onClick={() => onDelete(p.projectId)} title="Delete Project">
+                    <i className="pi pi-trash" style={{ fontSize: 12 }} />
+                  </button>
+                )}
+              </div>
             </td>
           </tr>
         ))}

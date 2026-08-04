@@ -1,4 +1,4 @@
-import { useTheme, THEME_OPTIONS, type ThemeMode } from '../ThemeContext';
+import { THEME_OPTIONS, type ThemeMode } from '../ThemeContext';
 
 interface ThemeDropdownProps {
   activeTheme: string;

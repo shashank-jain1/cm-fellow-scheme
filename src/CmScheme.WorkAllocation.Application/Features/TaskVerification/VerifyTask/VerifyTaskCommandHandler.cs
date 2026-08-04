@@ -71,18 +71,20 @@ public sealed class VerifyTaskCommandHandler(
 
         if (workAllocation.AssignedToUserId is not null)
         {
-            string emailSubject = request.VerificationStatus == "Approved"
-                ? "Task Approved"
-                : "Task Rejected";
-
-            string emailBody = request.VerificationStatus == "Approved"
-                ? $"Your task (Work Allocation #{request.WorkAllocationId}) has been approved."
-                : $"Your task (Work Allocation #{request.WorkAllocationId}) has been rejected. Comments: {request.Comments}";
+            var (subject, body, sms) = NotificationTemplates.TaskVerified(
+                workAllocation.WorkDescription ?? $"Work Allocation #{request.WorkAllocationId}",
+                request.VerificationStatus,
+                request.Comments ?? "No remarks");
 
             await notificationService.SendEmailAsync(
                 workAllocation.CreatedBy,
-                emailSubject,
-                emailBody,
+                subject,
+                body,
+                cancellationToken);
+
+            await notificationService.SendSmsAsync(
+                workAllocation.CreatedBy,
+                sms,
                 cancellationToken);
         }
 

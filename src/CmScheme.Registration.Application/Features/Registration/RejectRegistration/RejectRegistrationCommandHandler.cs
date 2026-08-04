@@ -36,13 +36,19 @@ public sealed class RejectRegistrationCommandHandler(
 
         await dbContext.SaveChangesAsync(cancellationToken);
 
+        var (subject, body, sms) = NotificationTemplates.RegistrationRejected(
+            $"{applicant.FirstName} {applicant.LastName}",
+            "Application criteria not met.");
+
         await notificationService.SendEmailAsync(
             applicant.EmailId,
-            "Registration Rejected - CM Fellow Program",
-            $"Dear {applicant.FirstName} {applicant.LastName},\n\n" +
-            $"We regret to inform you that your registration for the CM Fellow Program has been rejected.\n\n" +
-            $"If you have any questions, please contact the administrator.\n\n" +
-            $"Best regards,\nCM Fellow Program Team",
+            subject,
+            body,
+            cancellationToken);
+
+        await notificationService.SendSmsAsync(
+            applicant.MobileNumber,
+            sms,
             cancellationToken);
 
         return Result.NoContent();

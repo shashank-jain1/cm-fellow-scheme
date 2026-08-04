@@ -20,5 +20,15 @@ public sealed class ProjectEndpoints : IApiEndpoint
             .WithTags("Projects")
             .WithName("CreateProject")
             .WithDisplayName("Create a new project");
+
+        group.MapPut("/{id:int}", UpdateProject.Update)
+            .WithTags("Projects")
+            .WithName("UpdateProject")
+            .WithDisplayName("Update project details");
+
+        group.MapDelete("/{id:int}", DeleteProject.Delete)
+            .WithTags("Projects")
+            .WithName("DeleteProject")
+            .WithDisplayName("Soft-delete a project");
     }
 }

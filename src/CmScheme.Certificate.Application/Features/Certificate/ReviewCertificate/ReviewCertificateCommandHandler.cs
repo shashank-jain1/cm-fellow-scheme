@@ -5,9 +5,13 @@ using CmScheme.Common.Core;
 using Mediator;
 using Microsoft.EntityFrameworkCore;
 
+using CmScheme.Common.Core.Services;
+
 namespace CmScheme.Certificate.Application.Features.Certificate.ReviewCertificate;
 
-public sealed class ReviewCertificateCommandHandler(ICertificateCommandDbContext dbContext)
+public sealed class ReviewCertificateCommandHandler(
+    ICertificateCommandDbContext dbContext,
+    INotificationService notificationService)
     : ICommandHandler<ReviewCertificateCommand, Result>
 {
     public async ValueTask<Result> Handle(ReviewCertificateCommand request, CancellationToken cancellationToken)
@@ -29,6 +33,19 @@ public sealed class ReviewCertificateCommandHandler(ICertificateCommandDbContext
         }
 
         await dbContext.SaveChangesAsync(cancellationToken);
+
+        if (string.Equals(request.Status, Statuses.Certificate.Approved, StringComparison.OrdinalIgnoreCase))
+        {
+            var (subject, body, sms) = NotificationTemplates.CertificateApproved(
+                certificate.ApplicantName ?? $"Applicant #{certificate.ApplicantId}",
+                certificate.ProgramName);
+
+            await notificationService.SendEmailAsync(
+                $"applicant{certificate.ApplicantId}@program.gov.in",
+                subject,
+                body,
+                cancellationToken);
+        }
 
         return Result.Success();
     }

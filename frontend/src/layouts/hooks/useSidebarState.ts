@@ -11,6 +11,7 @@ interface SidebarState {
 }
 
 const expanders: (keyof SidebarState)[] = [
+  'trainingExpanded',
   'attendanceExpanded',
   'certificateExpanded',
   'workAllocationExpanded',
@@ -20,6 +21,7 @@ const expanders: (keyof SidebarState)[] = [
 ];
 
 const pathMap: Record<string, keyof SidebarState> = {
+  '/training': 'trainingExpanded',
   '/attendance': 'attendanceExpanded',
   '/certificate': 'certificateExpanded',
   '/work-allocation': 'workAllocationExpanded',
@@ -32,6 +34,7 @@ export function useSidebarState() {
   const location = useLocation();
   const [state, setState] = useState<SidebarState>(() => {
     const initial: SidebarState = {
+      trainingExpanded: false,
       attendanceExpanded: false,
       certificateExpanded: false,
       workAllocationExpanded: false,

@@ -23,6 +23,9 @@ public sealed class GetPayrollSummaryQueryHandler(IAttendanceLeaveCommandDbConte
             query = query.Where(p => p.ApplicantId == request.ApplicantId.Value);
         }
 
+        bool hasPendingLeaves = await dbContext.LeaveApplications
+            .AnyAsync(l => l.Status == "Pending", cancellationToken);
+
         List<PayrollSummaryDto> summaries = await query
             .OrderByDescending(p => p.PayrollMonth)
             .Select(p => new PayrollSummaryDto
@@ -35,6 +38,7 @@ public sealed class GetPayrollSummaryQueryHandler(IAttendanceLeaveCommandDbConte
                 ApprovedLeaveDays = p.ApprovedLeaveDays,
                 AbsentDays = p.AbsentDays,
                 PayableDays = p.PayableDays,
+                HasPendingLeaveApprovals = hasPendingLeaves,
                 CreatedOn = p.CreatedOn
             })
             .ToListAsync(cancellationToken);

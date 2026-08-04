@@ -30,12 +30,34 @@ export default function PayrollSummaryPage() {
       ? <Tag value={row.absentDays.toString()} severity="danger" />
       : <Tag value="0" severity="success" />;
 
+  const hasPendingLeaves = summaries.some((s) => (s as { hasPendingLeaveApprovals?: boolean }).hasPendingLeaveApprovals);
+
   return (
     <div>
       <PageHeader
         title="Payroll Attendance Summary"
         subtitle="View monthly attendance summaries for payroll processing"
       />
+
+      {hasPendingLeaves && (
+        <div
+          style={{
+            background: '#fffbe6',
+            border: '1px solid #ffe58f',
+            borderRadius: 8,
+            padding: '12px 16px',
+            marginBottom: 20,
+            display: 'flex',
+            alignItems: 'center',
+            gap: 10,
+            color: '#d48806',
+            fontWeight: 500,
+          }}
+        >
+          <i className="pi pi-exclamation-triangle" style={{ fontSize: 18 }} />
+          <span>Cannot finalize payroll — there are pending leave approvals for this period.</span>
+        </div>
+      )}
 
       <div className="card" style={{ padding: 20, marginBottom: 24 }}>
         <div style={{ display: 'flex', gap: 12, alignItems: 'flex-end', flexWrap: 'wrap' }}>

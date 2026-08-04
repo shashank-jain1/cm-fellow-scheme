@@ -8,6 +8,7 @@ import { useSidebarState } from './hooks/useSidebarState';
 import { useSidebarResizer } from './hooks/useSidebarResizer';
 import {
   navItems,
+  trainingSubItems,
   attendanceSubItems,
   workAllocationSubItems,
   performanceSubItems,
@@ -49,6 +50,12 @@ export default function Sidebar({ collapsed, onToggleCollapsed, width = 260, onW
           <SidebarNavItem key={i.path} path={i.path} label={i.label} icon={i.icon} collapsed={collapsed} />
         ))}
 
+        {canSeeModule('TRAINING') && (
+          <SidebarExpandableSection label="Training & Meetings" icon="pi pi-calendar" expanded={state.trainingExpanded} onToggle={() => toggle('trainingExpanded')} collapsed={collapsed} isActive={location.pathname.startsWith('/training')} submenuId="training-submenu">
+            {trainingSubItems.map(i => <SidebarSubItem key={i.path} path={i.path} label={i.label} icon={i.icon} isActive={isActive(i.path)} />)}
+          </SidebarExpandableSection>
+        )}
+
         {canSeeModule('WORK_ALLOCATION') && (
           <SidebarExpandableSection label="Work Allocation" icon="pi pi-briefcase" expanded={state.workAllocationExpanded} onToggle={() => toggle('workAllocationExpanded')} collapsed={collapsed} isActive={location.pathname.startsWith('/work-allocation')} submenuId="work-allocation-submenu">
             {workAllocationSubItems.map(i => <SidebarSubItem key={i.path} path={i.path} label={i.label} icon={i.icon} isActive={isActive(i.path)} />)}
@@ -67,13 +74,17 @@ export default function Sidebar({ collapsed, onToggleCollapsed, width = 260, onW
           </SidebarExpandableSection>
         )}
 
-        <SidebarExpandableSection label="Attendance" icon="pi pi-clock" expanded={state.attendanceExpanded} onToggle={() => toggle('attendanceExpanded')} collapsed={collapsed} isActive={location.pathname.startsWith('/attendance')} submenuId="attendance-submenu">
-          {attendanceSubItems.map(i => <SidebarSubItem key={i.path} path={i.path} label={i.label} icon={i.icon} isActive={isActive(i.path)} />)}
-        </SidebarExpandableSection>
+        {canSeeModule('ATTENDANCE') && (
+          <SidebarExpandableSection label="Attendance" icon="pi pi-clock" expanded={state.attendanceExpanded} onToggle={() => toggle('attendanceExpanded')} collapsed={collapsed} isActive={location.pathname.startsWith('/attendance')} submenuId="attendance-submenu">
+            {attendanceSubItems.map(i => <SidebarSubItem key={i.path} path={i.path} label={i.label} icon={i.icon} isActive={isActive(i.path)} />)}
+          </SidebarExpandableSection>
+        )}
 
-        <SidebarExpandableSection label="Certificate" icon="pi pi-verified" expanded={state.certificateExpanded} onToggle={() => toggle('certificateExpanded')} collapsed={collapsed} isActive={location.pathname.startsWith('/certificate')} submenuId="certificate-submenu">
-          {certificateSubItems.map(i => <SidebarSubItem key={i.path} path={i.path} label={i.label} icon={i.icon} isActive={isActive(i.path)} />)}
-        </SidebarExpandableSection>
+        {canSeeModule('CERTIFICATE') && (
+          <SidebarExpandableSection label="Certificate" icon="pi pi-verified" expanded={state.certificateExpanded} onToggle={() => toggle('certificateExpanded')} collapsed={collapsed} isActive={location.pathname.startsWith('/certificate')} submenuId="certificate-submenu">
+            {certificateSubItems.map(i => <SidebarSubItem key={i.path} path={i.path} label={i.label} icon={i.icon} isActive={isActive(i.path)} />)}
+          </SidebarExpandableSection>
+        )}
 
         {user?.role === 'Admin' && (
           <>

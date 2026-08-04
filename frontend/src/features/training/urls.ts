@@ -7,7 +7,9 @@ const trainingUrls = {
   completions: () => 'training/completions',
   createCompletion: () => 'training/completions',
   material: (id: number) => `training/materials/${id}`,
-  uploadMaterial: () => 'training/materials',
+  meetingDetail: (id: number) => `training/meetings/${id}`,
+  meetingAttachment: (id: number) => `training/meetings/${id}/attachment`,
+  meetingMom: (id: number) => `training/meetings/${id}/mom`,
 };
 
 export default trainingUrls;

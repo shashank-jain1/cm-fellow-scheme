@@ -29,7 +29,6 @@ export const breadcrumbMap: Record<string, string> = {
   exit: 'Exit Management',
   'exit-interview': 'Exit Interview',
   'help-desk': 'Help Desk & Tickets',
-  new: 'Raise Ticket',
   'knowledge-base': 'Knowledge Base',
   masters: 'Master Settings',
   locations: 'Locations Master',

@@ -1,4 +1,4 @@
-import { InputNumber } from 'primereact/inputnumber';
+import { RatingScaleInput } from '../../../shared/components/ui';
 
 interface ExitInterviewRatingInputProps {
   label: string;
@@ -8,24 +8,29 @@ interface ExitInterviewRatingInputProps {
 
 export default function ExitInterviewRatingInput({ label, value, onChange }: ExitInterviewRatingInputProps) {
   return (
-    <div className="form-group" style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-      <label className="form-label" style={{ minWidth: 180, marginBottom: 0, fontWeight: 600 }}>
+    <div
+      className="form-group"
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        gap: 20,
+        padding: '12px 16px',
+        borderRadius: 8,
+        background: 'var(--surface-ground, #f8fafc)',
+        border: '1px solid var(--border-color, #e2e8f0)',
+        marginBottom: 12,
+      }}
+    >
+      <label className="form-label" style={{ minWidth: 180, marginBottom: 0, fontWeight: 600, color: 'var(--text-heading, #1e293b)' }}>
         {label}
       </label>
-      <InputNumber
+      <RatingScaleInput
         value={value}
-        onValueChange={(e) => onChange(e.value ?? null)}
+        onChange={onChange}
         min={1}
         max={5}
-        showButtons
-        buttonLayout="horizontal"
-        decrementButtonClassName="btn btn-secondary"
-        incrementButtonClassName="btn btn-secondary"
-        incrementButtonIcon="pi pi-plus"
-        decrementButtonIcon="pi pi-minus"
-        style={{ width: 140 }}
       />
-      <span style={{ fontSize: 12, color: 'var(--text-secondary)' }}>(1-5 scale)</span>
     </div>
   );
 }

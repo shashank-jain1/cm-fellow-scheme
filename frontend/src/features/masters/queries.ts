@@ -18,6 +18,8 @@ export {
   useProjects,
   useWorks,
   useCreateProject,
+  useUpdateProject,
+  useDeleteProject,
   useCreateWork,
   useGetWork,
   useUpdateWork,

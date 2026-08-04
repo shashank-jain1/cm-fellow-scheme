@@ -45,6 +45,10 @@ export const mastersApi = {
 
   getProjects: () => ApiService.get<ProjectDto[]>(MASTER_URLS.projects),
   createProject: (data: CreateProjectCommand) => ApiService.post<number>(MASTER_URLS.projects, data),
+  updateProject: (id: number, data: CreateProjectCommand) =>
+    ApiService.put<void>(`${MASTER_URLS.projects}/${id}`, { ...data, projectId: id }),
+  deleteProject: (id: number) =>
+    ApiService.delete<void>(`${MASTER_URLS.projects}/${id}`),
 
   getWorks: (projectId?: number) =>
     ApiService.get<WorkDto[]>(`${MASTER_URLS.works}${projectId ? `?projectId=${projectId}` : ''}`),

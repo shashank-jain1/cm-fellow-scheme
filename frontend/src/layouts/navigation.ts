@@ -8,7 +8,13 @@ export interface NavItem {
 export const navItems: NavItem[] = [
   { path: '/dashboard', label: 'Dashboard', icon: 'pi pi-home', moduleCode: 'DASHBOARD' },
   { path: '/registration', label: 'Registration', icon: 'pi pi-user-plus', moduleCode: 'REGISTRATION' },
-  { path: '/training', label: 'Training', icon: 'pi pi-calendar', moduleCode: 'TRAINING' },
+];
+
+export const trainingSubItems: NavItem[] = [
+  { path: '/training', label: 'Activity Calendar', icon: 'pi pi-calendar' },
+  { path: '/training/new', label: 'New Activity', icon: 'pi pi-plus' },
+  { path: '/training/meetings', label: 'Meetings Queue', icon: 'pi pi-users' },
+  { path: '/training/completions', label: 'Completions', icon: 'pi pi-check-circle' },
 ];
 
 export const attendanceSubItems: NavItem[] = [
@@ -66,4 +72,5 @@ export const masterSubItems: NavItem[] = [
   { path: '/masters/works', label: 'Works', icon: 'pi pi-file-edit' },
   { path: '/masters/training-schedules', label: 'Training Schedule', icon: 'pi pi-calendar' },
   { path: '/masters/departments', label: 'Departments', icon: 'pi pi-building' },
+  { path: '/masters/designations', label: 'Designations', icon: 'pi pi-id-card' },
 ];

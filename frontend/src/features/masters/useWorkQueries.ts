@@ -29,6 +29,23 @@ export function useCreateProject() {
   });
 }
 
+export function useUpdateProject() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, data }: { id: number; data: Parameters<typeof mastersApi.updateProject>[1] }) =>
+      mastersApi.updateProject(id, data),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['masters', 'projects'] }),
+  });
+}
+
+export function useDeleteProject() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (id: number) => mastersApi.deleteProject(id),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['masters', 'projects'] }),
+  });
+}
+
 export function useCreateWork() {
   const qc = useQueryClient();
   return useMutation({

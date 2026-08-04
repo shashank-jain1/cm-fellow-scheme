@@ -18,6 +18,10 @@ public static class LookupMasterGroupExtensions
             .WithName("ListLookupMasters")
             .WithDisplayName("List lookup masters by type");
 
+        group.MapPost("/", Create.Handle)
+            .WithName("CreateLookupMaster")
+            .WithDisplayName("Create lookup master entry");
+
         return builder;
     }
 }

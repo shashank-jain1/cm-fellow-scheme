@@ -53,15 +53,16 @@ public sealed class ApproveRegistrationCommandHandler(
         dbContext.UserAccounts.Add(userAccount);
         await dbContext.SaveChangesAsync(cancellationToken);
 
+        var (subject, body, sms) = NotificationTemplates.RegistrationApproved($"{applicant.FirstName} {applicant.LastName}");
         await notificationService.SendEmailAsync(
             applicant.EmailId,
-            "Welcome to CM Fellow Program",
-            $"Dear {applicant.FirstName} {applicant.LastName},\n\n" +
-            $"Your registration has been approved.\n\n" +
-            $"Username: {applicant.MobileNumber}\n" +
-            $"Password: {DefaultPassword}\n\n" +
-            $"Please log in and change your password.\n\n" +
-            $"Best regards,\nCM Fellow Program Team",
+            subject,
+            body + $"\n\nUsername: {applicant.MobileNumber}\nDefault Password: {DefaultPassword}\nPlease log in and change your password.",
+            cancellationToken);
+
+        await notificationService.SendSmsAsync(
+            applicant.MobileNumber,
+            sms,
             cancellationToken);
 
         return Result.NoContent();

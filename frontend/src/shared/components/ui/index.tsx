@@ -11,4 +11,5 @@ export { default as FormField } from './FormField';
 export { default as FormGrid } from './FormGrid';
 export { default as AppButton } from './AppButton';
 export { default as SealChain } from './SealChain';
+export { default as RatingScaleInput } from './RatingScaleInput';
 export type { SealChainStep } from './SealChain';

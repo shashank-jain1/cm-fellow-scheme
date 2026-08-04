@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { useTicketDetail } from '../queries';
 import TicketStatusBadge from '../components/TicketStatusBadge';
+import SlaIndicator from '../components/SlaIndicator';
 import TicketResolutionForm from '../components/TicketResolutionForm';
 import TicketDetailInfo from '../components/TicketDetailInfo';
 import TicketDetailDescription from '../components/TicketDetailDescription';
@@ -32,7 +33,10 @@ export default function TicketDetailPage() {
           <h1>Ticket #{ticket.ticketId}</h1>
           <p style={{ color: 'var(--text-secondary)', marginTop: 4 }}>{ticket.issueCategory}</p>
         </div>
-        <TicketStatusBadge status={ticket.status} slaBreached={ticket.slaBreached} />
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <SlaIndicator status={ticket.slaBreached ? 'Breached' : 'On Track'} />
+          <TicketStatusBadge status={ticket.status} slaBreached={ticket.slaBreached} />
+        </div>
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>

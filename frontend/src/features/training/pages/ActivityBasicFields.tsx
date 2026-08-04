@@ -14,9 +14,9 @@ interface ActivityBasicFieldsProps {
     applicableDivisionIds: number[];
     applicableDistrictIds: number[];
     applicableBlockIds: number[];
-    remarks: string | null;
+    remarks?: string | null;
   };
-  updateField: (field: string, value: unknown) => void;
+  updateField: (field: any, value: any) => void;
   onNavigate: (path: string) => void;
 }
 
@@ -41,7 +41,7 @@ export default function ActivityBasicFields({
         </div>
       </div>
       <ActivityTypeSelector
-        value={formData.activityType}
+        value={formData.activityType as 'Training' | 'Meeting'}
         onChange={(v) => updateField('activityType', v)}
       />
       <CommonActivityFields

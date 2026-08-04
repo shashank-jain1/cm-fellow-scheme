@@ -19,5 +19,6 @@ public sealed record PayrollSummaryDto
     public decimal ApprovedLeaveDays { get; init; }
     public decimal AbsentDays { get; init; }
     public decimal PayableDays { get; init; }
+    public bool HasPendingLeaveApprovals { get; init; }
     public DateTime CreatedOn { get; init; }
 }

@@ -1,4 +1,4 @@
-import { InputNumber } from 'primereact/inputnumber';
+import { RatingScaleInput } from '../../../shared/components/ui';
 
 interface RatingField {
   key: string;
@@ -21,30 +21,29 @@ export default function PeerRatingInputs({
         <div
           key={field.key}
           className="form-group"
-          style={{ display: 'flex', alignItems: 'center', gap: 16 }}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: 20,
+            padding: '12px 16px',
+            borderRadius: 8,
+            background: 'var(--surface-ground, #f8fafc)',
+            border: '1px solid var(--border-color, #e2e8f0)',
+          }}
         >
           <label
             className="form-label"
-            style={{ minWidth: 160, marginBottom: 0 }}
+            style={{ minWidth: 180, marginBottom: 0, fontWeight: 600, color: 'var(--text-heading, #1e293b)' }}
           >
             {field.label}
           </label>
-          <InputNumber
+          <RatingScaleInput
             value={field.value}
-            onValueChange={(e) => updateRating(field.key, e.value ?? null)}
+            onChange={(val) => updateRating(field.key, val)}
             min={1}
             max={5}
-            showButtons
-            buttonLayout="horizontal"
-            decrementButtonClassName="btn btn-secondary"
-            incrementButtonClassName="btn btn-secondary"
-            incrementButtonIcon="pi pi-plus"
-            decrementButtonIcon="pi pi-minus"
-            style={{ width: 140 }}
           />
-          <span style={{ fontSize: 12, color: 'var(--text-muted)' }}>
-            (1-5 scale)
-          </span>
         </div>
       ))}
     </div>

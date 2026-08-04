@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { useTheme, type ThemeMode } from './ThemeContext';
+import { useTheme } from './ThemeContext';
 import Section from './components/Section';
 import ThemeGrid from './components/ThemeGrid';
 import DesignOption from './components/DesignOption';
@@ -40,7 +40,7 @@ export default function ThemeCustomizer({ sidebarCollapsed, onToggleSidebar }: C
     document.addEventListener('mousedown', h); return () => document.removeEventListener('mousedown', h);
   }, [isOpen]);
 
-  const update = <K extends keyof CustomizerState>(k: K, v: CustomizerState[k]) => setS(p => ({ ...p, [k]: v }));
+  const update = <K extends keyof CustomizerState>(k: K, v: CustomizerState[K]) => setS(p => ({ ...p, [k]: v }));
 
   return (
     <>

@@ -11,6 +11,11 @@ public class DashboardDbContext : BaseDbContext, IDashboardCommandDbContext, IDa
     public DbSet<DashboardWidget> DashboardWidgets => Set<DashboardWidget>();
     public DbSet<DashboardSnapshot> DashboardSnapshots => Set<DashboardSnapshot>();
 
+    public DbSet<CmScheme.Dashboard.Core.Views.UserAccountView> UserAccountViews => Set<CmScheme.Dashboard.Core.Views.UserAccountView>();
+    public DbSet<CmScheme.Dashboard.Core.Views.AttendanceView> AttendanceViews => Set<CmScheme.Dashboard.Core.Views.AttendanceView>();
+    public DbSet<CmScheme.Dashboard.Core.Views.LeaveApplicationView> LeaveApplicationViews => Set<CmScheme.Dashboard.Core.Views.LeaveApplicationView>();
+    public DbSet<CmScheme.Dashboard.Core.Views.TicketView> TicketViews => Set<CmScheme.Dashboard.Core.Views.TicketView>();
+
     public DashboardDbContext(DbContextOptions<DashboardDbContext> options)
         : base(options)
     {
@@ -21,8 +26,37 @@ public class DashboardDbContext : BaseDbContext, IDashboardCommandDbContext, IDa
         base.OnModelCreating(modelBuilder);
         modelBuilder.ApplyConfiguration(new DashboardWidgetConfiguration());
         modelBuilder.ApplyConfiguration(new DashboardSnapshotConfiguration());
+
+        modelBuilder.Entity<CmScheme.Dashboard.Core.Views.UserAccountView>(b =>
+        {
+            b.HasNoKey();
+            b.ToTable("UserAccount", t => t.ExcludeFromMigrations());
+        });
+
+        modelBuilder.Entity<CmScheme.Dashboard.Core.Views.AttendanceView>(b =>
+        {
+            b.HasNoKey();
+            b.ToTable("Attendance", t => t.ExcludeFromMigrations());
+        });
+
+        modelBuilder.Entity<CmScheme.Dashboard.Core.Views.LeaveApplicationView>(b =>
+        {
+            b.HasNoKey();
+            b.ToTable("LeaveApplication", t => t.ExcludeFromMigrations());
+        });
+
+        modelBuilder.Entity<CmScheme.Dashboard.Core.Views.TicketView>(b =>
+        {
+            b.HasNoKey();
+            b.ToTable("Ticket", t => t.ExcludeFromMigrations());
+        });
     }
 
     IQueryable<DashboardWidget> IDashboardQueryDbContext.DashboardWidgets => DashboardWidgets;
     IQueryable<DashboardSnapshot> IDashboardQueryDbContext.DashboardSnapshots => DashboardSnapshots;
+
+    IQueryable<CmScheme.Dashboard.Core.Views.UserAccountView> IDashboardQueryDbContext.UserAccountViews => UserAccountViews.AsNoTracking();
+    IQueryable<CmScheme.Dashboard.Core.Views.AttendanceView> IDashboardQueryDbContext.AttendanceViews => AttendanceViews.AsNoTracking();
+    IQueryable<CmScheme.Dashboard.Core.Views.LeaveApplicationView> IDashboardQueryDbContext.LeaveApplicationViews => LeaveApplicationViews.AsNoTracking();
+    IQueryable<CmScheme.Dashboard.Core.Views.TicketView> IDashboardQueryDbContext.TicketViews => TicketViews.AsNoTracking();
 }

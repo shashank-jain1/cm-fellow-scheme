@@ -1,6 +1,7 @@
 import { useCoordinatorDashboard } from '../queries';
 import KpiCard from '../components/KpiCard';
 import TrainingSurveyChart from '../components/TrainingSurveyChart';
+import DashboardExport from '../components/DashboardExport';
 
 export default function CoordinatorFellowDashboardPage() {
   const { data: stats, isLoading } = useCoordinatorDashboard(1);
@@ -13,6 +14,8 @@ export default function CoordinatorFellowDashboardPage() {
           <p>Team overview and task management</p>
         </div>
       </div>
+
+      <DashboardExport />
 
       <div className="metric-bar" style={{ marginBottom: 'var(--space-6)' }}>
         <KpiCard label="Team" value={stats?.teamSize ?? 0} icon="pi pi-users" accent="accent" isLoading={isLoading} />

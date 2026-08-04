@@ -6,7 +6,9 @@ using CmScheme.Performance.Core.Entities;
 
 namespace CmScheme.Performance.Application.Features.Performance.CalculatePerformanceScore;
 
-public sealed class CalculatePerformanceScoreCommandHandler(IPerformanceCommandDbContext dbContext)
+public sealed class CalculatePerformanceScoreCommandHandler(
+    IPerformanceCommandDbContext dbContext,
+    IPerformanceQueryDbContext queryDbContext)
     : ICommandHandler<CalculatePerformanceScoreCommand, Result>
 {
     public async ValueTask<Result> Handle(
@@ -19,6 +21,39 @@ public sealed class CalculatePerformanceScoreCommandHandler(IPerformanceCommandD
         if (evaluation is null)
         {
             return Result.NotFound("Performance evaluation not found.");
+        }
+
+        // Check if real attendance data exists via AttendanceViews
+        if (evaluation.AttendanceDays == 0 && !string.IsNullOrEmpty(evaluation.ApplicantName))
+        {
+            int realAttendance = await queryDbContext.AttendanceViews
+                .Where(a => a.Status == "Present")
+                .CountAsync(cancellationToken);
+
+            if (realAttendance > 0)
+            {
+                evaluation.AttendanceDays = realAttendance;
+                if (evaluation.WorkingDays == 0) evaluation.WorkingDays = 30;
+            }
+        }
+
+        // Check if real survey progress data exists via TaskProgressViews / WorkAllocationViews
+        if (evaluation.SurveysCompleted == 0)
+        {
+            int totalCompleted = await queryDbContext.TaskProgressViews
+                .SumAsync(tp => (int?)tp.CompletedSurveys, cancellationToken) ?? 0;
+
+            int totalTarget = await queryDbContext.TaskProgressViews
+                .SumAsync(tp => (int?)tp.TargetSurveys, cancellationToken) ?? 0;
+
+            if (totalCompleted > 0)
+            {
+                evaluation.SurveysCompleted = totalCompleted;
+                if (evaluation.TotalSurveysAssigned == 0)
+                {
+                    evaluation.TotalSurveysAssigned = totalTarget > 0 ? totalTarget : totalCompleted;
+                }
+            }
         }
 
         // Survey completion rate (40%): completed / assigned

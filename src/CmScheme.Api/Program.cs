@@ -177,6 +177,8 @@ builder.Services.AddScoped<IBulkImportService, BulkImportService>();
 builder.Services.AddScoped<IDatabaseBackupService, DatabaseBackupService>();
 builder.Services.AddScoped<ICertificateTemplateService, CertificateTemplateService>();
 builder.Services.AddScoped<IReportService, ReportService>();
+builder.Services.AddScoped<IGeoValidationService, GeoValidationService>();
+builder.Services.AddHostedService<CmScheme.Api.BackgroundServices.SlaCheckBackgroundService>();
 
 WebApplication app = builder.Build();
 

@@ -17,6 +17,28 @@ const seedMasters: SeedFn = async (appendLog) => {
     if (res.data) { count++; appendLog(log('Masters', `Created project: ${p.projectName} (ID: ${res.data})`, 'success')); }
   }
 
+  const lookupEntries = [
+    { masterType: 'Qualification', label: 'Graduation', value: 'graduation', sortOrder: 1 },
+    { masterType: 'Qualification', label: 'Post-Graduation', value: 'post_graduation', sortOrder: 2 },
+    { masterType: 'Qualification', label: 'PhD', value: 'phd', sortOrder: 3 },
+    { masterType: 'TrainingType', label: 'Orientation', value: 'orientation', sortOrder: 1 },
+    { masterType: 'TrainingType', label: 'Technical Workshop', value: 'technical', sortOrder: 2 },
+    { masterType: 'Year', label: '2026', value: '2026', sortOrder: 1 },
+    { masterType: 'Platform', label: 'Zoom', value: 'zoom', sortOrder: 1 },
+    { masterType: 'Platform', label: 'Google Meet', value: 'google_meet', sortOrder: 2 },
+    { masterType: 'LeaveType', label: 'Casual Leave', value: 'casual_leave', sortOrder: 1 },
+    { masterType: 'LeaveType', label: 'Medical Leave', value: 'medical_leave', sortOrder: 2 },
+    { masterType: 'Designation', label: 'CM Fellow', value: 'cm_fellow', sortOrder: 1 },
+    { masterType: 'Designation', label: 'Coordinator', value: 'coordinator', sortOrder: 2 },
+    { masterType: 'IssueCategory', label: 'Technical Issue', value: 'technical', sortOrder: 1 },
+    { masterType: 'IssueCategory', label: 'Attendance Issue', value: 'attendance', sortOrder: 2 },
+  ];
+
+  for (const l of lookupEntries) {
+    const res = await ApiService.post<number>('masters/lookup', l);
+    if (res.data) { count++; appendLog(log('Masters', `Seeded Lookup: ${l.masterType} - ${l.label}`, 'success')); }
+  }
+
   const projRes = await ApiService.get<Array<{ projectId: number; projectName: string }>>('masters/projects');
   const projectsList = projRes.data ?? [];
 

@@ -6,9 +6,13 @@ using Mediator;
 using Microsoft.EntityFrameworkCore;
 using TicketEntity = CmScheme.HelpDesk.Core.Entities.Ticket;
 
+using CmScheme.Common.Core.Services;
+
 namespace CmScheme.HelpDesk.Application.Features.Ticket.ResolveTicket;
 
-public sealed class ResolveTicketCommandHandler(IHelpDeskCommandDbContext dbContext)
+public sealed class ResolveTicketCommandHandler(
+    IHelpDeskCommandDbContext dbContext,
+    INotificationService notificationService)
     : ICommandHandler<ResolveTicketCommand, Result>
 {
     public async ValueTask<Result> Handle(ResolveTicketCommand request, CancellationToken cancellationToken)
@@ -35,6 +39,21 @@ public sealed class ResolveTicketCommandHandler(IHelpDeskCommandDbContext dbCont
 
         dbContext.TicketActionLogs.Add(actionLog);
         await dbContext.SaveChangesAsync(cancellationToken);
+
+        var (subject, body, sms) = NotificationTemplates.TicketResolved(
+            ticket.TicketId,
+            request.ResolutionRemarks);
+
+        await notificationService.SendEmailAsync(
+            ticket.Email,
+            subject,
+            body,
+            cancellationToken);
+
+        await notificationService.SendSmsAsync(
+            ticket.Mobile,
+            sms,
+            cancellationToken);
 
         return Result.Success();
     }

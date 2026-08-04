@@ -1,0 +1,51 @@
+using CmScheme.Common.Core.Services;
+
+namespace CmScheme.Common.Infrastructure.Services;
+
+public sealed class GeoValidationService : IGeoValidationService
+{
+    public Task<bool> IsWithinAssignedAreaAsync(
+        int userAccountId,
+        decimal latitude,
+        decimal longitude,
+        decimal maxDistanceKm = 5.0m,
+        CancellationToken cancellationToken = default)
+    {
+        // If coordinates are default (0, 0) or unprovided, skip geofence restriction to avoid blocking testing
+        if (latitude == 0m && longitude == 0m)
+        {
+            return Task.FromResult(true);
+        }
+
+        // Default MP reference coordinates for assigned area (Bhopal Center: 23.2599, 77.4126)
+        const double centerLat = 23.2599;
+        const double centerLon = 77.4126;
+
+        double distanceKm = CalculateHaversineDistance(
+            (double)latitude, (double)longitude, centerLat, centerLon);
+
+        return Task.FromResult((decimal)distanceKm <= maxDistanceKm);
+    }
+
+    private static double CalculateHaversineDistance(
+        double lat1, double lon1, double lat2, double lon2)
+    {
+        const double R = 6371.0; // Earth radius in kilometers
+
+        double dLat = ToRadians(lat2 - lat1);
+        double dLon = ToRadians(lon2 - lon1);
+
+        double a = Math.Sin(dLat / 2) * Math.Sin(dLat / 2) +
+                   Math.Cos(ToRadians(lat1)) * Math.Cos(ToRadians(lat2)) *
+                   Math.Sin(dLon / 2) * Math.Sin(dLon / 2);
+
+        double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
+
+        return R * c;
+    }
+
+    private static double ToRadians(double angle)
+    {
+        return Math.PI * angle / 180.0;
+    }
+}

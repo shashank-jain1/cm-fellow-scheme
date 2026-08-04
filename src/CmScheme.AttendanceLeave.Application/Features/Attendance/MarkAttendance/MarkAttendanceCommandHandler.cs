@@ -3,9 +3,13 @@ using CmScheme.AttendanceLeave.Core.Data;
 using AttendanceEntity = CmScheme.AttendanceLeave.Core.Entities.Attendance;
 using Mediator;
 
+using CmScheme.Common.Core.Services;
+
 namespace CmScheme.AttendanceLeave.Application.Features.Attendance.MarkAttendance;
 
-public sealed class MarkAttendanceCommandHandler(IAttendanceLeaveCommandDbContext dbContext)
+public sealed class MarkAttendanceCommandHandler(
+    IAttendanceLeaveCommandDbContext dbContext,
+    IGeoValidationService geoValidationService)
     : ICommandHandler<MarkAttendanceCommand, Result<int>>
 {
     private const decimal MinLatitude = 21.0m;
@@ -21,6 +25,14 @@ public sealed class MarkAttendanceCommandHandler(IAttendanceLeaveCommandDbContex
                 request.Longitude.Value < MinLongitude || request.Longitude.Value > MaxLongitude)
             {
                 return Result.Invalid(new ValidationError("Attendance location is outside the approved area"));
+            }
+
+            bool isWithinArea = await geoValidationService.IsWithinAssignedAreaAsync(
+                request.ApplicantId, request.Latitude.Value, request.Longitude.Value, maxDistanceKm: 5.0m, cancellationToken);
+
+            if (!isWithinArea)
+            {
+                return Result.Invalid(new ValidationError("You are not within your assigned work geofence area."));
             }
         }
 
