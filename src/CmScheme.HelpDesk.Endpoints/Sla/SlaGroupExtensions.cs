@@ -12,9 +12,6 @@ public static class SlaGroupExtensions
             .RequireAuthorization()
             .RequireModule(ModuleCodes.HelpDesk, "Read", requireScope: false);
 
-        group.MapPost("/check-overdue", CheckSlaOverdue.Handle)
-            .RequireAuthorization("AdminPolicy");
-
-        return builder;
+        return group;
     }
 }

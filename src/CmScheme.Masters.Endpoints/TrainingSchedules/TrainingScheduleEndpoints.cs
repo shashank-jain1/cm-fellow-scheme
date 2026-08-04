@@ -11,7 +11,7 @@ public sealed class TrainingScheduleEndpoints : IApiEndpoint
     {
         IEndpointRouteBuilder group = builder.MapTrainingScheduleEndpoints();
 
-        group.MapGet("/", ListTrainingSchedules.List)
+        group.MapGet("", ListTrainingSchedules.List)
             .WithTags("Training Schedules")
             .WithName("ListTrainingSchedules")
             .WithDisplayName("List all training schedules");
@@ -21,7 +21,7 @@ public sealed class TrainingScheduleEndpoints : IApiEndpoint
             .WithName("GetTrainingSchedule")
             .WithDisplayName("Get a training schedule by ID");
 
-        group.MapPost("/", CreateTrainingSchedule.Create)
+        group.MapPost("", CreateTrainingSchedule.Create)
             .WithTags("Training Schedules")
             .WithName("CreateTrainingSchedule")
             .WithDisplayName("Create a new training schedule");

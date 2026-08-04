@@ -12,13 +12,6 @@ public static class WorkAllocationGroupExtensions
             .RequireAuthorization()
             .RequireModule(ModuleCodes.WorkAllocation, "Read", requireScope: false);
 
-        group.MapPost("/", Create.Handle);
-        group.MapGet("/{workAllocationId:int}", Get.Handle);
-        group.MapGet("/list", List.Handle);
-        group.MapPut("/{workAllocationId:int}", Update.Handle);
-        group.MapPut("/{workAllocationId:int}/assign", Assign.Handle);
-        group.MapPut("/{workAllocationId:int}/deactivate", Deactivate.Handle);
-
-        return builder;
+        return group;
     }
 }

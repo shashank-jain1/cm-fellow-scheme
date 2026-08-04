@@ -12,11 +12,6 @@ public static class HolidayGroupExtensions
             .RequireAuthorization()
             .RequireModule(ModuleCodes.Attendance, "Read", requireScope: false);
 
-        group.MapGet("/", ListHolidays.Handle);
-        group.MapPost("/", CreateHoliday.Handle);
-        group.MapPut("/{holidayId:int}", UpdateHoliday.Handle);
-        group.MapDelete("/{holidayId:int}", DeleteHoliday.Handle);
-
-        return builder;
+        return group;
     }
 }

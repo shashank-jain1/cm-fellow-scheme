@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using CmScheme.Endpoints.Abstractions.Authorization;
 
@@ -13,19 +12,6 @@ public static class ImprovementPlanGroupExtensions
             .RequireAuthorization()
             .RequireModule(ModuleCodes.Performance, "Read", requireScope: false);
 
-        group.MapPost("/", CreateImprovementPlan.Handle)
-            .WithName("CreateImprovementPlan")
-            .WithDisplayName("Create improvement plan")
-            .WithTags("Improvement Plans")
-            .Produces<int>()
-            .ProducesValidationProblem();
-
-        group.MapGet("/by-user/{userAccountId:int}", GetImprovementPlans.Handle)
-            .WithName("GetImprovementPlans")
-            .WithDisplayName("Get improvement plans for a user")
-            .WithTags("Improvement Plans")
-            .Produces<List<Core.Dtos.ImprovementPlanDto>>();
-
-        return builder;
+        return group;
     }
 }

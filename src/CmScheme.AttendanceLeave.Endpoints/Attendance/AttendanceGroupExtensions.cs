@@ -12,13 +12,6 @@ public static class AttendanceGroupExtensions
             .RequireAuthorization()
             .RequireModule(ModuleCodes.Attendance, "Read", requireScope: false);
 
-        group.MapPost("/", Mark.Handle);
-        group.MapPut("/checkout", CheckOut.Handle);
-        group.MapGet("/history", GetHistory.Handle);
-        group.MapGet("/report/monthly", GetMonthlyReport.Handle);
-        group.MapGet("/payroll-summary", GetPayrollSummary.Handle);
-        group.MapGet("/report/weekly", GetWeeklyReport.Handle);
-
-        return builder;
+        return group;
     }
 }

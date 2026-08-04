@@ -12,9 +12,6 @@ public static class SurveyGroupExtensions
             .RequireAuthorization()
             .RequireModule(ModuleCodes.HelpDesk, "Read", requireScope: false);
 
-        group.MapPost("/", SubmitSurvey.Handle);
-        group.MapGet("/ticket/{ticketId:int}", GetSurvey.Handle);
-
-        return builder;
+        return group;
     }
 }

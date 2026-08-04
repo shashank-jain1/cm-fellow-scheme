@@ -45,6 +45,6 @@ public static class UserModuleAccessGroupExtensions
             .WithName("GetAuditLogs")
             .WithDisplayName("Get access audit logs");
 
-        return builder;
+        return group;
     }
 }

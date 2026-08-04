@@ -12,12 +12,6 @@ public static class TaskProgressGroupExtensions
             .RequireAuthorization()
             .RequireModule(ModuleCodes.WorkAllocation, "Read", requireScope: false);
 
-        group.MapPost("/", Create.Handle);
-        group.MapGet("/{taskProgressId:int}", Get.Handle);
-        group.MapGet("/by-work-allocation/{workAllocationId:int}", List.Handle);
-        group.MapPut("/{taskProgressId:int}", Update.Handle);
-        group.MapPost("/{taskProgressId:int}/survey", RecordSurvey.Handle);
-
-        return builder;
+        return group;
     }
 }

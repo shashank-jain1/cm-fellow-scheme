@@ -11,12 +11,12 @@ public sealed class WorkEndpoints : IApiEndpoint
     {
         IEndpointRouteBuilder group = builder.MapWorkEndpoints();
 
-        group.MapGet("/", ListWorks.List)
+        group.MapGet("", ListWorks.List)
             .WithTags("Works")
             .WithName("ListWorks")
             .WithDisplayName("List works by project");
 
-        group.MapPost("/", CreateWork.Create)
+        group.MapPost("", CreateWork.Create)
             .WithTags("Works")
             .WithName("CreateWork")
             .WithDisplayName("Create a new work");

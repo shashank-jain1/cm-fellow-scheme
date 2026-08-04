@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using CmScheme.Endpoints.Abstractions.Authorization;
 
@@ -13,19 +12,6 @@ public static class TrainingCompletionGroupExtensions
             .RequireAuthorization()
             .RequireModule(ModuleCodes.Training, "Read", requireScope: false);
 
-        group.MapPost("/", CompleteTraining.Handle)
-            .WithName("CompleteTraining")
-            .WithDisplayName("Complete a training")
-            .WithTags("Training Completions")
-            .Produces<int>()
-            .ProducesValidationProblem();
-
-        group.MapGet("/", GetTrainingCompletion.Handle)
-            .WithName("GetTrainingCompletion")
-            .WithDisplayName("Get training completion status")
-            .WithTags("Training Completions")
-            .Produces<Core.Dtos.TrainingCompletionDto?>();
-
-        return builder;
+        return group;
     }
 }

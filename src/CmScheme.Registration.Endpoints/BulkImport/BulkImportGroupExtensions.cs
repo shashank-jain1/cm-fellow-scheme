@@ -17,6 +17,6 @@ public static class BulkImportGroupExtensions
             .WithDisplayName("Import users from CSV")
             .DisableAntiforgery();
 
-        return builder;
+        return group;
     }
 }

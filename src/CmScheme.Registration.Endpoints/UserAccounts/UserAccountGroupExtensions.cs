@@ -24,6 +24,6 @@ public static class UserAccountGroupExtensions
         group.MapForgotPasswordEndpoint();
         group.MapResetPasswordEndpoint();
 
-        return builder;
+        return group;
     }
 }

@@ -12,7 +12,7 @@ public sealed class LookupMasterEndpoints : IApiEndpoint
         RouteGroupBuilder group = builder.MapGroup("/masters/lookup")
             .WithTags("Lookup Masters");
 
-        group.MapGet("/", List.Handle)
+        group.MapGet("", List.Handle)
             .WithName("ListLookupMasters")
             .WithDisplayName("List lookup masters by type");
     }

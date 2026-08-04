@@ -1,14 +1,6 @@
-using Ardalis.Result;
-using Mediator;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using CmScheme.Endpoints.Abstractions.Authorization;
-using CmScheme.Endpoints.Abstractions.Extensions;
-using CmScheme.Performance.Application.Features.Performance.SubmitPerformanceReview;
-using CmScheme.Performance.Application.Features.Performance.GetReviewHistory;
-using CmScheme.Performance.Application.Features.Performance.SelfAssessment.GetSelfAssessment;
-using CmScheme.Performance.Application.Features.Performance.ReviewCycle.GetActiveReviewCycle;
 
 namespace CmScheme.Performance.Endpoints.Performance;
 
@@ -20,89 +12,7 @@ public static class PerformanceGroupExtensions
             .RequireAuthorization()
             .RequireModule(ModuleCodes.Performance, "Read", requireScope: false);
 
-        group.MapGet("/summary", GetSummary.Handle);
-        group.MapPut("/rating", RecordRating.Handle);
-        group.MapPut("/remarks", RecordRemarks.Handle);
-        group.MapGet("/list", List.Handle);
-        group.MapPost("/{performanceEvaluationId:int}/calculate-score", CalculateScore.Handle);
-
-        group.MapPut("/{performanceEvaluationId:int}/review", async (
-            int performanceEvaluationId,
-            SubmitReviewRequest request,
-            IMediator mediator,
-            CancellationToken ct) =>
-        {
-            SubmitPerformanceReviewCommand command = new()
-            {
-                PerformanceEvaluationId = performanceEvaluationId,
-                Action = request.Action,
-                PerformedBy = request.PerformedBy,
-                Remarks = request.Remarks
-            };
-            Result result = await mediator.Send(command, ct);
-            return result.ToApiResult();
-        })
-        .WithName("SubmitPerformanceReview")
-        .WithDisplayName("Submit or review performance")
-        .WithTags("Performance")
-        .Produces(StatusCodes.Status204NoContent)
-        .ProducesValidationProblem()
-        .ProducesProblem(StatusCodes.Status404NotFound);
-
-        group.MapGet("/{performanceEvaluationId:int}/review-history", async (
-            int performanceEvaluationId,
-            IMediator mediator,
-            CancellationToken ct) =>
-        {
-            GetReviewHistoryQuery query = new()
-            {
-                PerformanceEvaluationId = performanceEvaluationId
-            };
-            Result<List<ReviewHistoryDto>> result = await mediator.Send(query, ct);
-            return result.ToApiResult();
-        })
-        .WithName("GetReviewHistory")
-        .WithDisplayName("Get performance review history")
-        .WithTags("Performance")
-        .Produces<List<ReviewHistoryDto>>()
-        .ProducesProblem(StatusCodes.Status404NotFound);
-
-        group.MapPost("/self-assessment", SubmitSelfAssessment.Handle)
-            .WithName("SubmitSelfAssessment")
-            .WithDisplayName("Submit self-assessment")
-            .WithTags("Self-Assessment")
-            .Produces(StatusCodes.Status204NoContent)
-            .ProducesValidationProblem();
-
-        group.MapGet("/self-assessment", GetSelfAssessment.Handle)
-            .WithName("GetSelfAssessment")
-            .WithDisplayName("Get self-assessment")
-            .WithTags("Self-Assessment")
-            .Produces<SelfAssessmentDto>()
-            .ProducesProblem(StatusCodes.Status404NotFound);
-
-        group.MapPost("/review-cycle", CreateReviewCycle.Handle)
-            .WithName("CreateReviewCycle")
-            .WithDisplayName("Create review cycle")
-            .WithTags("Review Cycle")
-            .Produces<int>()
-            .ProducesValidationProblem();
-
-        group.MapGet("/review-cycle/active", GetActiveReviewCycle.Handle)
-            .WithName("GetActiveReviewCycle")
-            .WithDisplayName("Get active review cycle")
-            .WithTags("Review Cycle")
-            .Produces<ReviewCycleDto>()
-            .ProducesProblem(StatusCodes.Status404NotFound);
-
-        group.MapPut("/review-cycle/{reviewCycleId:int}/close", CloseReviewCycle.Handle)
-            .WithName("CloseReviewCycle")
-            .WithDisplayName("Close review cycle")
-            .WithTags("Review Cycle")
-            .Produces(StatusCodes.Status204NoContent)
-            .ProducesProblem(StatusCodes.Status404NotFound);
-
-        return builder;
+        return group;
     }
 }
 

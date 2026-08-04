@@ -28,6 +28,6 @@ public static class ExitInterviewGroupExtensions
             .Produces<ExitInterviewDto>()
             .ProducesProblem(StatusCodes.Status404NotFound);
 
-        return builder;
+        return group;
     }
 }

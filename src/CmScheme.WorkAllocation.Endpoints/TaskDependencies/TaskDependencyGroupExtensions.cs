@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using CmScheme.Endpoints.Abstractions.Authorization;
 
@@ -13,19 +12,6 @@ public static class TaskDependencyGroupExtensions
             .RequireAuthorization()
             .RequireModule(ModuleCodes.WorkAllocation, "Read", requireScope: false);
 
-        group.MapPost("/", AddTaskDependency.Handle)
-            .WithName("AddTaskDependency")
-            .WithDisplayName("Add task dependency")
-            .WithTags("Task Dependencies")
-            .Produces<int>()
-            .ProducesValidationProblem();
-
-        group.MapGet("/by-work-allocation/{workAllocationId:int}", GetTaskDependencies.Handle)
-            .WithName("GetTaskDependencies")
-            .WithDisplayName("Get task dependencies")
-            .WithTags("Task Dependencies")
-            .Produces<List<Core.Dtos.TaskDependencyDto>>();
-
-        return builder;
+        return group;
     }
 }

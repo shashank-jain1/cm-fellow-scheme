@@ -10,16 +10,10 @@ public static class TrainingScheduleGroupExtensions
     public static IEndpointRouteBuilder MapTrainingScheduleEndpoints(this IEndpointRouteBuilder builder)
     {
         RouteGroupBuilder group = builder.MapGroup("masters/training-schedules")
-            .WithDisplayName("Training Schedule Calendar")
-            .WithTags("Masters")
+            .WithTags("Training Schedules")
             .RequireAuthorization()
             .RequireModule(ModuleCodes.Masters, "Read", requireScope: false);
 
-        group.MapGet("/", ListTrainingSchedules.List);
-        group.MapGet("/{trainingScheduleId:int}", GetTrainingSchedule.Get);
-        group.MapPost("/", CreateTrainingSchedule.Create);
-        group.MapPut("/{trainingScheduleId:int}", UpdateTrainingSchedule.Update);
-
-        return builder;
+        return group;
     }
 }

@@ -21,6 +21,6 @@ public static class AuthGroupExtensions
             .WithName("Register")
             .WithDisplayName("Register a new user account");
 
-        return builder;
+        return group;
     }
 }

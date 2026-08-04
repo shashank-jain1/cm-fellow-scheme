@@ -11,12 +11,12 @@ public sealed class ProjectEndpoints : IApiEndpoint
     {
         IEndpointRouteBuilder group = builder.MapProjectGroup();
 
-        group.MapGet("/", ListProjects.List)
+        group.MapGet("", ListProjects.List)
             .WithTags("Projects")
             .WithName("ListProjects")
             .WithDisplayName("List all projects");
 
-        group.MapPost("/", CreateProject.Create)
+        group.MapPost("", CreateProject.Create)
             .WithTags("Projects")
             .WithName("CreateProject")
             .WithDisplayName("Create a new project");

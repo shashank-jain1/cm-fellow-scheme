@@ -12,11 +12,6 @@ public static class LeaveGroupExtensions
             .RequireAuthorization()
             .RequireModule(ModuleCodes.Attendance, "Read", requireScope: false);
 
-        group.MapPost("/", Apply.Handle);
-        group.MapPut("/approve", Approve.Handle);
-        group.MapGet("/status", GetStatus.Handle);
-        group.MapGet("/balance", GetBalance.Handle);
-
-        return builder;
+        return group;
     }
 }

@@ -14,14 +14,6 @@ public static class LookupMasterGroupExtensions
             .RequireAuthorization()
             .RequireModule(ModuleCodes.Masters, "Read", requireScope: false);
 
-        group.MapGet("/", List.Handle)
-            .WithName("ListLookupMasters")
-            .WithDisplayName("List lookup masters by type");
-
-        group.MapPost("/", Create.Handle)
-            .WithName("CreateLookupMaster")
-            .WithDisplayName("Create lookup master entry");
-
-        return builder;
+        return group;
     }
 }

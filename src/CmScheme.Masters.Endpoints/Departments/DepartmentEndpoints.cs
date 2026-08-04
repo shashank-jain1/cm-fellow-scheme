@@ -17,7 +17,7 @@ public sealed class DepartmentEndpoints : IApiEndpoint
             .RequireAuthorization()
             .RequireModule(ModuleCodes.Masters, "Read", requireScope: false);
 
-        group.MapGet("/", List.Handle);
+        group.MapGet("", List.Handle);
     }
 }
 

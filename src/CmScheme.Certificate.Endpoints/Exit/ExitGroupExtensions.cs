@@ -12,10 +12,6 @@ public static class ExitGroupExtensions
             .RequireAuthorization()
             .RequireModule(ModuleCodes.Certificate, "Read", requireScope: false);
 
-        group.MapPost("/readiness", SubmitReadiness.Handle);
-        group.MapPut("/compliance", VerifyCompliance.Handle);
-        group.MapPut("/{exitRecordId:int}/close-archive", CloseArchive.Handle);
-
-        return builder;
+        return group;
     }
 }

@@ -12,16 +12,6 @@ public static class CertificateGroupExtensions
             .RequireAuthorization()
             .RequireModule(ModuleCodes.Certificate, "Read", requireScope: false);
 
-        group.MapGet("/", List.Handle);
-        group.MapPost("/", Apply.Handle);
-        group.MapPut("/review", Review.Handle);
-        group.MapGet("/status", GetStatus.Handle);
-        group.MapPost("/{certificateId:int}/generate", Generate.Handle);
-        group.MapGet("/{certificateId:int}/download", Download.Handle);
-        group.MapPost("/{applicantId:int}/completion-certificate", GenerateCompletionCertificate.Handle);
-        group.MapPost("/{applicantId:int}/experience-letter", GenerateExperienceLetter.Handle);
-        group.MapGet("/verify/{certificateNumber}", VerifyCertificate.Handle);
-
-        return builder;
+        return group;
     }
 }

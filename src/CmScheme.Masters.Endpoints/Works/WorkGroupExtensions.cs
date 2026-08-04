@@ -15,11 +15,6 @@ public static class WorkGroupExtensions
             .RequireAuthorization()
             .RequireModule(ModuleCodes.Masters, "Read", requireScope: false);
 
-        group.MapGet("/", ListWorks.List);
-        group.MapGet("/{workId:int}", GetWork.GetById);
-        group.MapPost("/", CreateWork.Create);
-        group.MapPut("/{workId:int}", UpdateWork.Update);
-
-        return builder;
+        return group;
     }
 }
