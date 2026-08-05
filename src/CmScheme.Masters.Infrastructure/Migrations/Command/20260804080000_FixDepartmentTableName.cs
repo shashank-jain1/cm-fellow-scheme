@@ -1,19 +1,19 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace CmScheme.Masters.Infrastructure.CmScheme.Masters.Infrastructure.Migrations.Command
+namespace CmScheme.Masters.Infrastructure.Migrations.Command
 {
     /// <inheritdoc />
-    public partial class PendingFix : Migration
+    public partial class FixDepartmentTableName : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.Sql(@"
-                IF EXISTS (SELECT * FROM sys.tables WHERE name = 'Department')
+                IF EXISTS (SELECT * FROM sys.tables WHERE name = 'Department' AND type = 'U')
                     EXEC sp_rename 'Department', 'Departments';
-                ELSE IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'Departments')
+                ELSE IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'Departments' AND type = 'U')
                     CREATE TABLE [Departments] (
                         [DepartmentId] INT NOT NULL IDENTITY(1,1),
                         [DepartmentName] NVARCHAR(150) NOT NULL,
@@ -31,7 +31,10 @@ namespace CmScheme.Masters.Infrastructure.CmScheme.Masters.Infrastructure.Migrat
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.Sql("IF EXISTS (SELECT * FROM sys.tables WHERE name = 'Departments') DROP TABLE [Departments];");
+            migrationBuilder.Sql(@"
+                IF EXISTS (SELECT * FROM sys.tables WHERE name = 'Departments' AND type = 'U')
+                    EXEC sp_rename 'Departments', 'Department';
+            ");
         }
     }
 }

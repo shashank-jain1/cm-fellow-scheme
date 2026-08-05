@@ -223,6 +223,35 @@ if (app.Environment.IsDevelopment())
             }
         }
     }
+
+    try
+    {
+        MastersCommandDbContext mastersCtx = sp.GetRequiredService<MastersCommandDbContext>();
+        await mastersCtx.Database.ExecuteSqlRawAsync(@"
+            IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'Departments' AND type = 'U')
+            BEGIN
+                CREATE TABLE [Departments] (
+                    [DepartmentId] INT NOT NULL IDENTITY(1,1),
+                    [DepartmentName] NVARCHAR(150) NOT NULL,
+                    [DepartmentCode] NVARCHAR(50) NULL,
+                    [IsActive] BIT NOT NULL DEFAULT 1,
+                    [CreatedOn] DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
+                    [CreatedBy] INT NULL,
+                    [ModifiedOn] DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
+                    [ModifiedBy] INT NULL,
+                    CONSTRAINT [PK_Departments] PRIMARY KEY ([DepartmentId])
+                );
+            END
+            ELSE IF EXISTS (SELECT * FROM sys.tables WHERE name = 'Department' AND type = 'U')
+            BEGIN
+                EXEC sp_rename 'Department', 'Departments';
+            END
+        ");
+    }
+    catch (Exception)
+    {
+        // Department table fix failed silently
+    }
 }
 
 app.UseCors();

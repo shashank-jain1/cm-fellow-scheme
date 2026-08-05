@@ -86,7 +86,7 @@ namespace CmScheme.Masters.Infrastructure.Migrations.Command
 
                     b.HasKey("DepartmentId");
 
-                    b.ToTable("Department");
+                    b.ToTable("Departments");
                 });
 
             modelBuilder.Entity("CmScheme.Masters.Core.Entities.District", b =>

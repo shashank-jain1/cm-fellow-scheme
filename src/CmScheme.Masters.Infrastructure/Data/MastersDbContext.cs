@@ -25,5 +25,6 @@ public abstract class MastersDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(MastersDbContext).Assembly);
+        modelBuilder.Entity<Department>().ToTable("Departments");
     }
 }

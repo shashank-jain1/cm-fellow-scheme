@@ -19,4 +19,5 @@ public sealed class MastersQueryDbContext : MastersDbContext, IMastersQueryDbCon
     DbSet<Project> IMastersQueryDbContext.Projects => Projects;
     DbSet<Work> IMastersQueryDbContext.Works => Works;
     DbSet<LookupMaster> IMastersQueryDbContext.LookupMasters => LookupMasters;
+    DbSet<Department> IMastersQueryDbContext.Departments => Departments;
 }

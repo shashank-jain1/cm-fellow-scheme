@@ -19,7 +19,7 @@ public sealed class GetAdminDashboardQueryHandler(
 {
     public async ValueTask<Result<AdminDashboardDto>> Handle(GetAdminDashboardQuery request, CancellationToken cancellationToken)
     {
-        int totalRegisteredUsers = await registrationDbContext.Applicants.CountAsync(cancellationToken);
+        int totalRegisteredUsers = await registrationDbContext.UserAccounts.CountAsync(cancellationToken);
         int totalProjects = await workAllocationDbContext.WorkAllocations.Select(w => w.ProjectId).Distinct().CountAsync(cancellationToken);
         int totalSurveysCompleted = await workAllocationDbContext.SurveyRecords.CountAsync(s => s.SurveyStatus == Statuses.Survey.Completed, cancellationToken);
         int totalSurveysPending = await workAllocationDbContext.SurveyRecords.CountAsync(s => s.SurveyStatus != Statuses.Survey.Completed, cancellationToken);

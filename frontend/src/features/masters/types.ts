@@ -29,3 +29,8 @@ export {
   type DepartmentDto,
   type CreateDepartmentCommand,
 } from './departmentTypes';
+
+export {
+  type LookupMasterDto,
+  type CreateLookupMasterCommand,
+} from './lookupMasterTypes';

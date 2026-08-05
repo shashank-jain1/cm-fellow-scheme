@@ -20,6 +20,8 @@ import type {
   UpdateWorkCommand,
   DepartmentDto,
   CreateDepartmentCommand,
+  LookupMasterDto,
+  CreateLookupMasterCommand,
 } from './types';
 import { MASTER_URLS } from './urls';
 
@@ -75,4 +77,9 @@ export const mastersApi = {
   getDepartments: () => ApiService.get<DepartmentDto[]>(MASTER_URLS.departments),
   createDepartment: (data: CreateDepartmentCommand) =>
     ApiService.post<number>(MASTER_URLS.departments, data),
+
+  getLookups: (masterType?: string) =>
+    ApiService.get<LookupMasterDto[]>(`${MASTER_URLS.lookups}${masterType ? `?masterType=${masterType}` : ''}`),
+  createLookup: (data: CreateLookupMasterCommand) =>
+    ApiService.post<number>(MASTER_URLS.lookups, data),
 };

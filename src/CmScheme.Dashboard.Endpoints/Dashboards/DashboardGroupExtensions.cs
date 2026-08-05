@@ -6,7 +6,7 @@ namespace CmScheme.Dashboard.Endpoints.Dashboards;
 
 public static class DashboardGroupExtensions
 {
-    public static IEndpointRouteBuilder MapDashboardEndpoints(this IEndpointRouteBuilder builder)
+    public static RouteGroupBuilder MapDashboardEndpoints(this IEndpointRouteBuilder builder)
     {
         RouteGroupBuilder group = builder.MapGroup("dashboards")
             .RequireAuthorization()
