@@ -43,6 +43,7 @@ using CmScheme.Api.Middleware;
 using CmScheme.Api.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.OpenApi.Models;
 
 try
 {
@@ -102,7 +103,28 @@ builder.Services.AddProblemDetails();
 builder.Services.AddMediator(options => options.ServiceLifetime = ServiceLifetime.Scoped);
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "CM Fellow API", Version = "v1" });
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description = "JWT Authorization header. Example: \"Bearer {token}\"",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
+    });
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
+            },
+            Array.Empty<string>()
+        }
+    });
+});
 
 builder.Services.AddCors(options =>
 {
@@ -433,6 +455,46 @@ static async Task SeedLookupMasters(WebApplication app)
         new() { MasterType = "Role", Label = "Fellow", Value = "Fellow", SortOrder = 2, IsActive = true, CreatedOn = DateTime.UtcNow },
         new() { MasterType = "Role", Label = "Intern", Value = "Intern", SortOrder = 3, IsActive = true, CreatedOn = DateTime.UtcNow },
         new() { MasterType = "Role", Label = "Guide", Value = "Guide", SortOrder = 4, IsActive = true, CreatedOn = DateTime.UtcNow },
+
+        // Training Types
+        new() { MasterType = "TrainingType", Label = "Fellow", Value = "Fellow", SortOrder = 1, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { MasterType = "TrainingType", Label = "Coordinator", Value = "Coordinator", SortOrder = 2, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { MasterType = "TrainingType", Label = "Intern", Value = "Intern", SortOrder = 3, IsActive = true, CreatedOn = DateTime.UtcNow },
+
+        // Years
+        new() { MasterType = "Year", Label = "2020", Value = "2020", SortOrder = 1, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { MasterType = "Year", Label = "2021", Value = "2021", SortOrder = 2, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { MasterType = "Year", Label = "2022", Value = "2022", SortOrder = 3, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { MasterType = "Year", Label = "2023", Value = "2023", SortOrder = 4, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { MasterType = "Year", Label = "2024", Value = "2024", SortOrder = 5, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { MasterType = "Year", Label = "2025", Value = "2025", SortOrder = 6, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { MasterType = "Year", Label = "2026", Value = "2026", SortOrder = 7, IsActive = true, CreatedOn = DateTime.UtcNow },
+
+        // Venue (admin-configured at runtime; no seed entries)
+
+        // Platforms
+        new() { MasterType = "Platform", Label = "Zoom", Value = "Zoom", SortOrder = 1, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { MasterType = "Platform", Label = "Google Meet", Value = "Google Meet", SortOrder = 2, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { MasterType = "Platform", Label = "Microsoft Teams", Value = "Microsoft Teams", SortOrder = 3, IsActive = true, CreatedOn = DateTime.UtcNow },
+
+        // Financial Years
+        new() { MasterType = "FinancialYear", Label = "2025-26", Value = "2025-26", SortOrder = 1, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { MasterType = "FinancialYear", Label = "2026-27", Value = "2026-27", SortOrder = 2, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { MasterType = "FinancialYear", Label = "2027-28", Value = "2027-28", SortOrder = 3, IsActive = true, CreatedOn = DateTime.UtcNow },
+
+        // Designations
+        new() { MasterType = "Designation", Label = "Fellow", Value = "Fellow", SortOrder = 1, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { MasterType = "Designation", Label = "Coordinator", Value = "Coordinator", SortOrder = 2, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { MasterType = "Designation", Label = "Intern", Value = "Intern", SortOrder = 3, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { MasterType = "Designation", Label = "Admin", Value = "Admin", SortOrder = 4, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { MasterType = "Designation", Label = "Team Lead", Value = "Team Lead", SortOrder = 5, IsActive = true, CreatedOn = DateTime.UtcNow },
+
+        // Issue Categories
+        new() { MasterType = "IssueCategory", Label = "Login Issue", Value = "Login Issue", SortOrder = 1, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { MasterType = "IssueCategory", Label = "Attendance Issue", Value = "Attendance Issue", SortOrder = 2, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { MasterType = "IssueCategory", Label = "Survey Issue", Value = "Survey Issue", SortOrder = 3, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { MasterType = "IssueCategory", Label = "Technical Issue", Value = "Technical Issue", SortOrder = 4, IsActive = true, CreatedOn = DateTime.UtcNow },
+        new() { MasterType = "IssueCategory", Label = "Other", Value = "Other", SortOrder = 5, IsActive = true, CreatedOn = DateTime.UtcNow },
     ];
 
     dbContext.LookupMasters.AddRange(masters);

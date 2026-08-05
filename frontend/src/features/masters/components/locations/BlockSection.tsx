@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useDistricts, useBlocks, useCreateBlock } from '../../queries';
+import { useDistricts, useBlocks, useCreateBlock, useUpdateBlock, useDeleteBlock } from '../../queries';
 import LocationSection from './LocationSection';
 
 export default function BlockSection() {
@@ -7,6 +7,8 @@ export default function BlockSection() {
   const [selectedParentId, setSelectedParentId] = useState<number | null>(null);
   const { data: items, isLoading } = useBlocks(selectedParentId ?? undefined);
   const createMutation = useCreateBlock();
+  const updateMutation = useUpdateBlock();
+  const deleteMutation = useDeleteBlock();
   const [showForm, setShowForm] = useState(false);
   const [formName, setFormName] = useState('');
   const [formCode, setFormCode] = useState('');
@@ -22,6 +24,10 @@ export default function BlockSection() {
     setFormName(''); setFormCode(''); setShowForm(false);
   };
 
+  const handleUpdate = async (id: number, name: string, code: string, parentId: number) => {
+    await updateMutation.mutateAsync({ id, data: { blockId: id, districtId: parentId, blockName: name, blockCode: code } });
+  };
+
   return (
     <LocationSection title="Blocks" parentOptions={parentOptions} selectedParentId={selectedParentId}
       onParentChange={setSelectedParentId} items={items ?? []} isLoading={isLoading}
@@ -30,6 +36,8 @@ export default function BlockSection() {
       parentLabel="District" idKey="blockId" nameKey="blockName" codeKey="blockCode"
       parentIdKey="districtId" getParentName={getParentName} nameLabel="Block Name *"
       codeLabel="Block Code *" addButtonLabel="Add Block"
-      namePlaceholder="e.g. Huzur" codePlaceholder="e.g. HZ" />
+      namePlaceholder="e.g. Huzur" codePlaceholder="e.g. HZ"
+      onUpdate={handleUpdate} onDelete={(id) => deleteMutation.mutateAsync(id)}
+      onUpdateLoading={updateMutation.isPending} onDeleteLoading={deleteMutation.isPending} />
   );
 }

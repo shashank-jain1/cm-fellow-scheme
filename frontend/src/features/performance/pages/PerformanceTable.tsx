@@ -1,3 +1,5 @@
+import { DataTable } from 'primereact/datatable';
+import { Column } from 'primereact/column';
 import { Tag } from 'primereact/tag';
 import { EmptyState } from '../../../shared/components/ui';
 
@@ -31,49 +33,56 @@ interface Props {
 }
 
 export default function PerformanceTable({ records, isLoading, onRowClick }: Props) {
-  const headers = ['Fellow', 'Project', 'Completion', 'Score', 'Grade', 'Level', 'Status'];
+  if (isLoading) {
+    return (
+      <div style={{ padding: 'var(--space-4)' }}>
+        {[1, 2, 3, 4, 5].map((n) => (
+          <div key={n} style={{ display: 'flex', gap: 16, padding: '10px 0', borderBottom: '1px solid var(--border)' }}>
+            <div className="skeleton" style={{ width: '20%', height: 14 }} />
+            <div className="skeleton" style={{ width: '20%', height: 14 }} />
+            <div className="skeleton" style={{ width: '12%', height: 14 }} />
+            <div className="skeleton" style={{ width: '10%', height: 14 }} />
+            <div className="skeleton" style={{ width: '10%', height: 14 }} />
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  if (records.length === 0) {
+    return <EmptyState icon="pi pi-chart-bar" title="No performance records" description="Performance data will appear here after reviews" />;
+  }
+
   return (
     <div className="table-wrapper">
-      {isLoading ? (
-        <div style={{ padding: 'var(--space-4)' }}>
-          {[1, 2, 3, 4, 5].map((n) => (
-            <div key={n} style={{ display: 'flex', gap: 16, padding: '10px 0', borderBottom: '1px solid var(--border)' }}>
-              <div className="skeleton" style={{ width: '20%', height: 14 }} />
-              <div className="skeleton" style={{ width: '20%', height: 14 }} />
-              <div className="skeleton" style={{ width: '12%', height: 14 }} />
-              <div className="skeleton" style={{ width: '10%', height: 14 }} />
-              <div className="skeleton" style={{ width: '10%', height: 14 }} />
-            </div>
-          ))}
-        </div>
-      ) : records.length > 0 ? (
-        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-          <thead>
-            <tr>{headers.map((h) => (
-              <th key={h} style={{ padding: '8px 12px', textAlign: 'left', fontSize: 11, fontWeight: 600,
-                color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em',
-                borderBottom: '1px solid var(--border)', background: 'var(--carbon-50)' }}>{h}</th>
-            ))}</tr>
-          </thead>
-          <tbody>
-            {records.map((r) => (
-              <tr key={r.performanceEvaluationId}
-                style={{ borderBottom: '1px solid var(--border)', cursor: 'pointer' }}
-                onClick={() => onRowClick(r.performanceEvaluationId)}>
-                <td style={{ padding: '8px 12px', fontWeight: 600, fontSize: 13, color: 'var(--text-heading)' }}>{r.applicantName}</td>
-                <td style={{ padding: '8px 12px', fontSize: 13, color: 'var(--text-body)' }}>{r.projectName}</td>
-                <td style={{ padding: '8px 12px' }}><Tag value={`${r.completionPercentage}%`} severity={scoreTag(r.completionPercentage)} /></td>
-                <td style={{ padding: '8px 12px' }}><span style={{ fontWeight: 700, fontSize: 14, color: scoreColor(r.performanceScore) }}>{r.performanceScore}</span></td>
-                <td style={{ padding: '8px 12px', fontSize: 13, fontWeight: 700, color: 'var(--text-heading)' }}>{r.performanceGrade}</td>
-                <td style={{ padding: '8px 12px' }}><Tag value={r.reviewLevel ?? 'Draft'} severity={levelSeverity(r.reviewLevel ?? 'Draft')} /></td>
-                <td style={{ padding: '8px 12px' }}><Tag value={r.reviewStatus ?? 'Draft'} severity={statusSeverity(r.reviewStatus ?? 'Draft')} /></td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      ) : (
-        <EmptyState icon="pi pi-chart-bar" title="No performance records" description="Performance data will appear here after reviews" />
-      )}
+      <DataTable
+        value={records}
+        responsiveLayout="scroll"
+        emptyMessage="No performance records"
+        rowKey="performanceEvaluationId"
+        onRowClick={(e) => onRowClick((e.data as any).performanceEvaluationId)}
+        style={{ cursor: 'pointer' }}
+      >
+        <Column field="applicantName" header="Fellow" bodyStyle={{ fontWeight: 600, fontSize: 13, color: 'var(--text-heading)' }} />
+        <Column field="projectName" header="Project" bodyStyle={{ fontSize: 13, color: 'var(--text-body)' }} />
+        <Column
+          header="Completion"
+          body={(row: any) => <Tag value={`${row.completionPercentage}%`} severity={scoreTag(row.completionPercentage)} />}
+        />
+        <Column
+          header="Score"
+          body={(row: any) => <span style={{ fontWeight: 700, fontSize: 14, color: scoreColor(row.performanceScore) }}>{row.performanceScore}</span>}
+        />
+        <Column field="performanceGrade" header="Grade" bodyStyle={{ fontSize: 13, fontWeight: 700, color: 'var(--text-heading)' }} />
+        <Column
+          header="Level"
+          body={(row: any) => <Tag value={row.reviewLevel ?? 'Draft'} severity={levelSeverity(row.reviewLevel ?? 'Draft')} />}
+        />
+        <Column
+          header="Status"
+          body={(row: any) => <Tag value={row.reviewStatus ?? 'Draft'} severity={statusSeverity(row.reviewStatus ?? 'Draft')} />}
+        />
+      </DataTable>
     </div>
   );
 }

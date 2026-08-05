@@ -60,5 +60,55 @@ public sealed class LocationEndpoints : IApiEndpoint
             .WithTags("Locations")
             .WithName("CreateGramPanchayat")
             .WithDisplayName("Create a new gram panchayat");
+
+        group.MapPut("states/{id:int}", UpdateState.Update)
+            .WithTags("Locations")
+            .WithName("UpdateState")
+            .WithDisplayName("Update a state");
+
+        group.MapDelete("states/{id:int}", DeleteState.Delete)
+            .WithTags("Locations")
+            .WithName("DeleteState")
+            .WithDisplayName("Delete a state");
+
+        group.MapPut("divisions/{id:int}", UpdateDivision.Update)
+            .WithTags("Locations")
+            .WithName("UpdateDivision")
+            .WithDisplayName("Update a division");
+
+        group.MapDelete("divisions/{id:int}", DeleteDivision.Delete)
+            .WithTags("Locations")
+            .WithName("DeleteDivision")
+            .WithDisplayName("Delete a division");
+
+        group.MapPut("districts/{id:int}", UpdateDistrict.Update)
+            .WithTags("Locations")
+            .WithName("UpdateDistrict")
+            .WithDisplayName("Update a district");
+
+        group.MapDelete("districts/{id:int}", DeleteDistrict.Delete)
+            .WithTags("Locations")
+            .WithName("DeleteDistrict")
+            .WithDisplayName("Delete a district");
+
+        group.MapPut("blocks/{id:int}", UpdateBlock.Update)
+            .WithTags("Locations")
+            .WithName("UpdateBlock")
+            .WithDisplayName("Update a block");
+
+        group.MapDelete("blocks/{id:int}", DeleteBlock.Delete)
+            .WithTags("Locations")
+            .WithName("DeleteBlock")
+            .WithDisplayName("Delete a block");
+
+        group.MapPut("gram-panchayats/{id:int}", UpdateGramPanchayat.Update)
+            .WithTags("Locations")
+            .WithName("UpdateGramPanchayat")
+            .WithDisplayName("Update a gram panchayat");
+
+        group.MapDelete("gram-panchayats/{id:int}", DeleteGramPanchayat.Delete)
+            .WithTags("Locations")
+            .WithName("DeleteGramPanchayat")
+            .WithDisplayName("Delete a gram panchayat");
     }
 }

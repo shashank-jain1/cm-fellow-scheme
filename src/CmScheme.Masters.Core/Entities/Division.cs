@@ -16,4 +16,8 @@ public class Division
     [MaxLength(10)]
     public string? DivisionCode { get; set; }
     public bool IsActive { get; set; } = true;
+    public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
+    public int? CreatedBy { get; set; }
+    public DateTime ModifiedOn { get; set; } = DateTime.UtcNow;
+    public int? ModifiedBy { get; set; }
 }

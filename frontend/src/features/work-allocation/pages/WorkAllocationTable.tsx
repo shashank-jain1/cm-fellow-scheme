@@ -1,5 +1,7 @@
-import type { WorkAllocationDto } from '../types';
+import { DataTable } from 'primereact/datatable';
+import { Column } from 'primereact/column';
 import { Tag } from 'primereact/tag';
+import type { WorkAllocationDto } from '../types';
 import { AppButton } from '../../../shared/components/ui';
 
 const prioritySeverity = (p: string) => {
@@ -46,39 +48,51 @@ export default function WorkAllocationTable({ allocations, isLoading, onEdit, on
   }
 
   return (
-    <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-      <thead>
-        <tr>
-          {['Description', 'Priority', 'Duration', 'Surveys', 'Completion', 'Status', 'Actions'].map((h) => (
-            <th key={h} style={{ padding: '10px 16px', textAlign: 'left', fontSize: 12, fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em', borderBottom: '1px solid var(--border)', background: 'var(--carbon-50)' }}>{h}</th>
-          ))}
-        </tr>
-      </thead>
-      <tbody>
-        {allocations.map((a) => (
-          <tr key={a.workAllocationId} style={{ borderBottom: '1px solid var(--border)' }}>
-            <td style={{ padding: '12px 16px', fontWeight: 600, fontSize: 14, color: 'var(--text-heading)' }}>{a.workDescription}</td>
-            <td style={{ padding: '12px 16px' }}><Tag value={a.priority} severity={prioritySeverity(a.priority)} /></td>
-            <td style={{ padding: '12px 16px', fontSize: 13, color: 'var(--text-muted)' }}>{a.startDate} - {a.endDate}</td>
-            <td style={{ padding: '12px 16px', fontSize: 14 }}>{a.surveysPerIntern}</td>
-            <td style={{ padding: '12px 16px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <div style={{ width: 60, height: 4, borderRadius: 2, background: 'var(--border)' }}>
-                  <div style={{ width: `${a.completionPercentage}%`, height: '100%', borderRadius: 2, background: a.completionPercentage >= 80 ? 'var(--success)' : 'var(--pending)' }} />
-                </div>
-                <span style={{ fontSize: 12, color: 'var(--text-muted)' }}>{a.completionPercentage}%</span>
-              </div>
-            </td>
-            <td style={{ padding: '12px 16px' }}><Tag value={a.status} severity={a.status === 'active' ? 'success' : a.status === 'pending' ? 'warning' : 'secondary'} /></td>
-            <td style={{ padding: '12px 16px' }}>
-              <div style={{ display: 'flex', gap: 8 }}>
-                <AppButton variant="ghost" size="sm" icon="pi pi-pencil" onClick={() => onEdit(a)} title="Edit" />
-                <AppButton variant="ghost" size="sm" icon="pi pi-trash" onClick={() => onDelete(a.workAllocationId)} title="Delete" />
-              </div>
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <DataTable
+      value={allocations}
+      responsiveLayout="scroll"
+      emptyMessage="No allocations found"
+      rowKey="workAllocationId"
+      loading={isLoading}
+    >
+      <Column field="workDescription" header="Description" bodyStyle={{ fontWeight: 600, fontSize: 14, color: 'var(--text-heading)' }} />
+      <Column
+        field="priority"
+        header="Priority"
+        body={(row: WorkAllocationDto) => <Tag value={row.priority} severity={prioritySeverity(row.priority)} />}
+      />
+      <Column
+        header="Duration"
+        body={(row: WorkAllocationDto) => <span style={{ fontSize: 13, color: 'var(--text-muted)' }}>{row.startDate} - {row.endDate}</span>}
+      />
+      <Column field="surveysPerIntern" header="Surveys" bodyStyle={{ fontSize: 14 }} />
+      <Column
+        header="Completion"
+        body={(row: WorkAllocationDto) => (
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <div style={{ width: 60, height: 4, borderRadius: 2, background: 'var(--border)' }}>
+              <div style={{ width: `${row.completionPercentage}%`, height: '100%', borderRadius: 2, background: row.completionPercentage >= 80 ? 'var(--success)' : 'var(--pending)' }} />
+            </div>
+            <span style={{ fontSize: 12, color: 'var(--text-muted)' }}>{row.completionPercentage}%</span>
+          </div>
+        )}
+      />
+      <Column
+        field="status"
+        header="Status"
+        body={(row: WorkAllocationDto) => <Tag value={row.status} severity={row.status === 'active' ? 'success' : row.status === 'pending' ? 'warning' : 'secondary'} />}
+      />
+      <Column
+        header="Actions"
+        body={(row: WorkAllocationDto) => (
+          <div style={{ display: 'flex', gap: 8 }}>
+            <AppButton variant="ghost" size="sm" icon="pi pi-pencil" onClick={() => onEdit(row)} title="Edit" />
+            <AppButton variant="ghost" size="sm" icon="pi pi-trash" onClick={() => onDelete(row.workAllocationId)} title="Delete" />
+          </div>
+        )}
+        headerStyle={{ textAlign: 'center' }}
+        bodyStyle={{ textAlign: 'center' }}
+      />
+    </DataTable>
   );
 }

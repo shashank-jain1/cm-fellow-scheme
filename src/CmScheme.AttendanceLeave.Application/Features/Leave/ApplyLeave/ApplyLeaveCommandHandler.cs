@@ -3,17 +3,30 @@ using CmScheme.AttendanceLeave.Core.Data;
 using CmScheme.AttendanceLeave.Core.Entities;
 using CmScheme.Common.Core;
 using CmScheme.Common.Core.Services;
+using CmScheme.Registration.Core.Data;
+using CmScheme.Registration.Core.Entities;
 using Mediator;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using LeaveApplication = CmScheme.AttendanceLeave.Core.Entities.LeaveApplication;
 
 namespace CmScheme.AttendanceLeave.Application.Features.Leave.ApplyLeave;
 
 public sealed class ApplyLeaveCommandHandler(
     IAttendanceLeaveCommandDbContext dbContext,
-    INotificationService notificationService)
+    INotificationService notificationService,
+    IServiceScopeFactory serviceScopeFactory)
     : ICommandHandler<ApplyLeaveCommand, Result<int>>
 {
     public async ValueTask<Result<int>> Handle(ApplyLeaveCommand request, CancellationToken cancellationToken)
     {
+        string reportingManagerName = request.ReportingManagerName;
+
+        if (string.IsNullOrWhiteSpace(reportingManagerName))
+        {
+            reportingManagerName = await ResolveCoordinatorNameAsync(request.ApplicantId, cancellationToken);
+        }
+
         LeaveApplication leaveApplication = new LeaveApplication
         {
             ApplicantId = request.ApplicantId,
@@ -24,7 +37,7 @@ public sealed class ApplyLeaveCommandHandler(
             HalfDayFullDay = request.HalfDayFullDay,
             LeaveReason = request.LeaveReason,
             AttachmentPath = request.AttachmentPath,
-            ReportingManagerName = request.ReportingManagerName,
+            ReportingManagerName = reportingManagerName,
             Status = Statuses.Leave.Pending,
             CreatedOn = DateTime.UtcNow,
             CreatedBy = request.CreatedBy
@@ -33,18 +46,70 @@ public sealed class ApplyLeaveCommandHandler(
         dbContext.LeaveApplications.Add(leaveApplication);
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        var (subject, body, sms) = NotificationTemplates.LeaveApplied(
-            request.CreatedBy,
-            request.LeaveType,
-            request.NumberOfDays,
-            $"{request.FromDate:yyyy-MM-dd} to {request.ToDate:yyyy-MM-dd}");
+        if (!string.IsNullOrWhiteSpace(reportingManagerName))
+        {
+            var (subject, body, sms) = NotificationTemplates.LeaveApplied(
+                request.CreatedBy,
+                request.LeaveType,
+                request.NumberOfDays,
+                $"{request.FromDate:yyyy-MM-dd} to {request.ToDate:yyyy-MM-dd}");
 
-        await notificationService.SendEmailAsync(
-            request.ReportingManagerName, // or supervisor email
-            subject,
-            body,
-            cancellationToken);
+            await notificationService.SendEmailAsync(
+                reportingManagerName,
+                subject,
+                body,
+                cancellationToken);
+        }
 
         return Result<int>.Success(leaveApplication.LeaveApplicationId);
+    }
+
+    private async ValueTask<string> ResolveCoordinatorNameAsync(int applicantId, CancellationToken cancellationToken)
+    {
+        try
+        {
+            using IServiceScope scope = serviceScopeFactory.CreateScope();
+            IRegistrationCommandDbContext registrationDbContext = scope.ServiceProvider
+                .GetRequiredService<IRegistrationCommandDbContext>();
+
+            UserAccount? applicantAccount = await registrationDbContext.UserAccounts
+                .FirstOrDefaultAsync(ua => ua.ApplicantId == applicantId, cancellationToken);
+
+            if (applicantAccount == null)
+            {
+                return string.Empty;
+            }
+
+            int? divisionId = await registrationDbContext.Applicants
+                .Where(a => a.ApplicantId == applicantId)
+                .Select(a => (int?)a.DivisionId)
+                .FirstOrDefaultAsync(cancellationToken);
+
+            if (divisionId.HasValue)
+            {
+                UserAccount? coordinator = await (
+                    from ua in registrationDbContext.UserAccounts
+                    join ur in registrationDbContext.UserRoles on ua.UserAccountId equals ur.UserAccountId
+                    where ua.IsActive
+                          && ur.IsActive
+                          && ua.Role == "Coordinator"
+                    select ua
+                ).FirstOrDefaultAsync(cancellationToken);
+
+                if (coordinator != null)
+                {
+                    return coordinator.Username;
+                }
+            }
+
+            UserAccount? fallbackCoordinator = await registrationDbContext.UserAccounts
+                .FirstOrDefaultAsync(ua => ua.Role == "Coordinator" && ua.IsActive, cancellationToken);
+
+            return fallbackCoordinator?.Username ?? string.Empty;
+        }
+        catch
+        {
+            return string.Empty;
+        }
     }
 }

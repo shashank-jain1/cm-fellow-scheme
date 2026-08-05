@@ -1,3 +1,5 @@
+import { DataTable } from 'primereact/datatable';
+import { Column } from 'primereact/column';
 import { Tag } from 'primereact/tag';
 import { EmptyState, SkeletonTable } from '../../../shared/components/ui';
 import type { ImprovementPlanDto } from '../types';
@@ -22,25 +24,30 @@ export default function ImprovementPlansTable({ plans, isLoading }: ImprovementP
   }
 
   return (
-    <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-      <thead>
-        <tr>
-          {['Title', 'Description', 'Start Date', 'End Date', 'Status'].map((h) => (
-            <th key={h} style={{ padding: '12px 16px', textAlign: 'left', fontSize: 12, fontWeight: 700, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.5px', borderBottom: '1px solid var(--border-color)' }}>{h}</th>
-          ))}
-        </tr>
-      </thead>
-      <tbody>
-        {plans.map((p) => (
-          <tr key={p.improvementPlanId} style={{ borderBottom: '1px solid var(--border-light)' }}>
-            <td style={{ padding: '14px 16px', fontWeight: 600, fontSize: 14, color: 'var(--text-primary)' }}>{p.title}</td>
-            <td style={{ padding: '14px 16px', fontSize: 13, color: 'var(--text-secondary)', maxWidth: 300, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{p.description}</td>
-            <td style={{ padding: '14px 16px', fontSize: 13, color: 'var(--text-secondary)' }}>{new Date(p.startDate).toLocaleDateString()}</td>
-            <td style={{ padding: '14px 16px', fontSize: 13, color: 'var(--text-secondary)' }}>{new Date(p.endDate).toLocaleDateString()}</td>
-            <td style={{ padding: '14px 16px' }}><Tag value={p.status} severity={statusSeverity[p.status]} /></td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <DataTable
+      value={plans}
+      responsiveLayout="scroll"
+      emptyMessage="No improvement plans"
+      rowKey="improvementPlanId"
+    >
+      <Column field="title" header="Title" bodyStyle={{ fontWeight: 600, fontSize: 14, color: 'var(--text-primary)' }} />
+      <Column
+        field="description"
+        header="Description"
+        bodyStyle={{ fontSize: 13, color: 'var(--text-secondary)', maxWidth: 300, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
+      />
+      <Column
+        header="Start Date"
+        body={(row: ImprovementPlanDto) => <span style={{ fontSize: 13, color: 'var(--text-secondary)' }}>{new Date(row.startDate).toLocaleDateString()}</span>}
+      />
+      <Column
+        header="End Date"
+        body={(row: ImprovementPlanDto) => <span style={{ fontSize: 13, color: 'var(--text-secondary)' }}>{new Date(row.endDate).toLocaleDateString()}</span>}
+      />
+      <Column
+        header="Status"
+        body={(row: ImprovementPlanDto) => <Tag value={row.status} severity={statusSeverity[row.status]} />}
+      />
+    </DataTable>
   );
 }

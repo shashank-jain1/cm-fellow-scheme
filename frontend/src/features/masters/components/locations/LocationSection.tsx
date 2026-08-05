@@ -1,12 +1,18 @@
+import { useState } from 'react';
 import { Button } from 'primereact/button';
 import { AppInput, AppSelect } from '../../../../shared/components/forms';
+import { ConfirmDialog } from '../../../../shared/components/ui';
+
+interface LocationItem {
+  [key: string]: string | number | boolean | null;
+}
 
 interface LocationSectionProps {
   title: string;
   parentOptions: { label: string; value: string }[];
   selectedParentId: number | null;
   onParentChange: (id: number | null) => void;
-  items: any[];
+  items: LocationItem[];
   isLoading: boolean;
   formName: string;
   formCode: string;
@@ -27,6 +33,10 @@ interface LocationSectionProps {
   addButtonLabel?: string;
   namePlaceholder?: string;
   codePlaceholder?: string;
+  onUpdate?: (id: number, name: string, code: string, parentId: number) => void;
+  onDelete?: (id: number) => void;
+  onUpdateLoading?: boolean;
+  onDeleteLoading?: boolean;
 }
 
 const thStyle: React.CSSProperties = { padding: '12px 16px', textAlign: 'left', fontSize: 12, fontWeight: 700, color: 'var(--text-secondary)', textTransform: 'uppercase', borderBottom: '1px solid var(--border-color)' };
@@ -58,8 +68,37 @@ export default function LocationSection({
   addButtonLabel,
   namePlaceholder,
   codePlaceholder,
+  onUpdate,
+  onDelete,
+  onUpdateLoading,
+  onDeleteLoading,
 }: LocationSectionProps) {
+  const [editingId, setEditingId] = useState<number | null>(null);
+  const [editName, setEditName] = useState('');
+  const [editCode, setEditCode] = useState('');
+  const [editParentId, setEditParentId] = useState<number | null>(null);
+  const [deleteTargetId, setDeleteTargetId] = useState<number | null>(null);
+
   const allOptions = [{ label: `All ${parentLabel}s`, value: '' }, ...parentOptions];
+
+  const handleEdit = (item: LocationItem) => {
+    setEditingId(item[idKey] as number);
+    setEditName(item[nameKey] as string);
+    setEditCode((item[codeKey] as string) ?? '');
+    setEditParentId(item[parentIdKey] as number);
+  };
+
+  const handleEditSave = () => {
+    if (!editingId || !onUpdate) return;
+    onUpdate(editingId, editName, editCode, editParentId ?? 0);
+    setEditingId(null);
+  };
+
+  const handleDeleteConfirm = () => {
+    if (!deleteTargetId || !onDelete) return;
+    onDelete(deleteTargetId);
+    setDeleteTargetId(null);
+  };
 
   return (
     <div>
@@ -115,15 +154,53 @@ export default function LocationSection({
                 <th style={thStyle}>Name</th>
                 <th style={thStyle}>Code</th>
                 <th style={thStyle}>{parentLabel}</th>
+                {(onUpdate || onDelete) && <th style={{ ...thStyle, textAlign: 'center' }}>Actions</th>}
               </tr>
             </thead>
             <tbody>
-              {(items ?? []).map((item: any) => (
-                <tr key={item[idKey]} style={{ borderBottom: '1px solid var(--border-light)' }}>
-                  <td style={{ ...tdStyle, fontFamily: 'monospace', color: 'var(--accent-primary)' }}>{item[idKey]}</td>
-                  <td style={{ ...tdStyle, fontWeight: 600, fontSize: 14 }}>{item[nameKey]}</td>
-                  <td style={{ ...tdStyle, fontFamily: 'monospace' }}>{item[codeKey] ?? '-'}</td>
-                  <td style={{ ...tdStyle, color: 'var(--text-secondary)' }}>{getParentName(item[parentIdKey])}</td>
+              {(items ?? []).map((item: LocationItem) => (
+                <tr key={item[idKey] as number} style={{ borderBottom: '1px solid var(--border-light)' }}>
+                  <td style={{ ...tdStyle, fontFamily: 'monospace', color: 'var(--accent-primary)' }}>{item[idKey] as number}</td>
+                  <td style={{ ...tdStyle, fontWeight: 600, fontSize: 14 }}>
+                    {editingId === (item[idKey] as number) ? (
+                      <AppInput value={editName} onChange={(e) => setEditName(e.target.value)} />
+                    ) : (
+                      item[nameKey] as string
+                    )}
+                  </td>
+                  <td style={{ ...tdStyle, fontFamily: 'monospace' }}>
+                    {editingId === (item[idKey] as number) ? (
+                      <AppInput value={editCode} onChange={(e) => setEditCode(e.target.value)} maxLength={10} />
+                    ) : (
+                      (item[codeKey] as string) ?? '-'
+                    )}
+                  </td>
+                  <td style={{ ...tdStyle, color: 'var(--text-secondary)' }}>
+                    {editingId === (item[idKey] as number) ? (
+                      <AppSelect
+                        value={String(editParentId ?? '')}
+                        options={parentOptions}
+                        onChange={(val) => setEditParentId(val ? Number(val) : null)}
+                      />
+                    ) : (
+                      getParentName(item[parentIdKey] as number)
+                    )}
+                  </td>
+                  {(onUpdate || onDelete) && (
+                    <td style={{ ...tdStyle, textAlign: 'center' }}>
+                      {editingId === (item[idKey] as number) ? (
+                        <div style={{ display: 'flex', gap: 4, justifyContent: 'center' }}>
+                          <Button icon="pi pi-check" className="p-button-success p-button-text" size="small" onClick={handleEditSave} loading={onUpdateLoading} />
+                          <Button icon="pi pi-times" className="p-button-secondary p-button-text" size="small" onClick={() => setEditingId(null)} />
+                        </div>
+                      ) : (
+                        <div style={{ display: 'flex', gap: 4, justifyContent: 'center' }}>
+                          {onUpdate && <Button icon="pi pi-pencil" className="p-button-text p-button-info" size="small" onClick={() => handleEdit(item)} />}
+                          {onDelete && <Button icon="pi pi-trash" className="p-button-text p-button-danger" size="small" onClick={() => setDeleteTargetId(item[idKey] as number)} />}
+                        </div>
+                      )}
+                    </td>
+                  )}
                 </tr>
               ))}
             </tbody>
@@ -132,6 +209,15 @@ export default function LocationSection({
           <div className="empty-state"><i className="pi pi-map" /><h3>No {title.toLowerCase()} yet</h3><p>Select a {parentLabel.toLowerCase()} or create your first {title.toLowerCase().slice(0, -1)}</p></div>
         )}
       </div>
+
+      <ConfirmDialog
+        visible={deleteTargetId !== null}
+        header={`Delete ${title.slice(0, -1)}`}
+        message={`Are you sure you want to delete this ${title.slice(0, -1).toLowerCase()}? This action cannot be undone.`}
+        onConfirm={handleDeleteConfirm}
+        onCancel={() => setDeleteTargetId(null)}
+        loading={onDeleteLoading}
+      />
     </div>
   );
 }

@@ -1,4 +1,6 @@
-import { AppInput, AppTextarea, AppCalendar, AppInputNumber } from '../../../../shared/components/forms';
+import { useQuery } from '@tanstack/react-query';
+import { AppInput, AppSelect, AppTextarea, AppCalendar, AppInputNumber } from '../../../../shared/components/forms';
+import { mastersApi } from '../../api';
 import type { CreateProjectCommand } from '../../types';
 
 interface ProjectFormProps {
@@ -16,6 +18,11 @@ export default function ProjectForm({
   onCancel,
   isPending,
 }: ProjectFormProps) {
+  const { data: departments = [] } = useQuery({
+    queryKey: ['departments'],
+    queryFn: () => mastersApi.getDepartments().then(r => r.data ?? []),
+  });
+
   return (
     <div className="glass-card" style={{ padding: 20, marginBottom: 20 }}>
       <div className="form-grid">
@@ -37,10 +44,12 @@ export default function ProjectForm({
         </div>
         <div className="form-field">
           <label>Department *</label>
-          <AppInput
-            value={form.departmentName}
-            onChange={(e) => setForm({ ...form, departmentName: e.target.value })}
-            placeholder="Department name"
+          <AppSelect
+            value={form.departmentName || null}
+            onChange={(value) => setForm({ ...form, departmentName: value })}
+            options={departments.map(d => ({ label: d.departmentName, value: d.departmentName }))}
+            placeholder="Select department"
+            showClear
           />
         </div>
         <div className="form-field">

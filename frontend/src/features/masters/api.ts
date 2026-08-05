@@ -18,6 +18,11 @@ import type {
   CreateTrainingScheduleCommand,
   UpdateTrainingScheduleCommand,
   UpdateWorkCommand,
+  UpdateStateCommand,
+  UpdateDivisionCommand,
+  UpdateDistrictCommand,
+  UpdateBlockCommand,
+  UpdateGramPanchayatCommand,
   DepartmentDto,
   CreateDepartmentCommand,
   LookupMasterDto,
@@ -28,22 +33,37 @@ import { MASTER_URLS } from './urls';
 export const mastersApi = {
   getStates: () => ApiService.get<StateDto[]>(MASTER_URLS.states),
   createState: (data: CreateStateCommand) => ApiService.post<number>(MASTER_URLS.states, data),
+  updateState: (id: number, data: UpdateStateCommand) =>
+    ApiService.put<void>(`${MASTER_URLS.states}/${id}`, { ...data, stateId: id }),
+  deleteState: (id: number) => ApiService.delete<void>(`${MASTER_URLS.states}/${id}`),
 
   getDivisions: (stateId?: number) =>
     ApiService.get<DivisionDto[]>(`${MASTER_URLS.divisions}${stateId ? `?stateId=${stateId}` : ''}`),
   createDivision: (data: CreateDivisionCommand) => ApiService.post<number>(MASTER_URLS.divisions, data),
+  updateDivision: (id: number, data: UpdateDivisionCommand) =>
+    ApiService.put<void>(`${MASTER_URLS.divisions}/${id}`, { ...data, divisionId: id }),
+  deleteDivision: (id: number) => ApiService.delete<void>(`${MASTER_URLS.divisions}/${id}`),
 
   getDistricts: (divisionId?: number) =>
     ApiService.get<DistrictDto[]>(`${MASTER_URLS.districts}${divisionId ? `?divisionId=${divisionId}` : ''}`),
   createDistrict: (data: CreateDistrictCommand) => ApiService.post<number>(MASTER_URLS.districts, data),
+  updateDistrict: (id: number, data: UpdateDistrictCommand) =>
+    ApiService.put<void>(`${MASTER_URLS.districts}/${id}`, { ...data, districtId: id }),
+  deleteDistrict: (id: number) => ApiService.delete<void>(`${MASTER_URLS.districts}/${id}`),
 
   getBlocks: (districtId?: number) =>
     ApiService.get<BlockDto[]>(`${MASTER_URLS.blocks}${districtId ? `?districtId=${districtId}` : ''}`),
   createBlock: (data: CreateBlockCommand) => ApiService.post<number>(MASTER_URLS.blocks, data),
+  updateBlock: (id: number, data: UpdateBlockCommand) =>
+    ApiService.put<void>(`${MASTER_URLS.blocks}/${id}`, { ...data, blockId: id }),
+  deleteBlock: (id: number) => ApiService.delete<void>(`${MASTER_URLS.blocks}/${id}`),
 
   getGramPanchayats: (blockId?: number) =>
     ApiService.get<GramPanchayatDto[]>(`${MASTER_URLS.gramPanchayats}${blockId ? `?blockId=${blockId}` : ''}`),
   createGramPanchayat: (data: CreateGramPanchayatCommand) => ApiService.post<number>(MASTER_URLS.gramPanchayats, data),
+  updateGramPanchayat: (id: number, data: UpdateGramPanchayatCommand) =>
+    ApiService.put<void>(`${MASTER_URLS.gramPanchayats}/${id}`, { ...data, gramPanchayatId: id }),
+  deleteGramPanchayat: (id: number) => ApiService.delete<void>(`${MASTER_URLS.gramPanchayats}/${id}`),
 
   getProjects: () => ApiService.get<ProjectDto[]>(MASTER_URLS.projects),
   createProject: (data: CreateProjectCommand) => ApiService.post<number>(MASTER_URLS.projects, data),

@@ -12,6 +12,16 @@ export {
   useCreateDistrict,
   useCreateBlock,
   useCreateGramPanchayat,
+  useUpdateState,
+  useDeleteState,
+  useUpdateDivision,
+  useDeleteDivision,
+  useUpdateDistrict,
+  useDeleteDistrict,
+  useUpdateBlock,
+  useDeleteBlock,
+  useUpdateGramPanchayat,
+  useDeleteGramPanchayat,
 } from './useProjectQueries';
 
 export {

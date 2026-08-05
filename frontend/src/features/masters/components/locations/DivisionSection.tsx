@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useStates, useDivisions, useCreateDivision } from '../../queries';
+import { useStates, useDivisions, useCreateDivision, useUpdateDivision, useDeleteDivision } from '../../queries';
 import LocationSection from './LocationSection';
 
 export default function DivisionSection() {
@@ -7,6 +7,8 @@ export default function DivisionSection() {
   const [selectedParentId, setSelectedParentId] = useState<number | null>(null);
   const { data: items, isLoading } = useDivisions(selectedParentId ?? undefined);
   const createMutation = useCreateDivision();
+  const updateMutation = useUpdateDivision();
+  const deleteMutation = useDeleteDivision();
   const [showForm, setShowForm] = useState(false);
   const [formName, setFormName] = useState('');
   const [formCode, setFormCode] = useState('');
@@ -22,6 +24,10 @@ export default function DivisionSection() {
     setFormName(''); setFormCode(''); setShowForm(false);
   };
 
+  const handleUpdate = async (id: number, name: string, code: string, parentId: number) => {
+    await updateMutation.mutateAsync({ id, data: { divisionId: id, stateId: parentId, divisionName: name, divisionCode: code } });
+  };
+
   return (
     <LocationSection title="Divisions" parentOptions={parentOptions} selectedParentId={selectedParentId}
       onParentChange={setSelectedParentId} items={items ?? []} isLoading={isLoading}
@@ -30,6 +36,8 @@ export default function DivisionSection() {
       parentLabel="State" idKey="divisionId" nameKey="divisionName" codeKey="divisionCode"
       parentIdKey="stateId" getParentName={getParentName} nameLabel="Division Name *"
       codeLabel="Division Code *" addButtonLabel="Add Division"
-      namePlaceholder="e.g. Bhopal Division" codePlaceholder="e.g. BPL" />
+      namePlaceholder="e.g. Bhopal Division" codePlaceholder="e.g. BPL"
+      onUpdate={handleUpdate} onDelete={(id) => deleteMutation.mutateAsync(id)}
+      onUpdateLoading={updateMutation.isPending} onDeleteLoading={deleteMutation.isPending} />
   );
 }

@@ -1,3 +1,5 @@
+import { DataTable } from 'primereact/datatable';
+import { Column } from 'primereact/column';
 import { AppButton, EmptyState, SkeletonTable } from '../../../shared/components/ui';
 import type { KnowledgeBaseArticleDto } from '../types';
 
@@ -34,29 +36,26 @@ export default function KnowledgeBaseArticleList({ articles, isLoading, searchQu
 
   return (
     <div className="table-wrapper">
-      <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-        <thead>
-          <tr>
-            {['Title', 'Category', 'Author', 'Published'].map((h) => (
-              <th key={h} style={{ padding: '12px 16px', textAlign: 'left', fontSize: 12, fontWeight: 700, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.5px', borderBottom: '1px solid var(--border-color)' }}>{h}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {articles.map((a) => (
-            <tr key={a.articleId} style={{ borderBottom: '1px solid var(--border-light)', cursor: 'pointer' }} onClick={() => onSelect(a)}>
-              <td style={{ padding: '14px 16px', fontWeight: 600, fontSize: 14, color: 'var(--accent-primary)' }}>{a.title}</td>
-              <td style={{ padding: '14px 16px', fontSize: 13, color: 'var(--text-secondary)' }}>{a.category}</td>
-              <td style={{ padding: '14px 16px', fontSize: 13, color: 'var(--text-secondary)' }}>{a.authorName ?? '-'}</td>
-              <td style={{ padding: '14px 16px' }}>
-                <span className="badge" style={{ background: a.published ? 'var(--badge-emerald-bg)' : 'var(--badge-amber-bg)', color: a.published ? 'var(--badge-emerald-text)' : 'var(--badge-amber-text)' }}>
-                  {a.published ? 'Published' : 'Draft'}
-                </span>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <DataTable
+        value={articles}
+        responsiveLayout="scroll"
+        emptyMessage="No articles found"
+        rowKey="articleId"
+        onRowClick={(e) => onSelect(e.data as KnowledgeBaseArticleDto)}
+        style={{ cursor: 'pointer' }}
+      >
+        <Column field="title" header="Title" bodyStyle={{ fontWeight: 600, fontSize: 14, color: 'var(--accent-primary)' }} />
+        <Column field="category" header="Category" bodyStyle={{ fontSize: 13, color: 'var(--text-secondary)' }} />
+        <Column field="authorName" header="Author" bodyStyle={{ fontSize: 13, color: 'var(--text-secondary)' }} body={(row: KnowledgeBaseArticleDto) => row.authorName ?? '-'} />
+        <Column
+          header="Published"
+          body={(row: KnowledgeBaseArticleDto) => (
+            <span className="badge" style={{ background: row.published ? 'var(--badge-emerald-bg)' : 'var(--badge-amber-bg)', color: row.published ? 'var(--badge-emerald-text)' : 'var(--badge-amber-text)' }}>
+              {row.published ? 'Published' : 'Draft'}
+            </span>
+          )}
+        />
+      </DataTable>
     </div>
   );
 }

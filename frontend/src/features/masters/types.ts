@@ -9,6 +9,11 @@ export {
   type CreateDistrictCommand,
   type CreateBlockCommand,
   type CreateGramPanchayatCommand,
+  type UpdateStateCommand,
+  type UpdateDivisionCommand,
+  type UpdateDistrictCommand,
+  type UpdateBlockCommand,
+  type UpdateGramPanchayatCommand,
 } from './locationTypes';
 
 export {

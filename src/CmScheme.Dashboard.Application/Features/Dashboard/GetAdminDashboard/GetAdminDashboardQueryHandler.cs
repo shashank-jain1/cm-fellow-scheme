@@ -7,6 +7,7 @@ using CmScheme.Registration.Core.Data;
 using CmScheme.WorkAllocation.Core.Data;
 using Mediator;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace CmScheme.Dashboard.Application.Features.Dashboard.GetAdminDashboard;
 
@@ -14,11 +15,19 @@ public sealed class GetAdminDashboardQueryHandler(
     IRegistrationQueryDbContext registrationDbContext,
     IWorkAllocationQueryDbContext workAllocationDbContext,
     IHelpDeskQueryDbContext helpDeskDbContext,
-    IAttendanceLeaveQueryDbContext attendanceDbContext)
+    IAttendanceLeaveQueryDbContext attendanceDbContext,
+    IMemoryCache memoryCache)
     : IQueryHandler<GetAdminDashboardQuery, Result<AdminDashboardDto>>
 {
+    private const string CacheKey = "AdminDashboard";
+
     public async ValueTask<Result<AdminDashboardDto>> Handle(GetAdminDashboardQuery request, CancellationToken cancellationToken)
     {
+        if (memoryCache.TryGetValue(CacheKey, out AdminDashboardDto? cachedDashboard) && cachedDashboard is not null)
+        {
+            return Result<AdminDashboardDto>.Success(cachedDashboard);
+        }
+
         int totalRegisteredUsers = await registrationDbContext.UserAccounts.CountAsync(cancellationToken);
         int totalProjects = await workAllocationDbContext.WorkAllocations.Select(w => w.ProjectId).Distinct().CountAsync(cancellationToken);
         int totalSurveysCompleted = await workAllocationDbContext.SurveyRecords.CountAsync(s => s.SurveyStatus == Statuses.Survey.Completed, cancellationToken);
@@ -50,6 +59,11 @@ public sealed class GetAdminDashboardQueryHandler(
             TotalTicketsOpen: totalTicketsOpen,
             OverallAttendancePercentage: overallAttendancePercentage,
             OverallSurveyCompletionPercentage: totalCompletionPercentage);
+
+        MemoryCacheEntryOptions cacheOptions = new MemoryCacheEntryOptions()
+            .SetAbsoluteExpiration(TimeSpan.FromMinutes(5));
+
+        memoryCache.Set(CacheKey, dashboard, cacheOptions);
 
         return Result<AdminDashboardDto>.Success(dashboard);
     }

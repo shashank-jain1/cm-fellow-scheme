@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useBlocks, useGramPanchayats, useCreateGramPanchayat } from '../../queries';
+import { useBlocks, useGramPanchayats, useCreateGramPanchayat, useUpdateGramPanchayat, useDeleteGramPanchayat } from '../../queries';
 import LocationSection from './LocationSection';
 
 export default function GramPanchayatSection() {
@@ -7,6 +7,8 @@ export default function GramPanchayatSection() {
   const [selectedParentId, setSelectedParentId] = useState<number | null>(null);
   const { data: items, isLoading } = useGramPanchayats(selectedParentId ?? undefined);
   const createMutation = useCreateGramPanchayat();
+  const updateMutation = useUpdateGramPanchayat();
+  const deleteMutation = useDeleteGramPanchayat();
   const [showForm, setShowForm] = useState(false);
   const [formName, setFormName] = useState('');
   const [formCode, setFormCode] = useState('');
@@ -22,6 +24,10 @@ export default function GramPanchayatSection() {
     setFormName(''); setFormCode(''); setShowForm(false);
   };
 
+  const handleUpdate = async (id: number, name: string, code: string, parentId: number) => {
+    await updateMutation.mutateAsync({ id, data: { gramPanchayatId: id, blockId: parentId, gramPanchayatName: name, gpCode: code || undefined } });
+  };
+
   return (
     <LocationSection title="Gram Panchayats" parentOptions={parentOptions} selectedParentId={selectedParentId}
       onParentChange={setSelectedParentId} items={items ?? []} isLoading={isLoading}
@@ -30,6 +36,8 @@ export default function GramPanchayatSection() {
       parentLabel="Block" idKey="gramPanchayatId" nameKey="gramPanchayatName" codeKey="gpCode"
       parentIdKey="blockId" getParentName={getParentName} nameLabel="GP Name *"
       codeLabel="GP Code" codeRequired={false} addButtonLabel="Add Gram Panchayat"
-      namePlaceholder="e.g. Gram Panchayat name" codePlaceholder="Optional code" />
+      namePlaceholder="e.g. Gram Panchayat name" codePlaceholder="Optional code"
+      onUpdate={handleUpdate} onDelete={(id) => deleteMutation.mutateAsync(id)}
+      onUpdateLoading={updateMutation.isPending} onDeleteLoading={deleteMutation.isPending} />
   );
 }

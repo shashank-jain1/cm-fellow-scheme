@@ -69,3 +69,39 @@ export interface CreateGramPanchayatCommand {
   gramPanchayatName: string;
   gpCode?: string;
 }
+
+export interface UpdateStateCommand {
+  stateId: number;
+  stateName: string;
+  stateCode: string;
+  stateShortName?: string;
+  displayOrder?: number;
+}
+
+export interface UpdateDivisionCommand {
+  divisionId: number;
+  stateId: number;
+  divisionName: string;
+  divisionCode?: string;
+}
+
+export interface UpdateDistrictCommand {
+  districtId: number;
+  divisionId: number;
+  districtName: string;
+  districtCode?: string;
+}
+
+export interface UpdateBlockCommand {
+  blockId: number;
+  districtId: number;
+  blockName: string;
+  blockCode?: string;
+}
+
+export interface UpdateGramPanchayatCommand {
+  gramPanchayatId: number;
+  blockId: number;
+  gramPanchayatName: string;
+  gpCode?: string;
+}
