@@ -26,7 +26,7 @@ export default function SurveyTable({ data }: { data: SurveyDetailDto[] }) {
         value={data}
         responsiveLayout="scroll"
         emptyMessage="No surveys found"
-        rowKey="surveyRecordId"
+        dataKey="surveyRecordId"
       >
         <Column field="internName" header="Intern" bodyStyle={{ fontWeight: 500 }} />
         <Column field="surveyPersonName" header="Survey Person" bodyStyle={{ color: 'var(--text-secondary)' }} />

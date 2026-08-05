@@ -19,7 +19,7 @@ export default function TicketTable({ tickets }: TicketTableProps) {
       value={tickets}
       responsiveLayout="scroll"
       emptyMessage="No tickets found"
-      rowKey="ticketId"
+      dataKey="ticketId"
     >
       <Column
         header="Ticket ID"

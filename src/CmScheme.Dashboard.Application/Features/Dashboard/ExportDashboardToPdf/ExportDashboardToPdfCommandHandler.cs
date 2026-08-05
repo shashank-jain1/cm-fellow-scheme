@@ -27,6 +27,11 @@ public sealed class ExportDashboardToPdfCommandHandler(IDashboardQueryDbContext 
             })
             .ToListAsync(cancellationToken);
 
+        string filterSummary = $"Role: {request.Role}";
+        if (request.StartDate.HasValue) filterSummary += $" | From: {request.StartDate:dd/MM/yyyy}";
+        if (request.EndDate.HasValue) filterSummary += $" | To: {request.EndDate:dd/MM/yyyy}";
+        if (request.ProjectId.HasValue) filterSummary += $" | Project ID: {request.ProjectId}";
+
         QuestPDF.Settings.License = LicenseType.Community;
 
         byte[] pdfBytes = Document.Create(container =>
@@ -35,8 +40,10 @@ public sealed class ExportDashboardToPdfCommandHandler(IDashboardQueryDbContext 
             {
                 page.Size(PageSizes.A4);
                 page.Margin(30);
-                page.Header().Text($"Dashboard Report - {request.Role}")
+                page.Header().Text($"Dashboard Report")
                     .FontSize(20).Bold().FontColor(Colors.Blue.Medium);
+                page.Header().PaddingTop(5).Text(filterSummary)
+                    .FontSize(11).FontColor(Colors.Grey.Darken1);
                 page.Content().PaddingVertical(10).Table(table =>
                 {
                     table.ColumnsDefinition(columns =>

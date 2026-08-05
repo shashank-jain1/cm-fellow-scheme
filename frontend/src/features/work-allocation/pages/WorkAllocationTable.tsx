@@ -52,7 +52,7 @@ export default function WorkAllocationTable({ allocations, isLoading, onEdit, on
       value={allocations}
       responsiveLayout="scroll"
       emptyMessage="No allocations found"
-      rowKey="workAllocationId"
+      dataKey="workAllocationId"
       loading={isLoading}
     >
       <Column field="workDescription" header="Description" bodyStyle={{ fontWeight: 600, fontSize: 14, color: 'var(--text-heading)' }} />

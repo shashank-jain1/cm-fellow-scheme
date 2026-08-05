@@ -16,7 +16,7 @@ export default function TaskProgressTable({ data, onRowClick }: TaskProgressTabl
         value={data}
         responsiveLayout="scroll"
         emptyMessage="No task progress data"
-        rowKey="taskProgressId"
+        dataKey="taskProgressId"
         onRowClick={(e) => onRowClick?.(e.data as TaskProgressDto)}
         style={{ cursor: onRowClick ? 'pointer' : 'default' }}
       >

@@ -1,6 +1,6 @@
 import ApiService from '../../services/ApiService';
 import dashboardUrls from './urls';
-import type { AdminDashboardDto, CoordinatorDashboardDto, FellowDashboardDto, RoleBasedDashboardDto, ProjectProgressDto, DashboardFilters, DashboardExportDto } from './types';
+import type { AdminDashboardDto, CoordinatorDashboardDto, FellowDashboardDto, RoleBasedDashboardDto, ProjectProgressDto, DashboardFilters } from './types';
 
 function buildQueryString(filters: DashboardFilters): string {
   const params = new URLSearchParams();
@@ -24,14 +24,14 @@ export async function fetchCoordinatorDashboard(coordinatorId: number, filters?:
   return res.data!;
 }
 
-export async function exportDashboardPdf(filters?: DashboardFilters): Promise<DashboardExportDto> {
-  const res = await ApiService.post<DashboardExportDto>(dashboardUrls.exportPdf(), filters ?? {});
-  return res.data!;
+export async function exportDashboardPdf(filters?: DashboardFilters): Promise<void> {
+  const today = new Date().toISOString().slice(0, 10);
+  await ApiService.postBlob(dashboardUrls.exportPdf(), filters ?? {}, `dashboard_report_${today}.pdf`);
 }
 
-export async function exportDashboardExcel(filters?: DashboardFilters): Promise<DashboardExportDto> {
-  const res = await ApiService.post<DashboardExportDto>(dashboardUrls.exportExcel(), filters ?? {});
-  return res.data!;
+export async function exportDashboardExcel(filters?: DashboardFilters): Promise<void> {
+  const today = new Date().toISOString().slice(0, 10);
+  await ApiService.postBlob(dashboardUrls.exportExcel(), filters ?? {}, `dashboard_report_${today}.xlsx`);
 }
 
 export async function fetchFellowDashboard(userId: number): Promise<FellowDashboardDto> {

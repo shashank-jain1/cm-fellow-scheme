@@ -37,7 +37,7 @@ export default function GoalsTable({ goals, isLoading, onAdvanceStatus, isPendin
       value={goals}
       responsiveLayout="scroll"
       emptyMessage="No goals yet"
-      rowKey="goalId"
+      dataKey="goalId"
     >
       <Column field="title" header="Title" bodyStyle={{ fontWeight: 600, fontSize: 14, color: 'var(--text-primary)' }} />
       <Column

@@ -40,7 +40,7 @@ export default function KnowledgeBaseArticleList({ articles, isLoading, searchQu
         value={articles}
         responsiveLayout="scroll"
         emptyMessage="No articles found"
-        rowKey="articleId"
+        dataKey="articleId"
         onRowClick={(e) => onSelect(e.data as KnowledgeBaseArticleDto)}
         style={{ cursor: 'pointer' }}
       >

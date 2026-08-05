@@ -12,10 +12,7 @@ export default function DashboardExport({ filters }: DashboardExportProps) {
 
   const handleExport = async (format: 'pdf' | 'excel') => {
     const mutation = format === 'pdf' ? exportPdf : exportExcel;
-    const result = await mutation.mutateAsync(filters);
-    if (result?.fileUrl) {
-      window.open(result.fileUrl, '_blank');
-    }
+    await mutation.mutateAsync(filters);
   };
 
   return (

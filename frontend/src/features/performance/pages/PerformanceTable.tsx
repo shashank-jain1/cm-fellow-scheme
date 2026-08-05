@@ -59,7 +59,7 @@ export default function PerformanceTable({ records, isLoading, onRowClick }: Pro
         value={records}
         responsiveLayout="scroll"
         emptyMessage="No performance records"
-        rowKey="performanceEvaluationId"
+        dataKey="performanceEvaluationId"
         onRowClick={(e) => onRowClick((e.data as any).performanceEvaluationId)}
         style={{ cursor: 'pointer' }}
       >

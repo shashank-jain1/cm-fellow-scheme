@@ -3,16 +3,12 @@ import { Button } from 'primereact/button';
 import { AppInput, AppSelect } from '../../../../shared/components/forms';
 import { ConfirmDialog } from '../../../../shared/components/ui';
 
-interface LocationItem {
-  [key: string]: string | number | boolean | null;
-}
-
 interface LocationSectionProps {
   title: string;
   parentOptions: { label: string; value: string }[];
   selectedParentId: number | null;
   onParentChange: (id: number | null) => void;
-  items: LocationItem[];
+  items: any[];
   isLoading: boolean;
   formName: string;
   formCode: string;
@@ -64,7 +60,7 @@ export default function LocationSection({
   getParentName,
   nameLabel,
   codeLabel,
-  codeRequired = true,
+  codeRequired: _codeRequired = true,
   addButtonLabel,
   namePlaceholder,
   codePlaceholder,
@@ -81,7 +77,7 @@ export default function LocationSection({
 
   const allOptions = [{ label: `All ${parentLabel}s`, value: '' }, ...parentOptions];
 
-  const handleEdit = (item: LocationItem) => {
+  const handleEdit = (item: any) => {
     setEditingId(item[idKey] as number);
     setEditName(item[nameKey] as string);
     setEditCode((item[codeKey] as string) ?? '');
@@ -158,7 +154,7 @@ export default function LocationSection({
               </tr>
             </thead>
             <tbody>
-              {(items ?? []).map((item: LocationItem) => (
+              {(items ?? []).map((item: any) => (
                 <tr key={item[idKey] as number} style={{ borderBottom: '1px solid var(--border-light)' }}>
                   <td style={{ ...tdStyle, fontFamily: 'monospace', color: 'var(--accent-primary)' }}>{item[idKey] as number}</td>
                   <td style={{ ...tdStyle, fontWeight: 600, fontSize: 14 }}>

@@ -28,7 +28,7 @@ export default function ImprovementPlansTable({ plans, isLoading }: ImprovementP
       value={plans}
       responsiveLayout="scroll"
       emptyMessage="No improvement plans"
-      rowKey="improvementPlanId"
+      dataKey="improvementPlanId"
     >
       <Column field="title" header="Title" bodyStyle={{ fontWeight: 600, fontSize: 14, color: 'var(--text-primary)' }} />
       <Column
