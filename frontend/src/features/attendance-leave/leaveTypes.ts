@@ -1,47 +1,40 @@
 export interface ApplyLeaveCommand {
-  userAccountId: number;
-  leaveTypeId: number;
+  applicantId: number;
+  leaveType: string;
   fromDate: string;
   toDate: string;
-  isHalfDay: boolean;
-  reason: string;
+  numberOfDays: number;
+  halfDayFullDay: string;
+  leaveReason: string;
   attachmentPath?: string;
-}
-
-export interface ApplyLeaveResult {
-  leaveApplicationId: number;
-  applicationNumber: string;
+  reportingManagerName: string;
+  createdBy: string;
 }
 
 export interface ApproveLeaveCommand {
   leaveApplicationId: number;
-  approvedBy: number;
-  action: 'Approved' | 'Rejected';
-  remarks?: string;
+  status: string;
+  remarks: string;
 }
 
 export interface LeaveStatusDto {
   leaveApplicationId: number;
-  applicationNumber: string;
-  leaveTypeName: string;
+  leaveType: string;
   fromDate: string;
   toDate: string;
   numberOfDays: number;
-  isHalfDay: boolean;
-  reason: string;
   status: string;
-  approvalRemarks?: string;
-  approvalDate?: string;
   createdOn: string;
 }
 
 export interface LeaveBalanceDto {
   leaveBalanceId: number;
-  leaveTypeName: string;
-  leaveTypeCode: string;
-  totalDays: number;
-  usedDays: number;
-  remainingDays: number;
+  applicantId: number;
+  leaveType: string;
+  openingBalance: number;
+  availedLeave: number;
+  pendingApprovalLeave: number;
+  availableBalance: number;
 }
 
 export interface HolidayDto {

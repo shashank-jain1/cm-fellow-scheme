@@ -8,4 +8,6 @@ public interface IAttendanceLeaveQueryDbContext
     IQueryable<Attendance> Attendances { get; }
     IQueryable<LeaveApplication> LeaveApplications { get; }
     IQueryable<LeaveBalance> LeaveBalances { get; }
+    IQueryable<Holiday> Holidays { get; }
+    IQueryable<PayrollAttendanceSummary> PayrollAttendanceSummaries { get; }
 }

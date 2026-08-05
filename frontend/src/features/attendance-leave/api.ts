@@ -4,7 +4,6 @@ import type {
   MarkAttendanceCommand,
   AttendanceDto,
   ApplyLeaveCommand,
-  ApplyLeaveResult,
   ApproveLeaveCommand,
   LeaveStatusDto,
   LeaveBalanceDto,
@@ -25,7 +24,7 @@ export const attendanceLeaveApi = {
     ApiService.get<AttendanceDto[]>(ATTENDANCE_LEAVE_URLS.ATTENDANCE_HISTORY),
 
   applyLeave: (data: ApplyLeaveCommand) =>
-    ApiService.post<ApplyLeaveResult>(ATTENDANCE_LEAVE_URLS.APPLY_LEAVE, data),
+    ApiService.post<number>(ATTENDANCE_LEAVE_URLS.APPLY_LEAVE, data),
 
   getLeaveStatus: (userAccountId: number) =>
     ApiService.get<LeaveStatusDto[]>(`${ATTENDANCE_LEAVE_URLS.LEAVE_STATUS}?UserAccountId=${userAccountId}`),

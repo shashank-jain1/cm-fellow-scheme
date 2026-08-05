@@ -1,15 +1,18 @@
 import { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { Rating } from 'primereact/rating';
 import { AppTextarea } from '../../../shared/components/forms';
 import { AppButton } from '../../../shared/components/ui';
 import { useSubmitSurvey } from '../queries';
 
 interface SatisfactionSurveyProps {
-  ticketId: number;
+  ticketId?: number;
   onSuccess?: () => void;
 }
 
-export default function SatisfactionSurvey({ ticketId, onSuccess }: SatisfactionSurveyProps) {
+export default function SatisfactionSurvey({ ticketId: propTicketId, onSuccess }: SatisfactionSurveyProps) {
+  const { id } = useParams<{ id: string }>();
+  const ticketId = propTicketId ?? Number(id);
   const submitSurvey = useSubmitSurvey();
   const [rating, setRating] = useState(0);
   const [comments, setComments] = useState('');

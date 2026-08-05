@@ -9,7 +9,6 @@ export type {
 } from './attendanceTypes';
 export type {
   ApplyLeaveCommand,
-  ApplyLeaveResult,
   ApproveLeaveCommand,
   LeaveStatusDto,
   LeaveBalanceDto,

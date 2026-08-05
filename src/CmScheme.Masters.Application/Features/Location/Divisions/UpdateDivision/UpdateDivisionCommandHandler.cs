@@ -22,6 +22,7 @@ public sealed class UpdateDivisionCommandHandler(IMastersCommandDbContext dbCont
         division.StateId = request.StateId;
         division.DivisionName = request.DivisionName;
         division.DivisionCode = request.DivisionCode;
+        division.ModifiedOn = DateTime.UtcNow;
 
         await dbContext.SaveChangesAsync(cancellationToken);
 

@@ -21,6 +21,7 @@ public sealed class DeleteGramPanchayatCommandHandler(IMastersCommandDbContext d
         }
 
         gramPanchayat.IsActive = false;
+        gramPanchayat.ModifiedOn = DateTime.UtcNow;
 
         await dbContext.SaveChangesAsync(cancellationToken);
 

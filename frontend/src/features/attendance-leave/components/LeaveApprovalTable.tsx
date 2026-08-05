@@ -31,16 +31,11 @@ export default function LeaveApprovalTable({ leaves }: LeaveApprovalTableProps) 
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12 }}>
             <div>
               <div style={{ fontSize: 15, fontWeight: 600, color: 'var(--text-primary)' }}>
-                {request.applicationNumber}
+                {request.leaveType}
               </div>
               <div style={{ fontSize: 13, color: 'var(--text-secondary)', marginTop: 4 }}>
-                {request.leaveTypeName} — {request.fromDate} to {request.toDate} ({request.numberOfDays} day{request.numberOfDays > 1 ? 's' : ''})
+                {request.fromDate} to {request.toDate} ({request.numberOfDays} day{request.numberOfDays > 1 ? 's' : ''})
               </div>
-              {request.reason && (
-                <div style={{ fontSize: 13, color: 'var(--text-muted)', marginTop: 4 }}>
-                  Reason: {request.reason}
-                </div>
-              )}
             </div>
             <StatusTag value={request.status} />
           </div>

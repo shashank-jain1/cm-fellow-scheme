@@ -31,4 +31,6 @@ public class AttendanceLeaveDbContext : BaseDbContext, IAttendanceLeaveCommandDb
     IQueryable<Attendance> IAttendanceLeaveQueryDbContext.Attendances => Attendances;
     IQueryable<LeaveApplication> IAttendanceLeaveQueryDbContext.LeaveApplications => LeaveApplications;
     IQueryable<LeaveBalance> IAttendanceLeaveQueryDbContext.LeaveBalances => LeaveBalances;
+    IQueryable<Holiday> IAttendanceLeaveQueryDbContext.Holidays => Holidays;
+    IQueryable<PayrollAttendanceSummary> IAttendanceLeaveQueryDbContext.PayrollAttendanceSummaries => PayrollAttendanceSummaries;
 }

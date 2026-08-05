@@ -23,6 +23,7 @@ public sealed class UpdateBlockCommandHandler(IMastersCommandDbContext dbContext
         block.DistrictId = request.DistrictId;
         block.BlockName = request.BlockName;
         block.BlockCode = request.BlockCode;
+        block.ModifiedOn = DateTime.UtcNow;
 
         await dbContext.SaveChangesAsync(cancellationToken);
 

@@ -13,9 +13,10 @@ interface Props {
   onChange: (value: string) => void;
   placeholder?: string;
   style?: React.CSSProperties;
+  disabled?: boolean;
 }
 
-export default function SelectDivision({ value, onChange, placeholder = 'Select Division', style }: Props) {
+export default function SelectDivision({ value, onChange, placeholder = 'Select Division', style, disabled }: Props) {
   const { data, isLoading } = useQuery({
     queryKey: ['divisions'],
     queryFn: async () => {
@@ -33,6 +34,7 @@ export default function SelectDivision({ value, onChange, placeholder = 'Select 
       options={options}
       placeholder={placeholder}
       loading={isLoading}
+      disabled={disabled}
       showClear
       style={style ?? { width: '100%' }}
     />

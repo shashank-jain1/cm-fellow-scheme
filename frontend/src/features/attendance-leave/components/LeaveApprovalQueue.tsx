@@ -15,22 +15,18 @@ export default function LeaveApprovalQueue() {
   );
 
   const handleApprove = (leaveApplicationId: number) => {
-    if (!user) return;
     approveMutation.mutate({
       leaveApplicationId,
-      approvedBy: user.userAccountId,
-      action: 'Approved',
-      remarks: remarksMap[leaveApplicationId],
+      status: 'Approved',
+      remarks: remarksMap[leaveApplicationId] ?? '',
     });
   };
 
   const handleReject = (leaveApplicationId: number) => {
-    if (!user) return;
     approveMutation.mutate({
       leaveApplicationId,
-      approvedBy: user.userAccountId,
-      action: 'Rejected',
-      remarks: remarksMap[leaveApplicationId],
+      status: 'Rejected',
+      remarks: remarksMap[leaveApplicationId] ?? '',
     });
   };
 

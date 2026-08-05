@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
 interface SidebarState {
+  trainingExpanded: boolean;
   attendanceExpanded: boolean;
   certificateExpanded: boolean;
   workAllocationExpanded: boolean;

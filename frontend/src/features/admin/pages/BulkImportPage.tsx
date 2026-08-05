@@ -16,8 +16,8 @@ export default function BulkImportPage() {
     }
     try {
       const result = await importMutation.mutateAsync(selectedFile);
-      const imported = result?.imported ?? 0;
-      const errors = result?.errors ?? [];
+      const imported = result?.data?.imported ?? 0;
+      const errors = result?.data?.errors ?? [];
       toast.current?.show({
         severity: errors.length > 0 ? 'warn' : 'success',
         summary: 'Import Complete',

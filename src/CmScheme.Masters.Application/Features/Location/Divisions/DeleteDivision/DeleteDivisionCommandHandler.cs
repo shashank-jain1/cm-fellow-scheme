@@ -20,6 +20,7 @@ public sealed class DeleteDivisionCommandHandler(IMastersCommandDbContext dbCont
             return Result.NotFound("Division not found.");
 
         division.IsActive = false;
+        division.ModifiedOn = DateTime.UtcNow;
 
         await dbContext.SaveChangesAsync(cancellationToken);
 

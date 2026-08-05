@@ -30,6 +30,7 @@ export interface ExitReadinessPayload {
 }
 
 export interface SubmitExitInterviewCommand {
+  userAccountId: number;
   overallExperience: number;
   workEnvironment: number;
   learningOpportunities: number;
@@ -40,6 +41,8 @@ export interface SubmitExitInterviewCommand {
 }
 
 export interface ExitInterviewDto {
+  exitInterviewId: number;
+  userAccountId: number;
   overallExperience: number;
   workEnvironment: number;
   learningOpportunities: number;
@@ -47,6 +50,7 @@ export interface ExitInterviewDto {
   improvementSuggestions: string;
   whatWorkedWell: string;
   wouldRecommend: boolean;
+  submittedOn: string;
 }
 
 export interface ComplianceCheckResult {

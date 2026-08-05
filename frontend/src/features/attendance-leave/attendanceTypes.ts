@@ -53,5 +53,6 @@ export interface PayrollSummaryDto {
   approvedLeaveDays: number;
   absentDays: number;
   payableDays: number;
+  hasPendingLeaveApprovals: boolean;
   createdOn: string;
 }

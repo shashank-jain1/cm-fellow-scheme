@@ -14,9 +14,10 @@ interface Props {
   districtId?: string;
   placeholder?: string;
   style?: React.CSSProperties;
+  disabled?: boolean;
 }
 
-export default function SelectBlock({ value, onChange, districtId, placeholder = 'Select Block', style }: Props) {
+export default function SelectBlock({ value, onChange, districtId, placeholder = 'Select Block', style, disabled }: Props) {
   const { data, isLoading } = useQuery({
     queryKey: ['blocks', districtId],
     queryFn: async () => {
@@ -36,7 +37,7 @@ export default function SelectBlock({ value, onChange, districtId, placeholder =
       options={options}
       placeholder={placeholder}
       loading={isLoading}
-      disabled={!districtId}
+      disabled={disabled || !districtId}
       showClear
       style={style ?? { width: '100%' }}
     />

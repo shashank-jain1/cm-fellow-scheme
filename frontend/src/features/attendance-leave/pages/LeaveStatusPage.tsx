@@ -30,7 +30,7 @@ export default function LeaveStatusPage() {
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
               <tr style={{ background: 'var(--bg-primary)' }}>
-                {['Application No', 'Leave Type', 'From', 'To', 'Days', 'Status', 'Reason'].map((h) => (
+                {['Leave Type', 'From', 'To', 'Days', 'Status'].map((h) => (
                   <th
                     key={h}
                     style={{
@@ -52,10 +52,7 @@ export default function LeaveStatusPage() {
             <tbody>
               {leaveRecords.map((record) => (
                 <tr key={record.leaveApplicationId} style={{ borderBottom: '1px solid var(--border-light)' }}>
-                  <td style={{ padding: '14px 16px', fontSize: 13, fontWeight: 600, color: 'var(--text-primary)' }}>
-                    {record.applicationNumber}
-                  </td>
-                  <td style={{ padding: '14px 16px', fontSize: 13, color: 'var(--text-primary)' }}>{record.leaveTypeName}</td>
+                  <td style={{ padding: '14px 16px', fontSize: 13, fontWeight: 600, color: 'var(--text-primary)' }}>{record.leaveType}</td>
                   <td style={{ padding: '14px 16px', fontSize: 13, color: 'var(--text-muted)' }}>
                     {record.fromDate}
                   </td>
@@ -65,9 +62,6 @@ export default function LeaveStatusPage() {
                   <td style={{ padding: '14px 16px', fontSize: 13, fontWeight: 600 }}>{record.numberOfDays}</td>
                   <td style={{ padding: '14px 16px' }}>
                     <StatusTag value={record.status} />
-                  </td>
-                  <td style={{ padding: '14px 16px', fontSize: 13, color: 'var(--text-muted)', maxWidth: 200, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                    {record.reason || '—'}
                   </td>
                 </tr>
               ))}

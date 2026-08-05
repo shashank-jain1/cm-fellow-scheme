@@ -17,12 +17,12 @@ export default function ApplyLeaveForm({ onSuccess }: ApplyLeaveFormProps) {
         <div className="form-field">
           <label>Leave Type *</label>
           <AppSelect
-            value={formData.leaveTypeId !== null ? String(formData.leaveTypeId) : ''}
-            onChange={(val: string) => handleChange('leaveTypeId', val ? Number(val) : null)}
+            value={formData.leaveType}
+            onChange={(val: string) => handleChange('leaveType', val)}
             options={leaveTypeOptions}
             placeholder="Select leave type"
           />
-          {errors.leaveTypeId && <small style={{ color: 'var(--red-600)', fontSize: 12 }}>{errors.leaveTypeId}</small>}
+          {errors.leaveType && <small style={{ color: 'var(--red-600)', fontSize: 12 }}>{errors.leaveType}</small>}
         </div>
 
         <div className="form-field">
@@ -52,8 +52,8 @@ export default function ApplyLeaveForm({ onSuccess }: ApplyLeaveFormProps) {
         <label>Half Day</label>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, height: 40 }}>
           <AppSwitch
-            checked={formData.isHalfDay}
-            onChange={(e) => handleChange('isHalfDay', e.value ?? e.target?.checked ?? false)}
+            checked={formData.halfDayFullDay === 'Half'}
+            onChange={(e) => handleChange('halfDayFullDay', (e.value ?? e.target?.checked) ? 'Half' : 'Full')}
           />
           <label style={{ fontSize: 13, color: 'var(--text-secondary)' }}>
             Half Day
@@ -64,12 +64,12 @@ export default function ApplyLeaveForm({ onSuccess }: ApplyLeaveFormProps) {
       <div className="form-field full-width">
         <label>Reason for Leave *</label>
         <AppTextarea
-          value={formData.reason}
-          onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => handleChange('reason', e.target.value)}
+          value={formData.leaveReason}
+          onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => handleChange('leaveReason', e.target.value)}
           rows={4}
           placeholder="Provide a reason for your leave request"
         />
-        {errors.reason && <small style={{ color: 'var(--red-600)', fontSize: 12 }}>{errors.reason}</small>}
+        {errors.leaveReason && <small style={{ color: 'var(--red-600)', fontSize: 12 }}>{errors.leaveReason}</small>}
       </div>
 
       <AppButton

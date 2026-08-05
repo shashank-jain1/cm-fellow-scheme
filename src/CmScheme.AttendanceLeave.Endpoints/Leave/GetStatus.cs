@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Http;
-using CmScheme.Registration.Application.Features.Leave.GetLeaveStatus;
+using CmScheme.AttendanceLeave.Application.Features.Leave.GetLeaveStatus;
 using CmScheme.Endpoints.Abstractions.Extensions;
 using Mediator;
 using IResult = Microsoft.AspNetCore.Http.IResult;

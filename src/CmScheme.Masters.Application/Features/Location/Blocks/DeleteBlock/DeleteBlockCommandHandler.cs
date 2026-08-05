@@ -21,6 +21,7 @@ public sealed class DeleteBlockCommandHandler(IMastersCommandDbContext dbContext
         }
 
         block.IsActive = false;
+        block.ModifiedOn = DateTime.UtcNow;
 
         await dbContext.SaveChangesAsync(cancellationToken);
 

@@ -4,30 +4,30 @@ import { useApplyLeave } from '../queries';
 import { useAuth } from '../../auth';
 
 interface LeaveFormData {
-  leaveTypeId: number | null;
+  leaveType: string;
   fromDate: string;
   toDate: string;
-  isHalfDay: boolean;
-  reason: string;
+  halfDayFullDay: string;
+  leaveReason: string;
   attachmentPath?: string;
 }
 
 interface FormErrors {
-  leaveTypeId?: string;
+  leaveType?: string;
   fromDate?: string;
   toDate?: string;
-  reason?: string;
+  leaveReason?: string;
 }
 
 export function useApplyLeaveForm(onSuccess?: () => void) {
   const applyLeaveMutation = useApplyLeave();
   const { user } = useAuth();
   const [formData, setFormData] = useState<LeaveFormData>({
-    leaveTypeId: null,
+    leaveType: '',
     fromDate: '',
     toDate: '',
-    isHalfDay: false,
-    reason: '',
+    halfDayFullDay: 'Full',
+    leaveReason: '',
     attachmentPath: undefined,
   });
   const [errors, setErrors] = useState<FormErrors>({});
@@ -35,13 +35,13 @@ export function useApplyLeaveForm(onSuccess?: () => void) {
   const validate = (): boolean => {
     const newErrors: FormErrors = {};
 
-    if (!formData.leaveTypeId) newErrors.leaveTypeId = 'Leave type is required';
+    if (!formData.leaveType) newErrors.leaveType = 'Leave type is required';
     if (!formData.fromDate) newErrors.fromDate = 'From date is required';
     if (!formData.toDate) newErrors.toDate = 'To date is required';
     if (formData.fromDate && formData.toDate && formData.fromDate > formData.toDate) {
       newErrors.toDate = 'To date must be after from date';
     }
-    if (!formData.reason.trim()) newErrors.reason = 'Reason is required';
+    if (!formData.leaveReason.trim()) newErrors.leaveReason = 'Reason is required';
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -59,24 +59,33 @@ export function useApplyLeaveForm(onSuccess?: () => void) {
     if (!validate()) return;
     if (!user) return;
 
+    const from = new Date(formData.fromDate);
+    const to = new Date(formData.toDate);
+    const diffTime = Math.abs(to.getTime() - from.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+    const numberOfDays = formData.halfDayFullDay === 'Half' ? 0.5 : diffDays;
+
     const command: ApplyLeaveCommand = {
-      userAccountId: user.userAccountId,
-      leaveTypeId: formData.leaveTypeId!,
+      applicantId: user.userAccountId,
+      leaveType: formData.leaveType,
       fromDate: formData.fromDate,
       toDate: formData.toDate,
-      isHalfDay: formData.isHalfDay,
-      reason: formData.reason,
+      numberOfDays,
+      halfDayFullDay: formData.halfDayFullDay,
+      leaveReason: formData.leaveReason,
       attachmentPath: formData.attachmentPath,
+      reportingManagerName: '',
+      createdBy: user.username,
     };
 
     applyLeaveMutation.mutate(command, {
       onSuccess: () => {
         setFormData({
-          leaveTypeId: null,
+          leaveType: '',
           fromDate: '',
           toDate: '',
-          isHalfDay: false,
-          reason: '',
+          halfDayFullDay: 'Full',
+          leaveReason: '',
           attachmentPath: undefined,
         });
         onSuccess?.();

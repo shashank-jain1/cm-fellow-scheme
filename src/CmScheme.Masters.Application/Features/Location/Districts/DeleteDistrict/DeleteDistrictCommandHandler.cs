@@ -21,6 +21,7 @@ public sealed class DeleteDistrictCommandHandler(IMastersCommandDbContext dbCont
         }
 
         district.IsActive = false;
+        district.ModifiedOn = DateTime.UtcNow;
 
         await dbContext.SaveChangesAsync(cancellationToken);
 

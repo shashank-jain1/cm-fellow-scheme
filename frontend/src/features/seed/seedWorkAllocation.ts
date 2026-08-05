@@ -6,7 +6,7 @@ import type { SeedFn } from './seedMasters';
 const seedWorkAllocation: SeedFn = async (appendLog) => {
   let count = 0;
 
-  const projRes = await ApiService.get<Array<{ projectId: number }>>('masters/projects');
+  const projRes = await ApiService.get<Array<{ projectId: number; projectName: string }>>('masters/projects');
   const projects = projRes.data ?? [];
   const workRes = await ApiService.get<Array<{ workId: number; projectId: number }>>('masters/works');
   const works = workRes.data ?? [];

@@ -23,6 +23,7 @@ public sealed class UpdateGramPanchayatCommandHandler(IMastersCommandDbContext d
         gramPanchayat.BlockId = request.BlockId;
         gramPanchayat.GramPanchayatName = request.GramPanchayatName;
         gramPanchayat.GPCode = request.GPCode;
+        gramPanchayat.ModifiedOn = DateTime.UtcNow;
 
         await dbContext.SaveChangesAsync(cancellationToken);
 

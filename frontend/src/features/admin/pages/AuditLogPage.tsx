@@ -20,7 +20,7 @@ export default function AuditLogPage() {
     const severity =
       row.action === 'GRANT' ? 'success' :
       row.action === 'REVOKE' ? 'danger' :
-      row.action === 'UPDATE' ? 'warn' : 'info';
+      row.action === 'UPDATE' ? 'warning' : 'info';
     return <Tag value={row.action} severity={severity} />;
   };
 

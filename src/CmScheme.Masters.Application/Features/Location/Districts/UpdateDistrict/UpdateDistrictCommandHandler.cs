@@ -23,6 +23,7 @@ public sealed class UpdateDistrictCommandHandler(IMastersCommandDbContext dbCont
         district.DivisionId = request.DivisionId;
         district.DistrictName = request.DistrictName;
         district.DistrictCode = request.DistrictCode;
+        district.ModifiedOn = DateTime.UtcNow;
 
         await dbContext.SaveChangesAsync(cancellationToken);
 

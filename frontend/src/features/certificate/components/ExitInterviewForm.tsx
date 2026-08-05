@@ -55,6 +55,7 @@ export default function ExitInterviewForm() {
     const ratingMap = Object.fromEntries(ratingKeys.map((k) => [k, ratings.find((r) => r.key === k)?.value ?? 0]));
     try {
       await submitMutation.mutateAsync({
+        userAccountId,
         ...ratingMap,
         improvementSuggestions: improvementSuggestions.trim(),
         whatWorkedWell: whatWorkedWell.trim(),
