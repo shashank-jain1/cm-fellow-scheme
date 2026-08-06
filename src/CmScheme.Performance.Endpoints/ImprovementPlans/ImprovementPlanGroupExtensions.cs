@@ -12,6 +12,9 @@ public static class ImprovementPlanGroupExtensions
             .RequireAuthorization()
             .RequireModule(ModuleCodes.Performance, "Read", requireScope: false);
 
+        group.MapPost("/", CreateImprovementPlan.Handle).DisableAntiforgery();
+        group.MapGet("/user/{userAccountId:int}", GetImprovementPlans.Handle);
+
         return group;
     }
 }

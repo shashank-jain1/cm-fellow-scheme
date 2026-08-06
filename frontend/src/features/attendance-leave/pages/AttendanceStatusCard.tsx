@@ -39,6 +39,13 @@ export default function AttendanceStatusCard({ record, userId, isPending }: Atte
           {record.latitude.toFixed(4)}, {record.longitude.toFixed(4)}
         </span>
       </div>
+      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <span style={{ fontSize: 13, color: 'var(--text-secondary)' }}>Face Verification</span>
+        <span style={{ fontSize: 13 }}>
+          {record.faceVerificationStatus}
+          {record.faceMatchPercentage != null && ` (${record.faceMatchPercentage.toFixed(1)}%)`}
+        </span>
+      </div>
       {!record.checkOutTime && (
         <div style={{ marginTop: 8 }}>
           <CheckOutButton

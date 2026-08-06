@@ -12,6 +12,9 @@ public static class TaskDependencyGroupExtensions
             .RequireAuthorization()
             .RequireModule(ModuleCodes.WorkAllocation, "Read", requireScope: false);
 
+        group.MapPost("/", AddTaskDependency.Handle).DisableAntiforgery();
+        group.MapGet("/work-allocation/{workAllocationId:int}", GetTaskDependencies.Handle);
+
         return group;
     }
 }

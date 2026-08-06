@@ -12,6 +12,10 @@ public static class PerformanceGoalGroupExtensions
             .RequireAuthorization()
             .RequireModule(ModuleCodes.Performance, "Read", requireScope: false);
 
+        group.MapPost("/", CreatePerformanceGoal.Handle).DisableAntiforgery();
+        group.MapGet("/user/{userAccountId:int}", GetPerformanceGoals.Handle);
+        group.MapPut("/{performanceGoalId:int}/status", UpdatePerformanceGoal.Handle).DisableAntiforgery();
+
         return group;
     }
 }

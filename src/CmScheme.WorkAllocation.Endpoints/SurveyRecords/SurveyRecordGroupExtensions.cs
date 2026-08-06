@@ -12,6 +12,10 @@ public static class SurveyRecordGroupExtensions
             .RequireAuthorization()
             .RequireModule(ModuleCodes.WorkAllocation, "Read", requireScope: false);
 
+        group.MapPost("/", Create.Handle).DisableAntiforgery();
+        group.MapGet("/task/{taskProgressId:int}", List.Handle);
+        group.MapGet("/{surveyRecordId:int}", Get.Handle);
+
         return group;
     }
 }

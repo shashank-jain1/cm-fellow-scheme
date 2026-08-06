@@ -35,10 +35,9 @@ const seedAttendance: SeedFn = async (appendLog) => {
     if (day === 0 || day === 6) continue;
 
     const payload = {
-      applicantId: fellowApplicantId, attendanceDate: dateStr,
-      checkInTime: timeOnly(9, 30), checkOutTime: timeOnly(18, 0),
-      captureFacePath: 'seed/face.jpg', faceVerificationStatus: 'Verified',
-      latitude: 23.2599, longitude: 77.4126, attendanceStatus: 'Present',
+      applicantId: fellowApplicantId,
+      faceImageBase64: 'c2VlZC1mYWNlLWRhdGE=', // placeholder base64
+      latitude: 23.2599, longitude: 77.4126,
     };
     const res = await ApiService.post<number>('attendance', payload);
     if (res.data) { count++; appendLog(log('Attendance', `Marked attendance for fellow on ${dateStr}`, 'success')); }

@@ -18,7 +18,7 @@ import type {
 
 export const attendanceLeaveApi = {
   markAttendance: (data: MarkAttendanceCommand) =>
-    ApiService.post<AttendanceDto>(ATTENDANCE_LEAVE_URLS.MARK_ATTENDANCE, data),
+    ApiService.post<number>(ATTENDANCE_LEAVE_URLS.MARK_ATTENDANCE, data),
 
   getAttendanceHistory: () =>
     ApiService.get<AttendanceDto[]>(ATTENDANCE_LEAVE_URLS.ATTENDANCE_HISTORY),

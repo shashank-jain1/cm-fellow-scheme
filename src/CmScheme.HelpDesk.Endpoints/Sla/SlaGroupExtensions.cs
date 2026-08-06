@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using CmScheme.Endpoints.Abstractions.Authorization;
 
@@ -11,6 +12,13 @@ public static class SlaGroupExtensions
         RouteGroupBuilder group = builder.MapGroup("sla")
             .RequireAuthorization()
             .RequireModule(ModuleCodes.HelpDesk, "Read", requireScope: false);
+
+        group.MapPost("/check-overdue", CheckSlaOverdue.Handle)
+            .WithName("CheckSlaOverdue")
+            .WithDisplayName("Check SLA overdue breaches")
+            .DisableAntiforgery()
+            .Produces<int>()
+            .ProducesValidationProblem();
 
         return group;
     }

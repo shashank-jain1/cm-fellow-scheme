@@ -20,5 +20,28 @@ public sealed class MeetingEndpoints : IApiEndpoint
             .WithTags("Meetings")
             .WithName("CreateMeeting")
             .WithDisplayName("Create a meeting");
+
+        group.MapGet("/{trainingScheduleId:int}", GetMeeting.GetById)
+            .WithTags("Meetings")
+            .WithName("GetMeeting")
+            .WithDisplayName("Get meeting by ID");
+
+        group.MapPut("/{trainingScheduleId:int}", UpdateMeeting.Update)
+            .WithTags("Meetings")
+            .WithName("UpdateMeeting")
+            .WithDisplayName("Update meeting")
+            .DisableAntiforgery();
+
+        group.MapPost("/{trainingScheduleId:int}/attachments", UploadMeetingAttachment.Upload)
+            .WithTags("Meetings")
+            .WithName("UploadMeetingAttachment")
+            .WithDisplayName("Upload meeting attachment")
+            .DisableAntiforgery();
+
+        group.MapPost("/{trainingScheduleId:int}/mom", UploadMom.Upload)
+            .WithTags("Meetings")
+            .WithName("UploadMom")
+            .WithDisplayName("Upload minutes of meeting")
+            .DisableAntiforgery();
     }
 }

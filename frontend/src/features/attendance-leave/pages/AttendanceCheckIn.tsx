@@ -1,13 +1,13 @@
+import type { UseMutationResult } from '@tanstack/react-query';
 import FaceCaptureWidget from '../components/FaceCaptureWidget';
-import { useMarkAttendance } from '../queries';
+import type { MarkAttendanceCommand } from '../types';
 
 interface AttendanceCheckInProps {
   userId: number;
+  markAttendance: UseMutationResult<number, Error, MarkAttendanceCommand>;
 }
 
-export default function AttendanceCheckIn({ userId }: AttendanceCheckInProps) {
-  const markAttendance = useMarkAttendance();
-
+export default function AttendanceCheckIn({ userId, markAttendance }: AttendanceCheckInProps) {
   const handleCapture = (imageBase64: string, latitude: number, longitude: number) => {
     markAttendance.mutate({
       applicantId: userId,

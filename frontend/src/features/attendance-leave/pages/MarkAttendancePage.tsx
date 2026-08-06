@@ -55,7 +55,7 @@ export default function MarkAttendancePage() {
       )}
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
-        <AttendanceCheckIn userId={user?.userAccountId ?? 0} />
+        <AttendanceCheckIn userId={user?.userAccountId ?? 0} markAttendance={markAttendance} />
 
         <div>
           <h2 style={{ fontSize: 16, fontWeight: 600, marginBottom: 16, color: 'var(--text-primary)' }}>

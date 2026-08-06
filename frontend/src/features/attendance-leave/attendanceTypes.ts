@@ -11,9 +11,12 @@ export interface AttendanceDto {
   attendanceDate: string;
   checkInTime: string;
   checkOutTime?: string;
-  attendanceStatus: string;
+  captureFacePath: string;
+  faceMatchPercentage?: number;
+  faceVerificationStatus: string;
   latitude: number;
   longitude: number;
+  attendanceStatus: string;
 }
 
 export interface CheckOutAttendanceCommand {

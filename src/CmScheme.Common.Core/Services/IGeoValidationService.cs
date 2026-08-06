@@ -4,8 +4,10 @@ public interface IGeoValidationService
 {
     Task<bool> IsWithinAssignedAreaAsync(
         int userAccountId,
-        decimal latitude,
-        decimal longitude,
+        decimal currentLatitude,
+        decimal currentLongitude,
+        decimal targetLatitude,
+        decimal targetLongitude,
         decimal maxDistanceKm = 5.0m,
         CancellationToken cancellationToken = default);
 }

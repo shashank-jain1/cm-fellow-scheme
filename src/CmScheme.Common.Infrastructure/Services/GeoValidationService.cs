@@ -6,23 +6,21 @@ public sealed class GeoValidationService : IGeoValidationService
 {
     public Task<bool> IsWithinAssignedAreaAsync(
         int userAccountId,
-        decimal latitude,
-        decimal longitude,
+        decimal currentLatitude,
+        decimal currentLongitude,
+        decimal targetLatitude,
+        decimal targetLongitude,
         decimal maxDistanceKm = 5.0m,
         CancellationToken cancellationToken = default)
     {
-        // If coordinates are default (0, 0) or unprovided, skip geofence restriction to avoid blocking testing
-        if (latitude == 0m && longitude == 0m)
+        // If current coordinates are default (0, 0) or unprovided, skip geofence restriction to avoid blocking testing
+        if (currentLatitude == 0m && currentLongitude == 0m)
         {
             return Task.FromResult(true);
         }
 
-        // Default MP reference coordinates for assigned area (Bhopal Center: 23.2599, 77.4126)
-        const double centerLat = 23.2599;
-        const double centerLon = 77.4126;
-
         double distanceKm = CalculateHaversineDistance(
-            (double)latitude, (double)longitude, centerLat, centerLon);
+            (double)currentLatitude, (double)currentLongitude, (double)targetLatitude, (double)targetLongitude);
 
         return Task.FromResult((decimal)distanceKm <= maxDistanceKm);
     }

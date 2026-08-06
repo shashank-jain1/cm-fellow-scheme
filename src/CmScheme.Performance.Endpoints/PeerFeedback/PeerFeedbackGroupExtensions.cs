@@ -12,6 +12,9 @@ public static class PeerFeedbackGroupExtensions
             .RequireAuthorization()
             .RequireModule(ModuleCodes.Performance, "Read", requireScope: false);
 
+        group.MapPost("/", SubmitFeedback.Handle).DisableAntiforgery();
+        group.MapGet("/evaluation/{performanceEvaluationId:int}", GetFeedback.Handle);
+
         return group;
     }
 }

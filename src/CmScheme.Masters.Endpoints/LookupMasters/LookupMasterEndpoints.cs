@@ -15,5 +15,10 @@ public sealed class LookupMasterEndpoints : IApiEndpoint
         group.MapGet("", List.Handle)
             .WithName("ListLookupMasters")
             .WithDisplayName("List lookup masters by type");
+
+        group.MapPost("", Create.Handle)
+            .WithName("CreateLookupMaster")
+            .WithDisplayName("Create a lookup master")
+            .DisableAntiforgery();
     }
 }

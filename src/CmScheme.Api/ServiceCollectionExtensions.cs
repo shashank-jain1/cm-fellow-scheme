@@ -167,6 +167,7 @@ internal static class ServiceCollectionExtensions
         services.AddScoped<ICertificateTemplateService, CertificateTemplateService>();
         services.AddScoped<IReportService, ReportService>();
         services.AddScoped<IGeoValidationService, GeoValidationService>();
+        services.AddScoped<IFaceMatchService, FaceMatchService>();
         services.AddHostedService<BackgroundServices.SlaCheckBackgroundService>();
 
         return services;

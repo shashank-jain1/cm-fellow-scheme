@@ -20,5 +20,11 @@ public sealed class WorkEndpoints : IApiEndpoint
             .WithTags("Works")
             .WithName("CreateWork")
             .WithDisplayName("Create a new work");
+
+        group.MapPut("/{id:int}", UpdateWork.Update)
+            .WithTags("Works")
+            .WithName("UpdateWork")
+            .WithDisplayName("Update work details")
+            .DisableAntiforgery();
     }
 }

@@ -12,6 +12,12 @@ public static class TaskManagementGroupExtensions
             .RequireAuthorization()
             .RequireModule(ModuleCodes.WorkAllocation, "Read", requireScope: false);
 
+        group.MapPut("/{workAllocationId:int}/progress", UpdateProgress.Handle).DisableAntiforgery();
+        group.MapPut("/{workAllocationId:int}/verify", VerifyTask.Handle).DisableAntiforgery();
+        group.MapGet("/{workAllocationId:int}/attachments", GetAttachments.Handle);
+        group.MapPost("/{workAllocationId:int}/attachments", UploadAttachment.Handle).DisableAntiforgery();
+        group.MapPost("/check-overdue", CheckOverdue.Handle).DisableAntiforgery();
+
         return group;
     }
 }

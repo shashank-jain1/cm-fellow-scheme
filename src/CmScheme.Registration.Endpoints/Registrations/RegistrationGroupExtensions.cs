@@ -14,6 +14,16 @@ public static class RegistrationGroupExtensions
             .RequireAuthorization()
             .RequireModule(ModuleCodes.Registration, "Read", requireScope: false);
 
+        group.MapSubmitEndpoint();
+        group.MapListEndpoint();
+        group.MapGetEndpoint();
+        group.MapApproveEndpoint();
+        group.MapRejectEndpoint();
+        group.MapBulkApproveEndpoint();
+        group.MapSendOtpEndpoint();
+        group.MapVerifyOtpEndpoint();
+        group.MapUpdateProfileEndpoint();
+
         return group;
     }
 }
