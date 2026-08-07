@@ -13,5 +13,6 @@ public interface IWorkAllocationCommandDbContext
     DbSet<TaskAttachment> TaskAttachments { get; }
     DbSet<TaskDeadline> TaskDeadlines { get; }
     DbSet<TaskDependency> TaskDependencies { get; }
+    DbSet<TaskAssignment> TaskAssignments { get; }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

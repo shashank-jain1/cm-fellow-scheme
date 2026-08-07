@@ -29,7 +29,7 @@ export default function WorkAllocationPage() {
   const handleNewAllocation = () => { resetForm(); setEditingAllocation(null); setShowForm(true); };
 
   const handleEditAllocation = (allocation: WorkAllocationDto) => {
-    setFormDataForEdit({ projectId: allocation.projectId, workProjectId: allocation.workProjectId, workDescription: allocation.workDescription, priority: allocation.priority, startDate: allocation.startDate, endDate: allocation.endDate, surveysPerIntern: allocation.surveysPerIntern, divisionId: 0, districtId: 0, blockId: 0 });
+    setFormDataForEdit({ projectId: allocation.projectId, workProjectId: allocation.workProjectId, workDescription: allocation.workDescription, priority: allocation.priority, startDate: allocation.startDate, endDate: allocation.endDate, surveysPerIntern: allocation.surveysPerIntern, divisionId: allocation.divisionId ?? 0, districtId: allocation.districtId ?? 0, blockId: allocation.blockId ?? 0 });
     setEditingAllocation(allocation); setShowForm(true);
   };
 

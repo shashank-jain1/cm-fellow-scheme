@@ -59,7 +59,7 @@ export const helpDeskSubItems: NavItem[] = [
 export const adminNavItems: NavItem[] = [
   { path: '/admin/users', label: 'User Management', icon: 'pi pi-users', moduleCode: 'REGISTRATION' },
   { path: '/admin/access', label: 'User Access Management', icon: 'pi pi-key', moduleCode: 'ADMINISTRATION' },
-  { path: '/admin/access/audit', label: 'Access Audit Log', icon: 'pi pi-history', moduleCode: 'ADMINISTRATION' },
+  { path: '/admin/audit-log', label: 'Access Audit Log', icon: 'pi pi-history', moduleCode: 'ADMINISTRATION' },
   { path: '/admin/documents', label: 'Document Verification', icon: 'pi pi-file-check', moduleCode: 'REGISTRATION' },
   { path: '/admin/import', label: 'Bulk Import', icon: 'pi pi-upload', moduleCode: 'ADMINISTRATION' },
   { path: '/admin/backup', label: 'Database Backup', icon: 'pi pi-download', moduleCode: 'ADMINISTRATION' },

@@ -37,17 +37,17 @@ export default function AttachmentList({ attachments, isLoading }: AttachmentLis
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
       {attachments.map((attachment) => (
-        <div key={attachment.attachmentId} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 16px', borderBottom: '1px solid var(--border-light)' }}>
+        <div key={attachment.taskAttachmentId} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 16px', borderBottom: '1px solid var(--border-light)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, flex: 1 }}>
             <i className="pi pi-file" style={{ fontSize: 18, color: 'var(--text-muted)' }} />
             <div>
               <div style={{ fontSize: 14, fontWeight: 500 }}>{attachment.fileName}</div>
               <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>
-                {formatFileSize(attachment.fileSize)} &middot; {attachment.uploadedByName} &middot; {formatDate(attachment.uploadedAt)}
+                {formatFileSize(attachment.fileSize)} &middot; {formatDate(attachment.createdOn)}
               </div>
             </div>
           </div>
-          <AppButton size="sm" variant="ghost" icon="pi pi-download" onClick={() => window.open(attachment.fileUrl, '_blank')} title="Download" />
+          <AppButton size="sm" variant="ghost" icon="pi pi-download" onClick={() => window.open(attachment.filePath, '_blank')} title="Download" />
         </div>
       ))}
     </div>

@@ -33,9 +33,9 @@ export default function TaskProgressUpdateForm({
       await updateMutation.mutateAsync({
         workAllocationId,
         data: {
-          completedSurveys: progress,
+          progressPercentage: progress,
           status: String(status),
-          remarks: comments.trim() || undefined,
+          progressNotes: comments.trim() || undefined,
         },
       });
       ToastService.success('Progress updated successfully');

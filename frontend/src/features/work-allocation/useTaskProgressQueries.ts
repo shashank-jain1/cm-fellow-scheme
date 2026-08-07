@@ -44,22 +44,22 @@ export const useCreateTaskDependency = () => {
   });
 };
 
-export const useTaskAttachments = (taskProgressId: number) => {
+export const useTaskAttachments = (workAllocationId: number) => {
   return useQuery({
-    queryKey: ['task-attachments', taskProgressId],
+    queryKey: ['task-attachments', workAllocationId],
     queryFn: async () => {
-      const res = await taskAttachmentApi.getByTaskProgressId(taskProgressId);
+      const res = await taskAttachmentApi.getByWorkAllocationId(workAllocationId);
       return res.data ?? [];
     },
-    enabled: !!taskProgressId,
+    enabled: !!workAllocationId,
   });
 };
 
 export const useUploadTaskAttachment = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ taskProgressId, file }: { taskProgressId: number; file: File }) =>
-      taskAttachmentApi.upload(taskProgressId, file),
+    mutationFn: ({ workAllocationId, file }: { workAllocationId: number; file: File }) =>
+      taskAttachmentApi.upload(workAllocationId, file),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['task-attachments'] });
     },

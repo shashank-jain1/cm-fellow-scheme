@@ -13,4 +13,5 @@ public interface IWorkAllocationQueryDbContext
     IQueryable<TaskAttachment> TaskAttachments { get; }
     IQueryable<TaskDeadline> TaskDeadlines { get; }
     IQueryable<TaskDependency> TaskDependencies { get; }
+    IQueryable<TaskAssignment> TaskAssignments { get; }
 }

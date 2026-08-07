@@ -109,7 +109,7 @@ export default function App() {
                     <Route path="profile" element={<ModuleProtectedRoute moduleCode="REGISTRATION"><ProfileEditPage /></ModuleProtectedRoute>} />
                     <Route path="admin/seed" element={<ModuleProtectedRoute moduleCode="ADMINISTRATION" permission="Write"><SeedDataPage /></ModuleProtectedRoute>} />
                     <Route path="admin/access" element={<ModuleProtectedRoute moduleCode="ADMINISTRATION" permission="Write"><UserAccessPage /></ModuleProtectedRoute>} />
-                    <Route path="admin/access/audit" element={<ModuleProtectedRoute moduleCode="ADMINISTRATION"><AuditLogPage /></ModuleProtectedRoute>} />
+                    <Route path="admin/audit-log" element={<ModuleProtectedRoute moduleCode="ADMINISTRATION"><AuditLogPage /></ModuleProtectedRoute>} />
                     <Route path="admin/import" element={<ModuleProtectedRoute moduleCode="ADMINISTRATION" permission="Write"><BulkImportPage /></ModuleProtectedRoute>} />
                     <Route path="admin/backup" element={<ModuleProtectedRoute moduleCode="ADMINISTRATION" permission="Write"><BackupPage /></ModuleProtectedRoute>} />
                     <Route path="training" element={<ModuleProtectedRoute moduleCode="TRAINING"><ActivityCalendar /></ModuleProtectedRoute>} />

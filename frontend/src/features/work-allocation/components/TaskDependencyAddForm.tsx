@@ -27,7 +27,7 @@ export default function TaskDependencyAddForm({
           >
             <option value="">Select task</option>
             {tasks.map((t) => (
-              <option key={t.taskProgressId} value={t.taskProgressId}>{t.projectName} - {t.workProject}</option>
+              <option key={t.workAllocationId} value={t.workAllocationId}>{t.projectName} - {t.workProject}</option>
             ))}
           </select>
         </div>
@@ -40,7 +40,7 @@ export default function TaskDependencyAddForm({
           >
             <option value="">Select prerequisite</option>
             {tasks.map((t) => (
-              <option key={t.taskProgressId} value={t.taskProgressId}>{t.projectName} - {t.workProject}</option>
+              <option key={t.workAllocationId} value={t.workAllocationId}>{t.projectName} - {t.workProject}</option>
             ))}
           </select>
         </div>

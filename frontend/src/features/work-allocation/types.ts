@@ -1,6 +1,6 @@
 export interface WorkAllocationFormData {
   projectId: number;
-  workProjectId: number;
+  workProjectId: string;
   workDescription: string;
   priority: string;
   startDate: string;
@@ -14,15 +14,18 @@ export interface WorkAllocationFormData {
 export interface WorkAllocationDto {
   workAllocationId: number;
   projectId: number;
-  workProjectId: number;
+  workProjectId: string;
   workDescription: string;
   priority: string;
   startDate: string;
   endDate: string;
   durationDays: number;
   surveysPerIntern: number;
+  divisionId: number;
+  districtId: number;
+  blockId: number;
+  activeStatus: boolean;
   status: string;
-  completionPercentage: number;
   assignedToUserId?: number;
 }
 
@@ -31,15 +34,19 @@ export interface TaskProgressDto {
   workAllocationId: number;
   projectName: string;
   workProject: string;
+  workDescription: string;
+  priority: string;
   numberOfSurveys: number;
   completedSurveys: number;
   pendingSurveys: number;
   completionPercentage: number;
+  completionDate?: string;
   workStatus: string;
 }
 
 export interface SurveyDetailDto {
   surveyRecordId: number;
+  taskProgressId: number;
   internName: string;
   surveyPersonName: string;
   mobileNumber: string;
@@ -57,38 +64,37 @@ export interface AssignWorkAllocationCommand {
 }
 
 export interface TaskDependency {
-  dependencyId: number;
-  taskProgressId: number;
-  prerequisiteTaskProgressId: number;
-  prerequisiteTaskName: string;
-  createdAt: string;
+  taskDependencyId: number;
+  workAllocationId: number;
+  dependsOnWorkAllocationId: number;
+  createdOn: string;
 }
 
 export interface TaskDependencyFormData {
-  taskProgressId: number;
-  prerequisiteTaskProgressId: number;
+  workAllocationId: number;
+  dependsOnWorkAllocationId: number;
 }
 
 export interface TaskAttachment {
-  attachmentId: number;
-  taskProgressId: number;
+  taskAttachmentId: number;
+  workAllocationId: number;
+  userAccountId: number;
   fileName: string;
-  fileUrl: string;
+  filePath: string;
   fileSize: number;
-  uploadedBy: number;
-  uploadedByName: string;
-  uploadedAt: string;
+  contentType: string;
+  createdOn: string;
 }
 
 export interface UpdateProgressCommand {
-  completedSurveys: number;
+  progressNotes: string;
+  progressPercentage: number;
   status: string;
-  remarks?: string;
 }
 
 export interface VerifyTaskCommand {
-  status: 'Approved' | 'Rejected';
-  comments: string;
+  verificationStatus: 'Approved' | 'Rejected';
+  comments?: string;
 }
 
 export interface OverdueTaskDto {

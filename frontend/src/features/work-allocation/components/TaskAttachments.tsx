@@ -5,13 +5,13 @@ import AttachmentUploadForm from './AttachmentUploadForm';
 import AttachmentList from './AttachmentList';
 
 interface TaskAttachmentsProps {
-  taskProgressId: number;
+  workAllocationId: number;
 }
 
-export default function TaskAttachments({ taskProgressId }: TaskAttachmentsProps) {
+export default function TaskAttachments({ workAllocationId }: TaskAttachmentsProps) {
   const toast = useRef<Toast>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const { data: attachments, isLoading } = useTaskAttachments(taskProgressId);
+  const { data: attachments, isLoading } = useTaskAttachments(workAllocationId);
   const uploadMutation = useUploadTaskAttachment();
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
@@ -26,7 +26,7 @@ export default function TaskAttachments({ taskProgressId }: TaskAttachmentsProps
       return;
     }
     try {
-      await uploadMutation.mutateAsync({ taskProgressId, file: selectedFile });
+      await uploadMutation.mutateAsync({ workAllocationId, file: selectedFile });
       toast.current?.show({ severity: 'success', summary: 'Success', detail: 'File uploaded successfully' });
       setSelectedFile(null);
       if (fileInputRef.current) fileInputRef.current.value = '';

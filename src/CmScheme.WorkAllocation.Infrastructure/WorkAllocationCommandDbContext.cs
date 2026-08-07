@@ -26,6 +26,7 @@ public class WorkAllocationCommandDbContext : IWorkAllocationCommandDbContext
     public DbSet<TaskAttachmentEntity> TaskAttachments => _dbContext.TaskAttachments;
     public DbSet<TaskDeadlineEntity> TaskDeadlines => _dbContext.TaskDeadlines;
     public DbSet<TaskDependency> TaskDependencies => _dbContext.TaskDependencies;
+    public DbSet<TaskAssignment> TaskAssignments => _dbContext.TaskAssignments;
 
     public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {

@@ -19,7 +19,7 @@ export default function TaskDependencyPanel({ workAllocationId }: TaskDependency
   const [prerequisiteId, setPrerequisiteId] = useState<number | null>(null);
   const [showForm, setShowForm] = useState(false);
 
-  const workAllocationTasks = (allTasks ?? []).filter(() => true);
+  const workAllocationTasks = (allTasks ?? []).filter((t) => t.workAllocationId === workAllocationId);
 
   const handleAddDependency = async () => {
     if (!selectedTaskId || !prerequisiteId) {
@@ -31,7 +31,7 @@ export default function TaskDependencyPanel({ workAllocationId }: TaskDependency
       return;
     }
     try {
-      await createDependency.mutateAsync({ taskProgressId: selectedTaskId, prerequisiteTaskProgressId: prerequisiteId });
+      await createDependency.mutateAsync({ workAllocationId: selectedTaskId, dependsOnWorkAllocationId: prerequisiteId });
       toast.current?.show({ severity: 'success', summary: 'Success', detail: 'Dependency added' });
       setShowForm(false);
       setSelectedTaskId(null);

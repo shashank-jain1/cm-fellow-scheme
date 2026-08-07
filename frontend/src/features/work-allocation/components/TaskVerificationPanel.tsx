@@ -21,7 +21,7 @@ export default function TaskVerificationPanel({
     try {
       await verifyMutation.mutateAsync({
         workAllocationId,
-        command: { status, comments: comments.trim() },
+        command: { verificationStatus: status, comments: comments.trim() },
       });
       ToastService.success(`Task ${status.toLowerCase()} successfully`);
       setComments('');

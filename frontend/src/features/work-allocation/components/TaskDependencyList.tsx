@@ -33,15 +33,15 @@ export default function TaskDependencyList({ dependencies, isLoading }: TaskDepe
     <div style={{ display: 'flex', flexDirection: 'column' }}>
       {dependencies.map((dep) => (
         <div
-          key={dep.dependencyId}
+          key={dep.taskDependencyId}
           style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 16px', borderBottom: '1px solid var(--border-light)' }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
             <i className="pi pi-arrow-right" style={{ color: 'var(--text-muted)', fontSize: 14 }} />
             <div>
-              <div style={{ fontSize: 14, fontWeight: 500 }}>Task #{dep.taskProgressId}</div>
+              <div style={{ fontSize: 14, fontWeight: 500 }}>Task #{dep.workAllocationId}</div>
               <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>
-                Requires: {dep.prerequisiteTaskName || `Task #${dep.prerequisiteTaskProgressId}`}
+                Requires: Task #{dep.dependsOnWorkAllocationId}
               </div>
             </div>
           </div>

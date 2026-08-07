@@ -164,9 +164,6 @@ internal static class StartupSeedData
         IRegistrationCommandDbContext dbContext = scope.ServiceProvider
             .GetRequiredService<IRegistrationCommandDbContext>();
 
-        bool hasChildren = await dbContext.ModuleMasters.AnyAsync(mm => mm.ParentModuleMasterId != null);
-        if (hasChildren) return;
-
         bool parentsExist = await dbContext.ModuleMasters.AnyAsync(mm => mm.ParentModuleMasterId == null);
         if (!parentsExist)
         {
@@ -193,6 +190,11 @@ internal static class StartupSeedData
             .OrderBy(mm => mm.SortOrder)
             .ToListAsync();
 
+        List<string> existingChildCodes = await dbContext.ModuleMasters
+            .Where(mm => mm.ParentModuleMasterId != null)
+            .Select(mm => mm.ModuleCode)
+            .ToListAsync();
+
         int parentReg = parents.First(m => m.ModuleCode == "REGISTRATION").ModuleMasterId;
         int parentTrain = parents.First(m => m.ModuleCode == "TRAINING").ModuleMasterId;
         int parentWork = parents.First(m => m.ModuleCode == "WORK_ALLOCATION").ModuleMasterId;
@@ -204,7 +206,7 @@ internal static class StartupSeedData
         int parentDash = parents.First(m => m.ModuleCode == "DASHBOARD").ModuleMasterId;
         int parentAdmin = parents.First(m => m.ModuleCode == "ADMINISTRATION").ModuleMasterId;
 
-        List<ModuleMaster> children =
+        List<ModuleMaster> allChildren =
         [
             new() { ModuleCode = "HD_TICKETS", ModuleName = "Help Desk Tickets", SortOrder = 1, ParentModuleMasterId = parentHelp, IsActive = true, CreatedOn = DateTime.UtcNow },
             new() { ModuleCode = "HD_SURVEYS", ModuleName = "Satisfaction Surveys", SortOrder = 2, ParentModuleMasterId = parentHelp, IsActive = true, CreatedOn = DateTime.UtcNow },
@@ -254,8 +256,15 @@ internal static class StartupSeedData
             new() { ModuleCode = "ADM_SEED", ModuleName = "Seed Data", SortOrder = 5, ParentModuleMasterId = parentAdmin, IsActive = true, CreatedOn = DateTime.UtcNow },
         ];
 
-        dbContext.ModuleMasters.AddRange(children);
-        await dbContext.SaveChangesAsync();
+        List<ModuleMaster> newChildren = allChildren
+            .Where(c => !existingChildCodes.Contains(c.ModuleCode))
+            .ToList();
+
+        if (newChildren.Count > 0)
+        {
+            dbContext.ModuleMasters.AddRange(newChildren);
+            await dbContext.SaveChangesAsync();
+        }
     }
 
     private static async Task SeedAdminModuleAccess(WebApplication app)

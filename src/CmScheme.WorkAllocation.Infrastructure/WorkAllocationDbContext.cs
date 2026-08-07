@@ -48,4 +48,5 @@ public class WorkAllocationDbContext : BaseDbContext, IWorkAllocationCommandDbCo
     IQueryable<TaskAttachmentEntity> IWorkAllocationQueryDbContext.TaskAttachments => TaskAttachments;
     IQueryable<TaskDeadlineEntity> IWorkAllocationQueryDbContext.TaskDeadlines => TaskDeadlines;
     IQueryable<TaskDependency> IWorkAllocationQueryDbContext.TaskDependencies => TaskDependencies;
+    IQueryable<TaskAssignmentEntity> IWorkAllocationQueryDbContext.TaskAssignments => TaskAssignments;
 }
