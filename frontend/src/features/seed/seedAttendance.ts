@@ -1,6 +1,6 @@
 import ApiService from '../../services/ApiService';
 import type { SeedLog } from './types';
-import { log, dateOffset, timeOnly } from './seedHelpers';
+import { log, dateOffset } from './seedHelpers';
 import type { SeedFn } from './seedMasters';
 
 const seedAttendance: SeedFn = async (appendLog) => {

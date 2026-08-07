@@ -3,9 +3,11 @@ import ApiService from '../../services/ApiService';
 import FormSelect from '../../shared/components/FormSelect';
 
 interface District {
-  id: number;
-  name: string;
+  districtId: number;
+  districtName: string;
   divisionId: number;
+  id?: number;
+  name?: string;
 }
 
 interface Props {
@@ -21,14 +23,18 @@ export default function SelectDistrict({ value, onChange, divisionId, placeholde
   const { data, isLoading } = useQuery({
     queryKey: ['districts', divisionId],
     queryFn: async () => {
-      const url = divisionId ? `districts?divisionId=${divisionId}` : 'districts';
+      const url = divisionId ? `masters/locations/districts?divisionId=${divisionId}` : 'masters/locations/districts';
       const res = await ApiService.get<District[]>(url);
       return res.data ?? [];
     },
     enabled: !!divisionId,
   });
 
-  const options = (data ?? []).map((d) => ({ label: d.name, value: String(d.id) }));
+  const options = (data ?? []).map((d) => {
+    const id = d.districtId ?? d.id ?? 0;
+    const name = d.districtName ?? d.name ?? '';
+    return { label: name, value: String(id) };
+  });
 
   return (
     <FormSelect

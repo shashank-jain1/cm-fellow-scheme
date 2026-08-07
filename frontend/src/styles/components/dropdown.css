@@ -2,11 +2,18 @@
 .p-dropdown {
   font-family: var(--font-body) !important;
   border-radius: var(--radius-md) !important;
-  border-color: var(--border) !important;
-  background-color: var(--bg-input) !important;
+  border: 1px solid var(--border, #CBD5E1) !important;
+  background-color: var(--bg-input, #FFFFFF) !important;
   height: 40px !important;
   display: flex !important;
   align-items: center !important;
+  box-sizing: border-box !important;
+}
+
+.p-dropdown-label {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
 }
 
 .p-dropdown:focus-within {

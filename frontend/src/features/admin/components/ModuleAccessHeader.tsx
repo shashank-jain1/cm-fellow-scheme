@@ -1,4 +1,4 @@
-import { PERMISSION_FIELDS, PERMISSION_LABELS } from '../hooks/useModuleAccess';
+import { PERMISSION_FIELDS, PERMISSION_LABELS, PERMISSION_DESCRIPTIONS } from '../hooks/useModuleAccess';
 
 interface ModuleAccessHeaderProps {
   sticky?: boolean;
@@ -6,18 +6,20 @@ interface ModuleAccessHeaderProps {
 
 export default function ModuleAccessHeader({ sticky = true }: ModuleAccessHeaderProps) {
   return (
-    <div style={{
-      display: 'grid',
-      gridTemplateColumns: '1fr 52px 52px 52px 52px',
-      alignItems: 'center',
-      padding: '10px 24px',
-      borderBottom: '2px solid var(--border)',
-      background: 'var(--surface-card)',
-      ...(sticky ? { position: 'sticky' as const, top: 0, zIndex: 1 } : {}),
-    }}>
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateColumns: '1fr 72px 72px 76px 72px',
+        alignItems: 'center',
+        padding: '12px 20px 12px 32px',
+        borderBottom: '2px solid var(--border-color, #E2E8F0)',
+        background: 'var(--surface-card, #FFFFFF)',
+        ...(sticky ? { position: 'sticky' as const, top: 0, zIndex: 1 } : {}),
+      }}
+    >
       <span style={labelStyle}>Module</span>
       {PERMISSION_FIELDS.map((f) => (
-        <span key={f} style={{ ...labelStyle, textAlign: 'center' }}>
+        <span key={f} style={{ ...labelStyle, textAlign: 'center' }} title={PERMISSION_DESCRIPTIONS[f]}>
           {PERMISSION_LABELS[f]}
         </span>
       ))}

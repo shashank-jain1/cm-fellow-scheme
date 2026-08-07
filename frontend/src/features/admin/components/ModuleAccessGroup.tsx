@@ -16,15 +16,15 @@ export default function ModuleAccessGroup({ parent, expanded, accessMap, onToggl
   return (
     <div>
       <div
-        style={{ cursor: hasChildren ? 'pointer' : 'default' }}
+        style={{ cursor: hasChildren ? 'pointer' : 'default', paddingLeft: 16 }}
         onClick={() => hasChildren && onToggleExpand(parent.moduleMasterId)}
       >
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <div style={{ width: 24, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+          <div style={{ width: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
             {hasChildren && (
               <i
                 className={`pi ${expanded ? 'pi-chevron-down' : 'pi-chevron-right'}`}
-                style={{ fontSize: 10, color: 'var(--text-muted)' }}
+                style={{ fontSize: 11, color: 'var(--text-secondary, #64748B)' }}
               />
             )}
           </div>
@@ -41,14 +41,15 @@ export default function ModuleAccessGroup({ parent, expanded, accessMap, onToggl
       </div>
 
       {expanded && hasChildren && parent.children!.map((child) => (
-        <ModuleAccessRow
-          key={child.moduleMasterId}
-          id={child.moduleMasterId}
-          name={child.moduleName}
-          level="child"
-          item={accessMap.get(child.moduleMasterId)}
-          onToggle={onToggle}
-        />
+        <div key={child.moduleMasterId} style={{ paddingLeft: 16 }}>
+          <ModuleAccessRow
+            id={child.moduleMasterId}
+            name={child.moduleName}
+            level="child"
+            item={accessMap.get(child.moduleMasterId)}
+            onToggle={onToggle}
+          />
+        </div>
       ))}
     </div>
   );

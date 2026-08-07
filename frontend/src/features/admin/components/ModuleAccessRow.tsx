@@ -17,12 +17,11 @@ export default function ModuleAccessRow({ id, name, level, item, onToggle }: Mod
   return (
     <div style={{
       display: 'grid',
-      gridTemplateColumns: '1fr 52px 52px 52px 52px',
+      gridTemplateColumns: '1fr 72px 72px 76px 72px',
       alignItems: 'center',
-      padding: isChild ? '9px 24px 9px 24px' : '11px 24px',
-      paddingLeft: isChild ? 56 : 24,
-      borderBottom: '1px solid var(--border-light)',
-      background: anyActive ? 'var(--accent-light)' : isChild ? 'var(--surface-section, var(--bg-page))' : 'var(--surface-card)',
+      padding: isChild ? '9px 16px 9px 36px' : '11px 16px',
+      borderBottom: '1px solid var(--border-light, #F1F5F9)',
+      background: anyActive ? 'var(--accent-light, #F8FAFC)' : isChild ? 'var(--surface-section, #FAFAFA)' : 'var(--surface-card, #FFFFFF)',
     }}>
       <span style={{
         fontSize: 13,

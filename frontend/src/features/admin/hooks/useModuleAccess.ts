@@ -7,10 +7,17 @@ export type PermissionField = 'canRead' | 'canWrite' | 'canApprove' | 'canExport
 export const PERMISSION_FIELDS: PermissionField[] = ['canRead', 'canWrite', 'canApprove', 'canExport'];
 
 export const PERMISSION_LABELS: Record<PermissionField, string> = {
-  canRead: 'R',
-  canWrite: 'W',
-  canApprove: 'A',
-  canExport: 'E',
+  canRead: 'Read',
+  canWrite: 'Write',
+  canApprove: 'Approve',
+  canExport: 'Export',
+};
+
+export const PERMISSION_DESCRIPTIONS: Record<PermissionField, string> = {
+  canRead: 'View & access module data',
+  canWrite: 'Create & edit module records',
+  canApprove: 'Approve applications, leaves & tasks',
+  canExport: 'Export data reports & files',
 };
 
 function buildInitialMap(modules: ModuleMasterDto[] | undefined, userAccess: ModuleAccessDto[] | undefined) {
@@ -78,13 +85,83 @@ export function useModuleAccess(userAccountId: number) {
     });
   }, []);
 
+  const grantAllRead = useCallback(() => {
+    setAccessMap((prev) => {
+      const next = new Map(prev);
+      for (const [id, item] of next.entries()) {
+        next.set(id, { ...item, canRead: true });
+      }
+      return next;
+    });
+  }, []);
+
+  const grantAllFull = useCallback(() => {
+    setAccessMap((prev) => {
+      const next = new Map(prev);
+      for (const [id, item] of next.entries()) {
+        next.set(id, { ...item, canRead: true, canWrite: true, canApprove: true, canExport: true });
+      }
+      return next;
+    });
+  }, []);
+
+  const clearAll = useCallback(() => {
+    setAccessMap((prev) => {
+      const next = new Map(prev);
+      for (const [id, item] of next.entries()) {
+        next.set(id, { ...item, canRead: false, canWrite: false, canApprove: false, canExport: false });
+      }
+      return next;
+    });
+  }, []);
+
+  const expandAll = useCallback(() => {
+    if (modules) {
+      setExpandedParents(new Set(modules.map((m) => m.moduleMasterId)));
+    }
+  }, [modules]);
+
+  const collapseAll = useCallback(() => {
+    setExpandedParents(new Set());
+  }, []);
+
+  const updateGeographicScope = useCallback((scope: { divisionId?: number; districtId?: number; blockId?: number }) => {
+    setAccessMap((prev) => {
+      const next = new Map(prev);
+      for (const [id, item] of next.entries()) {
+        next.set(id, {
+          ...item,
+          divisionId: scope.divisionId,
+          districtId: scope.districtId,
+          blockId: scope.blockId,
+        });
+      }
+      return next;
+    });
+  }, []);
+
   const save = useCallback(async (userAccountId: number) => {
     await bulkUpdate.mutateAsync({
       userAccountId,
-      performedBy: Number(localStorage.getItem('user_id') ?? '0'),
+      performedBy: Number(localStorage.getItem('user_id') ?? '1'),
       accesses: Array.from(accessMap.values()),
     });
   }, [accessMap, bulkUpdate]);
 
-  return { modules, accessMap, expandedParents, toggle, toggleExpand, toggleAllChildren, save, isSaving: bulkUpdate.isPending };
+  return {
+    modules,
+    accessMap,
+    expandedParents,
+    toggle,
+    toggleExpand,
+    toggleAllChildren,
+    grantAllRead,
+    grantAllFull,
+    clearAll,
+    expandAll,
+    collapseAll,
+    updateGeographicScope,
+    save,
+    isSaving: bulkUpdate.isPending,
+  };
 }

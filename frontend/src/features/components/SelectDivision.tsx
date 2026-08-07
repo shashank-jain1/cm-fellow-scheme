@@ -3,9 +3,11 @@ import ApiService from '../../services/ApiService';
 import FormSelect from '../../shared/components/FormSelect';
 
 interface Division {
-  id: number;
-  name: string;
-  code: string;
+  divisionId: number;
+  divisionName: string;
+  divisionCode?: string;
+  id?: number;
+  name?: string;
 }
 
 interface Props {
@@ -20,12 +22,16 @@ export default function SelectDivision({ value, onChange, placeholder = 'Select 
   const { data, isLoading } = useQuery({
     queryKey: ['divisions'],
     queryFn: async () => {
-      const res = await ApiService.get<Division[]>('divisions');
+      const res = await ApiService.get<Division[]>('masters/locations/divisions');
       return res.data ?? [];
     },
   });
 
-  const options = (data ?? []).map((d) => ({ label: d.name, value: String(d.id) }));
+  const options = (data ?? []).map((d) => {
+    const id = d.divisionId ?? d.id ?? 0;
+    const name = d.divisionName ?? d.name ?? '';
+    return { label: name, value: String(id) };
+  });
 
   return (
     <FormSelect
