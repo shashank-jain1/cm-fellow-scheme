@@ -13,7 +13,7 @@ public static class UserModuleAccessGroupExtensions
             .WithTags("User Module Access")
             .RequireAuthorization("AdminPolicy");
 
-        group.MapGet("/", GetAll.Handle)
+        group.MapGet("", GetAll.Handle)
             .WithName("GetAllModuleAccess")
             .WithDisplayName("Get all users module access");
 
@@ -37,7 +37,7 @@ public static class UserModuleAccessGroupExtensions
             .WithTags("Module Master")
             .RequireAuthorization();
 
-        moduleGroup.MapGet("/", ListModulesEndpoint.Handle)
+        moduleGroup.MapGet("", ListModulesEndpoint.Handle)
             .WithName("ListModules")
             .WithDisplayName("List all active modules");
 

@@ -10,7 +10,7 @@ import type {
 
 export const moduleAccessApi = {
   fetchAllModuleAccess: () =>
-    ApiService.get<ModuleAccessDto[]>(USER_MODULE_ACCESS_URL),
+    ApiService.get<UserAccessSummaryDto[]>(USER_MODULE_ACCESS_URL),
 
   fetchUserModuleAccess: (userAccountId: number) =>
     ApiService.get<ModuleAccessDto[]>(`${USER_MODULE_ACCESS_URL}/${userAccountId}`),

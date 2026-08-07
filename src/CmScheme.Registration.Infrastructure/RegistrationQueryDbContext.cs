@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using CmScheme.Common.Core.Entities;
 using CmScheme.Registration.Core.Data;
 using CmScheme.Registration.Core.Entities;
 
@@ -16,4 +17,6 @@ public sealed class RegistrationQueryDbContext : RegistrationDbContext, IRegistr
     IQueryable<UserAccount> IRegistrationQueryDbContext.UserAccounts => UserAccounts;
 
     IQueryable<ExitInterview> IRegistrationQueryDbContext.ExitInterviews => ExitInterviews;
+
+    IQueryable<Notification> IRegistrationQueryDbContext.Notifications => Notifications;
 }

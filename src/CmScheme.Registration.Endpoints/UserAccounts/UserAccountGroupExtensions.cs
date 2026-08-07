@@ -14,7 +14,7 @@ public static class UserAccountGroupExtensions
             .RequireAuthorization()
             .RequireModule(ModuleCodes.Registration, "Write", requireScope: false);
 
-        group.MapGet("/", List.Handle)
+        group.MapGet("", List.Handle)
             .WithName("ListUserAccounts")
             .WithDisplayName("List all user accounts");
 

@@ -6,5 +6,11 @@ public sealed class ExportDashboardToExcelCommandValidator : AbstractValidator<E
 {
     public ExportDashboardToExcelCommandValidator()
     {
+        When(x => x.StartDate.HasValue && x.EndDate.HasValue, () =>
+        {
+            RuleFor(x => x.EndDate)
+                .GreaterThanOrEqualTo(x => x.StartDate)
+                .WithMessage("End date must be after start date.");
+        });
     }
 }

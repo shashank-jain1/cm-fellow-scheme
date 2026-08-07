@@ -157,6 +157,7 @@ internal static class ServiceCollectionExtensions
     public static IServiceCollection AddAppServices(this IServiceCollection services, IConfiguration config)
     {
         services.Configure<FileStorageOptions>(config.GetSection("FileStorage"));
+        services.AddHttpClient();
         services.AddScoped<IFileUploadService, LocalFileUploadService>();
         services.AddScoped<IAuditService, AuditService>();
         services.AddScoped<INotificationService, SmtpNotificationService>();

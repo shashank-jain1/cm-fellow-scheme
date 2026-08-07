@@ -7,6 +7,7 @@ using System.Text;
 using CmScheme.Common.Core.Services;
 using CmScheme.Registration.Core.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace CmScheme.AttendanceLeave.Application.Features.Attendance.MarkAttendance;
 
@@ -15,7 +16,8 @@ public sealed class MarkAttendanceCommandHandler(
     IRegistrationQueryDbContext registrationDbContext,
     IGeoValidationService geoValidationService,
     IFaceMatchService faceMatchService,
-    IFileUploadService fileUploadService)
+    IFileUploadService fileUploadService,
+    ILogger<MarkAttendanceCommandHandler> logger)
     : ICommandHandler<MarkAttendanceCommand, Result<int>>
 {
     private static readonly Dictionary<string, (double Latitude, double Longitude)> DistrictCoordinates = new(StringComparer.OrdinalIgnoreCase)
@@ -48,8 +50,13 @@ public sealed class MarkAttendanceCommandHandler(
                 return Result.Invalid(new ValidationError("Attendance location is outside the approved MP State area."));
             }
 
-            // Query applicant's actual assigned district from Registration module
+            // Query applicant's actual assigned district coordinates
             (double targetLat, double targetLon) = await GetApplicantDistrictCoordinatesAsync(request.ApplicantId, request.DistrictName, cancellationToken);
+
+            if (targetLat == 0 && targetLon == 0)
+            {
+                return Result.Invalid(new ValidationError($"District '{request.DistrictName ?? "unknown"}' is not configured with coordinates. Contact administrator."));
+            }
 
             bool isWithinArea = await geoValidationService.IsWithinAssignedAreaAsync(
                 request.ApplicantId, request.Latitude.Value, request.Longitude.Value,
@@ -91,9 +98,10 @@ public sealed class MarkAttendanceCommandHandler(
                 captureFacePath = await fileUploadService.UploadAsync(
                     stream, fileName, "image/jpeg", "documents/attendance-faces", cancellationToken);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                captureFacePath = "invalid_base64_capture";
+                logger.LogError(ex, "Failed to upload face capture for ApplicantId={ApplicantId}", request.ApplicantId);
+                return Result.Invalid(new ValidationError("Failed to save face capture image. Please try again."));
             }
         }
 
@@ -132,9 +140,8 @@ public sealed class MarkAttendanceCommandHandler(
             return coords;
         }
 
-        // Default to Bhopal if district not provided or unrecognized
         await Task.CompletedTask;
-        return (23.2599, 77.4126);
+        return (0, 0);
     }
 
     private async Task<string?> GetApplicantPhotoPathAsync(int applicantId, CancellationToken cancellationToken)

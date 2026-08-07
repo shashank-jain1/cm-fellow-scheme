@@ -24,6 +24,11 @@ public class UserAccount
 
     public bool IsActive { get; set; } = true;
 
+    [MaxLength(500)]
+    public string? PasswordResetToken { get; set; }
+
+    public DateTime? PasswordResetTokenExpiry { get; set; }
+
     public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
 
     public int? CreatedBy { get; set; }

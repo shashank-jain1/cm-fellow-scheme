@@ -86,8 +86,11 @@ public sealed class Login
     private static string GenerateJwtToken(LoginResult user, IConfiguration config,
         List<ModuleAccessEntry> moduleAccess)
     {
-        string jwtKey = config["Jwt:Key"]
-            ?? "CmScheme@2025!SecretKey#ForJwtTokenGeneration$VeryLong32Chars+";
+        string? jwtKey = config["Jwt:Key"];
+        if (string.IsNullOrWhiteSpace(jwtKey))
+        {
+            throw new InvalidOperationException("Jwt:Key is not configured. Set it in appsettings.json or User Secrets.");
+        }
         string? jwtIssuer = config["Jwt:Issuer"];
         string? jwtAudience = config["Jwt:Audience"];
         string? jwtExpiryMinutes = config["Jwt:ExpiryMinutes"];

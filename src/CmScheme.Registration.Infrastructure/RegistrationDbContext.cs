@@ -60,5 +60,9 @@ public abstract class RegistrationDbContext : BaseDbContext
         modelBuilder.ApplyConfiguration(new TrainingEnrollmentConfiguration());
         modelBuilder.ApplyConfiguration(new TicketCategoryConfiguration());
         modelBuilder.ApplyConfiguration(new ExitInterviewConfiguration());
+
+        modelBuilder.Entity<Notification>().ToTable("Notification");
+        modelBuilder.Entity<SystemConfig>().ToTable("SystemConfigs");
+        modelBuilder.Entity<TrainingAttendance>().ToTable("TrainingAttendances");
     }
 }
