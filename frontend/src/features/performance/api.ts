@@ -38,7 +38,7 @@ export async function recordEvaluationRemarks(command: RecordEvaluationRemarksCo
 }
 
 export async function calculatePerformanceScore(performanceEvaluationId: number): Promise<void> {
-  await ApiService.post(`performance/${performanceEvaluationId}/calculate-score`, {});
+  await ApiService.put(`performance/${performanceEvaluationId}/calculate-score`, {});
 }
 
 export async function submitReview(id: number, command: SubmitReviewRequest): Promise<void> {

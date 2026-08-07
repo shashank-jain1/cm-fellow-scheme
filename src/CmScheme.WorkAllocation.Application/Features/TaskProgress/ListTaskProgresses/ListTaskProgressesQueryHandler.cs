@@ -11,8 +11,12 @@ public sealed class ListTaskProgressesQueryHandler(IWorkAllocationQueryDbContext
 {
     public async ValueTask<Result<IReadOnlyList<TaskProgressDto>>> Handle(ListTaskProgressesQuery request, CancellationToken cancellationToken)
     {
-        List<TaskProgressDto> taskProgresses = await dbContext.TaskProgresses
-            .Where(t => t.WorkAllocationId == request.WorkAllocationId)
+        IQueryable<Core.Entities.TaskProgress> q = dbContext.TaskProgresses;
+
+        if (request.WorkAllocationId.HasValue)
+            q = q.Where(t => t.WorkAllocationId == request.WorkAllocationId.Value);
+
+        List<TaskProgressDto> taskProgresses = await q
             .Select(t => new TaskProgressDto
             {
                 TaskProgressId = t.TaskProgressId,

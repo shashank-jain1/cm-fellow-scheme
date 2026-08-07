@@ -23,7 +23,7 @@ export interface RecordSurveyPayload {
 }
 
 export const workAllocationApi = {
-  getAll: () => ApiService.get<WorkAllocationDto[]>('work-allocations/list'),
+  getAll: () => ApiService.get<WorkAllocationDto[]>('work-allocations'),
   getById: (id: number) => ApiService.get<WorkAllocationDto>(`work-allocations/${id}`),
   create: (data: WorkAllocationFormData) =>
     ApiService.post<WorkAllocationDto>('work-allocations', data),
@@ -47,19 +47,19 @@ export const workAllocationApi = {
 export const taskProgressApi = {
   getAll: () => ApiService.get<TaskProgressDto[]>('task-progresses'),
   getByWorkAllocationId: (workAllocationId: number) =>
-    ApiService.get<TaskProgressDto[]>(`task-progresses/by-work-allocation/${workAllocationId}`),
+    ApiService.get<TaskProgressDto[]>(`task-progresses/work-allocation/${workAllocationId}`),
   recordSurveySubmission: (taskProgressId: number, data: RecordSurveyPayload) =>
     ApiService.post<void>(`task-progresses/${taskProgressId}/survey`, data),
 };
 
 export const surveyDetailApi = {
   getByTaskProgressId: (taskProgressId: number) =>
-    ApiService.get<SurveyDetailDto[]>(`survey-records/by-task-progress/${taskProgressId}`),
+    ApiService.get<SurveyDetailDto[]>(`survey-records/task/${taskProgressId}`),
 };
 
 export const taskDependencyApi = {
   getByWorkAllocationId: (workAllocationId: number) =>
-    ApiService.get<TaskDependency[]>(`task-dependencies/by-work-allocation/${workAllocationId}`),
+    ApiService.get<TaskDependency[]>(`task-dependencies/work-allocation/${workAllocationId}`),
   create: (data: TaskDependencyFormData) =>
     ApiService.post<TaskDependency>('task-dependencies', data),
 };

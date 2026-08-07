@@ -5,5 +5,5 @@ namespace CmScheme.WorkAllocation.Application.Features.TaskProgress.ListTaskProg
 
 public sealed record ListTaskProgressesQuery : IQuery<Result<IReadOnlyList<Core.Dtos.TaskProgressDto>>>
 {
-    public int WorkAllocationId { get; init; }
+    public int? WorkAllocationId { get; init; }
 }

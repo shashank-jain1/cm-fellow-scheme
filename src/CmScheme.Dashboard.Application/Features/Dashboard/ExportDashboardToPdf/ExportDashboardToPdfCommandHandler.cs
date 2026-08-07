@@ -20,9 +20,9 @@ public sealed class ExportDashboardToPdfCommandHandler(IDashboardQueryDbContext 
             .Select(w => new DashboardWidgetDto
             {
                 WidgetId = w.WidgetId,
-                WidgetName = w.WidgetName,
-                WidgetType = w.WidgetType,
-                RoleAccess = w.RoleAccess,
+                WidgetName = w.WidgetName ?? "Unnamed",
+                WidgetType = w.WidgetType ?? "Unknown",
+                RoleAccess = w.RoleAccess ?? "*",
                 SortOrder = w.SortOrder
             })
             .ToListAsync(cancellationToken);
@@ -40,10 +40,13 @@ public sealed class ExportDashboardToPdfCommandHandler(IDashboardQueryDbContext 
             {
                 page.Size(PageSizes.A4);
                 page.Margin(30);
-                page.Header().Text($"Dashboard Report")
-                    .FontSize(20).Bold().FontColor(Colors.Blue.Medium);
-                page.Header().PaddingTop(5).Text(filterSummary)
-                    .FontSize(11).FontColor(Colors.Grey.Darken1);
+                page.Header().Column(column =>
+                {
+                    column.Item().Text("Dashboard Report")
+                        .FontSize(20).Bold().FontColor(Colors.Blue.Medium);
+                    column.Item().PaddingTop(5).Text(filterSummary)
+                        .FontSize(11).FontColor(Colors.Grey.Darken1);
+                });
                 page.Content().PaddingVertical(10).Table(table =>
                 {
                     table.ColumnsDefinition(columns =>
@@ -64,10 +67,16 @@ public sealed class ExportDashboardToPdfCommandHandler(IDashboardQueryDbContext 
 
                     foreach (DashboardWidgetDto widget in widgets)
                     {
-                        table.Cell().Text(widget.WidgetName);
-                        table.Cell().Text(widget.WidgetType);
-                        table.Cell().Text(widget.RoleAccess);
+                        table.Cell().Text(widget.WidgetName ?? "");
+                        table.Cell().Text(widget.WidgetType ?? "");
+                        table.Cell().Text(widget.RoleAccess ?? "");
                         table.Cell().Text(widget.SortOrder.ToString());
+                    }
+
+                    if (widgets.Count == 0)
+                    {
+                        table.Cell().ColumnSpan(4).AlignCenter().Text("No data available for the selected filters.")
+                            .FontSize(12).FontColor(Colors.Grey.Medium);
                     }
                 });
                 page.Footer().AlignCenter().Text(text =>

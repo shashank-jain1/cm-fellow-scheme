@@ -5,7 +5,7 @@ namespace CmScheme.Performance.Application.Features.Performance.SelfAssessment.G
 
 public sealed record GetSelfAssessmentQuery : IQuery<Result<SelfAssessmentDto>>
 {
-    public int UserAccountId { get; init; }
+    public int? UserAccountId { get; init; }
     public int? ReviewCycleId { get; init; }
 }
 

@@ -19,8 +19,8 @@ public sealed class SearchArticlesQueryHandler(
         {
             string searchTerm = request.SearchTerm.ToLower();
             query = query.Where(a =>
-                a.Title.ToLower().Contains(searchTerm) ||
-                a.Content.ToLower().Contains(searchTerm));
+                (a.Title != null && a.Title.ToLower().Contains(searchTerm)) ||
+                (a.Content != null && a.Content.ToLower().Contains(searchTerm)));
         }
 
         if (!string.IsNullOrWhiteSpace(request.Category))
@@ -28,10 +28,13 @@ public sealed class SearchArticlesQueryHandler(
             query = query.Where(a => a.Category == request.Category);
         }
 
+        int page = request.Page ?? 1;
+        int pageSize = request.PageSize ?? 20;
+
         List<SearchArticlesResult> results = await query
             .OrderByDescending(a => a.CreatedOn)
-            .Skip((request.Page - 1) * request.PageSize)
-            .Take(request.PageSize)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
             .Select(a => new SearchArticlesResult
             {
                 KnowledgeBaseArticleId = a.KnowledgeBaseArticleId,

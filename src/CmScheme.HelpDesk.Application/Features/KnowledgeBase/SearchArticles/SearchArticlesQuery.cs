@@ -7,6 +7,6 @@ public sealed record SearchArticlesQuery : IQuery<Result<List<SearchArticlesResu
 {
     public string? SearchTerm { get; init; }
     public string? Category { get; init; }
-    public int Page { get; init; } = 1;
-    public int PageSize { get; init; } = 20;
+    public int? Page { get; init; }
+    public int? PageSize { get; init; }
 }

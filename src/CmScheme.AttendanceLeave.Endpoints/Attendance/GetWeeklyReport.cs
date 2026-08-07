@@ -10,7 +10,7 @@ namespace CmScheme.AttendanceLeave.Endpoints.Attendance;
 
 public static class GetWeeklyReport
 {
-    public static async Task<IResult> Handle(DateTime weekStartDate, ISender sender, HttpContext httpContext)
+    public static async Task<IResult> Handle(DateTime weekStart, ISender sender, HttpContext httpContext)
     {
         int? applicantId = httpContext.User.FindFirst("UserAccountId") is { } claim
             && int.TryParse(claim.Value, out int parsed)
@@ -25,7 +25,7 @@ public static class GetWeeklyReport
         GetWeeklyAttendanceReportQuery query = new GetWeeklyAttendanceReportQuery
         {
             ApplicantId = applicantId.Value,
-            WeekStartDate = weekStartDate,
+            WeekStartDate = weekStart,
         };
 
         Result<WeeklyAttendanceReportDto> result = await sender.Send(query);

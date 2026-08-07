@@ -14,10 +14,15 @@ public sealed class GetTrainingCompletionQueryHandler(
         GetTrainingCompletionQuery query,
         CancellationToken cancellationToken)
     {
-        TrainingCompletionDto? completion = await queryDbContext.TrainingCompletions
-            .AsNoTracking()
-            .Where(tc => tc.TrainingScheduleId == query.TrainingScheduleId
-                      && tc.UserAccountId == query.UserAccountId)
+        IQueryable<Core.Entities.TrainingCompletion> q = queryDbContext.TrainingCompletions
+            .AsNoTracking();
+
+        if (query.TrainingScheduleId.HasValue)
+            q = q.Where(tc => tc.TrainingScheduleId == query.TrainingScheduleId.Value);
+        if (query.UserAccountId.HasValue)
+            q = q.Where(tc => tc.UserAccountId == query.UserAccountId.Value);
+
+        TrainingCompletionDto? completion = await q
             .Select(tc => new TrainingCompletionDto(
                 tc.TrainingCompletionId,
                 tc.TrainingScheduleId,

@@ -13,10 +13,15 @@ public sealed class GetSelfAssessmentQueryHandler(
         GetSelfAssessmentQuery request,
         CancellationToken cancellationToken)
     {
-        SelfAssessmentDto? assessment = await dbContext.SelfAssessments
-            .AsNoTracking()
-            .Where(s => s.UserAccountId == request.UserAccountId
-                && (request.ReviewCycleId == null || s.ReviewCycleId == request.ReviewCycleId))
+        IQueryable<CmScheme.Performance.Core.Entities.SelfAssessment> q = dbContext.SelfAssessments
+            .AsNoTracking();
+
+        if (request.UserAccountId.HasValue)
+            q = q.Where(s => s.UserAccountId == request.UserAccountId.Value);
+        if (request.ReviewCycleId.HasValue)
+            q = q.Where(s => s.ReviewCycleId == request.ReviewCycleId);
+
+        SelfAssessmentDto? assessment = await q
             .OrderByDescending(s => s.SubmittedOn)
             .Select(s => new SelfAssessmentDto
             {

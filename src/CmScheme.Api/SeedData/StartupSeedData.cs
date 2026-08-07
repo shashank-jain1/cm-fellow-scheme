@@ -206,28 +206,47 @@ internal static class StartupSeedData
 
         List<ModuleMaster> children =
         [
-            new() { ModuleCode = "REG_REGISTRATIONS", ModuleName = "Registrations", SortOrder = 1, ParentModuleMasterId = parentReg, IsActive = true, CreatedOn = DateTime.UtcNow },
-            new() { ModuleCode = "REG_USER_MGMT", ModuleName = "User Management", SortOrder = 2, ParentModuleMasterId = parentReg, IsActive = true, CreatedOn = DateTime.UtcNow },
-            new() { ModuleCode = "TRN_TRAINING", ModuleName = "Training Sessions", SortOrder = 1, ParentModuleMasterId = parentTrain, IsActive = true, CreatedOn = DateTime.UtcNow },
-            new() { ModuleCode = "TRN_MEETINGS", ModuleName = "Meeting Schedule", SortOrder = 2, ParentModuleMasterId = parentTrain, IsActive = true, CreatedOn = DateTime.UtcNow },
+            new() { ModuleCode = "HD_TICKETS", ModuleName = "Help Desk Tickets", SortOrder = 1, ParentModuleMasterId = parentHelp, IsActive = true, CreatedOn = DateTime.UtcNow },
+            new() { ModuleCode = "HD_SURVEYS", ModuleName = "Satisfaction Surveys", SortOrder = 2, ParentModuleMasterId = parentHelp, IsActive = true, CreatedOn = DateTime.UtcNow },
+            new() { ModuleCode = "HD_KNOWLEDGE_BASE", ModuleName = "Knowledge Base", SortOrder = 3, ParentModuleMasterId = parentHelp, IsActive = true, CreatedOn = DateTime.UtcNow },
+            new() { ModuleCode = "HD_SLA", ModuleName = "SLA Management", SortOrder = 4, ParentModuleMasterId = parentHelp, IsActive = true, CreatedOn = DateTime.UtcNow },
+            new() { ModuleCode = "MAS_LOCATIONS", ModuleName = "Locations", SortOrder = 1, ParentModuleMasterId = parentMasters, IsActive = true, CreatedOn = DateTime.UtcNow },
+            new() { ModuleCode = "MAS_PROJECTS", ModuleName = "Projects", SortOrder = 2, ParentModuleMasterId = parentMasters, IsActive = true, CreatedOn = DateTime.UtcNow },
+            new() { ModuleCode = "MAS_WORKS", ModuleName = "Works", SortOrder = 3, ParentModuleMasterId = parentMasters, IsActive = true, CreatedOn = DateTime.UtcNow },
+            new() { ModuleCode = "MAS_TRAINING", ModuleName = "Training Schedule", SortOrder = 4, ParentModuleMasterId = parentMasters, IsActive = true, CreatedOn = DateTime.UtcNow },
+            new() { ModuleCode = "MAS_DEPARTMENTS", ModuleName = "Departments & Designations", SortOrder = 5, ParentModuleMasterId = parentMasters, IsActive = true, CreatedOn = DateTime.UtcNow },
+            new() { ModuleCode = "MAS_LOOKUP", ModuleName = "Lookup Masters", SortOrder = 6, ParentModuleMasterId = parentMasters, IsActive = true, CreatedOn = DateTime.UtcNow },
+            new() { ModuleCode = "DASH_OVERVIEW", ModuleName = "Dashboard Overview", SortOrder = 1, ParentModuleMasterId = parentDash, IsActive = true, CreatedOn = DateTime.UtcNow },
+            new() { ModuleCode = "DASH_EXPORT", ModuleName = "Dashboard Export", SortOrder = 2, ParentModuleMasterId = parentDash, IsActive = true, CreatedOn = DateTime.UtcNow },
+            new() { ModuleCode = "PERF_EVALUATION", ModuleName = "Performance Evaluation", SortOrder = 1, ParentModuleMasterId = parentPerf, IsActive = true, CreatedOn = DateTime.UtcNow },
+            new() { ModuleCode = "PERF_GOALS", ModuleName = "Performance Goals", SortOrder = 2, ParentModuleMasterId = parentPerf, IsActive = true, CreatedOn = DateTime.UtcNow },
+            new() { ModuleCode = "PERF_IMPROVEMENT", ModuleName = "Improvement Plans", SortOrder = 3, ParentModuleMasterId = parentPerf, IsActive = true, CreatedOn = DateTime.UtcNow },
+            new() { ModuleCode = "PERF_PEER_FEEDBACK", ModuleName = "Peer Feedback", SortOrder = 4, ParentModuleMasterId = parentPerf, IsActive = true, CreatedOn = DateTime.UtcNow },
+            new() { ModuleCode = "PERF_REVIEW_CYCLE", ModuleName = "Review Cycles", SortOrder = 5, ParentModuleMasterId = parentPerf, IsActive = true, CreatedOn = DateTime.UtcNow },
+            new() { ModuleCode = "PERF_SELF_ASSESSMENT", ModuleName = "Self Assessment", SortOrder = 6, ParentModuleMasterId = parentPerf, IsActive = true, CreatedOn = DateTime.UtcNow },
+            new() { ModuleCode = "CERT_QUEUE", ModuleName = "Certificate Queue", SortOrder = 1, ParentModuleMasterId = parentCert, IsActive = true, CreatedOn = DateTime.UtcNow },
+            new() { ModuleCode = "CERT_APPLY", ModuleName = "Apply for Certificate", SortOrder = 2, ParentModuleMasterId = parentCert, IsActive = true, CreatedOn = DateTime.UtcNow },
+            new() { ModuleCode = "CERT_EXIT", ModuleName = "Exit Management", SortOrder = 3, ParentModuleMasterId = parentCert, IsActive = true, CreatedOn = DateTime.UtcNow },
+            new() { ModuleCode = "CERT_GENERATE", ModuleName = "Generate Certificate", SortOrder = 4, ParentModuleMasterId = parentCert, IsActive = true, CreatedOn = DateTime.UtcNow },
             new() { ModuleCode = "WA_ALLOCATIONS", ModuleName = "Work Allocations", SortOrder = 1, ParentModuleMasterId = parentWork, IsActive = true, CreatedOn = DateTime.UtcNow },
             new() { ModuleCode = "WA_TASKS", ModuleName = "Task Progress", SortOrder = 2, ParentModuleMasterId = parentWork, IsActive = true, CreatedOn = DateTime.UtcNow },
             new() { ModuleCode = "WA_SURVEYS", ModuleName = "Survey Records", SortOrder = 3, ParentModuleMasterId = parentWork, IsActive = true, CreatedOn = DateTime.UtcNow },
+            new() { ModuleCode = "WA_TASK_MANAGEMENT", ModuleName = "Task Management", SortOrder = 4, ParentModuleMasterId = parentWork, IsActive = true, CreatedOn = DateTime.UtcNow },
+            new() { ModuleCode = "WA_DEPENDENCIES", ModuleName = "Task Dependencies", SortOrder = 5, ParentModuleMasterId = parentWork, IsActive = true, CreatedOn = DateTime.UtcNow },
+            new() { ModuleCode = "TRN_TRAINING", ModuleName = "Training Sessions", SortOrder = 1, ParentModuleMasterId = parentTrain, IsActive = true, CreatedOn = DateTime.UtcNow },
+            new() { ModuleCode = "TRN_MEETINGS", ModuleName = "Meeting Schedule", SortOrder = 2, ParentModuleMasterId = parentTrain, IsActive = true, CreatedOn = DateTime.UtcNow },
+            new() { ModuleCode = "TRN_COMPLETIONS", ModuleName = "Training Completions", SortOrder = 3, ParentModuleMasterId = parentTrain, IsActive = true, CreatedOn = DateTime.UtcNow },
+            new() { ModuleCode = "TRN_MATERIALS", ModuleName = "Training Materials", SortOrder = 4, ParentModuleMasterId = parentTrain, IsActive = true, CreatedOn = DateTime.UtcNow },
             new() { ModuleCode = "ATT_MARK", ModuleName = "Mark Attendance", SortOrder = 1, ParentModuleMasterId = parentAttend, IsActive = true, CreatedOn = DateTime.UtcNow },
             new() { ModuleCode = "ATT_HOLIDAYS", ModuleName = "Holiday Calendar", SortOrder = 2, ParentModuleMasterId = parentAttend, IsActive = true, CreatedOn = DateTime.UtcNow },
             new() { ModuleCode = "ATT_LEAVE", ModuleName = "Apply Leave", SortOrder = 3, ParentModuleMasterId = parentAttend, IsActive = true, CreatedOn = DateTime.UtcNow },
             new() { ModuleCode = "ATT_LEAVE_STATUS", ModuleName = "Leave Status", SortOrder = 4, ParentModuleMasterId = parentAttend, IsActive = true, CreatedOn = DateTime.UtcNow },
             new() { ModuleCode = "ATT_LEAVE_BALANCE", ModuleName = "Leave Balance", SortOrder = 5, ParentModuleMasterId = parentAttend, IsActive = true, CreatedOn = DateTime.UtcNow },
-            new() { ModuleCode = "PERF_EVALUATION", ModuleName = "Performance Evaluation", SortOrder = 1, ParentModuleMasterId = parentPerf, IsActive = true, CreatedOn = DateTime.UtcNow },
-            new() { ModuleCode = "CERT_QUEUE", ModuleName = "Certificate Queue", SortOrder = 1, ParentModuleMasterId = parentCert, IsActive = true, CreatedOn = DateTime.UtcNow },
-            new() { ModuleCode = "CERT_APPLY", ModuleName = "Apply for Certificate", SortOrder = 2, ParentModuleMasterId = parentCert, IsActive = true, CreatedOn = DateTime.UtcNow },
-            new() { ModuleCode = "CERT_EXIT", ModuleName = "Exit Management", SortOrder = 3, ParentModuleMasterId = parentCert, IsActive = true, CreatedOn = DateTime.UtcNow },
-            new() { ModuleCode = "HD_TICKETS", ModuleName = "Help Desk Tickets", SortOrder = 1, ParentModuleMasterId = parentHelp, IsActive = true, CreatedOn = DateTime.UtcNow },
-            new() { ModuleCode = "MAS_LOCATIONS", ModuleName = "Locations", SortOrder = 1, ParentModuleMasterId = parentMasters, IsActive = true, CreatedOn = DateTime.UtcNow },
-            new() { ModuleCode = "MAS_PROJECTS", ModuleName = "Projects", SortOrder = 2, ParentModuleMasterId = parentMasters, IsActive = true, CreatedOn = DateTime.UtcNow },
-            new() { ModuleCode = "MAS_WORKS", ModuleName = "Works", SortOrder = 3, ParentModuleMasterId = parentMasters, IsActive = true, CreatedOn = DateTime.UtcNow },
-            new() { ModuleCode = "MAS_TRAINING", ModuleName = "Training Schedule", SortOrder = 4, ParentModuleMasterId = parentMasters, IsActive = true, CreatedOn = DateTime.UtcNow },
-            new() { ModuleCode = "DASH_OVERVIEW", ModuleName = "Dashboard Overview", SortOrder = 1, ParentModuleMasterId = parentDash, IsActive = true, CreatedOn = DateTime.UtcNow },
+            new() { ModuleCode = "ATT_REPORTS", ModuleName = "Attendance Reports", SortOrder = 6, ParentModuleMasterId = parentAttend, IsActive = true, CreatedOn = DateTime.UtcNow },
+            new() { ModuleCode = "REG_REGISTRATIONS", ModuleName = "Registrations", SortOrder = 1, ParentModuleMasterId = parentReg, IsActive = true, CreatedOn = DateTime.UtcNow },
+            new() { ModuleCode = "REG_USER_MGMT", ModuleName = "User Management", SortOrder = 2, ParentModuleMasterId = parentReg, IsActive = true, CreatedOn = DateTime.UtcNow },
+            new() { ModuleCode = "REG_EXIT_INTERVIEW", ModuleName = "Exit Interview", SortOrder = 3, ParentModuleMasterId = parentReg, IsActive = true, CreatedOn = DateTime.UtcNow },
+            new() { ModuleCode = "REG_BULK_IMPORT", ModuleName = "Bulk Import", SortOrder = 4, ParentModuleMasterId = parentReg, IsActive = true, CreatedOn = DateTime.UtcNow },
             new() { ModuleCode = "ADM_USER_MGMT", ModuleName = "User Management", SortOrder = 1, ParentModuleMasterId = parentAdmin, IsActive = true, CreatedOn = DateTime.UtcNow },
             new() { ModuleCode = "ADM_ACCESS", ModuleName = "User Access Management", SortOrder = 2, ParentModuleMasterId = parentAdmin, IsActive = true, CreatedOn = DateTime.UtcNow },
             new() { ModuleCode = "ADM_AUDIT", ModuleName = "Access Audit Log", SortOrder = 3, ParentModuleMasterId = parentAdmin, IsActive = true, CreatedOn = DateTime.UtcNow },
@@ -250,16 +269,22 @@ internal static class StartupSeedData
 
         if (admin == null) return;
 
-        bool accessExists = await dbContext.UserModuleAccesses
-            .AnyAsync(uma => uma.UserAccountId == admin.UserAccountId);
-
-        if (accessExists) return;
-
-        List<ModuleMaster> modules = await dbContext.ModuleMasters
+        List<ModuleMaster> allModules = await dbContext.ModuleMasters
             .Where(mm => mm.IsActive)
             .ToListAsync();
 
-        List<UserModuleAccess> adminAccess = modules.Select(mm => new UserModuleAccess
+        List<int> existingModuleIds = await dbContext.UserModuleAccesses
+            .Where(uma => uma.UserAccountId == admin.UserAccountId)
+            .Select(uma => uma.ModuleMasterId)
+            .ToListAsync();
+
+        List<ModuleMaster> missingModules = allModules
+            .Where(mm => !existingModuleIds.Contains(mm.ModuleMasterId))
+            .ToList();
+
+        if (missingModules.Count == 0) return;
+
+        List<UserModuleAccess> newAccess = missingModules.Select(mm => new UserModuleAccess
         {
             UserAccountId = admin.UserAccountId,
             ModuleMasterId = mm.ModuleMasterId,
@@ -272,7 +297,7 @@ internal static class StartupSeedData
             CreatedBy = admin.UserAccountId,
         }).ToList();
 
-        dbContext.UserModuleAccesses.AddRange(adminAccess);
+        dbContext.UserModuleAccesses.AddRange(newAccess);
         await dbContext.SaveChangesAsync();
     }
 

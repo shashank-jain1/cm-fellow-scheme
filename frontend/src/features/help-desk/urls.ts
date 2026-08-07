@@ -1,6 +1,6 @@
 const helpDeskUrls = {
   base: 'tickets',
-  tickets: () => 'tickets/list',
+  tickets: () => 'tickets',
   ticketDetail: (id: number) => `tickets/${id}`,
   raiseTicket: () => 'tickets',
   resolve: () => 'tickets/resolve',

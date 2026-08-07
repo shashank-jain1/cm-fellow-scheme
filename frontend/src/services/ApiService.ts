@@ -24,6 +24,9 @@ class ApiService {
         window.location.href = '/login';
         throw new Error('Session expired. Please login again.');
       }
+      if (response.status === 404) {
+        return { data: undefined };
+      }
       const errorText = await response.text().catch(() => response.statusText);
       throw new Error(`API ${method} ${url} failed (${response.status}): ${errorText}`);
     }
@@ -38,7 +41,7 @@ class ApiService {
   static async delete<T>(url: string) { return this.request<T>('DELETE', url); }
 
   static async postBlob(url: string, body: unknown, fileName: string): Promise<void> {
-    const headers: Record<string, string> = {};
+    const headers: Record<string, string> = { 'Content-Type': 'application/json' };
     const token = localStorage.getItem('token');
     if (token) headers['Authorization'] = `Bearer ${token}`;
 
