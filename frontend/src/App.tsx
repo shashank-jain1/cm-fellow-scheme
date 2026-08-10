@@ -29,6 +29,8 @@ const CreateActivityForm = lazy(() => import('./features/training/pages/CreateAc
 const TrainingCompletionPage = lazy(() => import('./features/training/pages/TrainingCompletionPage'));
 const MeetingListPage = lazy(() => import('./features/training/pages/MeetingListPage'));
 const MeetingDetailPage = lazy(() => import('./features/training/pages/MeetingDetailPage'));
+const TrainingDetailPage = lazy(() => import('./features/training/pages/TrainingDetailPage'));
+const ActivityList = lazy(() => import('./features/training/pages/ActivityList'));
 
 const WorkAllocationPage = lazy(() => import('./features/work-allocation/pages/WorkAllocationPage'));
 const TaskProgressPage = lazy(() => import('./features/work-allocation/pages/TaskProgressPage'));
@@ -117,6 +119,8 @@ export default function App() {
                     <Route path="training/completions" element={<ModuleProtectedRoute moduleCode="TRAINING"><TrainingCompletionPage /></ModuleProtectedRoute>} />
                     <Route path="training/meetings" element={<ModuleProtectedRoute moduleCode="TRAINING"><MeetingListPage /></ModuleProtectedRoute>} />
                     <Route path="training/meetings/:id" element={<ModuleProtectedRoute moduleCode="TRAINING"><MeetingDetailPage /></ModuleProtectedRoute>} />
+                    <Route path="training/list" element={<ModuleProtectedRoute moduleCode="TRAINING"><ActivityList /></ModuleProtectedRoute>} />
+                    <Route path="training/:id" element={<ModuleProtectedRoute moduleCode="TRAINING"><TrainingDetailPage /></ModuleProtectedRoute>} />
                     <Route path="work-allocation" element={<ModuleProtectedRoute moduleCode="WORK_ALLOCATION"><WorkAllocationPage /></ModuleProtectedRoute>} />
                     <Route path="work-allocation/progress" element={<ModuleProtectedRoute moduleCode="WORK_ALLOCATION"><TaskProgressPage /></ModuleProtectedRoute>} />
                     <Route path="attendance" element={<ModuleProtectedRoute moduleCode="ATTENDANCE"><MarkAttendancePage /></ModuleProtectedRoute>} />

@@ -1,4 +1,4 @@
-import { AppSelect, AppInputNumber, AppTextarea } from '../../../shared/components/forms';
+import { AppSelect, AppInputNumber } from '../../../shared/components/forms';
 import { useLookupOptions, useProjects, useWorks } from '../../../shared/hooks/useMasters';
 import type { WorkAllocationFormData } from '../types';
 

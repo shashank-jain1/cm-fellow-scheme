@@ -15,7 +15,7 @@ import {
   verifyCompliance,
   getExitInterview,
 } from './api';
-import type { CertificateFormData, ExitReadinessPayload, SubmitExitInterviewCommand } from './types';
+import type { CertificateFormData, ExitReadinessPayload, SubmitExitInterviewCommand, VerifyComplianceCommand } from './types';
 
 export function useCertificates() {
   return useQuery({
@@ -131,7 +131,7 @@ export function useVerifyCertificate() {
 
 export function useVerifyCompliance() {
   return useMutation({
-    mutationFn: (exitRecordId: number) => verifyCompliance(exitRecordId),
+    mutationFn: (command: VerifyComplianceCommand) => verifyCompliance(command),
   });
 }
 

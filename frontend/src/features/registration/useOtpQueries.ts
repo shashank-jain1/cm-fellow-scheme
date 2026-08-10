@@ -4,15 +4,14 @@ import type { VerifyOtpPayload } from './api';
 
 export function useSendOtpMutation() {
   return useMutation({
-    mutationFn: (applicantId: number) => registrationApi.sendOtp(applicantId),
+    mutationFn: (mobileNumber: string) => registrationApi.sendOtp(mobileNumber),
   });
 }
 
 export function useVerifyMobileOtpMutation() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: ({ applicantId, data }: { applicantId: number; data: VerifyOtpPayload }) =>
-      registrationApi.verifyMobileOtp(applicantId, data),
+    mutationFn: (data: VerifyOtpPayload) => registrationApi.verifyMobileOtp(data),
     onSuccess: () => qc.invalidateQueries({ queryKey: ['registrations'] }),
   });
 }
@@ -28,8 +27,8 @@ export function useForgotPasswordMutation() {
 export function useResetPasswordMutation() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: ({ email, newPassword }: { email: string; newPassword: string }) =>
-      registrationApi.resetPassword(email, newPassword),
+    mutationFn: ({ token, newPassword }: { token: string; newPassword: string }) =>
+      registrationApi.resetPassword(token, newPassword),
     onSuccess: () => qc.invalidateQueries({ queryKey: ['registrations'] }),
   });
 }

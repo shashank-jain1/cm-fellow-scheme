@@ -62,14 +62,16 @@ export interface TrainingCompletionFormData {
   comments: string;
 }
 
+/** Mirrors TrainingMaterialDto returned by GET training/sessions/{id}/materials. */
 export interface TrainingMaterial {
-  materialId: number;
+  trainingMaterialId: number;
   trainingScheduleId: number;
-  fileName: string;
-  fileUrl: string;
-  uploadedBy: number;
-  uploadedByName: string;
-  uploadedAt: string;
+  materialName: string;
+  filePath: string;
+  fileSize: number;
+  contentType?: string | null;
+  uploadedOn: string;
+  isActive: boolean;
 }
 
 export interface UserOption {

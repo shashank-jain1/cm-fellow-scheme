@@ -1,5 +1,4 @@
 import ApiService from '../../services/ApiService';
-import type { SeedLog } from './types';
 import { log } from './seedHelpers';
 import type { SeedFn } from './seedMasters';
 

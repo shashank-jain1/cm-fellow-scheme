@@ -35,7 +35,7 @@ export function useSidebarResizer(onWidthChange?: (width: number) => void) {
   return { isResizing, handleMouseDown };
 }
 
-export default function SidebarResizer({ onWidthChange, collapsed }: SidebarResizerProps) {
+export default function SidebarResizer({ onWidthChange }: SidebarResizerProps) {
   const { isResizing, handleMouseDown } = useSidebarResizer(onWidthChange);
   const transition = isResizing ? 'none' : 'width var(--transition-slow)';
 

@@ -8,7 +8,10 @@ import type {
 export function useMarkAttendance() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: (data: MarkAttendanceCommand) => attendanceLeaveApi.markAttendance(data),
+    mutationFn: async (data: MarkAttendanceCommand) => {
+      const res = await attendanceLeaveApi.markAttendance(data);
+      return res.data ?? 0;
+    },
     onSuccess: () => qc.invalidateQueries({ queryKey: ['attendance'] }),
   });
 }

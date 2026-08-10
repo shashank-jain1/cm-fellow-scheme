@@ -1,5 +1,5 @@
 interface PerformanceScoreCardProps {
-  performanceScore: string;
+  performanceScore: number;
   performanceGrade: string;
   completionPercentage: number;
   surveysCompleted: number;

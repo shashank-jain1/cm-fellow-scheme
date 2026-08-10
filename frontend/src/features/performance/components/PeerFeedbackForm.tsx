@@ -26,7 +26,7 @@ const INITIAL_RATINGS: RatingField[] = [
 
 export default function PeerFeedbackForm({
   performanceEvaluationId,
-  userId,
+  userId: _userId,
   onSuccess,
 }: PeerFeedbackFormProps) {
   const submitFeedback = useSubmitPeerFeedback();

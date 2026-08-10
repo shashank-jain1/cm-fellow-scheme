@@ -31,14 +31,14 @@ export default function ExitManagementPage() {
   const handleVerifyCompliance = async () => {
     if (!exitRecordId) return;
     try {
-      const result = await verifyCompliance.mutateAsync(exitRecordId);
-      if (result.isCompliant) {
-        ToastService.success('All clearances compliant');
-      } else {
-        ToastService.warn(`Compliance issues: ${result.flags}`);
-      }
-    } catch {
-      ToastService.error('Failed to verify compliance');
+      await verifyCompliance.mutateAsync({
+        exitRecordId,
+        status: 'Compliance Verified',
+        verifiedBy: user?.username ?? 'admin',
+      });
+      ToastService.success('Exit record marked as compliance verified');
+    } catch (err) {
+      ToastService.error(err instanceof Error ? err.message : 'Failed to verify compliance');
     }
   };
 

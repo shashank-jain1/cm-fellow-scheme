@@ -1,12 +1,11 @@
 import ApiService from '../../services/ApiService';
-import type { SeedLog } from './types';
 import { log } from './seedHelpers';
 import type { SeedFn } from './seedMasters';
 
 const seedPerformance: SeedFn = async (appendLog) => {
   let count = 0;
 
-  const perfRes = await ApiService.get<Array<{ performanceEvaluationId: number }>>('performance/list');
+  const perfRes = await ApiService.get<Array<{ performanceEvaluationId: number }>>('performance');
   const evals = perfRes.data ?? [];
 
   if (evals.length === 0) {
@@ -30,7 +29,7 @@ const seedPerformance: SeedFn = async (appendLog) => {
     });
     appendLog(log('Performance', `Recorded remarks for evaluation ${e.performanceEvaluationId}`, 'success'));
 
-    await ApiService.post<void>(`performance/${e.performanceEvaluationId}/calculate-score`, {});
+    await ApiService.put<void>(`performance/${e.performanceEvaluationId}/calculate-score`, {});
     appendLog(log('Performance', `Calculated score for evaluation ${e.performanceEvaluationId}`, 'success'));
   }
 

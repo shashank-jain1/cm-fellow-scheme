@@ -4,6 +4,7 @@ export { default as ActivityList } from './pages/ActivityList';
 export { default as TrainingCompletionPage } from './pages/TrainingCompletionPage';
 export { default as MeetingListPage } from './pages/MeetingListPage';
 export { default as MeetingDetailPage } from './pages/MeetingDetailPage';
+export { default as TrainingDetailPage } from './pages/TrainingDetailPage';
 export { default as MaterialList } from './components/MaterialList';
 export { useTrainingSessions, useTrainingMeetings, useCreateTrainingSession, useCreateTrainingMeeting, useUpdateTrainingStatus } from './queries';
 export { useActivityForm } from './components/form.hook';

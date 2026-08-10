@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import { Tag } from 'primereact/tag';
 import { useGenerateCertificate } from '../queries';
-import { getDownloadUrl } from '../api';
+import { downloadCertificate } from '../api';
+import { ToastService } from '../../../shared/utils/toast';
 import { AppButton } from '../../../shared/components/ui';
 import type { CertificateApplicationDto } from '../types';
 
@@ -9,6 +11,7 @@ interface CertificateDownloadCardProps {
 }
 
 export default function CertificateDownloadCard({ certificate }: CertificateDownloadCardProps) {
+  const [isDownloading, setIsDownloading] = useState(false);
   const isApproved = certificate.status === 'Approved';
   const isIssued = certificate.status === 'Issued';
   const canGenerate = isApproved && !isIssued;
@@ -20,9 +23,15 @@ export default function CertificateDownloadCard({ certificate }: CertificateDown
     generateMutation.mutate(certificate.certificateId);
   };
 
-  const handleDownload = () => {
-    const url = getDownloadUrl(certificate.certificateId);
-    window.open(url, '_blank');
+  const handleDownload = async () => {
+    setIsDownloading(true);
+    try {
+      await downloadCertificate(certificate.certificateId);
+    } catch (err) {
+      ToastService.error(err instanceof Error ? err.message : 'Could not download the certificate.');
+    } finally {
+      setIsDownloading(false);
+    }
   };
 
   return (
@@ -73,6 +82,7 @@ export default function CertificateDownloadCard({ certificate }: CertificateDown
             size="sm"
             icon="pi pi-download"
             onClick={handleDownload}
+            loading={isDownloading}
           >
             Download
           </AppButton>

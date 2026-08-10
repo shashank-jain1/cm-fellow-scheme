@@ -6,6 +6,7 @@ using CmScheme.Registration.Endpoints.BulkImport;
 using CmScheme.Registration.Endpoints.ExitInterview;
 using CmScheme.Registration.Endpoints.Notifications;
 using CmScheme.Registration.Endpoints.Registrations;
+using CmScheme.Registration.Endpoints.TrainingEnrollment;
 using CmScheme.Registration.Endpoints.UserAccounts;
 using CmScheme.Registration.Endpoints.UserModuleAccess;
 
@@ -22,5 +23,6 @@ public sealed class RegistrationEndpoints : IApiEndpoint
         builder.MapExitInterviewEndpoints();
         builder.MapBulkImportEndpoints();
         builder.MapNotificationEndpoints();
+        builder.MapTrainingEnrollmentEndpoints();
     }
 }

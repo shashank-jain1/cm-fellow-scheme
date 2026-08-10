@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { Tag } from 'primereact/tag';
 import { AppButton } from '../../../shared/components/ui';
 import { formatDate } from '../../../shared/utils/format';
@@ -23,6 +24,7 @@ interface Props {
 }
 
 export default function CalendarGrid({ schedules, isLoading, isPending, onStatusChange }: Props) {
+  const navigate = useNavigate();
   if (isLoading) {
     return (
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: 20 }}>
@@ -47,7 +49,13 @@ export default function CalendarGrid({ schedules, isLoading, isPending, onStatus
         return (
           <div key={s.trainingScheduleId} className="card" style={{ padding: 24 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12 }}>
-              <h3 style={{ fontSize: 16, fontWeight: 600 }}>{s.trainingTitle ?? s.meetingTitle}</h3>
+              <button
+                type="button"
+                onClick={() => navigate(s.activityType === 'Meeting' ? `/training/meetings/${s.trainingScheduleId}` : `/training/${s.trainingScheduleId}`)}
+                style={{ background: 'none', border: 'none', padding: 0, fontSize: 16, fontWeight: 600, color: 'var(--primary)', cursor: 'pointer', textAlign: 'left' }}
+              >
+                {s.trainingTitle ?? s.meetingTitle}
+              </button>
               <Tag value={s.status} severity={statusSeverity(s.status)} />
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 16 }}>

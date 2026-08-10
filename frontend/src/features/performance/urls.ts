@@ -1,7 +1,7 @@
 const performanceUrls = {
   base: 'performance',
   summary: () => 'performance/summary',
-  list: () => 'performance/list',
+  list: () => 'performance',
   detail: (id: number) => `performance/summary?applicantId=${id}`,
   recordRating: () => 'performance/rating',
   recordRemarks: () => 'performance/remarks',
@@ -13,7 +13,7 @@ const performanceUrls = {
   improvementPlans: () => 'improvement-plans',
   improvementPlansByUser: (userId: number) => `improvement-plans/user/${userId}`,
   peerFeedback: () => 'peer-feedback',
-  peerFeedbackByEvaluation: (evaluationId: number) => `peer-feedback/${evaluationId}`,
+  peerFeedbackByEvaluation: (evaluationId: number) => `peer-feedback/evaluation/${evaluationId}`,
   selfAssessment: () => 'performance/self-assessment',
   selfAssessmentByUser: () => 'performance/self-assessment',
   reviewCycles: () => 'performance/review-cycle',

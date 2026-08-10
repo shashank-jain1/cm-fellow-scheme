@@ -19,7 +19,7 @@ export default function SelectProject({ value, onChange, placeholder = 'Select P
   const { data, isLoading } = useQuery({
     queryKey: ['projects'],
     queryFn: async () => {
-      const res = await ApiService.get<Project[]>('projects');
+      const res = await ApiService.get<Project[]>('masters/projects');
       return res.data ?? [];
     },
   });

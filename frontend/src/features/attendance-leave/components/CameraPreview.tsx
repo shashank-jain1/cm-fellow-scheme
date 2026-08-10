@@ -1,14 +1,11 @@
-import { useRef, useEffect } from 'react';
-
 interface Props {
-  stream: MediaStream | null;
   capturedImage: string | null;
   cameraLoading: boolean;
   cameraError: string | null;
   videoRef: React.RefObject<HTMLVideoElement | null>;
 }
 
-export default function CameraPreview({ stream, capturedImage, cameraLoading, cameraError, videoRef }: Props) {
+export default function CameraPreview({ capturedImage, cameraLoading, cameraError, videoRef }: Props) {
   return (
     <div style={{ position: 'relative', width: '100%', maxWidth: 480, borderRadius: 12, overflow: 'hidden', background: 'var(--navy-50)', aspectRatio: '4/3' }}>
       {cameraLoading && (

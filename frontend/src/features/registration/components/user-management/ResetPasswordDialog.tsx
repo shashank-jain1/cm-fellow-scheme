@@ -17,14 +17,22 @@ export default function ResetPasswordDialog({ visible, user, onHide }: ResetPass
 
   const handleSubmit = async () => {
     if (!user) return;
-    if (!newPassword || newPassword.length < 6) {
-      setError('Password must be at least 6 characters');
+    if (!newPassword || newPassword.length < 8) {
+      setError('Password must be at least 8 characters');
+      return;
+    }
+    if (!/[A-Z]/.test(newPassword) || !/[a-z]/.test(newPassword) || !/[0-9]/.test(newPassword)) {
+      setError('Password must include an uppercase letter, a lowercase letter and a digit');
       return;
     }
     setError('');
-    await resetMutation.mutateAsync({ email: user.emailId, newPassword });
-    setNewPassword('');
-    onHide();
+    try {
+      await resetMutation.mutateAsync({ userAccountId: user.userAccountId, newPassword });
+      setNewPassword('');
+      onHide();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to reset password');
+    }
   };
 
   const handleHide = () => {

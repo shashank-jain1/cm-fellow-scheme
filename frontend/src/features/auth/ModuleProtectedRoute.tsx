@@ -8,13 +8,6 @@ interface ModuleProtectedRouteProps {
   children: ReactNode;
 }
 
-const PERMISSION_MAP: Record<string, string> = {
-  Read: 'R',
-  Write: 'W',
-  Approve: 'A',
-  Export: 'E',
-};
-
 export function ModuleProtectedRoute({
   moduleCode,
   permission = 'Read',
@@ -26,7 +19,6 @@ export function ModuleProtectedRoute({
     return <>{children}</>;
   }
 
-  const requiredPermission = PERMISSION_MAP[permission] ?? 'R';
   const moduleAccess = user?.modules?.[moduleCode];
   const hasPermission = moduleAccess != null && (
     (permission === 'Read' && moduleAccess.canRead) ||

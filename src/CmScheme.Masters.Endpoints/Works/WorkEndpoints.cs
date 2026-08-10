@@ -16,6 +16,11 @@ public sealed class WorkEndpoints : IApiEndpoint
             .WithName("ListWorks")
             .WithDisplayName("List works by project");
 
+        group.MapGet("/{id:int}", GetWork.GetById)
+            .WithTags("Works")
+            .WithName("GetWork")
+            .WithDisplayName("Get work by ID");
+
         group.MapPost("", CreateWork.Create)
             .WithTags("Works")
             .WithName("CreateWork")

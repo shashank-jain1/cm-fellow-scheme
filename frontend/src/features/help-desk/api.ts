@@ -70,13 +70,15 @@ export async function fetchKnowledgeBaseArticle(id: number): Promise<KnowledgeBa
   return res.data!;
 }
 
-export async function exportTickets(format: string): Promise<string> {
-  const API_BASE = import.meta.env.VITE_API_URL || '/api/v1';
-  return `${API_BASE}/${helpDeskUrls.exportTickets(format)}`;
+/** Downloads through ApiService so the bearer token is sent; the endpoint requires auth. */
+export async function exportTickets(format: string): Promise<void> {
+  const stamp = new Date().toISOString().slice(0, 10);
+  const extension = format === 'excel' ? 'xlsx' : 'csv';
+  await ApiService.getBlob(helpDeskUrls.exportTickets(format), `tickets_${stamp}.${extension}`);
 }
 
 export async function getSurvey(ticketId: number): Promise<SatisfactionSurveyDto | null> {
-  const res = await ApiService.get<SatisfactionSurveyDto | null>(helpDeskUrls.surveyByTicket(ticketId));
+  const res = await ApiService.getOptional<SatisfactionSurveyDto>(helpDeskUrls.surveyByTicket(ticketId));
   return res.data ?? null;
 }
 

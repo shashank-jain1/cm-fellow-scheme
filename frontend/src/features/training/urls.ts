@@ -6,10 +6,11 @@ const trainingUrls = {
   createMeeting: () => 'training/meetings',
   completions: () => 'training/completions',
   createCompletion: () => 'training/completions',
-  material: (id: number) => `training/materials/${id}`,
-  uploadMaterial: () => 'training/materials/upload',
+  sessionStatus: (id: number) => `training/sessions/${id}/status`,
+  sessionMaterials: (trainingScheduleId: number) => `training/sessions/${trainingScheduleId}/materials`,
+  downloadMaterial: (materialId: number) => `training/sessions/materials/${materialId}/download`,
   meetingDetail: (id: number) => `training/meetings/${id}`,
-  meetingAttachment: (id: number) => `training/meetings/${id}/attachment`,
+  meetingAttachment: (id: number) => `training/meetings/${id}/attachments`,
   meetingMom: (id: number) => `training/meetings/${id}/mom`,
 };
 

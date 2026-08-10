@@ -22,6 +22,8 @@ public static class PerformanceGroupExtensions
         group.MapGet("/review-cycle", GetActiveReviewCycle.Handle);
         group.MapPut("/review-cycle/{reviewCycleId:int}/close", CloseReviewCycle.Handle).DisableAntiforgery();
         group.MapPut("/{performanceEvaluationId:int}/calculate-score", CalculateScore.Handle).DisableAntiforgery();
+        group.MapPut("/{performanceEvaluationId:int}/review", SubmitReview.Handle).DisableAntiforgery();
+        group.MapGet("/{performanceEvaluationId:int}/review-history", GetReviewHistory.Handle);
 
         return group;
     }

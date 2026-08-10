@@ -128,7 +128,7 @@ export default function WeeklyAttendanceReportPage() {
           </AppButton>
         </div>
 
-        <AppButton variant="outline" icon="pi pi-calendar" onClick={handleResetCurrentWeek}>
+        <AppButton variant="secondary" icon="pi pi-calendar" onClick={handleResetCurrentWeek}>
           Current Week
         </AppButton>
       </div>

@@ -31,13 +31,26 @@ public sealed class SlaCheckBackgroundService(
                     logger.LogWarning("SLA breach check completed with warnings/errors.");
                 }
             }
+            catch (OperationCanceledException) when (stoppingToken.IsCancellationRequested)
+            {
+                break;
+            }
             catch (Exception ex)
             {
                 logger.LogError(ex, "Error occurred during background SLA breach check execution.");
             }
 
-            // Run check every 15 minutes
-            await Task.Delay(TimeSpan.FromMinutes(15), stoppingToken);
+            try
+            {
+                // Run check every 15 minutes
+                await Task.Delay(TimeSpan.FromMinutes(15), stoppingToken);
+            }
+            catch (OperationCanceledException)
+            {
+                break;
+            }
         }
+
+        logger.LogInformation("SLA Check Background Service stopped.");
     }
 }

@@ -17,7 +17,7 @@ export default function TaskVerificationPanel({
   const verifyMutation = useVerifyTask();
   const [comments, setComments] = useState('');
 
-  const handleVerify = async (status: VerifyTaskCommand['status']) => {
+  const handleVerify = async (status: VerifyTaskCommand['verificationStatus']) => {
     try {
       await verifyMutation.mutateAsync({
         workAllocationId,

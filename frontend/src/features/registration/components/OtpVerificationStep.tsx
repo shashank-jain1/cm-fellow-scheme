@@ -19,12 +19,15 @@ export default function OtpVerificationStep({ formData, update }: StepProps) {
       return;
     }
     try {
-      await sendOtpMutation.mutateAsync(0);
+      await sendOtpMutation.mutateAsync(formData.mobileNumber);
       setOtpSent(true);
       toast.current?.show({ severity: 'info', summary: 'OTP Sent', detail: `OTP sent to ${formData.mobileNumber}` });
-    } catch {
-      setOtpSent(true);
-      toast.current?.show({ severity: 'info', summary: 'OTP Sent', detail: `OTP sent to ${formData.mobileNumber}` });
+    } catch (err) {
+      toast.current?.show({
+        severity: 'error',
+        summary: 'Could not send OTP',
+        detail: err instanceof Error ? err.message : 'Please try again.',
+      });
     }
   };
 
@@ -34,10 +37,7 @@ export default function OtpVerificationStep({ formData, update }: StepProps) {
       return;
     }
     try {
-      await verifyMutation.mutateAsync({
-        applicantId: 0,
-        data: { mobileNumber: formData.mobileNumber, otpCode: otp },
-      });
+      await verifyMutation.mutateAsync({ mobileNumber: formData.mobileNumber, otpCode: otp });
       setVerified(true);
       update('mobileNumber' as any, formData.mobileNumber);
       toast.current?.show({ severity: 'success', summary: 'Verified', detail: 'Mobile number verified successfully' });

@@ -1,6 +1,6 @@
 import Card from '../../shared/components/ui/Card';
 import type { SeedModule } from './seedHelpers';
-import type { ModuleSeedState, SeedLog } from './types';
+import type { ModuleSeedState } from './types';
 
 interface Props {
   mod: SeedModule;

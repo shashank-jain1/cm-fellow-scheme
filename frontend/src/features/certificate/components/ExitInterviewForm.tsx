@@ -6,8 +6,12 @@ import { ToastService } from '../../../shared/utils/toast';
 import { useSubmitExitInterview, useExitInterview } from '../queries';
 import ExitInterviewRatingList from './ExitInterviewRatingList';
 
+const ratingKeys = ['overallExperience', 'workEnvironment', 'learningOpportunities', 'teamCollaboration'] as const;
+
+type RatingKey = (typeof ratingKeys)[number];
+
 interface RatingField {
-  key: string;
+  key: RatingKey;
   label: string;
   value: number | null;
 }
@@ -18,8 +22,6 @@ const initialRatings: RatingField[] = [
   { key: 'learningOpportunities', label: 'Learning Opportunities', value: null },
   { key: 'teamCollaboration', label: 'Team Collaboration', value: null },
 ];
-
-const ratingKeys = ['overallExperience', 'workEnvironment', 'learningOpportunities', 'teamCollaboration'] as const;
 
 export default function ExitInterviewForm() {
   const [searchParams] = useSearchParams();
@@ -33,12 +35,7 @@ export default function ExitInterviewForm() {
 
   useEffect(() => {
     if (existing) {
-      setRatings((prev) =>
-        prev.map((r) => {
-          const key = r.key as keyof typeof existing;
-          return { ...r, value: (existing[key] as number) ?? null };
-        })
-      );
+      setRatings((prev) => prev.map((r) => ({ ...r, value: existing[r.key] ?? null })));
       setImprovementSuggestions(existing.improvementSuggestions ?? '');
       setWhatWorkedWell(existing.whatWorkedWell ?? '');
       setWouldRecommend(existing.wouldRecommend ?? false);
@@ -48,15 +45,19 @@ export default function ExitInterviewForm() {
   const updateRating = (key: string, value: number | null) => {
     setRatings((prev) => prev.map((r) => (r.key === key ? { ...r, value } : r)));
   };
+
+  const ratingFor = (key: RatingKey): number => ratings.find((r) => r.key === key)?.value ?? 0;
   const allRated = ratings.every((r) => r.value !== null && r.value > 0);
 
   const handleSubmit = async () => {
     if (!allRated) return;
-    const ratingMap = Object.fromEntries(ratingKeys.map((k) => [k, ratings.find((r) => r.key === k)?.value ?? 0]));
     try {
       await submitMutation.mutateAsync({
         userAccountId,
-        ...ratingMap,
+        overallExperience: ratingFor('overallExperience'),
+        workEnvironment: ratingFor('workEnvironment'),
+        learningOpportunities: ratingFor('learningOpportunities'),
+        teamCollaboration: ratingFor('teamCollaboration'),
         improvementSuggestions: improvementSuggestions.trim(),
         whatWorkedWell: whatWorkedWell.trim(),
         wouldRecommend,

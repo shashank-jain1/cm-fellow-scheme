@@ -12,23 +12,23 @@ public static class SendOtp
 {
     public static IEndpointRouteBuilder MapSendOtpEndpoint(this IEndpointRouteBuilder builder)
     {
-        builder.MapPost("/{applicantId:int}/send-otp", async (
-            int applicantId,
+        // Keyed on the mobile number, not an applicant id: OTP verification happens
+        // during the wizard, before the applicant record is created.
+        builder.MapPost("/send-otp", async (
             SendOtpRequest request,
             ISender sender,
             CancellationToken cancellationToken) =>
         {
             SendOtpCommand command = new SendOtpCommand
             {
-                ApplicantId = applicantId,
-                EmailId = request.EmailId
+                MobileNumber = request.MobileNumber,
             };
             ValueTask<Result> result = sender.Send(command, cancellationToken);
             return await result.ToApiResultAsync();
         })
         .WithName("SendOtp")
+        .WithDisplayName("Send a mobile OTP")
         .Produces(StatusCodes.Status204NoContent)
-        .ProducesProblem(StatusCodes.Status404NotFound)
         .ProducesValidationProblem()
         .ProducesProblem(StatusCodes.Status500InternalServerError);
 
@@ -36,4 +36,4 @@ public static class SendOtp
     }
 }
 
-public sealed record SendOtpRequest(string EmailId);
+public sealed record SendOtpRequest(string MobileNumber);

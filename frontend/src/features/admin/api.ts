@@ -1,6 +1,7 @@
 import ApiService from '../../services/ApiService';
 import { USER_MODULE_ACCESS_URL, MODULE_MASTER_URL } from './urls';
 import type {
+  AuditLogEntry,
   ModuleAccessDto,
   UserAccessSummaryDto,
   ModuleMasterDto,
@@ -34,6 +35,6 @@ export const moduleAccessApi = {
     if (params?.pageSize) queryString.set('pageSize', String(params.pageSize));
     if (params?.pageNumber) queryString.set('pageNumber', String(params.pageNumber));
     const qs = queryString.toString();
-    return ApiService.get(`${USER_MODULE_ACCESS_URL}/audit-logs${qs ? '?' + qs : ''}`);
+    return ApiService.get<AuditLogEntry[]>(`${USER_MODULE_ACCESS_URL}/audit-logs${qs ? '?' + qs : ''}`);
   },
 };

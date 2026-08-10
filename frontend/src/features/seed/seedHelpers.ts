@@ -1,4 +1,5 @@
 import type { SeedLog } from './types';
+import type { SeedFn } from './seedMasters';
 import seedMasters from './seedMasters';
 import seedUsers from './seedUsers';
 import seedAttendance from './seedAttendance';
@@ -8,7 +9,7 @@ import seedPerformance from './seedPerformance';
 import seedCertificate from './seedCertificate';
 import seedHelpDesk from './seedHelpDesk';
 
-export type { SeedFn } from './seedMasters';
+export type { SeedFn };
 
 export interface SeedModule {
   key: string;

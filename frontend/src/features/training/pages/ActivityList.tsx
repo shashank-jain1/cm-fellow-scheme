@@ -32,7 +32,21 @@ export default function ActivityList() {
     return <Tag value={status} severity={severity} />;
   };
 
-  const titleBody = (row: typeof filteredSchedules[number]) => row.trainingTitle ?? row.meetingTitle ?? '-';
+  const titleBody = (row: typeof filteredSchedules[number]) => {
+    const label = row.trainingTitle ?? row.meetingTitle ?? '-';
+    const target = row.activityType === 'Meeting'
+      ? `/training/meetings/${row.trainingScheduleId}`
+      : `/training/${row.trainingScheduleId}`;
+    return (
+      <button
+        type="button"
+        onClick={() => navigate(target)}
+        style={{ background: 'none', border: 'none', padding: 0, color: 'var(--primary)', cursor: 'pointer', fontWeight: 500, textAlign: 'left' }}
+      >
+        {label}
+      </button>
+    );
+  };
 
   return (
     <div>

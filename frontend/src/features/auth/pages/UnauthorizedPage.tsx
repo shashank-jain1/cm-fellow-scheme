@@ -1,4 +1,3 @@
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import AppButton from '../../../shared/components/ui/AppButton';
 
@@ -34,10 +33,11 @@ export default function UnauthorizedPage() {
         </p>
         <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
           <AppButton
-            label="Go to Dashboard"
             icon="pi pi-home"
             onClick={() => navigate('/dashboard')}
-          />
+          >
+            Go to Dashboard
+          </AppButton>
         </div>
       </div>
     </div>

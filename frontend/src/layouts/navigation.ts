@@ -12,6 +12,7 @@ export const navItems: NavItem[] = [
 
 export const trainingSubItems: NavItem[] = [
   { path: '/training', label: 'Activity Calendar', icon: 'pi pi-calendar' },
+  { path: '/training/list', label: 'Activity List', icon: 'pi pi-list' },
   { path: '/training/new', label: 'New Activity', icon: 'pi pi-plus' },
   { path: '/training/meetings', label: 'Meetings Queue', icon: 'pi pi-users' },
   { path: '/training/completions', label: 'Completions', icon: 'pi pi-check-circle' },

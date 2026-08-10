@@ -3,7 +3,7 @@ import type { WorkAllocationFormData } from '../types';
 
 const initialFormData: WorkAllocationFormData = {
   projectId: 0,
-  workProjectId: 0,
+  workProjectId: '',
   workDescription: '',
   priority: 'Medium',
   startDate: '',

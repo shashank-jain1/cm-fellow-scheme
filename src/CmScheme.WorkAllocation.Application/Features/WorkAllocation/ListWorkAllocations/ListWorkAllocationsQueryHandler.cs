@@ -11,6 +11,24 @@ public sealed class ListWorkAllocationsQueryHandler(IWorkAllocationQueryDbContex
 {
     public async ValueTask<Result<IReadOnlyList<WorkAllocationDto>>> Handle(ListWorkAllocationsQuery request, CancellationToken cancellationToken)
     {
+        // Progress is derived per allocation from its task rows, matching the
+        // "(Completed Surveys / Assigned Surveys) x 100" rule in the module spec.
+        var progressTotals = await dbContext.TaskProgresses
+            .GroupBy(tp => tp.WorkAllocationId)
+            .Select(g => new
+            {
+                WorkAllocationId = g.Key,
+                Assigned = g.Sum(tp => tp.NumberOfSurveys),
+                Completed = g.Sum(tp => tp.CompletedSurveys),
+            })
+            .ToListAsync(cancellationToken);
+
+        Dictionary<int, decimal> completionByAllocation = progressTotals.ToDictionary(
+            t => t.WorkAllocationId,
+            t => t.Assigned > 0
+                ? Math.Round((decimal)t.Completed / t.Assigned * 100m, 2)
+                : 0m);
+
         List<WorkAllocationDto> workAllocations = await dbContext.WorkAllocations
             .Select(w => new WorkAllocationDto
             {
@@ -35,6 +53,11 @@ public sealed class ListWorkAllocationsQueryHandler(IWorkAllocationQueryDbContex
                 ModifiedBy = w.ModifiedBy
             })
             .ToListAsync(cancellationToken);
+
+        foreach (WorkAllocationDto dto in workAllocations)
+        {
+            dto.CompletionPercentage = completionByAllocation.GetValueOrDefault(dto.WorkAllocationId);
+        }
 
         return Result<IReadOnlyList<WorkAllocationDto>>.Success(workAllocations);
     }

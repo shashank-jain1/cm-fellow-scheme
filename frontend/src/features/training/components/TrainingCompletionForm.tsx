@@ -1,6 +1,6 @@
 import React from 'react';
 import { Toast } from 'primereact/toast';
-import { AppInput, AppTextarea, AppInputNumber } from '../../../shared/components/forms';
+import { AppTextarea, AppInputNumber } from '../../../shared/components/forms';
 import { AppButton } from '../../../shared/components/ui';
 import { formatDate } from '../../../shared/utils/format';
 import type { TrainingScheduleDto } from '../types';

@@ -21,8 +21,11 @@ public static class UserAccountGroupExtensions
         group.MapCreateEndpoint();
         group.MapAssignRoleEndpoint();
         group.MapDeactivateEndpoint();
-        group.MapForgotPasswordEndpoint();
-        group.MapResetPasswordEndpoint();
+        group.MapAdminResetPasswordEndpoint();
+
+        // Password recovery is mapped on the root builder — see the endpoint classes.
+        builder.MapForgotPasswordEndpoint();
+        builder.MapResetPasswordEndpoint();
 
         return group;
     }

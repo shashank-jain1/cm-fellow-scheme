@@ -51,23 +51,37 @@ public static class ResultExtensions
         };
     }
 
+    /// <summary>
+    /// Fallback key for validation errors raised by handlers rather than by FluentValidation:
+    /// those carry a message but no field identifier.
+    /// </summary>
+    private const string GeneralErrorKey = "General";
+
+    /// <summary>
+    /// Groups validation errors by field. Errors created as <c>new ValidationError("message")</c>
+    /// have a null Identifier, which would make a naive ToDictionary throw on a null key and
+    /// hide the real message behind "Value cannot be null (Parameter 'key')".
+    /// </summary>
+    private static Dictionary<string, string[]> BuildValidationErrors(IEnumerable<ValidationError> validationErrors)
+    {
+        return validationErrors
+            .GroupBy(e => string.IsNullOrWhiteSpace(e.Identifier) ? GeneralErrorKey : e.Identifier)
+            .ToDictionary(
+                g => g.Key,
+                g => g.Select(e => e.ErrorMessage).ToArray());
+    }
+
     private static IResult ValidationProblem<T>(Result<T> result)
     {
-        IEnumerable<ValidationError> validationErrors = result.ValidationErrors;
         return TypedResults.ValidationProblem(
-            validationErrors.ToDictionary(
-                e => e.Identifier,
-                e => new[] { e.ErrorMessage }),
+            BuildValidationErrors(result.ValidationErrors),
             title: "Validation errors.");
     }
 
     private static IResult ValidationProblem(Result result)
     {
-        IEnumerable<ValidationError> validationErrors = result.ValidationErrors;
         return TypedResults.ValidationProblem(
-            validationErrors.ToDictionary(
-                e => e.Identifier,
-                e => new[] { e.ErrorMessage }),
+            BuildValidationErrors(result.ValidationErrors),
             title: "Validation errors.");
     }
 

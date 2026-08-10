@@ -26,4 +26,8 @@ export const userManagementApi = {
   deactivate: async (userAccountId: number): Promise<void> => {
     await ApiService.put(`${BASE}/${userAccountId}/deactivate`, {});
   },
+
+  resetPassword: async (userAccountId: number, newPassword: string): Promise<void> => {
+    await ApiService.put(`${BASE}/${userAccountId}/reset-password`, { newPassword });
+  },
 };

@@ -17,6 +17,13 @@ public sealed class WorkAllocationDto
     public bool ActiveStatus { get; init; }
     public string Status { get; init; } = null!;
     public int? AssignedToUserId { get; init; }
+
+    /// <summary>
+    /// Rolled up from this allocation's task progress rows:
+    /// (completed surveys / assigned surveys) x 100. 0 when nothing is assigned yet.
+    /// Settable because it is filled in after the base projection is materialised.
+    /// </summary>
+    public decimal CompletionPercentage { get; set; }
     public DateTime CreatedOn { get; init; }
     public string CreatedBy { get; init; } = null!;
     public DateTime? ModifiedOn { get; init; }

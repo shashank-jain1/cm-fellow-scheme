@@ -53,6 +53,12 @@ export interface ExitInterviewDto {
   submittedOn: string;
 }
 
+export interface VerifyComplianceCommand {
+  exitRecordId: number;
+  status: string;
+  verifiedBy: string;
+}
+
 export interface ComplianceCheckResult {
   isCompliant: boolean;
   flags: string;

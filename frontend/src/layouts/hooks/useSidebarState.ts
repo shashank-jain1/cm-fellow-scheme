@@ -11,16 +11,6 @@ interface SidebarState {
   mastersExpanded: boolean;
 }
 
-const expanders: (keyof SidebarState)[] = [
-  'trainingExpanded',
-  'attendanceExpanded',
-  'certificateExpanded',
-  'workAllocationExpanded',
-  'performanceExpanded',
-  'helpDeskExpanded',
-  'mastersExpanded',
-];
-
 const pathMap: Record<string, keyof SidebarState> = {
   '/training': 'trainingExpanded',
   '/attendance': 'attendanceExpanded',

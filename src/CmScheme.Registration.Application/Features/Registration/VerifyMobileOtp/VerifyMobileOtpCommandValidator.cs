@@ -6,9 +6,6 @@ public sealed class VerifyMobileOtpCommandValidator : AbstractValidator<VerifyMo
 {
     public VerifyMobileOtpCommandValidator()
     {
-        RuleFor(x => x.ApplicantId)
-            .GreaterThan(0).WithMessage("Applicant ID is required.");
-
         RuleFor(x => x.MobileNumber)
             .NotEmpty().WithMessage("Mobile number is required.")
             .Matches(@"^[0-9]{10}$").WithMessage("Mobile number must be 10 digits.");

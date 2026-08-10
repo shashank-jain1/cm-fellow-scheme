@@ -27,6 +27,8 @@ export interface WorkAllocationDto {
   activeStatus: boolean;
   status: string;
   assignedToUserId?: number;
+  /** Derived server-side from task progress. */
+  completionPercentage: number;
 }
 
 export interface TaskProgressDto {
@@ -87,7 +89,7 @@ export interface TaskAttachment {
 }
 
 export interface UpdateProgressCommand {
-  progressNotes: string;
+  progressNotes?: string;
   progressPercentage: number;
   status: string;
 }

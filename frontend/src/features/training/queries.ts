@@ -7,8 +7,10 @@ import {
   updateTrainingStatus,
   fetchTrainingCompletions,
   createTrainingCompletion,
-  fetchTrainingMaterial,
-  uploadTrainingMaterialFile,
+  fetchSessionMaterials,
+  uploadTrainingMaterial,
+  uploadMeetingAttachment,
+  uploadMom,
 } from './api';
 import type { ActivityFormData, TrainingCompletionFormData } from './types';
 
@@ -75,11 +77,11 @@ export function useCreateTrainingCompletion() {
   });
 }
 
-export function useTrainingMaterial(materialId: number) {
+export function useSessionMaterials(trainingScheduleId: number) {
   return useQuery({
-    queryKey: ['training-material', materialId],
-    queryFn: () => fetchTrainingMaterial(materialId),
-    enabled: !!materialId,
+    queryKey: ['training-materials', trainingScheduleId],
+    queryFn: () => fetchSessionMaterials(trainingScheduleId),
+    enabled: !!trainingScheduleId,
   });
 }
 
@@ -87,9 +89,31 @@ export function useUploadTrainingMaterial() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: ({ trainingScheduleId, file }: { trainingScheduleId: number; file: File }) =>
-      uploadTrainingMaterialFile(trainingScheduleId, file),
+      uploadTrainingMaterial(trainingScheduleId, file),
+    onSuccess: (_data, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['training-materials', variables.trainingScheduleId] });
+    },
+  });
+}
+
+export function useUploadMeetingAttachment() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ trainingScheduleId, file }: { trainingScheduleId: number; file: File }) =>
+      uploadMeetingAttachment(trainingScheduleId, file),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['training-materials'] });
+      queryClient.invalidateQueries({ queryKey: ['training-meetings'] });
+    },
+  });
+}
+
+export function useUploadMom() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ trainingScheduleId, file }: { trainingScheduleId: number; file: File }) =>
+      uploadMom(trainingScheduleId, file),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['training-meetings'] });
     },
   });
 }

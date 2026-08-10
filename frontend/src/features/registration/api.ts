@@ -49,8 +49,8 @@ export const registrationApi = {
   submitRegistration: (data: SubmitRegistrationPayload) =>
     ApiService.post<number>(REGISTRATION_URLS.FELLOWS, data),
 
-  verifyMobileOtp: (applicantId: number, data: VerifyOtpPayload) =>
-    ApiService.put<void>(`${REGISTRATION_URLS.FELLOWS}/${applicantId}/verify-otp`, data),
+  verifyMobileOtp: (data: VerifyOtpPayload) =>
+    ApiService.put<void>(`${REGISTRATION_URLS.FELLOWS}/verify-otp`, data),
 
   listRegistrations: (params?: { searchTerm?: string; status?: string; pageNumber?: number; pageSize?: number }) => {
     const query = new URLSearchParams();
@@ -83,14 +83,14 @@ export const registrationApi = {
   forgotPassword: (email: string) =>
     ApiService.post<{ message: string; resetToken?: string }>(REGISTRATION_URLS.FORGOT_PASSWORD, { email }),
 
-  resetPassword: (email: string, newPassword: string) =>
-    ApiService.post<void>(REGISTRATION_URLS.RESET_PASSWORD, { email, newPassword }),
+  resetPassword: (token: string, newPassword: string) =>
+    ApiService.post<void>(REGISTRATION_URLS.RESET_PASSWORD, { token, newPassword }),
 
   updateProfile: (applicantId: number, data: ProfileUpdatePayload) =>
     ApiService.put<void>(`${REGISTRATION_URLS.FELLOWS}/${applicantId}/profile`, data),
 
-  sendOtp: (applicantId: number) =>
-    ApiService.post<void>(`${REGISTRATION_URLS.FELLOWS}/${applicantId}/send-otp`, {}),
+  sendOtp: (mobileNumber: string) =>
+    ApiService.post<void>(`${REGISTRATION_URLS.FELLOWS}/send-otp`, { mobileNumber }),
 
   bulkApprove: (data: BulkApprovalPayload) =>
     ApiService.post<void>(`${REGISTRATION_URLS.FELLOWS}/bulk-approve`, data),

@@ -16,10 +16,7 @@ export default function TicketQueuePage() {
   const exportMutation = useExportTickets();
 
   const handleExportCsv = async () => {
-    const url = await exportMutation.mutateAsync('csv');
-    if (url) {
-      window.open(url, '_blank');
-    }
+    await exportMutation.mutateAsync('csv');
   };
 
   const filtered = (tickets ?? []).filter((t) => {

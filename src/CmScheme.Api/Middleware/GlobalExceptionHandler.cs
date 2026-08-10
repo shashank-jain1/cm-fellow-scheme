@@ -22,6 +22,7 @@ public sealed class GlobalExceptionHandler : IExceptionHandler
 
         int statusCode = exception switch
         {
+            BadHttpRequestException badRequest => badRequest.StatusCode,
             ArgumentException => StatusCodes.Status400BadRequest,
             UnauthorizedAccessException => StatusCodes.Status401Unauthorized,
             KeyNotFoundException => StatusCodes.Status404NotFound,
@@ -29,18 +30,29 @@ public sealed class GlobalExceptionHandler : IExceptionHandler
             _ => StatusCodes.Status500InternalServerError,
         };
 
-        string title = exception switch
+        string title = statusCode switch
         {
-            ArgumentException => "Bad Request",
-            UnauthorizedAccessException => "Unauthorized",
-            KeyNotFoundException => "Not Found",
-            InvalidOperationException => "Conflict",
+            StatusCodes.Status400BadRequest => "Bad Request",
+            StatusCodes.Status401Unauthorized => "Unauthorized",
+            StatusCodes.Status404NotFound => "Not Found",
+            StatusCodes.Status409Conflict => "Conflict",
             _ => "Internal Server Error",
         };
 
-        _logger.LogError(exception,
-            "Unhandled exception occurred. TraceId: {TraceId}, StatusCode: {StatusCode}",
-            traceId, statusCode);
+        // Client-side faults (missing/invalid route or query parameters) are expected traffic,
+        // not server failures — log them at a level that does not pollute the error stream.
+        if (statusCode >= StatusCodes.Status500InternalServerError)
+        {
+            _logger.LogError(exception,
+                "Unhandled exception occurred. TraceId: {TraceId}, StatusCode: {StatusCode}",
+                traceId, statusCode);
+        }
+        else
+        {
+            _logger.LogWarning(exception,
+                "Request rejected. TraceId: {TraceId}, StatusCode: {StatusCode}",
+                traceId, statusCode);
+        }
 
         Dictionary<string, string[]> errors = [];
         errors.Add("General", [exception.Message]);

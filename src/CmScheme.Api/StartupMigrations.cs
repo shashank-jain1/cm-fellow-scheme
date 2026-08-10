@@ -22,21 +22,27 @@ internal static class StartupMigrations
             ("Dashboard", sp.GetRequiredService<Dashboard.Infrastructure.DashboardDbContext>()),
         ];
 
+        ILogger logger = app.Services.GetRequiredService<ILoggerFactory>().CreateLogger(typeof(StartupMigrations));
+
         foreach ((string Name, DbContext Context) in contexts)
         {
             try
             {
                 await Context.Database.MigrateAsync();
             }
-            catch (Exception)
+            catch (Exception migrateEx)
             {
+                logger.LogWarning(migrateEx,
+                    "Migrating {Context} failed; falling back to EnsureCreated.", Name);
+
                 try
                 {
                     await Context.Database.EnsureCreatedAsync();
                 }
-                catch (Exception)
+                catch (Exception ensureEx)
                 {
-                    // Skip context if neither Migrate nor EnsureCreated works
+                    logger.LogError(ensureEx,
+                        "Could not initialise the {Context} schema. Endpoints backed by it will fail.", Name);
                 }
             }
         }

@@ -13,21 +13,30 @@ public sealed class ResetPasswordCommandHandler(IRegistrationCommandDbContext db
     public async ValueTask<Result> Handle(ResetPasswordCommand request, CancellationToken cancellationToken)
     {
         UserAccountEntity? userAccount = await dbContext.UserAccounts
-            .FirstOrDefaultAsync(ua => ua.Username == request.Email || ua.Applicant!.EmailId == request.Email, cancellationToken);
+            .FirstOrDefaultAsync(ua => ua.PasswordResetToken == request.Token, cancellationToken);
 
-        if (userAccount is null)
+        // Do not distinguish "unknown token" from "expired token" — either way the caller
+        // has not proven ownership, and a narrower message would leak which tokens exist.
+        if (userAccount is null
+            || userAccount.PasswordResetTokenExpiry is null
+            || userAccount.PasswordResetTokenExpiry < DateTime.UtcNow)
         {
-            return Result.NotFound("No account found with this email.");
+            return Result.Invalid(new ValidationError(
+                "This password reset link is invalid or has expired. Please request a new one."));
         }
 
         byte[] salt = RandomNumberGenerator.GetBytes(16);
-        using Rfc2898DeriveBytes pbkdf2 = new(request.NewPassword, salt, 100_000, HashAlgorithmName.SHA256);
-        byte[] hash = pbkdf2.GetBytes(32);
+        byte[] hash = Rfc2898DeriveBytes.Pbkdf2(
+            request.NewPassword, salt, 100_000, HashAlgorithmName.SHA256, 32);
         byte[] hashBytes = new byte[48];
         Array.Copy(salt, 0, hashBytes, 0, 16);
         Array.Copy(hash, 0, hashBytes, 16, 32);
 
         userAccount.PasswordHash = Convert.ToBase64String(hashBytes);
+
+        // Single use: burn the token so the link cannot be replayed.
+        userAccount.PasswordResetToken = null;
+        userAccount.PasswordResetTokenExpiry = null;
 
         await dbContext.SaveChangesAsync(cancellationToken);
 

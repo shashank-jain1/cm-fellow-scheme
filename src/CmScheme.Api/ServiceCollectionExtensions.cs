@@ -161,7 +161,15 @@ internal static class ServiceCollectionExtensions
         services.AddScoped<IFileUploadService, LocalFileUploadService>();
         services.AddScoped<IAuditService, AuditService>();
         services.AddScoped<INotificationService, SmtpNotificationService>();
-        services.AddScoped<IOtpService, InMemoryOtpService>();
+        // ConsoleSmsService logs the message and records it in Notifications. Swap this for a
+        // gateway-backed ISmsService when SMS provider credentials are available.
+        services.AddScoped<ISmsService, ConsoleSmsService>();
+        // Singleton, not scoped: InMemoryOtpService holds issued codes in an instance
+        // dictionary, so a per-request instance would discard every OTP before it could be
+        // verified. Codes live in this process only — move to a distributed store before
+        // running more than one API instance.
+        services.AddSingleton<IOtpService, InMemoryOtpService>();
+        services.AddScoped<IStatusWorkflowService, StatusWorkflowService>();
         services.AddSingleton<IBusinessKeyGenerator, BusinessKeyGenerator>();
         services.AddScoped<IBulkImportService, BulkImportService>();
         services.AddScoped<IDatabaseBackupService, DatabaseBackupService>();

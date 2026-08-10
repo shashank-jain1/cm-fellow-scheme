@@ -27,13 +27,21 @@ public sealed class ApplyLeaveCommandHandler(
             reportingManagerName = await ResolveCoordinatorNameAsync(request.ApplicantId, cancellationToken);
         }
 
+        decimal numberOfDays = await CalculateLeaveDaysAsync(request, cancellationToken);
+
+        if (numberOfDays <= 0)
+        {
+            return Result<int>.Invalid(new ValidationError(
+                "The selected range contains no working days — it falls entirely on holidays."));
+        }
+
         LeaveApplication leaveApplication = new LeaveApplication
         {
             ApplicantId = request.ApplicantId,
             LeaveType = request.LeaveType,
             FromDate = request.FromDate,
             ToDate = request.ToDate,
-            NumberOfDays = request.NumberOfDays,
+            NumberOfDays = numberOfDays,
             HalfDayFullDay = request.HalfDayFullDay,
             LeaveReason = request.LeaveReason,
             AttachmentPath = request.AttachmentPath,
@@ -62,6 +70,51 @@ public sealed class ApplyLeaveCommandHandler(
         }
 
         return Result<int>.Success(leaveApplication.LeaveApplicationId);
+    }
+
+    /// <summary>
+    /// Leave duration is a system-derived value: the calendar span excluding declared
+    /// holidays. A half-day request always counts as 0.5 of a single day.
+    /// </summary>
+    private async ValueTask<decimal> CalculateLeaveDaysAsync(
+        ApplyLeaveCommand request,
+        CancellationToken cancellationToken)
+    {
+        DateTime from = request.FromDate.Date;
+        DateTime to = request.ToDate.Date;
+
+        if (to < from)
+        {
+            return 0m;
+        }
+
+        bool isHalfDay = request.HalfDayFullDay.StartsWith("Half", StringComparison.OrdinalIgnoreCase);
+
+        List<DateTime> holidays = await dbContext.Holidays
+            .Where(h => h.IsActive
+                        && !h.IsOptional
+                        && h.HolidayDate >= from
+                        && h.HolidayDate <= to)
+            .Select(h => h.HolidayDate)
+            .ToListAsync(cancellationToken);
+
+        HashSet<DateTime> holidayDates = holidays.Select(h => h.Date).ToHashSet();
+
+        int workingDays = 0;
+        for (DateTime day = from; day <= to; day = day.AddDays(1))
+        {
+            if (!holidayDates.Contains(day))
+            {
+                workingDays++;
+            }
+        }
+
+        if (workingDays == 0)
+        {
+            return 0m;
+        }
+
+        return isHalfDay ? 0.5m : workingDays;
     }
 
     private async ValueTask<string> ResolveCoordinatorNameAsync(int applicantId, CancellationToken cancellationToken)

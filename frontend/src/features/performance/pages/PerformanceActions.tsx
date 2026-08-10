@@ -14,7 +14,7 @@ interface PerformanceActionsProps {
   submitRemarks: () => void;
   isRatingSubmitting: boolean;
   isRemarksSubmitting: boolean;
-  initialRemarks: string | null;
+  initialRemarks?: string | null;
 }
 
 export default function PerformanceActions({

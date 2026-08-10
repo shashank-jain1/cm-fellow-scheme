@@ -1,4 +1,3 @@
-import React from 'react';
 import { AppInput, AppTextarea } from '../../../shared/components/forms';
 import { AppButton, FormField, FormGrid } from '../../../shared/components/ui';
 

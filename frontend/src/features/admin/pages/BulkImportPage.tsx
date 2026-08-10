@@ -43,8 +43,8 @@ export default function BulkImportPage() {
           accept=".xlsx,.xls,.csv"
           maxFileSize={10_000_000}
           chooseLabel="Select File"
-          uploadOptions={{ showUploadButton: false }}
-          cancelOptions={{ showCancelButton: false }}
+          uploadOptions={{ style: { display: 'none' } }}
+          cancelOptions={{ style: { display: 'none' } }}
           onSelect={(e) => setSelectedFile(e.files[0])}
           onClear={() => setSelectedFile(null)}
           style={{ marginBottom: 16 }}

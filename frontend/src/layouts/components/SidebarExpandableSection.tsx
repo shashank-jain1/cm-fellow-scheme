@@ -17,7 +17,7 @@ export default function SidebarExpandableSection({
   expanded,
   onToggle,
   collapsed,
-  isActive,
+  isActive: _isActive,
   children,
   submenuId,
 }: SidebarExpandableSectionProps) {

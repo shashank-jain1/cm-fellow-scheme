@@ -4,10 +4,10 @@ import type {
   CertificateApplicationDto,
   CertificateFormData,
   CertificateVerifyResult,
-  ComplianceCheckResult,
   ExitInterviewDto,
   ExitReadinessPayload,
   SubmitExitInterviewCommand,
+  VerifyComplianceCommand,
 } from './types';
 
 export async function fetchCertificates(): Promise<CertificateApplicationDto[]> {
@@ -46,9 +46,10 @@ export async function generateCertificate(certificateId: number): Promise<string
   return res.data ?? '';
 }
 
-export function getDownloadUrl(id: number): string {
-  const API_BASE = import.meta.env.VITE_API_URL || '/api/v1';
-  return `${API_BASE}/${certificateUrls.download(id)}`;
+/** Downloads through ApiService so the bearer token is sent; the endpoint requires auth. */
+export async function downloadCertificate(certificateId: number, certificateNumber?: string): Promise<void> {
+  const name = certificateNumber ? `certificate_${certificateNumber}.pdf` : `certificate_${certificateId}.pdf`;
+  await ApiService.getBlob(certificateUrls.download(certificateId), name);
 }
 
 export async function submitExitReadiness(payload: ExitReadinessPayload): Promise<void> {
@@ -78,12 +79,12 @@ export async function verifyCertificate(certNumber: string): Promise<Certificate
   return res.data!;
 }
 
-export async function verifyCompliance(): Promise<ComplianceCheckResult> {
-  const res = await ApiService.put<ComplianceCheckResult>(certificateUrls.exitCompliance(), {});
-  return res.data!;
+/** POST exit/compliance sets the exit record's clearance status; it returns no body. */
+export async function verifyCompliance(command: VerifyComplianceCommand): Promise<void> {
+  await ApiService.post(certificateUrls.exitCompliance(), command);
 }
 
 export async function getExitInterview(userAccountId: number): Promise<ExitInterviewDto | null> {
-  const res = await ApiService.get<ExitInterviewDto | null>(certificateUrls.exitInterviewByUser(userAccountId));
+  const res = await ApiService.getOptional<ExitInterviewDto>(certificateUrls.exitInterviewByUser(userAccountId));
   return res.data ?? null;
 }

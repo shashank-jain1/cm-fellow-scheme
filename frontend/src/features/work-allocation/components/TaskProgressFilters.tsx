@@ -1,8 +1,3 @@
-import type { TaskProgressDto } from '../types';
-
-interface TaskProgressFiltersProps {
-  data: TaskProgressDto[];
-}
 
 const getProgressColor = (percentage: number) => {
   if (percentage >= 80) return 'var(--emerald-500)';

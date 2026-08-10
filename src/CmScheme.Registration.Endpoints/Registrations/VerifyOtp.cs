@@ -12,24 +12,22 @@ public static class VerifyOtp
 {
     public static IEndpointRouteBuilder MapVerifyOtpEndpoint(this IEndpointRouteBuilder builder)
     {
-        builder.MapPut("/{applicantId:int}/verify-otp", async (
-            int applicantId,
+        builder.MapPut("/verify-otp", async (
             VerifyOtpRequest request,
             ISender sender,
             CancellationToken cancellationToken) =>
         {
             VerifyMobileOtpCommand command = new VerifyMobileOtpCommand
             {
-                ApplicantId = applicantId,
                 MobileNumber = request.MobileNumber,
-                OtpCode = request.OtpCode
+                OtpCode = request.OtpCode,
             };
             ValueTask<Result> result = sender.Send(command, cancellationToken);
             return await result.ToApiResultAsync();
         })
         .WithName("VerifyMobileOtp")
+        .WithDisplayName("Verify a mobile OTP")
         .Produces(StatusCodes.Status204NoContent)
-        .ProducesProblem(StatusCodes.Status404NotFound)
         .ProducesValidationProblem()
         .ProducesProblem(StatusCodes.Status500InternalServerError);
 

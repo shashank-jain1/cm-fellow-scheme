@@ -146,7 +146,7 @@ export default function UserAccessPage() {
         {row.divisionName}
       </span>
     ) : (
-      <span style={{ fontSize: 12, color: 'var(--text-muted, #94A3B8)', italic: 'true' }}>All / State Level</span>
+      <span style={{ fontSize: 12, color: 'var(--text-muted, #94A3B8)', fontStyle: 'italic' }}>All / State Level</span>
     )
   );
 

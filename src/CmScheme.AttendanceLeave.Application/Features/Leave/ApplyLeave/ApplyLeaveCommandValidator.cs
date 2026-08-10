@@ -1,6 +1,7 @@
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using CmScheme.AttendanceLeave.Core.Data;
+using CmScheme.Common.Core;
 
 namespace CmScheme.AttendanceLeave.Application.Features.Leave.ApplyLeave;
 
@@ -33,12 +34,16 @@ public sealed class ApplyLeaveCommandValidator : AbstractValidator<ApplyLeaveCom
             .NotEmpty().WithMessage("CreatedBy is required.")
             .MaximumLength(200).WithMessage("CreatedBy must not exceed 200 characters.");
 
+        // "Same date leave not apply" — an overlapping request blocks a new one, but a
+        // rejected or cancelled request must not block those dates forever.
         RuleFor(x => x)
             .MustAsync(async (command, cancellationToken) =>
             {
                 bool hasExistingLeave = await dbContext.LeaveApplications
                     .AnyAsync(la =>
                         la.ApplicantId == command.ApplicantId &&
+                        la.Status != Statuses.Leave.Rejected &&
+                        la.Status != Statuses.Leave.Cancelled &&
                         la.FromDate <= command.ToDate &&
                         la.ToDate >= command.FromDate,
                         cancellationToken);

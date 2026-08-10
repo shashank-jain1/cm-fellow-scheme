@@ -5,13 +5,12 @@ import { Tag } from 'primereact/tag';
 import { Tooltip } from 'primereact/tooltip';
 import PageHeader from '../../../shared/components/ui/PageHeader';
 import SkeletonTable from '../../../shared/components/ui/SkeletonTable';
-import { useAuditLogQuery, useModulesQuery } from '../queries';
+import { useAuditLogQuery } from '../queries';
 import type { AuditLogEntry } from '../types';
 
 export default function AuditLogPage() {
   const [pageNumber, setPageNumber] = useState(1);
   const { data: logs, isLoading } = useAuditLogQuery({ pageNumber, pageSize: 50 });
-  const { data: modules } = useModulesQuery();
 
   const dateBody = (row: AuditLogEntry) =>
     new Date(row.performedOn).toLocaleString();

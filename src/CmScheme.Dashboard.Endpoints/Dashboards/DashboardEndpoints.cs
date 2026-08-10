@@ -26,12 +26,12 @@ public sealed class DashboardEndpoints : IApiEndpoint
             .WithName("GetDashboardByRole")
             .WithDisplayName("Get dashboard by role");
 
-        group.MapGet("fellow/{userId:int}", GetFellow.Handle)
+        group.MapGet("fellow/{fellowId:int}", GetFellow.Handle)
             .WithTags("Dashboards")
             .WithName("GetFellowDashboard")
             .WithDisplayName("Get fellow dashboard");
 
-        group.MapGet("coordinator/{userId:int}", GetCoordinator.Handle)
+        group.MapGet("coordinator/{coordinatorId:int}", GetCoordinator.Handle)
             .WithTags("Dashboards")
             .WithName("GetCoordinatorDashboard")
             .WithDisplayName("Get coordinator dashboard");

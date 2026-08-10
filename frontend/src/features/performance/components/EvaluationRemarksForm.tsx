@@ -6,7 +6,7 @@ interface EvaluationRemarksFormProps {
   onChange: (remarks: string) => void;
   onSubmit: () => void;
   isSubmitting?: boolean;
-  initialRemarks?: string;
+  initialRemarks?: string | null;
 }
 
 export default function EvaluationRemarksForm({

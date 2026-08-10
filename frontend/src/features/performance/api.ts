@@ -88,7 +88,7 @@ export async function getPeerFeedback(evaluationId: number): Promise<PeerFeedbac
 }
 
 export async function getSelfAssessment(): Promise<SelfAssessmentDto | null> {
-  const res = await ApiService.get<SelfAssessmentDto>(performanceUrls.selfAssessmentByUser());
+  const res = await ApiService.getOptional<SelfAssessmentDto>(performanceUrls.selfAssessmentByUser());
   return res.data ?? null;
 }
 
@@ -98,7 +98,7 @@ export async function createReviewCycle(command: CreateReviewCycleCommand): Prom
 }
 
 export async function getActiveReviewCycle(): Promise<ReviewCycleDto | null> {
-  const res = await ApiService.get<ReviewCycleDto>(performanceUrls.activeReviewCycle());
+  const res = await ApiService.getOptional<ReviewCycleDto>(performanceUrls.activeReviewCycle());
   return res.data ?? null;
 }
 

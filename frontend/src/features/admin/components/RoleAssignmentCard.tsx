@@ -29,7 +29,7 @@ interface RoleAssignmentCardProps {
 
 export default function RoleAssignmentCard({ userAccountId, currentRole, onUpdate }: RoleAssignmentCardProps) {
   // Fetch role lookups dynamically from database
-  const { data: dbRoleLookups, isLoading: isLoadingRoles } = useQuery({
+  const { data: dbRoleLookups, isLoading: _isLoadingRoles } = useQuery({
     queryKey: ['lookup', 'Role'],
     queryFn: async () => {
       const res = await ApiService.get<LookupItem[]>('masters/lookup?masterType=Role');

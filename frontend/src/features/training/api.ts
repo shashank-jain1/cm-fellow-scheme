@@ -12,39 +12,40 @@ export async function fetchTrainingMeetings(): Promise<TrainingScheduleDto[]> {
   return res.data ?? [];
 }
 
-export async function createTrainingSession(command: ActivityFormData): Promise<TrainingScheduleDto> {
-  const res = await ApiService.post<TrainingScheduleDto>(trainingUrls.createSession(), command);
+/** The API answers with the new schedule id, not the full record. */
+export async function createTrainingSession(command: ActivityFormData): Promise<number> {
+  const res = await ApiService.post<number>(trainingUrls.createSession(), command);
   return res.data!;
 }
 
-export async function createTrainingMeeting(command: ActivityFormData): Promise<TrainingScheduleDto> {
-  const res = await ApiService.post<TrainingScheduleDto>(trainingUrls.createMeeting(), command);
+export async function createTrainingMeeting(command: ActivityFormData): Promise<number> {
+  const res = await ApiService.post<number>(trainingUrls.createMeeting(), command);
   return res.data!;
 }
 
 export async function uploadTrainingMaterial(trainingScheduleId: number, file: File): Promise<string> {
   const formData = new FormData();
   formData.append('file', file);
-  const res = await ApiService.postFormData<string>(`training/sessions/${trainingScheduleId}/materials`, formData);
+  const res = await ApiService.postFormData<string>(trainingUrls.sessionMaterials(trainingScheduleId), formData);
   return res.data ?? '';
 }
 
 export async function uploadMeetingAttachment(trainingScheduleId: number, file: File): Promise<string> {
   const formData = new FormData();
   formData.append('file', file);
-  const res = await ApiService.postFormData<string>(`training/meetings/${trainingScheduleId}/attachment`, formData);
+  const res = await ApiService.postFormData<string>(trainingUrls.meetingAttachment(trainingScheduleId), formData);
   return res.data ?? '';
 }
 
 export async function uploadMom(trainingScheduleId: number, file: File): Promise<string> {
   const formData = new FormData();
   formData.append('file', file);
-  const res = await ApiService.postFormData<string>(`training/meetings/${trainingScheduleId}/mom`, formData);
+  const res = await ApiService.postFormData<string>(trainingUrls.meetingMom(trainingScheduleId), formData);
   return res.data ?? '';
 }
 
 export async function updateTrainingStatus(trainingScheduleId: number, newStatus: string): Promise<void> {
-  await ApiService.put<void>(`training/sessions/${trainingScheduleId}/status`, { newStatus });
+  await ApiService.put<void>(trainingUrls.sessionStatus(trainingScheduleId), { newStatus });
 }
 
 export async function fetchTrainingCompletions(): Promise<TrainingCompletion[]> {
@@ -57,39 +58,21 @@ export async function createTrainingCompletion(command: TrainingCompletionFormDa
   return res.data!;
 }
 
-export async function fetchTrainingMaterial(materialId: number): Promise<TrainingMaterial> {
-  const res = await ApiService.get<TrainingMaterial>(trainingUrls.material(materialId));
-  return res.data!;
-}
-
-export async function uploadTrainingMaterialFile(trainingScheduleId: number, file: File): Promise<TrainingMaterial> {
-  const formData = new FormData();
-  formData.append('file', file);
-  formData.append('trainingScheduleId', String(trainingScheduleId));
-  const res = await ApiService.postFormData<TrainingMaterial>(trainingUrls.uploadMaterial(), formData);
-  return res.data!;
+export async function fetchSessionMaterials(trainingScheduleId: number): Promise<TrainingMaterial[]> {
+  const res = await ApiService.get<TrainingMaterial[]>(trainingUrls.sessionMaterials(trainingScheduleId));
+  return res.data ?? [];
 }
 
 export async function getMeeting(id: number): Promise<TrainingScheduleDto> {
-  const res = await ApiService.get<TrainingScheduleDto>(`training/meetings/${id}`);
+  const res = await ApiService.get<TrainingScheduleDto>(trainingUrls.meetingDetail(id));
   return res.data!;
 }
 
 export async function updateMeeting(id: number, data: Partial<ActivityFormData>): Promise<void> {
-  await ApiService.put<void>(`training/meetings/${id}`, data);
+  await ApiService.put<void>(trainingUrls.meetingDetail(id), data);
 }
 
-export async function downloadMaterial(id: number): Promise<Blob> {
-  const headers: Record<string, string> = {};
-  const token = localStorage.getItem('token');
-  if (token) headers['Authorization'] = `Bearer ${token}`;
-
-  const response = await fetch(`${import.meta.env.VITE_API_URL || '/api/v1'}/training/materials/${id}/download`, { headers });
-  if (!response.ok) throw new Error(`Download failed: ${response.statusText}`);
-  return response.blob();
-}
-
-export async function getSessionMaterials(sessionId: number): Promise<TrainingMaterial[]> {
-  const res = await ApiService.get<TrainingMaterial[]>(`training/sessions/${sessionId}/materials`);
-  return res.data ?? [];
+/** Streams the stored file through the API so the bearer token is applied. */
+export async function downloadMaterial(materialId: number, fileName: string): Promise<void> {
+  await ApiService.getBlob(trainingUrls.downloadMaterial(materialId), fileName);
 }

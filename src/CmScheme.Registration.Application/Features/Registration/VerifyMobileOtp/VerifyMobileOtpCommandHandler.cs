@@ -16,16 +16,6 @@ public sealed class VerifyMobileOtpCommandHandler(
         VerifyMobileOtpCommand request,
         CancellationToken cancellationToken)
     {
-        Applicant? applicant = await dbContext.Applicants
-            .FirstOrDefaultAsync(
-                a => a.ApplicantId == request.ApplicantId && a.MobileNumber == request.MobileNumber,
-                cancellationToken);
-
-        if (applicant is null)
-        {
-            return Result.NotFound("Applicant not found.");
-        }
-
         bool isValid = await otpService.VerifyOtpAsync(request.MobileNumber, request.OtpCode, cancellationToken);
 
         if (!isValid)
@@ -33,9 +23,15 @@ public sealed class VerifyMobileOtpCommandHandler(
             return Result.Invalid(new ValidationError("Invalid or expired OTP code."));
         }
 
-        applicant.ModifiedOn = DateTime.UtcNow;
+        // When the mobile already belongs to an applicant (re-verification), record the touch.
+        Applicant? applicant = await dbContext.Applicants
+            .FirstOrDefaultAsync(a => a.MobileNumber == request.MobileNumber, cancellationToken);
 
-        await dbContext.SaveChangesAsync(cancellationToken);
+        if (applicant is not null)
+        {
+            applicant.ModifiedOn = DateTime.UtcNow;
+            await dbContext.SaveChangesAsync(cancellationToken);
+        }
 
         return Result.NoContent();
     }

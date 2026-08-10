@@ -79,7 +79,7 @@ export default function FaceCaptureWidget({ onCapture, disabled }: FaceCaptureWi
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-      <CameraPreview stream={stream} capturedImage={capturedImage} cameraLoading={cameraLoading} cameraError={cameraError} videoRef={videoRef} />
+      <CameraPreview capturedImage={capturedImage} cameraLoading={cameraLoading} cameraError={cameraError} videoRef={videoRef} />
       <canvas ref={canvasRef} style={{ display: 'none' }} />
       <FaceMatchResult location={location} locationLoading={locationLoading} locationError={locationError} />
       <CaptureButton capturedImage={capturedImage} cameraLoading={cameraLoading} cameraError={cameraError} canSubmit={!!canSubmit} disabled={disabled} onCapture={captureFrame} onRetake={retake} onSubmit={handleCapture} />

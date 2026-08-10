@@ -1,4 +1,3 @@
-import { AppButton } from '../../../shared/components/ui';
 import type { TaskDependency } from '../types';
 
 interface TaskDependencyListProps {

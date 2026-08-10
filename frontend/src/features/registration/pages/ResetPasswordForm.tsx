@@ -4,12 +4,11 @@ import { AppInput } from '../../../shared/components/forms';
 import { AppButton } from '../../../shared/components/ui';
 
 interface ResetPasswordFormProps {
-  onSubmit: (email: string, newPassword: string) => Promise<void>;
+  onSubmit: (newPassword: string) => Promise<void>;
   isPending: boolean;
 }
 
 export default function ResetPasswordForm({ onSubmit, isPending }: ResetPasswordFormProps) {
-  const [email, setEmail] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
@@ -19,8 +18,8 @@ export default function ResetPasswordForm({ onSubmit, isPending }: ResetPassword
     e.preventDefault();
     setError('');
 
-    if (!email.trim() || !newPassword.trim()) {
-      setError('All fields are required.');
+    if (!newPassword.trim()) {
+      setError('Please enter a new password.');
       return;
     }
     if (newPassword !== confirmPassword) {
@@ -31,26 +30,20 @@ export default function ResetPasswordForm({ onSubmit, isPending }: ResetPassword
       setError('Password must be at least 8 characters.');
       return;
     }
+    if (!/[A-Z]/.test(newPassword) || !/[a-z]/.test(newPassword) || !/[0-9]/.test(newPassword)) {
+      setError('Password must include an uppercase letter, a lowercase letter and a digit.');
+      return;
+    }
 
     try {
-      await onSubmit(email, newPassword);
-    } catch {
-      setError('Failed to reset password. Please try again.');
+      await onSubmit(newPassword);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to reset password. Please try again.');
     }
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="form-field">
-        <label>Email Address</label>
-        <AppInput
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Enter your email"
-          style={{ width: '100%' }}
-          type="email"
-        />
-      </div>
       <div className="form-field">
         <label>New Password</label>
         <AppInput
@@ -66,16 +59,16 @@ export default function ResetPasswordForm({ onSubmit, isPending }: ResetPassword
         <AppInput
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
-          placeholder="Confirm new password"
+          placeholder="Re-enter new password"
           style={{ width: '100%' }}
           type="password"
         />
       </div>
+
       {error && (
-        <p style={{ color: 'var(--danger)', fontSize: 13, marginBottom: 12 }}>
-          {error}
-        </p>
+        <div style={{ color: 'var(--danger)', fontSize: 13, marginTop: 12 }}>{error}</div>
       )}
+
       <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8, marginTop: 24 }}>
         <AppButton variant="secondary" onClick={() => navigate('/login')}>
           Back to Login
