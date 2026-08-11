@@ -43,6 +43,12 @@ export interface FellowDashboardDto {
   attendancePercentage: number;
   upcomingTraining: number;
   recentActivity: string;
+  totalTickets: number;
+  openTickets: number;
+  leaveBalanceDays: number;
+  pendingTasks: number;
+  completedTasks: number;
+  performanceScore: number;
 }
 
 export interface ProjectProgressDto {

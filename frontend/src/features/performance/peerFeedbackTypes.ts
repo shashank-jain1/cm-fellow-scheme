@@ -28,8 +28,7 @@ export interface ReviewCycleDto {
   cycleName: string;
   startDate: string;
   endDate: string;
-  status: string;
-  createdBy: string;
+  isActive: boolean;
   createdOn: string;
 }
 

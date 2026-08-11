@@ -19,4 +19,8 @@ public sealed class PerformanceSummaryDto
     public decimal CompletionPercentage { get; init; }
     public string PerformanceStatus { get; init; } = null!;
     public string? EvaluationRemarks { get; init; }
+
+    // Drives the review-chain progress and the approve/reject actions on the detail page.
+    public string ReviewLevel { get; init; } = null!;
+    public string ReviewStatus { get; init; } = null!;
 }

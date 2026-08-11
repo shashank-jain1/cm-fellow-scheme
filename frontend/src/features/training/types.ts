@@ -37,9 +37,9 @@ export interface TrainingScheduleDto {
   date: string;
   startTime: string;
   endTime: string;
-  mode: string;
-  trainingTitle?: string;
-  meetingTitle?: string;
+  mode?: string | null;
+  trainingTitle?: string | null;
+  meetingTitle?: string | null;
   status: string;
 }
 

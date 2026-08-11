@@ -31,7 +31,9 @@ public sealed class GetPerformanceSummaryQueryHandler(IPerformanceQueryDbContext
                 QualityScore = p.QualityScore,
                 CompletionPercentage = p.CompletionPercentage,
                 PerformanceStatus = p.PerformanceStatus,
-                EvaluationRemarks = p.EvaluationRemarks
+                EvaluationRemarks = p.EvaluationRemarks,
+                ReviewLevel = p.ReviewLevel,
+                ReviewStatus = p.ReviewStatus
             })
             .FirstOrDefaultAsync(cancellationToken);
 

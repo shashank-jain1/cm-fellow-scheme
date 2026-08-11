@@ -25,6 +25,13 @@ public sealed class FellowDashboardDto
     public int PendingTasks { get; init; }
     public int CompletedTasks { get; init; }
     public decimal PerformanceScore { get; init; }
+
+    // Survey-centric progress, as the Monitoring spec defines for a fellow's own view.
+    public int TotalAssignedProjects { get; init; }
+    public int CompletedSurveys { get; init; }
+    public int PendingSurveys { get; init; }
+    public int UpcomingTraining { get; init; }
+    public string RecentActivity { get; init; } = string.Empty;
 }
 
 public sealed class DashboardExportDto

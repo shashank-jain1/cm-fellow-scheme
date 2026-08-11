@@ -22,9 +22,13 @@ public sealed class ListTrainingsQueryHandler(
                 x.TrainingScheduleId,
                 x.ActivityType,
                 x.ProjectId,
+                x.WorkProjectId,
                 x.TrainingTitle,
                 x.MeetingTitle,
                 x.Date,
+                x.StartTime,
+                x.EndTime,
+                x.Mode,
                 x.Status))
             .ToListAsync(cancellationToken);
 
