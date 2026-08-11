@@ -17,8 +17,6 @@ public sealed class CreateWorkAllocationCommandValidator : AbstractValidator<Cre
         RuleFor(x => x.Priority)
             .NotEmpty().WithMessage("Priority is required.")
             .MaximumLength(20).WithMessage("Priority must not exceed 20 characters.");
-        RuleFor(x => x.DurationDays)
-            .GreaterThan(0).WithMessage("DurationDays must be greater than 0.");
         RuleFor(x => x.SurveysPerIntern)
             .GreaterThan(0).WithMessage("SurveysPerIntern must be greater than 0.");
         RuleFor(x => x.Status)

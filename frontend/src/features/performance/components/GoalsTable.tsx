@@ -39,7 +39,7 @@ export default function GoalsTable({ goals, isLoading, onAdvanceStatus, isPendin
       emptyMessage="No goals yet"
       dataKey="goalId"
     >
-      <Column field="title" header="Title" bodyStyle={{ fontWeight: 600, fontSize: 14, color: 'var(--text-primary)' }} />
+      <Column field="goalTitle" header="Title" bodyStyle={{ fontWeight: 600, fontSize: 14, color: 'var(--text-primary)' }} />
       <Column
         field="description"
         header="Description"
@@ -58,7 +58,7 @@ export default function GoalsTable({ goals, isLoading, onAdvanceStatus, isPendin
         body={(row: PerformanceGoalDto) => {
           const nextStatus = nextStatusMap[row.status];
           return nextStatus ? (
-            <AppButton variant="accent" size="sm" onClick={() => onAdvanceStatus(row.goalId, row.status)} loading={isPending}>
+            <AppButton variant="accent" size="sm" onClick={() => onAdvanceStatus(row.performanceGoalId, row.status)} loading={isPending}>
               Move to {nextStatus}
             </AppButton>
           ) : null;

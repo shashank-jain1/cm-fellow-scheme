@@ -30,7 +30,7 @@ export default function ImprovementPlansTable({ plans, isLoading }: ImprovementP
       emptyMessage="No improvement plans"
       dataKey="improvementPlanId"
     >
-      <Column field="title" header="Title" bodyStyle={{ fontWeight: 600, fontSize: 14, color: 'var(--text-primary)' }} />
+      <Column field="planTitle" header="Title" bodyStyle={{ fontWeight: 600, fontSize: 14, color: 'var(--text-primary)' }} />
       <Column
         field="description"
         header="Description"

@@ -109,8 +109,10 @@ public class CreateWorkAllocationCommandValidatorTests
     }
 
     [Fact]
-    public void Should_Have_Error_When_DurationDays_Is_Zero()
+    public void Should_Not_Validate_DurationDays_Because_It_Is_Derived_Server_Side()
     {
+        // Duration is calculated from StartDate/EndDate by the handler, so a client-supplied
+        // value of 0 is simply ignored rather than rejected.
         var command = new CreateWorkAllocationCommand
         {
             ProjectId = 1,
@@ -124,8 +126,7 @@ public class CreateWorkAllocationCommandValidatorTests
         };
 
         var result = _validator.TestValidate(command);
-        result.ShouldHaveValidationErrorFor(x => x.DurationDays)
-            .WithErrorMessage("DurationDays must be greater than 0.");
+        result.ShouldNotHaveValidationErrorFor(x => x.DurationDays);
     }
 
     [Fact]

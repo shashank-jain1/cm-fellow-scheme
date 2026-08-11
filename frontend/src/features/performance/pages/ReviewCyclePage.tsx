@@ -65,7 +65,7 @@ export default function ReviewCyclePage() {
                 {activeCycle.startDate} to {activeCycle.endDate}
               </span>
             </div>
-            <StatusTag value={activeCycle.status} />
+            <StatusTag value={activeCycle.isActive ? 'Active' : 'Closed'} />
             <AppButton
               variant="danger"
               size="sm"

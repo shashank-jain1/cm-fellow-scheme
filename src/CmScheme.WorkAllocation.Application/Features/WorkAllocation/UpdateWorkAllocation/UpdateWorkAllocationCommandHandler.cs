@@ -24,7 +24,7 @@ public sealed class UpdateWorkAllocationCommandHandler(IWorkAllocationCommandDbC
         workAllocation.Priority = request.Priority;
         workAllocation.StartDate = request.StartDate;
         workAllocation.EndDate = request.EndDate;
-        workAllocation.DurationDays = request.DurationDays;
+        workAllocation.DurationDays = CalculateDurationDays(request.StartDate, request.EndDate);
         workAllocation.SurveysPerIntern = request.SurveysPerIntern;
         workAllocation.DivisionId = request.DivisionId;
         workAllocation.DistrictId = request.DistrictId;
@@ -37,5 +37,20 @@ public sealed class UpdateWorkAllocationCommandHandler(IWorkAllocationCommandDbC
         await dbContext.SaveChangesAsync(cancellationToken);
 
         return Result<bool>.Success(true);
+    }
+
+    /// <summary>
+    /// Duration is a derived field: inclusive day count between start and end date,
+    /// floored at 1. An open-ended allocation counts as a single day until an end date is set.
+    /// </summary>
+    private static int CalculateDurationDays(DateTime startDate, DateTime? endDate)
+    {
+        if (endDate is null)
+        {
+            return 1;
+        }
+
+        int inclusiveDays = (endDate.Value.Date - startDate.Date).Days + 1;
+        return Math.Max(1, inclusiveDays);
     }
 }

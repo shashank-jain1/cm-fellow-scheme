@@ -1,6 +1,7 @@
 using Ardalis.Result;
 using Mediator;
 using Microsoft.EntityFrameworkCore;
+using CmScheme.Common.Core;
 using CmScheme.WorkAllocation.Core.Data;
 
 namespace CmScheme.WorkAllocation.Application.Features.WorkAllocation.DeactivateWorkAllocation;
@@ -23,7 +24,9 @@ public sealed class DeactivateWorkAllocationCommandHandler(IWorkAllocationComman
             return Result.Invalid(new ValidationError("Work allocation is already inactive."));
         }
 
-        if (workAllocation.Status != "completed")
+        // Compare against the shared constant: statuses are persisted as "Completed",
+        // so a lower-cased literal here never matched and blocked every deactivation.
+        if (!string.Equals(workAllocation.Status, Statuses.WorkStatus.Completed, StringComparison.OrdinalIgnoreCase))
         {
             return Result.Invalid(new ValidationError("Cannot deactivate a work allocation that is not completed."));
         }
